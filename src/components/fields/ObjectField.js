@@ -1,14 +1,27 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import AceEditor from "react-ace";
+import MapField from "./MapField";
+
+import "brace/mode/json";
+import "brace/theme/github";
 
 import {
   orderProperties,
   retrieveSchema,
   getDefaultRegistry,
+  getDefaultFormState,
+  deepEquals
 } from "../../utils";
 
 function DefaultObjectFieldTemplate(props) {
-  const { TitleField, DescriptionField } = props;
+  const {
+    TitleField,
+    DescriptionField,
+    nullify,
+    onNullifyChange,
+    disabled
+  } = props;
   return (
     <fieldset>
       {(props.uiSchema["ui:title"] || props.title) && (
@@ -17,6 +30,9 @@ function DefaultObjectFieldTemplate(props) {
           title={props.title || props.uiSchema["ui:title"]}
           required={props.required}
           formContext={props.formContext}
+          nullify={nullify}
+          onNullifyChange={onNullifyChange}
+          disabled={disabled}
         />
       )}
       {props.description && (
@@ -39,8 +55,35 @@ class ObjectField extends Component {
     idSchema: {},
     required: false,
     disabled: false,
-    readonly: false,
+    readonly: false
   };
+
+  constructor(props) {
+    super(props);
+
+    this.state = this.getStateFromProps(props);
+    this.state.formJson = JSON.stringify(props.formData, null, 2);
+    this.state.formJsonError = false;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState(this.getStateFromProps(nextProps));
+  }
+
+  getStateFromProps(nextProps) {
+    return {
+      originalFormData:
+        nextProps.formData === undefined ||
+        Object.keys(nextProps.formData).length === 0
+          ? this.state ? this.state.originalFormData : undefined
+          : nextProps.formData,
+      formJson:
+        this.state &&
+        deepEquals(nextProps.formData, JSON.parse(this.state.formJson))
+          ? this.state.formJson
+          : JSON.stringify(nextProps.formData, null, 2)
+    };
+  }
 
   isRequired(name) {
     const schema = this.props.schema;
@@ -56,6 +99,34 @@ class ObjectField extends Component {
     };
   };
 
+  onNullifyChange = () => {
+    if (this.shouldDisable()) {
+      if (this.state.originalFormData) {
+        this.props.onChange(this.state.originalFormData);
+      } else if (!this.props.schema.properties) {
+        this.props.onChange({ key: "value" });
+      } else {
+        this.props.onChange(
+          getDefaultFormState(
+            this.props.schema,
+            this.props.formData,
+            this.props.definitions
+          )
+        );
+      }
+    } else {
+      this.props.onChange(undefined);
+    }
+  };
+
+  shouldDisable = () => {
+    return (
+      (this.props.formData === undefined ||
+        Object.keys(this.props.formData).length === 0) &&
+      !this.props.required
+    );
+  };
+
   render() {
     const {
       uiSchema,
@@ -68,18 +139,154 @@ class ObjectField extends Component {
       readonly,
       onBlur,
       onFocus,
-      registry = getDefaultRegistry(),
+      registry = getDefaultRegistry()
     } = this.props;
     const { definitions, fields, formContext } = registry;
     const { SchemaField, TitleField, DescriptionField } = fields;
     const schema = retrieveSchema(this.props.schema, definitions, formData);
     const title = schema.title === undefined ? name : schema.title;
     const description = uiSchema["ui:description"] || schema.description;
+
+    const templateProps = {
+      name,
+      title: uiSchema["ui:title"] || title,
+      description,
+      TitleField,
+      DescriptionField,
+      SchemaField,
+      required,
+      idSchema,
+      uiSchema,
+      schema,
+      formData,
+      formContext,
+      disabled,
+      onNullifyChange: /* schema.type === "array" ? null :  */ this
+        .onNullifyChange,
+      nullify: formData && Object.keys(formData).length > 0,
+      onBlur,
+      onFocus,
+      errorSchema,
+      readonly,
+      registry
+    };
+
+    if (schema.properties && Object.keys(schema.properties).length > 0) {
+      return this.renderObject(templateProps);
+    } else if (schema.additionalProperties) {
+      return this.renderMap(templateProps);
+    } else {
+      return this.renderDynamic(templateProps);
+    }
+  }
+
+  onJsonChange = code => {
+    var err = false;
+    var parsed = null;
+    try {
+      parsed = JSON.parse(code);
+    } catch (e) {
+      err = true;
+    }
+    this.setState((prevState, props) => {
+      !err && props.onChange(parsed);
+      return {
+        formJson: code,
+        formJsonError: err
+      };
+    });
+  };
+
+  renderDynamic(templateProps) {
+    const { TitleField, DescriptionField } = templateProps;
+
+    return (
+      <fieldset>
+        {(templateProps.uiSchema["ui:title"] || templateProps.title) && (
+          <TitleField
+            id={`${templateProps.idSchema.$id}__title`}
+            title={templateProps.title || templateProps.uiSchema["ui:title"]}
+            required={templateProps.required}
+            formContext={templateProps.formContext}
+            nullify={templateProps.nullify}
+            onNullifyChange={this.onNullifyChange}
+            disabled={templateProps.disabled}
+          />
+        )}
+        {templateProps.description && (
+          <DescriptionField
+            id={`${templateProps.idSchema.$id}__description`}
+            description={templateProps.description}
+            formContext={templateProps.formContext}
+          />
+        )}
+        <div style={{ position: "relative" }}>
+          <AceEditor
+            mode="json"
+            theme="github"
+            name="blah2"
+            onChange={this.onJsonChange}
+            fontSize={14}
+            height="200px"
+            showPrintMargin={true}
+            showGutter={true}
+            highlightActiveLine={true}
+            value={this.state.formJson}
+            readOnly={templateProps.disabled || this.shouldDisable()}
+            wrapEnabled={true}
+            setOptions={{
+              enableBasicAutocompletion: false,
+              enableLiveAutocompletion: false,
+              enableSnippets: false,
+              showLineNumbers: false,
+              tabSize: 2
+            }}
+            style={{ width: "100%" }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              left: 0,
+              top: 0,
+              zIndex: 100,
+              width: "100%",
+              height: "100%",
+              backgroundColor: "rgba(1,1,1,0.3)",
+              display:
+                templateProps.disabled || this.shouldDisable()
+                  ? "block"
+                  : "none"
+            }}
+          />
+        </div>
+        {this.state.formJsonError && (
+          <div>
+            <p />
+            <ul className="error-detail bs-callout bs-callout-info">
+              <li className="text-danger">
+                Could not parse JSON. Syntax error.
+              </li>
+            </ul>
+          </div>
+        )}
+      </fieldset>
+    );
+  }
+
+  renderMap(templateProps) {
+    return <MapField {...templateProps} onChange={this.props.onChange} />;
+  }
+
+  renderObject(templateProps) {
+    const { name, SchemaField } = templateProps;
     let orderedProperties;
 
     try {
-      const properties = Object.keys(schema.properties);
-      orderedProperties = orderProperties(properties, uiSchema["ui:order"]);
+      const properties = Object.keys(templateProps.schema.properties);
+      orderedProperties = orderProperties(
+        properties,
+        templateProps.uiSchema["ui:order"]
+      );
     } catch (err) {
       return (
         <div>
@@ -87,18 +294,16 @@ class ObjectField extends Component {
             Invalid {name || "root"} object field configuration:
             <em>{err.message}</em>.
           </p>
-          <pre>{JSON.stringify(schema)}</pre>
+          <pre>{JSON.stringify(templateProps.schema)}</pre>
         </div>
       );
     }
 
-    const Template = registry.ObjectFieldTemplate || DefaultObjectFieldTemplate;
+    const Template =
+      templateProps.registry.ObjectFieldTemplate || DefaultObjectFieldTemplate;
 
-    const templateProps = {
-      title: uiSchema["ui:title"] || title,
-      description,
-      TitleField,
-      DescriptionField,
+    const newProps = {
+      ...templateProps,
       properties: orderedProperties.map(name => {
         return {
           content: (
@@ -106,33 +311,27 @@ class ObjectField extends Component {
               key={name}
               name={name}
               required={this.isRequired(name)}
-              schema={schema.properties[name]}
-              uiSchema={uiSchema[name]}
-              errorSchema={errorSchema[name]}
-              idSchema={idSchema[name]}
-              formData={formData[name]}
+              schema={templateProps.schema.properties[name]}
+              uiSchema={templateProps.uiSchema[name]}
+              errorSchema={templateProps.errorSchema[name]}
+              idSchema={templateProps.idSchema[name]}
+              formData={templateProps.formData[name]}
               onChange={this.onPropertyChange(name)}
-              onBlur={onBlur}
-              onFocus={onFocus}
-              registry={registry}
-              disabled={disabled}
-              readonly={readonly}
+              onBlur={templateProps.onBlur}
+              onFocus={templateProps.onFocus}
+              registry={templateProps.registry}
+              disabled={templateProps.disabled || this.shouldDisable()}
+              readonly={templateProps.readonly}
             />
           ),
           name,
-          readonly,
-          disabled,
-          required,
+          readonly: templateProps.readonly,
+          disabled: templateProps.disabled || this.shouldDisable(),
+          required: templateProps.required
         };
-      }),
-      required,
-      idSchema,
-      uiSchema,
-      schema,
-      formData,
-      formContext,
+      })
     };
-    return <Template {...templateProps} />;
+    return <Template {...newProps} />;
   }
 }
 
@@ -153,8 +352,8 @@ if (process.env.NODE_ENV !== "production") {
       ).isRequired,
       fields: PropTypes.objectOf(PropTypes.func).isRequired,
       definitions: PropTypes.object.isRequired,
-      formContext: PropTypes.object.isRequired,
-    }),
+      formContext: PropTypes.object.isRequired
+    })
   };
 }
 

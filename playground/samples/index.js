@@ -17,6 +17,9 @@ import customObject from "./customObject";
 import alternatives from "./alternatives";
 import propertyDependencies from "./propertyDependencies";
 import schemaDependencies from "./schemaDependencies";
+import nestedObject from "./nestedObject";
+import object from "./object";
+import additionalProperties from "./additionalProperties";
 
 export const samples = {
   Simple: simple,
@@ -38,4 +41,7 @@ export const samples = {
   Alternatives: alternatives,
   "Property dependencies": propertyDependencies,
   "Schema dependencies": schemaDependencies,
+  "Nested Object": nestedObject,
+  Object: object,
+  "Add. Props.": additionalProperties
 };

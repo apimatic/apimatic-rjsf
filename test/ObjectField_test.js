@@ -23,17 +23,17 @@ describe("ObjectField", () => {
       required: ["foo"],
       default: {
         foo: "hey",
-        bar: true,
+        bar: true
       },
       properties: {
         foo: {
           title: "Foo",
-          type: "string",
+          type: "string"
         },
         bar: {
-          type: "boolean",
-        },
-      },
+          type: "boolean"
+        }
+      }
     };
 
     it("should render a fieldset", () => {
@@ -47,7 +47,7 @@ describe("ObjectField", () => {
 
       const legend = node.querySelector("fieldset > legend");
 
-      expect(legend.textContent).eql("my object");
+      expect(legend.textContent).eql("my object*");
       expect(legend.id).eql("root__title");
     });
 
@@ -57,8 +57,8 @@ describe("ObjectField", () => {
       const { node } = createFormComponent({
         schema,
         fields: {
-          TitleField: CustomTitleField,
-        },
+          TitleField: CustomTitleField
+        }
       });
       expect(node.querySelector("fieldset > #custom").textContent).to.eql(
         "my object"
@@ -72,7 +72,7 @@ describe("ObjectField", () => {
 
       const { node } = createFormComponent({
         schema,
-        fields: { DescriptionField: CustomDescriptionField },
+        fields: { DescriptionField: CustomDescriptionField }
       });
       expect(node.querySelector("fieldset > #custom").textContent).to.eql(
         "my description"
@@ -125,8 +125,8 @@ describe("ObjectField", () => {
         schema,
         formData: {
           foo: "hey",
-          bar: true,
-        },
+          bar: true
+        }
       });
 
       expect(node.querySelector(".field input[type=text]").value).eql("hey");
@@ -139,7 +139,7 @@ describe("ObjectField", () => {
       const { comp, node } = createFormComponent({ schema });
 
       Simulate.change(node.querySelector("input[type=text]"), {
-        target: { value: "changed" },
+        target: { value: "changed" }
       });
 
       expect(comp.state.formData.foo).eql("changed");
@@ -151,7 +151,7 @@ describe("ObjectField", () => {
 
       const input = node.querySelector("input[type=text]");
       Simulate.blur(input, {
-        target: { value: "changed" },
+        target: { value: "changed" }
       });
 
       expect(onBlur.calledWith(input.id, "changed")).to.be.true;
@@ -163,7 +163,7 @@ describe("ObjectField", () => {
 
       const input = node.querySelector("input[type=text]");
       Simulate.focus(input, {
-        target: { value: "changed" },
+        target: { value: "changed" }
       });
 
       expect(onFocus.calledWith(input.id, "changed")).to.be.true;
@@ -184,16 +184,16 @@ describe("ObjectField", () => {
         foo: { type: "string" },
         bar: { type: "string" },
         baz: { type: "string" },
-        qux: { type: "string" },
-      },
+        qux: { type: "string" }
+      }
     };
 
     it("should use provided order", () => {
       const { node } = createFormComponent({
         schema,
         uiSchema: {
-          "ui:order": ["baz", "qux", "bar", "foo"],
-        },
+          "ui:order": ["baz", "qux", "bar", "foo"]
+        }
       });
       const labels = [].map.call(
         node.querySelectorAll(".field > label"),
@@ -207,8 +207,8 @@ describe("ObjectField", () => {
       const { node } = createFormComponent({
         schema,
         uiSchema: {
-          "ui:order": ["baz", "*", "foo"],
-        },
+          "ui:order": ["baz", "*", "foo"]
+        }
       });
       const labels = [].map.call(
         node.querySelectorAll(".field > label"),
@@ -222,8 +222,8 @@ describe("ObjectField", () => {
       const { node } = createFormComponent({
         schema,
         uiSchema: {
-          "ui:order": ["baz", "qux", "bar", "wut?", "foo", "huh?"],
-        },
+          "ui:order": ["baz", "qux", "bar", "wut?", "foo", "huh?"]
+        }
       });
 
       expect(node.querySelector(".config-error").textContent).to.match(
@@ -235,8 +235,8 @@ describe("ObjectField", () => {
       const { node } = createFormComponent({
         schema,
         uiSchema: {
-          "ui:order": ["baz", "bar"],
-        },
+          "ui:order": ["baz", "bar"]
+        }
       });
 
       expect(node.querySelector(".config-error").textContent).to.match(
@@ -248,8 +248,8 @@ describe("ObjectField", () => {
       const { node } = createFormComponent({
         schema,
         uiSchema: {
-          "ui:order": ["baz", "*", "bar", "*"],
-        },
+          "ui:order": ["baz", "*", "bar", "*"]
+        }
       });
 
       expect(node.querySelector(".config-error").textContent).to.match(
@@ -260,20 +260,20 @@ describe("ObjectField", () => {
     it("should order referenced schema definitions", () => {
       const refSchema = {
         definitions: {
-          testdef: { type: "string" },
+          testdef: { type: "string" }
         },
         type: "object",
         properties: {
           foo: { $ref: "#/definitions/testdef" },
-          bar: { $ref: "#/definitions/testdef" },
-        },
+          bar: { $ref: "#/definitions/testdef" }
+        }
       };
 
       const { node } = createFormComponent({
         schema: refSchema,
         uiSchema: {
-          "ui:order": ["bar", "foo"],
-        },
+          "ui:order": ["bar", "foo"]
+        }
       });
       const labels = [].map.call(
         node.querySelectorAll(".field > label"),
@@ -290,23 +290,23 @@ describe("ObjectField", () => {
             type: "object",
             properties: {
               foo: { type: "string" },
-              bar: { type: "string" },
-            },
-          },
+              bar: { type: "string" }
+            }
+          }
         },
         type: "object",
         properties: {
-          root: { $ref: "#/definitions/testdef" },
-        },
+          root: { $ref: "#/definitions/testdef" }
+        }
       };
 
       const { node } = createFormComponent({
         schema: refSchema,
         uiSchema: {
           root: {
-            "ui:order": ["bar", "foo"],
-          },
-        },
+            "ui:order": ["bar", "foo"]
+          }
+        }
       });
       const labels = [].map.call(
         node.querySelectorAll(".field > label"),
@@ -321,15 +321,15 @@ describe("ObjectField", () => {
         type: "object",
         properties: {
           foo: { type: "string" },
-          bar: { type: "string" },
-        },
+          bar: { type: "string" }
+        }
       };
 
       const { node } = createFormComponent({
         schema,
         uiSchema: {
-          "ui:order": ["bar", "foo"],
-        },
+          "ui:order": ["bar", "foo"]
+        }
       });
 
       const ids = [].map.call(
@@ -351,9 +351,9 @@ describe("ObjectField", () => {
         properties: {
           object: {
             type: "object",
-            properties: {},
-          },
-        },
+            properties: {}
+          }
+        }
       };
 
       const { node } = createFormComponent({ schema, fields });
@@ -364,7 +364,7 @@ describe("ObjectField", () => {
       const schema = {
         type: "object",
         properties: {},
-        title: "test",
+        title: "test"
       };
 
       const { node } = createFormComponent({ schema, fields });
@@ -375,7 +375,7 @@ describe("ObjectField", () => {
       const schema = {
         type: "object",
         properties: {},
-        title: "",
+        title: ""
       };
       const { node } = createFormComponent({ schema, fields });
       expect(node.querySelector("#title-")).to.be.null;

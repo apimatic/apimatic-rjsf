@@ -1,0 +1,553 @@
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+
+import {
+  getDefaultFormState,
+  getUiOptions,
+  retrieveSchema,
+  toIdSchema,
+  getDefaultRegistry
+} from "../../utils";
+
+function MapFieldTitle({
+  TitleField,
+  idSchema,
+  title,
+  required,
+  onNullifyChange,
+  nullify,
+  disabled
+}) {
+  if (!title) {
+    // See #312: Ensure compatibility with old versions of React.
+    return <div />;
+  }
+  const id = `${idSchema.$id}__title`;
+  return (
+    <TitleField
+      id={id}
+      title={title}
+      required={required}
+      nullify={nullify}
+      onNullifyChange={onNullifyChange}
+      disabled={disabled}
+    />
+  );
+}
+
+function MapFieldDescription({ DescriptionField, idSchema, description }) {
+  if (!description) {
+    // See #312: Ensure compatibility with old versions of React.
+    return <div />;
+  }
+  const id = `${idSchema.$id}__description`;
+  return <DescriptionField id={id} description={description} />;
+}
+
+function IconBtn(props) {
+  const { type = "default", icon, className, ...otherProps } = props;
+  return (
+    <button
+      type="button"
+      className={`btn btn-${type} ${className} col-xs-12`}
+      {...otherProps}
+    >
+      <i className={`glyphicon glyphicon-${icon}`} />
+    </button>
+  );
+}
+
+// Used in the two templates
+function DefaultMapItem(props) {
+  const btnStyle = {
+    flex: 1,
+    paddingLeft: 6,
+    paddingRight: 6,
+    fontWeight: "bold"
+  };
+  return (
+    <div key={props.index} className={props.className}>
+      <div className="col-xs-3">
+        <input
+          className="form-control"
+          onChange={props.onKeyChange}
+          value={props.key}
+          required
+        />
+      </div>
+      <div
+        className={
+          props.hasToolbar && props.hasRemove ? "col-xs-8" : "col-xs-9"
+        }
+      >
+        {props.children}
+      </div>
+
+      {props.hasToolbar &&
+        props.hasRemove && (
+          <div className="col-xs-1 map-item-toolbox">
+            <IconBtn
+              type="danger"
+              icon="remove"
+              className="map-item-remove"
+              tabIndex="-1"
+              style={btnStyle}
+              disabled={props.disabled || props.readonly}
+              onClick={props.onDropKeyClick}
+            />
+          </div>
+        )}
+    </div>
+  );
+}
+
+function DefaultNormalMapFieldTemplate(props) {
+  return (
+    <fieldset className={props.className}>
+      <MapFieldTitle
+        key={`map-field-title-${props.idSchema.$id}`}
+        TitleField={props.TitleField}
+        idSchema={props.idSchema}
+        title={props.uiSchema["ui:title"] || props.title}
+        required={props.required}
+        nullify={props.nullify}
+        onNullifyChange={props.onNullifyChange}
+        disabled={props.disabled}
+      />
+
+      {(props.uiSchema["ui:description"] || props.schema.description) && (
+        <MapFieldDescription
+          key={`array-field-description-${props.idSchema.$id}`}
+          DescriptionField={props.DescriptionField}
+          idSchema={props.idSchema}
+          description={
+            props.uiSchema["ui:description"] || props.schema.description
+          }
+        />
+      )}
+
+      <div
+        className="row array-item-list"
+        key={`array-item-list-${props.idSchema.$id}`}
+      >
+        {props.items && props.items.map(p => DefaultMapItem(p))}
+      </div>
+
+      {props.canAdd && (
+        <AddButton
+          onClick={props.onAddClick}
+          disabled={props.disabled || props.readonly}
+        />
+      )}
+    </fieldset>
+  );
+}
+
+class MapField extends Component {
+  static defaultProps = {
+    uiSchema: {},
+    formData: [],
+    idSchema: {},
+    required: false,
+    disabled: false,
+    readonly: false,
+    autofocus: false
+  };
+
+  constructor(props) {
+    super(props);
+
+    this.state = this.getStateFromProps(props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState(this.getStateFromProps(nextProps));
+  }
+
+  getStateFromProps(nextProps) {
+    return {
+      originalFormData:
+        nextProps.formData === undefined ||
+        (nextProps.formData && Object.keys(nextProps.formData).length === 0)
+          ? this.state ? this.state.originalFormData : undefined
+          : nextProps.formData,
+      hash:
+        !this.state ||
+        (this.state.originalFormData !== nextProps.formData &&
+          !this.state.duplication) ||
+        this.state.hash.length === 0
+          ? Object.keys(nextProps.formData).map(k => ({
+              k,
+              v: nextProps.formData[k]
+            }))
+          : this.state.hash
+    };
+  }
+
+  isItemRequired(itemSchema) {
+    if (Array.isArray(itemSchema.type)) {
+      // While we don't yet support composite/nullable jsonschema types, it's
+      // future-proof to check for requirement against these.
+      return !itemSchema.type.includes("null");
+    }
+    // All non-null array item types are inherently required by design
+    return itemSchema.type !== "null";
+  }
+
+  canAddItem(formItems) {
+    const { schema, uiSchema } = this.props;
+    let { addable } = getUiOptions(uiSchema);
+    if (addable !== false) {
+      // if ui:options.addable was not explicitly set to false, we can add
+      // another item if we have not exceeded maxItems yet
+      if (schema.maxItems !== undefined) {
+        addable = formItems.length < schema.maxItems;
+      } else {
+        addable = true;
+      }
+    }
+    return addable;
+  }
+
+  getNewFormData(hash) {
+    return hash.reduce((result, current) => {
+      result[current.k] = current.v;
+      return result;
+    }, {});
+  }
+
+  onValueChange(i) {
+    return value => {
+      let newHash = this.state.hash.slice();
+      newHash[i] = { k: this.state.hash[i].k, v: value };
+      this.setState(
+        {
+          hash: newHash
+        },
+        () => this.props.onChange(this.getNewFormData(newHash))
+      );
+    };
+  }
+
+  getDuplicateCounts(hash) {
+    let counts = {};
+    for (var index = 0; index < hash.length; index++) {
+      var element = hash[index];
+      if (element.k in counts) {
+        counts[element.k]++;
+      } else {
+        counts[element.k] = 1;
+      }
+    }
+    return counts;
+  }
+
+  hasDuplicates(hash) {
+    let counts = {};
+    for (var index = 0; index < hash.length; index++) {
+      var element = hash[index];
+      if (element.k in counts) {
+        return true;
+      } else {
+        counts[element.k] = true;
+      }
+    }
+    return false;
+  }
+
+  onKeyChange(pair, i) {
+    return event => {
+      if (pair.k !== event.target.value) {
+        let newHash = this.state.hash.slice();
+        newHash[i] = { k: event.target.value, v: pair.v };
+        this.setState(
+          {
+            hash: newHash,
+            duplication: this.hasDuplicates(newHash)
+          },
+          () => this.props.onChange(this.getNewFormData(newHash))
+        );
+      }
+    };
+  }
+
+  onKeyDelete(index) {
+    return event => {
+      let newHash = this.state.hash.slice();
+      newHash.splice(index, 1);
+      this.setState(
+        {
+          hash: newHash
+        },
+        () => this.props.onChange(this.getNewFormData(newHash))
+      );
+    };
+  }
+
+  onKeyAdd = () => {
+    let index = 0;
+    while ("key" + index in this.props.formData) {
+      index++;
+    }
+
+    const { schema, registry = getDefaultRegistry() } = this.props;
+    const { definitions } = registry;
+    let itemSchema = schema.additionalProperties;
+
+    let newHash = this.state.hash.slice();
+    newHash.push({
+      k: "key" + index,
+      v: getDefaultFormState(itemSchema, undefined, definitions)
+    });
+    this.setState(
+      {
+        hash: newHash
+      },
+      () => this.props.onChange(this.getNewFormData(newHash))
+    );
+  };
+
+  // onAddClick = event => {
+  //     event.preventDefault();
+  //     const { schema, formData, registry = getDefaultRegistry() } = this.props;
+  //     const { definitions } = registry;
+  //     let itemSchema = schema.additionalProperties;
+  //     let newKey = this.getNewKey(formData);
+  //     this.props.onChange(
+  //         { ...formData, [newKey]: getDefaultFormState(itemSchema, undefined, definitions) },
+  //         { validate: false }
+  //     );
+  // };
+
+  // onDropKeyClick = key => {
+  //     return event => {
+  //         if (event) {
+  //             event.preventDefault();
+  //         }
+  //         const { formData, onChange } = this.props;
+  //         let { [key]: omit, ...res } = formData;
+  //         onChange(res, { validate: true });
+  //     };
+  // };
+
+  // onChangeForKey = key => {
+  //     return value => {
+  //         const { formData, onChange } = this.props;
+  //         const jsonValue = typeof value === "undefined" ? null : value;
+  //         const newFormData = { ...formData, [key]: jsonValue };
+  //         onChange(newFormData, { validate: false });
+  //     };
+  // };
+
+  shouldDisable = () => {
+    return (
+      (this.props.formData === undefined ||
+        (this.props.formData &&
+          Object.keys(this.props.formData).length === 0)) &&
+      !this.props.required
+    );
+  };
+
+  onNullifyChange = () => {
+    if (this.shouldDisable()) {
+      if (this.state.originalFormData) {
+        this.props.onChange(this.state.originalFormData);
+      } else {
+        this.props.onChange(
+          getDefaultFormState(
+            this.props.schema,
+            undefined,
+            this.props.registry.definitions
+          )
+        );
+      }
+    } else {
+      this.props.onChange(undefined);
+    }
+  };
+
+  render() {
+    const {
+      schema,
+      uiSchema,
+      formData,
+      errorSchema,
+      idSchema,
+      name,
+      required,
+      disabled,
+      readonly,
+      autofocus,
+      registry = getDefaultRegistry(),
+      formContext,
+      onBlur,
+      onFocus
+    } = this.props;
+    const title = schema.title === undefined ? name : schema.title;
+    const { definitions, fields } = registry;
+    const { TitleField, DescriptionField } = fields;
+    const addPropsSchema = retrieveSchema(
+      schema.additionalProperties,
+      definitions
+    );
+    const duplicationCounts = this.getDuplicateCounts(this.state.hash);
+    const mapProps = {
+      canAdd: this.canAddItem(formData),
+      items: this.state.hash.map((pair, index) => {
+        const item = pair.v;
+        const itemSchema = addPropsSchema;
+        const itemErrorSchema1 = errorSchema ? errorSchema[pair.k] : {};
+        const itemErrorSchema =
+          duplicationCounts[pair.k] > 1
+            ? { ...itemErrorSchema1, __errors: ["Key is duplicated."] }
+            : itemErrorSchema1;
+        const itemIdPrefix = idSchema.$id + "_" + pair.k;
+        const itemIdSchema = toIdSchema(
+          itemSchema,
+          itemIdPrefix,
+          definitions,
+          item
+        );
+        return this.renderMapFieldItem({
+          index,
+          key: pair.k,
+          itemSchema: itemSchema,
+          itemIdSchema,
+          itemErrorSchema,
+          itemData: item,
+          itemUiSchema: uiSchema.items,
+          autofocus: autofocus && index === 0,
+          onBlur,
+          onFocus
+        });
+      }),
+      className: `field field-array field-array-of-${addPropsSchema.type}`,
+      DescriptionField,
+      disabled,
+      idSchema,
+      uiSchema,
+      onAddClick: this.onKeyAdd,
+      readonly,
+      required,
+      schema,
+      title,
+      TitleField,
+      formContext,
+      formData,
+      onNullifyChange: this.onNullifyChange,
+      nullify: formData && Object.keys(formData).length > 0
+    };
+
+    return <DefaultNormalMapFieldTemplate {...mapProps} />;
+  }
+
+  renderMapFieldItem(props) {
+    const {
+      index,
+      key,
+      canRemove = true,
+      itemSchema,
+      itemData,
+      itemUiSchema,
+      itemIdSchema,
+      itemErrorSchema,
+      autofocus,
+      onBlur,
+      onFocus
+    } = props;
+    const {
+      disabled,
+      readonly,
+      uiSchema,
+      registry = getDefaultRegistry()
+    } = this.props;
+    const { fields: { SchemaField } } = registry;
+    const { removable } = {
+      removable: true,
+      ...uiSchema["ui:options"]
+    };
+    const has = {
+      remove: removable && canRemove
+    };
+    has.toolbar = Object.keys(has).some(key => has[key]);
+
+    return {
+      index,
+      children: (
+        <SchemaField
+          schema={itemSchema}
+          uiSchema={itemUiSchema}
+          formData={itemData}
+          errorSchema={itemErrorSchema}
+          idSchema={itemIdSchema}
+          required={this.isItemRequired(itemSchema)}
+          onChange={this.onValueChange(index)}
+          onBlur={onBlur}
+          onFocus={onFocus}
+          registry={this.props.registry}
+          disabled={this.props.disabled}
+          readonly={this.props.readonly}
+          autofocus={autofocus}
+        />
+      ),
+      className: "map-item",
+      disabled,
+      hasToolbar: has.toolbar,
+      hasRemove: has.remove,
+      key,
+      onDropKeyClick: this.onKeyDelete(index),
+      onKeyChange: this.onKeyChange({ k: key, v: itemData }, index),
+      readonly
+    };
+  }
+}
+
+function AddButton({ onClick, disabled }) {
+  return (
+    <div className="row">
+      <p className="col-xs-3 col-xs-offset-9 map-item-add text-right">
+        <IconBtn
+          type="info"
+          icon="plus"
+          className="btn-add col-xs-12"
+          tabIndex="0"
+          onClick={onClick}
+          disabled={disabled}
+        />
+      </p>
+    </div>
+  );
+}
+
+if (process.env.NODE_ENV !== "production") {
+  MapField.propTypes = {
+    schema: PropTypes.object.isRequired,
+    uiSchema: PropTypes.shape({
+      "ui:options": PropTypes.shape({
+        addable: PropTypes.bool,
+        orderable: PropTypes.bool,
+        removable: PropTypes.bool
+      })
+    }),
+    idSchema: PropTypes.object,
+    errorSchema: PropTypes.object,
+    onChange: PropTypes.func.isRequired,
+    onBlur: PropTypes.func,
+    onFocus: PropTypes.func,
+    formData: PropTypes.object,
+    required: PropTypes.bool,
+    disabled: PropTypes.bool,
+    readonly: PropTypes.bool,
+    autofocus: PropTypes.bool,
+    registry: PropTypes.shape({
+      widgets: PropTypes.objectOf(
+        PropTypes.oneOfType([PropTypes.func, PropTypes.object])
+      ).isRequired,
+      fields: PropTypes.objectOf(PropTypes.func).isRequired,
+      definitions: PropTypes.object.isRequired,
+      formContext: PropTypes.object.isRequired
+    })
+  };
+}
+
+export default MapField;

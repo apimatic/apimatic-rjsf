@@ -7,7 +7,7 @@ const widgetMap = {
     checkbox: "CheckboxWidget",
     radio: "RadioWidget",
     select: "SelectWidget",
-    hidden: "HiddenWidget",
+    hidden: "HiddenWidget"
   },
   string: {
     text: "TextWidget",
@@ -22,13 +22,13 @@ const widgetMap = {
     select: "SelectWidget",
     textarea: "TextareaWidget",
     hidden: "HiddenWidget",
-    date: "DateWidget",
-    datetime: "DateTimeWidget",
-    "date-time": "DateTimeWidget",
+    date: "AltDateWidget",
+    datetime: "AltDateTimeWidget",
+    "date-time": "AltDateTimeWidget",
     "alt-date": "AltDateWidget",
     "alt-datetime": "AltDateTimeWidget",
     color: "ColorWidget",
-    file: "FileWidget",
+    file: "FileWidget"
   },
   number: {
     text: "TextWidget",
@@ -36,7 +36,7 @@ const widgetMap = {
     updown: "UpDownWidget",
     range: "RangeWidget",
     radio: "RadioWidget",
-    hidden: "HiddenWidget",
+    hidden: "HiddenWidget"
   },
   integer: {
     text: "TextWidget",
@@ -44,13 +44,13 @@ const widgetMap = {
     updown: "UpDownWidget",
     range: "RangeWidget",
     radio: "RadioWidget",
-    hidden: "HiddenWidget",
+    hidden: "HiddenWidget"
   },
   array: {
     select: "SelectWidget",
     checkboxes: "CheckboxesWidget",
-    files: "FileWidget",
-  },
+    files: "FileWidget"
+  }
 };
 
 export function getDefaultRegistry() {
@@ -58,7 +58,7 @@ export function getDefaultRegistry() {
     fields: require("./components/fields").default,
     widgets: require("./components/widgets").default,
     definitions: {},
-    formContext: {},
+    formContext: {}
   };
 }
 
@@ -195,7 +195,7 @@ export function getUiOptions(uiSchema) {
         return {
           ...options,
           ...(value.options || {}),
-          widget: value.component,
+          widget: value.component
         };
       }
       if (key === "ui:options" && isObject(value)) {
@@ -496,8 +496,8 @@ function withExactlyOneSubschema(
       const conditionSchema = {
         type: "object",
         properties: {
-          [dependencyKey]: conditionPropertySchema,
-        },
+          [dependencyKey]: conditionPropertySchema
+        }
       };
       const { errors } = validateFormData(formData, conditionSchema);
       return errors.length === 0;
@@ -613,7 +613,7 @@ export function shouldRender(comp, nextProps, nextState) {
 
 export function toIdSchema(schema, id, definitions, formData = {}) {
   const idSchema = {
-    $id: id || "root",
+    $id: id || "root"
   };
   if ("$ref" in schema) {
     const _schema = retrieveSchema(schema, definitions, formData);
@@ -641,7 +641,7 @@ export function parseDateString(dateString, includeTime = true) {
       day: -1,
       hour: includeTime ? -1 : 0,
       minute: includeTime ? -1 : 0,
-      second: includeTime ? -1 : 0,
+      second: includeTime ? -1 : 0
     };
   }
   const date = new Date(dateString);
@@ -654,7 +654,7 @@ export function parseDateString(dateString, includeTime = true) {
     day: date.getUTCDate(),
     hour: includeTime ? date.getUTCHours() : 0,
     minute: includeTime ? date.getUTCMinutes() : 0,
-    second: includeTime ? date.getUTCSeconds() : 0,
+    second: includeTime ? date.getUTCSeconds() : 0
   };
 }
 

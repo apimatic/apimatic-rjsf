@@ -6,7 +6,7 @@ import {
   getUiOptions,
   isSelect,
   optionsList,
-  getDefaultRegistry,
+  getDefaultRegistry
 } from "../../utils";
 
 function StringField(props) {
@@ -23,7 +23,7 @@ function StringField(props) {
     onChange,
     onBlur,
     onFocus,
-    registry = getDefaultRegistry(),
+    registry = getDefaultRegistry()
   } = props;
   const { title, format } = schema;
   const { widgets, formContext } = registry;
@@ -34,6 +34,13 @@ function StringField(props) {
   );
   const Widget = getWidget(schema, widget, widgets);
 
+  const _onChange = value => {
+    if (value === undefined && required) {
+      return onChange("");
+    }
+    return onChange(value === "" ? options.emptyValue : value);
+  };
+
   return (
     <Widget
       options={{ ...options, enumOptions }}
@@ -41,7 +48,7 @@ function StringField(props) {
       id={idSchema && idSchema.$id}
       label={title === undefined ? name : title}
       value={formData}
-      onChange={onChange}
+      onChange={_onChange}
       onBlur={onBlur}
       onFocus={onFocus}
       required={required}
@@ -70,13 +77,13 @@ if (process.env.NODE_ENV !== "production") {
       ).isRequired,
       fields: PropTypes.objectOf(PropTypes.func).isRequired,
       definitions: PropTypes.object.isRequired,
-      formContext: PropTypes.object.isRequired,
+      formContext: PropTypes.object.isRequired
     }),
     formContext: PropTypes.object.isRequired,
     required: PropTypes.bool,
     disabled: PropTypes.bool,
     readonly: PropTypes.bool,
-    autofocus: PropTypes.bool,
+    autofocus: PropTypes.bool
   };
 }
 
@@ -84,7 +91,7 @@ StringField.defaultProps = {
   uiSchema: {},
   disabled: false,
   readonly: false,
-  autofocus: false,
+  autofocus: false
 };
 
 export default StringField;

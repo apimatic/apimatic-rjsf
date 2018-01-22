@@ -43,6 +43,7 @@
     "ajv": "^5.2.3",
     "lodash.topath": "^4.5.2",
     "prop-types": "^15.5.8",
+    "react-ace": "^5.9.0",
     "setimmediate": "^1.0.5"
   },
   "devDependencies": {
