@@ -5,8 +5,7 @@ import {
   getDefaultFormState,
   getUiOptions,
   retrieveSchema,
-  toIdSchema,
-  getDefaultRegistry
+  toIdSchema
 } from "../../utils";
 
 function MapFieldTitle({
@@ -45,7 +44,7 @@ function MapFieldDescription({ DescriptionField, idSchema, description }) {
 }
 
 function IconBtn(props) {
-  const { type = "default", icon, className, ...otherProps } = props;
+  const { type /* = "default" */, icon, className, ...otherProps } = props;
   return (
     <button
       type="button"
@@ -69,6 +68,7 @@ function DefaultMapItem(props) {
     <div key={props.index} className={props.className}>
       <div className="col-xs-3">
         <input
+          type="text"
           className="form-control"
           onChange={props.onKeyChange}
           value={props.key}
@@ -115,20 +115,18 @@ function DefaultNormalMapFieldTemplate(props) {
         disabled={props.disabled}
       />
 
-      {(props.uiSchema["ui:description"] || props.schema.description) && (
-        <MapFieldDescription
-          key={`array-field-description-${props.idSchema.$id}`}
-          DescriptionField={props.DescriptionField}
-          idSchema={props.idSchema}
-          description={
-            props.uiSchema["ui:description"] || props.schema.description
-          }
-        />
-      )}
+      <MapFieldDescription
+        key={`map-field-description-${props.idSchema.$id}`}
+        DescriptionField={props.DescriptionField}
+        idSchema={props.idSchema}
+        description={
+          props.uiSchema["ui:description"] || props.schema.description
+        }
+      />
 
       <div
-        className="row array-item-list"
-        key={`array-item-list-${props.idSchema.$id}`}
+        className="row map-item-list"
+        key={`map-item-list-${props.idSchema.$id}`}
       >
         {props.items && props.items.map(p => DefaultMapItem(p))}
       </div>
@@ -185,6 +183,7 @@ class MapField extends Component {
   }
 
   isItemRequired(itemSchema) {
+    /* istanbul ignore if: remove when support is added */
     if (Array.isArray(itemSchema.type)) {
       // While we don't yet support composite/nullable jsonschema types, it's
       // future-proof to check for requirement against these.
@@ -200,8 +199,8 @@ class MapField extends Component {
     if (addable !== false) {
       // if ui:options.addable was not explicitly set to false, we can add
       // another item if we have not exceeded maxItems yet
-      if (schema.maxItems !== undefined) {
-        addable = formItems.length < schema.maxItems;
+      if (schema.maxProperties !== undefined) {
+        addable = formItems.length < schema.maxProperties;
       } else {
         addable = true;
       }
@@ -257,17 +256,15 @@ class MapField extends Component {
 
   onKeyChange(pair, i) {
     return event => {
-      if (pair.k !== event.target.value) {
-        let newHash = this.state.hash.slice();
-        newHash[i] = { k: event.target.value, v: pair.v };
-        this.setState(
-          {
-            hash: newHash,
-            duplication: this.hasDuplicates(newHash)
-          },
-          () => this.props.onChange(this.getNewFormData(newHash))
-        );
-      }
+      let newHash = this.state.hash.slice();
+      newHash[i] = { k: event.target.value, v: pair.v };
+      this.setState(
+        {
+          hash: newHash,
+          duplication: this.hasDuplicates(newHash)
+        },
+        () => this.props.onChange(this.getNewFormData(newHash))
+      );
     };
   }
 
@@ -290,7 +287,7 @@ class MapField extends Component {
       index++;
     }
 
-    const { schema, registry = getDefaultRegistry() } = this.props;
+    const { schema, registry } = this.props;
     const { definitions } = registry;
     let itemSchema = schema.additionalProperties;
 
@@ -307,38 +304,6 @@ class MapField extends Component {
     );
   };
 
-  // onAddClick = event => {
-  //     event.preventDefault();
-  //     const { schema, formData, registry = getDefaultRegistry() } = this.props;
-  //     const { definitions } = registry;
-  //     let itemSchema = schema.additionalProperties;
-  //     let newKey = this.getNewKey(formData);
-  //     this.props.onChange(
-  //         { ...formData, [newKey]: getDefaultFormState(itemSchema, undefined, definitions) },
-  //         { validate: false }
-  //     );
-  // };
-
-  // onDropKeyClick = key => {
-  //     return event => {
-  //         if (event) {
-  //             event.preventDefault();
-  //         }
-  //         const { formData, onChange } = this.props;
-  //         let { [key]: omit, ...res } = formData;
-  //         onChange(res, { validate: true });
-  //     };
-  // };
-
-  // onChangeForKey = key => {
-  //     return value => {
-  //         const { formData, onChange } = this.props;
-  //         const jsonValue = typeof value === "undefined" ? null : value;
-  //         const newFormData = { ...formData, [key]: jsonValue };
-  //         onChange(newFormData, { validate: false });
-  //     };
-  // };
-
   shouldDisable = () => {
     return (
       (this.props.formData === undefined ||
@@ -353,13 +318,13 @@ class MapField extends Component {
       if (this.state.originalFormData) {
         this.props.onChange(this.state.originalFormData);
       } else {
-        this.props.onChange(
-          getDefaultFormState(
-            this.props.schema,
+        this.props.onChange({
+          key0: getDefaultFormState(
+            this.props.schema.additionalProperties,
             undefined,
             this.props.registry.definitions
           )
-        );
+        });
       }
     } else {
       this.props.onChange(undefined);
@@ -378,7 +343,7 @@ class MapField extends Component {
       disabled,
       readonly,
       autofocus,
-      registry = getDefaultRegistry(),
+      registry,
       formContext,
       onBlur,
       onFocus
@@ -455,12 +420,7 @@ class MapField extends Component {
       onBlur,
       onFocus
     } = props;
-    const {
-      disabled,
-      readonly,
-      uiSchema,
-      registry = getDefaultRegistry()
-    } = this.props;
+    const { disabled, readonly, uiSchema, registry } = this.props;
     const { fields: { SchemaField } } = registry;
     const { removable } = {
       removable: true,
@@ -519,6 +479,7 @@ function AddButton({ onClick, disabled }) {
   );
 }
 
+/* istanbul ignore else */
 if (process.env.NODE_ENV !== "production") {
   MapField.propTypes = {
     schema: PropTypes.object.isRequired,

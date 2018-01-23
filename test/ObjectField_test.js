@@ -177,6 +177,44 @@ describe("ObjectField", () => {
     });
   });
 
+  describe("object", () => {
+    it("should show object editor", () => {
+      const { node } = createFormComponent({ schema: { type: "object" } });
+
+      expect(node.querySelectorAll(".ace_editor")).to.be.of.length(1);
+    });
+
+    it("should show object editor filled with data", () => {
+      createFormComponent({
+        schema: { type: "object" },
+        formData: { hello: "world" }
+      });
+    });
+
+    it("should nullify object editor filled with data", () => {
+      const { comp, node } = createFormComponent({
+        schema: { type: "object", properties: { obj: { type: "object" } } },
+        formData: { obj: { hello: "world" } }
+      });
+
+      const chkbox = node.querySelector("[type=checkbox]");
+      Simulate.change(chkbox);
+
+      expect(comp.state.formData.obj).eq(undefined);
+    });
+
+    it("should fill default form data when un-nullify", () => {
+      const { comp, node } = createFormComponent({
+        schema: { type: "object", properties: { obj: { type: "object" } } }
+      });
+
+      const chkbox = node.querySelector("[type=checkbox]");
+      Simulate.change(chkbox);
+
+      expect(comp.state.formData.obj).to.deep.eq({ key: "value" });
+    });
+  });
+
   describe("fields ordering", () => {
     const schema = {
       type: "object",

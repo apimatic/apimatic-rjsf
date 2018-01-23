@@ -16,9 +16,17 @@
     "publish-to-npm": "npm run build:readme && npm run dist && npm publish",
     "start": "node devServer.js",
     "tdd": "cross-env NODE_ENV=test mocha --compilers js:babel-register --watch --require ./test/setup-jsdom.js test/**/*_test.js",
-    "test": "cross-env NODE_ENV=test mocha --compilers js:babel-register --require ./test/setup-jsdom.js test/**/*_test.js"
+    "test": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text mocha --compilers js:babel-register --require ./test/setup-jsdom.js test/**/*_test.js"
   },
   "prettierOptions": "--jsx-bracket-same-line --trailing-comma es5 --semi",
+  "nyc": {
+    "sourceMap": false,
+    "instrument": false,
+    "check-coverage": true,
+    "per-file": true,
+    "statements": 82,
+    "lines": 82
+  },
   "lint-staged": {
     "{playground,src,test}/**/*.js": [
       "npm run lint",
@@ -52,6 +60,7 @@
     "babel-core": "^6.18.2",
     "babel-eslint": "^7.2.3",
     "babel-loader": "^6.2.7",
+    "babel-plugin-istanbul": "^4.1.5",
     "babel-plugin-react-transform": "^2.0.2",
     "babel-plugin-transform-class-properties": "^6.18.0",
     "babel-plugin-transform-object-rest-spread": "^6.16.0",
@@ -79,6 +88,7 @@
     "json-loader": "^0.5.7",
     "lint-staged": "^3.3.1",
     "mocha": "^2.5.3",
+    "nyc": "^11.4.1",
     "prettier": "^1.8.2",
     "react": "^15.5.0",
     "react-addons-test-utils": "^15.3.2",

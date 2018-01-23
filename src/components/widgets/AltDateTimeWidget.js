@@ -6,13 +6,14 @@ function AltDateTimeWidget(props) {
   return <AltDateWidget time {...props} />;
 }
 
+/* istanbul ignore else */
 if (process.env.NODE_ENV !== "production") {
   AltDateTimeWidget.propTypes = {
     schema: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,
     value: PropTypes.string,
     required: PropTypes.bool,
-    onChange: PropTypes.func,
+    onChange: PropTypes.func
   };
 }
 

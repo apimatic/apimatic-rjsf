@@ -707,6 +707,7 @@ function AddButton({ onClick, disabled }) {
   );
 }
 
+/* istanbul ignore else */
 if (process.env.NODE_ENV !== "production") {
   ArrayField.propTypes = {
     schema: PropTypes.object.isRequired,

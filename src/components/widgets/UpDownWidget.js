@@ -8,9 +8,10 @@ function UpDownWidget(props) {
   return <BaseInput type="number" {...props} {...rangeSpec(props.schema)} />;
 }
 
+/* istanbul ignore else */
 if (process.env.NODE_ENV !== "production") {
   UpDownWidget.propTypes = {
-    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
   };
 }
 

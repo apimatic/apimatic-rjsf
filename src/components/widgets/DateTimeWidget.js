@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import React from "react";
 import PropTypes from "prop-types";
 import { pad } from "../../utils";
@@ -44,9 +45,10 @@ function DateTimeWidget(props) {
   );
 }
 
+/* istanbul ignore else */
 if (process.env.NODE_ENV !== "production") {
   DateTimeWidget.propTypes = {
-    value: PropTypes.string,
+    value: PropTypes.string
   };
 }
 

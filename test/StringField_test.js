@@ -389,6 +389,44 @@ describe("StringField", () => {
 
       expect(node.querySelector("textarea").getAttribute("rows")).eql("20");
     });
+
+    it("should handle a blur event", () => {
+      const onBlur = sandbox.spy();
+      const { node } = createFormComponent({
+        schema: { type: "string" },
+        uiSchema: {
+          "ui:widget": "textarea",
+          "ui:options": { rows: 20 }
+        },
+        formData: "x",
+        onBlur
+      });
+      const input = node.querySelector("textarea");
+      Simulate.blur(input, {
+        target: { value: "yo" }
+      });
+
+      expect(onBlur.calledWith(input.id, "yo")).to.be.true;
+    });
+
+    it("should handle a focus event", () => {
+      const onFocus = sandbox.spy();
+      const { node } = createFormComponent({
+        schema: { type: "string" },
+        uiSchema: {
+          "ui:widget": "textarea",
+          "ui:options": { rows: 20 }
+        },
+        formData: "x",
+        onFocus
+      });
+      const input = node.querySelector("textarea");
+      Simulate.focus(input, {
+        target: { value: "yo" }
+      });
+
+      expect(onFocus.calledWith(input.id, "yo")).to.be.true;
+    });
   });
   /* 
   describe("DateTimeWidget", () => {

@@ -221,6 +221,7 @@ export default class Form extends Component {
   }
 }
 
+/* istanbul ignore else */
 if (process.env.NODE_ENV !== "production") {
   Form.propTypes = {
     schema: PropTypes.object.isRequired,

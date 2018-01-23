@@ -62,6 +62,7 @@ function StringField(props) {
   );
 }
 
+/* istanbul ignore else */
 if (process.env.NODE_ENV !== "production") {
   StringField.propTypes = {
     schema: PropTypes.object.isRequired,

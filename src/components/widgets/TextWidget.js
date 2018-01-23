@@ -6,9 +6,10 @@ function TextWidget(props) {
   return <BaseInput {...props} />;
 }
 
+/* istanbul ignore else */
 if (process.env.NODE_ENV !== "production") {
   TextWidget.propTypes = {
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   };
 }
 

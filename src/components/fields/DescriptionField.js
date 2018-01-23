@@ -22,10 +22,11 @@ function DescriptionField(props) {
   }
 }
 
+/* istanbul ignore else */
 if (process.env.NODE_ENV !== "production") {
   DescriptionField.propTypes = {
     id: PropTypes.string,
-    description: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+    description: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
   };
 }
 

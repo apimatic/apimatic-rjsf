@@ -6,9 +6,10 @@ function PasswordWidget(props) {
   return <BaseInput type="password" {...props} />;
 }
 
+/* istanbul ignore else */
 if (process.env.NODE_ENV !== "production") {
   PasswordWidget.propTypes = {
-    value: PropTypes.string,
+    value: PropTypes.string
   };
 }
 

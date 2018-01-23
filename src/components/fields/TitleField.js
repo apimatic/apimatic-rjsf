@@ -23,6 +23,7 @@ function TitleField(props) {
   );
 }
 
+/* istanbul ignore else */
 if (process.env.NODE_ENV !== "production") {
   TitleField.propTypes = {
     id: PropTypes.string,

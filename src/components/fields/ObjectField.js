@@ -335,6 +335,7 @@ class ObjectField extends Component {
   }
 }
 
+/* istanbul ignore else */
 if (process.env.NODE_ENV !== "production") {
   ObjectField.propTypes = {
     schema: PropTypes.object.isRequired,
