@@ -180,13 +180,17 @@ function DefaultNormalArrayFieldTemplate(props) {
         disabled={props.disabled}
       />
 
-      {(props.uiSchema["ui:description"] || props.schema.description) && (
+      {(props.uiSchema["ui:description"] ||
+        props.schema.description ||
+        props.itemsSchema.description) && (
         <ArrayFieldDescription
           key={`array-field-description-${props.idSchema.$id}`}
           DescriptionField={props.DescriptionField}
           idSchema={props.idSchema}
           description={
-            props.uiSchema["ui:description"] || props.schema.description
+            props.uiSchema["ui:description"] ||
+            props.schema.description ||
+            props.itemsSchema.description
           }
         />
       )}
@@ -405,10 +409,15 @@ class ArrayField extends Component {
       onBlur,
       onFocus
     } = this.props;
-    const title = schema.title === undefined ? name : schema.title;
     const { ArrayFieldTemplate, definitions, fields } = registry;
     const { TitleField, DescriptionField } = fields;
     const itemsSchema = retrieveSchema(schema.items, definitions);
+    const title =
+      schema.title === undefined && itemsSchema.title === undefined
+        ? name
+        : name === undefined
+          ? schema.title || itemsSchema.title
+          : name + " (" + (schema.title || itemsSchema.title) + ")";
     const arrayProps = {
       canAdd: this.canAddItem(formData),
       items: formData.map((item, index) => {
@@ -425,7 +434,11 @@ class ArrayField extends Component {
           index,
           canMoveUp: index > 0,
           canMoveDown: index < formData.length - 1,
-          itemSchema: itemSchema,
+          itemSchema: {
+            ...itemSchema,
+            description: undefined,
+            title: undefined
+          },
           itemIdSchema,
           itemErrorSchema,
           itemData: item,
@@ -444,6 +457,7 @@ class ArrayField extends Component {
       readonly,
       required,
       schema,
+      itemsSchema,
       title,
       TitleField,
       formContext,
@@ -510,7 +524,10 @@ class ArrayField extends Component {
       onFocus,
       registry = getDefaultRegistry()
     } = this.props;
-    const title = schema.title || name;
+    const title =
+      schema.title === undefined
+        ? name
+        : name === undefined ? schema.title : name + " (" + schema.title + ")";
     const items = this.props.formData;
     const { widgets, formContext } = registry;
     const { widget = "files", ...options } = getUiOptions(uiSchema);
@@ -550,7 +567,10 @@ class ArrayField extends Component {
       onBlur,
       onFocus
     } = this.props;
-    const title = schema.title || name;
+    const title =
+      schema.title === undefined
+        ? name
+        : name === undefined ? schema.title : name + " (" + schema.title + ")";
     let items = this.props.formData;
     const { ArrayFieldTemplate, definitions, fields } = registry;
     const { TitleField } = fields;

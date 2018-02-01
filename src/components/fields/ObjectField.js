@@ -144,7 +144,10 @@ class ObjectField extends Component {
     const { definitions, fields, formContext } = registry;
     const { SchemaField, TitleField, DescriptionField } = fields;
     const schema = retrieveSchema(this.props.schema, definitions, formData);
-    const title = schema.title === undefined ? name : schema.title;
+    const title =
+      schema.title === undefined
+        ? name
+        : name === undefined ? schema.title : name + " (" + schema.title + ")";
     const description = uiSchema["ui:description"] || schema.description;
 
     const templateProps = {

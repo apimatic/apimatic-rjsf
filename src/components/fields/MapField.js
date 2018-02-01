@@ -108,7 +108,7 @@ function DefaultNormalMapFieldTemplate(props) {
         key={`map-field-title-${props.idSchema.$id}`}
         TitleField={props.TitleField}
         idSchema={props.idSchema}
-        title={props.uiSchema["ui:title"] || props.title}
+        title={props.title}
         required={props.required}
         nullify={props.nullify}
         onNullifyChange={props.onNullifyChange}
@@ -120,7 +120,9 @@ function DefaultNormalMapFieldTemplate(props) {
         DescriptionField={props.DescriptionField}
         idSchema={props.idSchema}
         description={
-          props.uiSchema["ui:description"] || props.schema.description
+          props.uiSchema["ui:description"] ||
+          props.schema.description ||
+          props.addPropsSchema.description
         }
       />
 
@@ -348,19 +350,22 @@ class MapField extends Component {
       onBlur,
       onFocus
     } = this.props;
-    const title = schema.title === undefined ? name : schema.title;
+    const title =
+      schema.title === undefined
+        ? name
+        : name === undefined ? schema.title : name + " (" + schema.title + ")";
     const { definitions, fields } = registry;
     const { TitleField, DescriptionField } = fields;
     const addPropsSchema = retrieveSchema(
       schema.additionalProperties,
       definitions
     );
+    const itemSchema = { ...addPropsSchema, description: undefined };
     const duplicationCounts = this.getDuplicateCounts(this.state.hash);
     const mapProps = {
       canAdd: this.canAddItem(formData),
       items: this.state.hash.map((pair, index) => {
         const item = pair.v;
-        const itemSchema = addPropsSchema;
         const itemErrorSchema1 = errorSchema ? errorSchema[pair.k] : {};
         const itemErrorSchema =
           duplicationCounts[pair.k] > 1
@@ -395,6 +400,7 @@ class MapField extends Component {
       readonly,
       required,
       schema,
+      addPropsSchema,
       title,
       TitleField,
       formContext,

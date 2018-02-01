@@ -417,7 +417,9 @@ describe("Form", () => {
 
       const { node } = createFormComponent({ schema });
 
-      expect(node.querySelector("legend").textContent).eql(" custom title");
+      expect(node.querySelector("legend").textContent).eql(
+        " foo (custom title)"
+      );
     });
 
     it("should propagate and handle a resolved schema definition", () => {

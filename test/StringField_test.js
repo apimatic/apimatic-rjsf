@@ -428,6 +428,92 @@ describe("StringField", () => {
       expect(onFocus.calledWith(input.id, "yo")).to.be.true;
     });
   });
+
+  describe("DateTimeWidget", () => {
+    it("should render an react-datepicker", () => {
+      const { node } = createFormComponent({
+        schema: {
+          type: "string",
+          format: "date-time"
+        }
+      });
+
+      expect(
+        node.querySelectorAll(".react-datepicker-wrapper [type=text]")
+      ).to.have.length.of(1);
+    });
+
+    it("should assign a default value", () => {
+      const datetime = new Date().toJSON();
+      const { comp } = createFormComponent({
+        schema: {
+          type: "string",
+          format: "date-time",
+          default: datetime
+        }
+      });
+
+      expect(comp.state.formData).eql(datetime);
+    });
+
+    it("should fill field with data", () => {
+      const datetime = new Date().toJSON();
+      const { comp } = createFormComponent({
+        schema: {
+          type: "string",
+          format: "date-time"
+        },
+        formData: datetime
+      });
+
+      expect(comp.state.formData).eql(datetime);
+    });
+  });
+
+  describe("DateWidget", () => {
+    const uiSchema = { "ui:widget": "date" };
+
+    it("should render a date field", () => {
+      const { node } = createFormComponent({
+        schema: {
+          type: "string",
+          format: "date"
+        },
+        uiSchema
+      });
+
+      expect(
+        node.querySelectorAll(".react-datepicker-wrapper [type=text]")
+      ).to.have.length.of(1);
+    });
+
+    it("should assign a default value", () => {
+      const datetime = new Date().toJSON();
+      const { comp } = createFormComponent({
+        schema: {
+          type: "string",
+          format: "date",
+          default: datetime
+        },
+        uiSchema
+      });
+
+      expect(comp.state.formData).eql(datetime);
+    });
+
+    it("should fill field with data", () => {
+      const datetime = new Date().toJSON();
+      const { comp } = createFormComponent({
+        schema: {
+          type: "string",
+          format: "date"
+        },
+        formData: datetime
+      });
+
+      expect(comp.state.formData).eql(datetime);
+    });
+  });
   /* 
   describe("DateTimeWidget", () => {
     it("should render an datetime-local field", () => {
