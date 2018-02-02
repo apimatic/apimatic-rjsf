@@ -181,7 +181,7 @@ describe("ObjectField", () => {
     it("should show object editor", () => {
       const { node } = createFormComponent({ schema: { type: "object" } });
 
-      expect(node.querySelectorAll(".ace_editor")).to.be.of.length(1);
+      expect(node.querySelectorAll(".react-codemirror2")).to.be.of.length(1);
     });
 
     it("should show object editor filled with data", () => {

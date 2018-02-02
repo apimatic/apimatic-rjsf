@@ -45,15 +45,16 @@
     "node": ">=6"
   },
   "peerDependencies": {
-    "react": ">=15"
+    "react": ">=15",
+    "codemirror": "^5.30.0",
+    "react-codemirror2": "^2.0.2",
+    "react-datepicker": "^1.0.4",
+    "moment": "^2.20.1"    
   },
   "dependencies": {
     "ajv": "^5.2.3",
     "lodash.topath": "^4.5.2",
-    "moment": "^2.20.1",
     "prop-types": "^15.5.8",
-    "react-ace": "^5.9.0",
-    "react-datepicker": "^1.0.4",
     "setimmediate": "^1.0.5"
   },
   "devDependencies": {
@@ -90,11 +91,13 @@
     "json-loader": "^0.5.7",
     "lint-staged": "^3.3.1",
     "mocha": "^2.5.3",
+    "moment": "^2.20.1",
     "nyc": "^11.4.1",
     "prettier": "^1.8.2",
     "react": "^15.5.0",
     "react-addons-test-utils": "^15.3.2",
     "react-codemirror2": "^2.0.2",
+    "react-datepicker": "^1.0.4",
     "react-dom": "^15.3.2",
     "react-transform-catch-errors": "^1.0.0",
     "react-transform-hmr": "^1.0.1",

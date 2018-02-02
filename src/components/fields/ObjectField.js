@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import AceEditor from "react-ace";
 import MapField from "./MapField";
+import CodeMirror from "react-codemirror2";
+import "codemirror/mode/javascript/javascript";
 
-import "brace/mode/json";
-import "brace/theme/github";
+// import "codemirror/lib/codemirror.css";
 
 import {
   orderProperties,
@@ -13,6 +13,21 @@ import {
   getDefaultFormState,
   deepEquals
 } from "../../utils";
+
+const cmOptions = {
+  theme: "default",
+  height: "auto",
+  viewportMargin: Infinity,
+  mode: {
+    name: "javascript",
+    json: true,
+    statementIndent: 2
+  },
+  lineNumbers: true,
+  lineWrapping: true,
+  indentWithTabs: false,
+  tabSize: 2
+};
 
 function DefaultObjectFieldTemplate(props) {
   const {
@@ -183,7 +198,7 @@ class ObjectField extends Component {
     }
   }
 
-  onJsonChange = code => {
+  onJsonChange = (editor, metadata, code) => {
     var err = false;
     var parsed = null;
     try {
@@ -224,27 +239,10 @@ class ObjectField extends Component {
           />
         )}
         <div style={{ position: "relative" }}>
-          <AceEditor
-            mode="json"
-            theme="github"
-            name="blah2"
-            onChange={this.onJsonChange}
-            fontSize={14}
-            height="200px"
-            showPrintMargin={true}
-            showGutter={true}
-            highlightActiveLine={true}
+          <CodeMirror
             value={this.state.formJson}
-            readOnly={templateProps.disabled || this.shouldDisable()}
-            wrapEnabled={true}
-            setOptions={{
-              enableBasicAutocompletion: false,
-              enableLiveAutocompletion: false,
-              enableSnippets: false,
-              showLineNumbers: false,
-              tabSize: 2
-            }}
-            style={{ width: "100%" }}
+            onChange={this.onJsonChange}
+            options={cmOptions}
           />
           <div
             style={{
