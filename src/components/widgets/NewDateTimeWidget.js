@@ -20,13 +20,13 @@ const timePickerProps = {
 
 function fromDateString(jsonDate) {
   if (jsonDate) {
-    return moment(jsonDate);
+    return moment.utc(jsonDate);
   }
 }
 
 function toDateString(dateobj, time) {
   if (dateobj) {
-    return time ? dateobj.format() : dateobj.format("YYYY-MM-DD");
+    return time ? dateobj.utc().format() : dateobj.format("YYYY-MM-DD");
   }
 }
 
@@ -51,6 +51,7 @@ function DateTimeWidget(props) {
       onChange={value => onChange(toDateString(value, time))}
       dateFormat="ll"
       isClearable={true}
+      utcOffset={0}
       disabled={disabled}
       required={required}
       readOnly={readonly}
