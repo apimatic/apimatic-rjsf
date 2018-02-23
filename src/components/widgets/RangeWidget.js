@@ -1,14 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { rangeSpec } from "../../utils";
+import { rangeSpec, prefixClass as pfx } from "../../utils";
 
 function RangeWidget(props) {
   const { schema, value, registry: { widgets: { BaseInput } } } = props;
   return (
-    <div className="field-range-wrapper">
+    <div className={pfx("field-range-wrapper")}>
       <BaseInput type="range" {...props} {...rangeSpec(schema)} />
-      <span className="range-view">{value}</span>
+      <span className={pfx("range-view")}>{value}</span>
     </div>
   );
 }

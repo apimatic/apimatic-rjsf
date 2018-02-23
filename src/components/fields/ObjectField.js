@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import MapField from "./MapField";
+import { prefixClass as pfx } from "../../utils";
 import CodeMirror from "react-codemirror2";
 import "codemirror/mode/javascript/javascript";
 
@@ -263,8 +264,8 @@ class ObjectField extends Component {
         {this.state.formJsonError && (
           <div>
             <p />
-            <ul className="error-detail bs-callout bs-callout-info">
-              <li className="text-danger">
+            <ul className={pfx("error-detail bs-callout bs-callout-info")}>
+              <li className={pfx("text-danger")}>
                 Could not parse JSON. Syntax error.
               </li>
             </ul>
@@ -291,7 +292,7 @@ class ObjectField extends Component {
     } catch (err) {
       return (
         <div>
-          <p className="config-error" style={{ color: "red" }}>
+          <p className={pfx("config-error")} style={{ color: "red" }}>
             Invalid {name || "root"} object field configuration:
             <em>{err.message}</em>.
           </p>

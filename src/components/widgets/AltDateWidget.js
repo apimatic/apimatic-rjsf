@@ -1,7 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import { shouldRender, parseDateString, toDateString, pad } from "../../utils";
+import {
+  shouldRender,
+  parseDateString,
+  toDateString,
+  pad,
+  prefixClass as pfx
+} from "../../utils";
 
 function rangeOptions(start, stop) {
   let options = [];
@@ -34,7 +40,7 @@ function DateElement(props) {
     <SelectWidget
       schema={{ type: "integer" }}
       id={id}
-      className="form-control"
+      className={pfx("form-control")}
       options={{ enumOptions: rangeOptions(range[0], range[1]) }}
       placeholder={type}
       value={value}
@@ -120,7 +126,7 @@ class AltDateWidget extends Component {
   render() {
     const { id, disabled, readonly, autofocus, registry, onBlur } = this.props;
     return (
-      <ul className="list-inline">
+      <ul className={pfx("list-inline")}>
         {this.dateElementProps.map((elemProps, i) => (
           <li key={i}>
             <DateElement
@@ -136,14 +142,18 @@ class AltDateWidget extends Component {
           </li>
         ))}
         <li>
-          <a href="#" className="btn btn-info btn-now" onClick={this.setNow}>
+          <a
+            href="#"
+            className={pfx("btn btn-info btn-now")}
+            onClick={this.setNow}
+          >
             Now
           </a>
         </li>
         <li>
           <a
             href="#"
-            className="btn btn-warning btn-clear"
+            className={pfx("btn btn-warning btn-clear")}
             onClick={this.clear}
           >
             Clear

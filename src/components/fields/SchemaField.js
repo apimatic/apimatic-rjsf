@@ -7,7 +7,8 @@ import {
   getDefaultRegistry,
   getUiOptions,
   isFilesArray,
-  deepEquals
+  deepEquals,
+  prefixClass as pfx
 } from "../../utils";
 import UnsupportedField from "./UnsupportedField";
 
@@ -50,7 +51,7 @@ function Label(props) {
     return <div />;
   }
   return (
-    <label className="control-label" htmlFor={id}>
+    <label className={pfx("control-label")} htmlFor={id}>
       {required ? label + REQUIRED_FIELD_SYMBOL : label}
     </label>
   );
@@ -63,9 +64,9 @@ function Help(props) {
     return <div />;
   }
   if (typeof help === "string") {
-    return <p className="help-block">{help}</p>;
+    return <p className={pfx("help-block")}>{help}</p>;
   }
-  return <div className="help-block">{help}</div>;
+  return <div className={pfx("help-block")}>{help}</div>;
 }
 
 function ErrorList(props) {
@@ -76,10 +77,10 @@ function ErrorList(props) {
   return (
     <div>
       <p />
-      <ul className="error-detail bs-callout bs-callout-info">
+      <ul className={pfx("error-detail bs-callout bs-callout-info")}>
         {errors.map((error, index) => {
           return (
-            <li className="text-danger" key={index}>
+            <li className={pfx("text-danger")} key={index}>
               {error}
             </li>
           );
@@ -107,7 +108,7 @@ function DefaultTemplate(props) {
   }
 
   return (
-    <div className={classNames}>
+    <div className={pfx(classNames)}>
       {displayLabel && <Label label={label} required={required} id={id} />}
       {displayLabel && description ? description : null}
       {children}

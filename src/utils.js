@@ -731,3 +731,16 @@ export function rangeSpec(schema) {
   }
   return spec;
 }
+
+export const classPrefix = null;
+
+export function prefixClass(className) {
+  return className && classPrefix
+    ? className
+        .split(" ")
+        .map(
+          e => (e !== "" && e.indexOf(classPrefix) !== 0 ? classPrefix + e : e)
+        )
+        .join(" ")
+    : className;
+}

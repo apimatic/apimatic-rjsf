@@ -1,9 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { prefixClass as pfx } from "../../utils";
 
 function UnsupportedField({ schema, idSchema, reason }) {
   return (
-    <div className="unsupported-field">
+    <div className={pfx("unsupported-field")}>
       <p>
         Unsupported field schema{idSchema &&
           idSchema.$id && (

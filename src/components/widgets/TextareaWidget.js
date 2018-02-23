@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { prefixClass as pfx } from "../../utils";
 
 function TextareaWidget(props) {
   const {
@@ -21,7 +22,7 @@ function TextareaWidget(props) {
   return (
     <textarea
       id={id}
-      className="form-control"
+      className={pfx("form-control")}
       value={typeof value === "undefined" ? "" : value}
       placeholder={placeholder}
       required={required}

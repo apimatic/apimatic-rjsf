@@ -13,7 +13,8 @@ import {
   optionsList,
   retrieveSchema,
   toIdSchema,
-  getDefaultRegistry
+  getDefaultRegistry,
+  prefixClass as pfx
 } from "../../utils";
 
 function ArrayFieldTitle({
@@ -56,10 +57,10 @@ function IconBtn(props) {
   return (
     <button
       type="button"
-      className={`btn btn-${type} ${className}`}
+      className={pfx(`btn btn-${type}`) + " " + className}
       {...otherProps}
     >
-      <i className={`glyphicon glyphicon-${icon}`} />
+      <i className={pfx(`glyphicon glyphicon-${icon}`)} />
     </button>
   );
 }
@@ -73,21 +74,21 @@ function DefaultArrayItem(props) {
     fontWeight: "bold"
   };
   return (
-    <div key={props.index} className={props.className}>
-      <div className={props.hasToolbar ? "col-xs-9" : "col-xs-12"}>
+    <div key={props.index} className={pfx(props.className)}>
+      <div className={pfx(props.hasToolbar ? "col-xs-9" : "col-xs-12")}>
         {props.children}
       </div>
 
       {props.hasToolbar && (
-        <div className="col-xs-3 array-item-toolbox">
+        <div className={pfx("col-xs-3 array-item-toolbox")}>
           <div
-            className="btn-group"
+            className={pfx("btn-group")}
             style={{ display: "flex", justifyContent: "space-around" }}
           >
             {(props.hasMoveUp || props.hasMoveDown) && (
               <IconBtn
                 icon="arrow-up"
-                className="array-item-move-up"
+                className={pfx("array-item-move-up")}
                 tabIndex="-1"
                 style={btnStyle}
                 disabled={props.disabled || props.readonly || !props.hasMoveUp}
@@ -98,7 +99,7 @@ function DefaultArrayItem(props) {
             {(props.hasMoveUp || props.hasMoveDown) && (
               <IconBtn
                 icon="arrow-down"
-                className="array-item-move-down"
+                className={pfx("array-item-move-down")}
                 tabIndex="-1"
                 style={btnStyle}
                 disabled={
@@ -112,7 +113,7 @@ function DefaultArrayItem(props) {
               <IconBtn
                 type="danger"
                 icon="remove"
-                className="array-item-remove"
+                className={pfx("array-item-remove")}
                 tabIndex="-1"
                 style={btnStyle}
                 disabled={props.disabled || props.readonly}
@@ -128,7 +129,7 @@ function DefaultArrayItem(props) {
 
 function DefaultFixedArrayFieldTemplate(props) {
   return (
-    <fieldset className={props.className}>
+    <fieldset className={pfx(props.className)}>
       <ArrayFieldTitle
         key={`array-field-title-${props.idSchema.$id}`}
         TitleField={props.TitleField}
@@ -142,7 +143,7 @@ function DefaultFixedArrayFieldTemplate(props) {
 
       {(props.uiSchema["ui:description"] || props.schema.description) && (
         <div
-          className="field-description"
+          className={pfx("field-description")}
           key={`field-description-${props.idSchema.$id}`}
         >
           {props.uiSchema["ui:description"] || props.schema.description}
@@ -150,7 +151,7 @@ function DefaultFixedArrayFieldTemplate(props) {
       )}
 
       <div
-        className="row array-item-list"
+        className={pfx("row array-item-list")}
         key={`array-item-list-${props.idSchema.$id}`}
       >
         {props.items && props.items.map(DefaultArrayItem)}
@@ -168,7 +169,7 @@ function DefaultFixedArrayFieldTemplate(props) {
 
 function DefaultNormalArrayFieldTemplate(props) {
   return (
-    <fieldset className={props.className}>
+    <fieldset className={pfx(props.className)}>
       <ArrayFieldTitle
         key={`array-field-title-${props.idSchema.$id}`}
         TitleField={props.TitleField}
@@ -196,7 +197,7 @@ function DefaultNormalArrayFieldTemplate(props) {
       )}
 
       <div
-        className="row array-item-list"
+        className={pfx("row array-item-list")}
         key={`array-item-list-${props.idSchema.$id}`}
       >
         {props.items && props.items.map(p => DefaultArrayItem(p))}
@@ -712,12 +713,12 @@ class ArrayField extends Component {
 
 function AddButton({ onClick, disabled }) {
   return (
-    <div className="row">
-      <p className="col-xs-3 col-xs-offset-9 array-item-add text-right">
+    <div className={pfx("row")}>
+      <p className={pfx("col-xs-3 col-xs-offset-9 array-item-add text-right")}>
         <IconBtn
           type="info"
           icon="plus"
-          className="btn-add col-xs-12"
+          className={pfx("btn-add col-xs-12")}
           tabIndex="0"
           onClick={onClick}
           disabled={disabled}

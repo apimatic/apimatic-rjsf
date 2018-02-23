@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import DescriptionField from "../fields/DescriptionField.js";
+import { prefixClass as pfx } from "../../utils";
 
 function CheckboxWidget(props) {
   const {
@@ -15,7 +16,7 @@ function CheckboxWidget(props) {
     onChange
   } = props;
   return (
-    <div className={`checkbox ${disabled || readonly ? "disabled" : ""}`}>
+    <div className={pfx(`checkbox ${disabled || readonly ? "disabled" : ""}`)}>
       {schema.description && (
         <DescriptionField description={schema.description} />
       )}

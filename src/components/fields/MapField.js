@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { prefixClass as pfx } from "../../utils";
 
 import {
   getDefaultFormState,
@@ -48,10 +49,12 @@ function IconBtn(props) {
   return (
     <button
       type="button"
-      className={`btn btn-${type} ${className} col-xs-12`}
+      className={
+        pfx(`btn btn-${type}`) + " " + className + " " + pfx("col-xs-12")
+      }
       {...otherProps}
     >
-      <i className={`glyphicon glyphicon-${icon}`} />
+      <i className={pfx(`glyphicon glyphicon-${icon}`)} />
     </button>
   );
 }
@@ -66,30 +69,30 @@ function DefaultMapItem(props) {
   };
   return (
     <div key={props.index} className={props.className}>
-      <div className="col-xs-3">
+      <div className={pfx("col-xs-3")}>
         <input
           type="text"
-          className="form-control"
+          className={pfx("form-control")}
           onChange={props.onKeyChange}
           value={props.key}
           required
         />
       </div>
       <div
-        className={
+        className={pfx(
           props.hasToolbar && props.hasRemove ? "col-xs-8" : "col-xs-9"
-        }
+        )}
       >
         {props.children}
       </div>
 
       {props.hasToolbar &&
         props.hasRemove && (
-          <div className="col-xs-1 map-item-toolbox">
+          <div className={pfx("col-xs-1 map-item-toolbox")}>
             <IconBtn
               type="danger"
               icon="remove"
-              className="map-item-remove"
+              className={pfx("map-item-remove")}
               tabIndex="-1"
               style={btnStyle}
               disabled={props.disabled || props.readonly}
@@ -103,7 +106,7 @@ function DefaultMapItem(props) {
 
 function DefaultNormalMapFieldTemplate(props) {
   return (
-    <fieldset className={props.className}>
+    <fieldset className={pfx(props.className)}>
       <MapFieldTitle
         key={`map-field-title-${props.idSchema.$id}`}
         TitleField={props.TitleField}
@@ -127,7 +130,7 @@ function DefaultNormalMapFieldTemplate(props) {
       />
 
       <div
-        className="row map-item-list"
+        className={pfx("row map-item-list")}
         key={`map-item-list-${props.idSchema.$id}`}
       >
         {props.items && props.items.map(p => DefaultMapItem(p))}
@@ -470,12 +473,12 @@ class MapField extends Component {
 
 function AddButton({ onClick, disabled }) {
   return (
-    <div className="row">
-      <p className="col-xs-3 col-xs-offset-9 map-item-add text-right">
+    <div className={pfx("row")}>
+      <p className={pfx("col-xs-3 col-xs-offset-9 map-item-add text-right")}>
         <IconBtn
           type="info"
           icon="plus"
-          className="btn-add col-xs-12"
+          className={pfx("btn-add col-xs-12")}
           tabIndex="0"
           onClick={onClick}
           disabled={disabled}

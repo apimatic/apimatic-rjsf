@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import { dataURItoBlob, shouldRender, setState } from "../../utils";
+import {
+  dataURItoBlob,
+  shouldRender,
+  setState,
+  prefixClass as pfx
+} from "../../utils";
 
 function addNameToDataURL(dataURL, name) {
   return dataURL.replace(";base64", `;name=${name};base64`);
@@ -33,7 +38,7 @@ function FilesInfo(props) {
     return null;
   }
   return (
-    <ul className="file-info">
+    <ul className={pfx("file-info")}>
       {filesInfo.map((fileInfo, key) => {
         const { name, size, type } = fileInfo;
         return (

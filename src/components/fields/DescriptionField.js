@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { prefixClass as pfx } from "../../utils";
 
 function DescriptionField(props) {
   const { id, description } = props;
@@ -9,13 +10,13 @@ function DescriptionField(props) {
   }
   if (typeof description === "string") {
     return (
-      <p id={id} className="field-description">
+      <p id={id} className={pfx("field-description")}>
         {description}
       </p>
     );
   } else {
     return (
-      <div id={id} className="field-description">
+      <div id={id} className={pfx("field-description")}>
         {description}
       </div>
     );

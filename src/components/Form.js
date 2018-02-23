@@ -7,7 +7,8 @@ import {
   shouldRender,
   toIdSchema,
   setState,
-  getDefaultRegistry
+  getDefaultRegistry,
+  prefixClass as pfx
 } from "../utils";
 import validateFormData from "../validate";
 
@@ -213,7 +214,7 @@ export default class Form extends Component {
           children
         ) : (
           <p>
-            <button type="submit" className="btn btn-info">
+            <button type="submit" className={pfx("btn btn-info")}>
               Submit
             </button>
           </p>

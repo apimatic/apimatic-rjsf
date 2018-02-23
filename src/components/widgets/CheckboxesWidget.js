@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { prefixClass as pfx } from "../../utils";
 
 function selectValue(value, selected, all) {
   const at = all.indexOf(value);
@@ -17,7 +18,7 @@ function CheckboxesWidget(props) {
   const { id, disabled, options, value, autofocus, readonly, onChange } = props;
   const { enumOptions, inline } = options;
   return (
-    <div className="checkboxes" id={id}>
+    <div className={pfx("checkboxes")} id={id}>
       {enumOptions.map((option, index) => {
         const checked = value.indexOf(option.value) !== -1;
         const disabledCls = disabled || readonly ? "disabled" : "";
@@ -42,11 +43,11 @@ function CheckboxesWidget(props) {
           </span>
         );
         return inline ? (
-          <label key={index} className={`checkbox-inline ${disabledCls}`}>
+          <label key={index} className={pfx(`checkbox-inline ${disabledCls}`)}>
             {checkbox}
           </label>
         ) : (
-          <div key={index} className={`checkbox ${disabledCls}`}>
+          <div key={index} className={pfx(`checkbox ${disabledCls}`)}>
             <label>{checkbox}</label>
           </div>
         );
