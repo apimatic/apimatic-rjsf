@@ -68,7 +68,7 @@ function DefaultMapItem(props) {
     fontWeight: "bold"
   };
   return (
-    <div key={props.index} className={props.className}>
+    <div key={props.index} className={pfx(props.className)}>
       <div className={pfx("col-xs-3")}>
         <input
           type="text"
