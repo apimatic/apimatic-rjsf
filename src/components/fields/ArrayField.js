@@ -16,6 +16,7 @@ import {
   getDefaultRegistry,
   prefixClass as pfx
 } from "../../utils";
+import { ArrowUpIcon, CloseIcon, PlusIcon, ArrowDownIcon } from "../Icons";
 
 function ArrayFieldTitle({
   TitleField,
@@ -60,7 +61,7 @@ function IconBtn(props) {
       className={pfx(`btn btn-${type}`) + " " + className}
       {...otherProps}
     >
-      <i className={pfx(`glyphicon glyphicon-${icon}`)} />
+      {props.children}
     </button>
   );
 }
@@ -87,18 +88,18 @@ function DefaultArrayItem(props) {
           >
             {(props.hasMoveUp || props.hasMoveDown) && (
               <IconBtn
-                icon="arrow-up"
                 className={pfx("array-item-move-up")}
                 tabIndex="-1"
                 style={btnStyle}
                 disabled={props.disabled || props.readonly || !props.hasMoveUp}
                 onClick={props.onReorderClick(props.index, props.index - 1)}
-              />
+              >
+                <ArrowUpIcon width={14} />
+              </IconBtn>
             )}
 
             {(props.hasMoveUp || props.hasMoveDown) && (
               <IconBtn
-                icon="arrow-down"
                 className={pfx("array-item-move-down")}
                 tabIndex="-1"
                 style={btnStyle}
@@ -106,19 +107,22 @@ function DefaultArrayItem(props) {
                   props.disabled || props.readonly || !props.hasMoveDown
                 }
                 onClick={props.onReorderClick(props.index, props.index + 1)}
-              />
+              >
+                <ArrowDownIcon width={14} />
+              </IconBtn>
             )}
 
             {props.hasRemove && (
               <IconBtn
                 type="danger"
-                icon="remove"
                 className={pfx("array-item-remove")}
                 tabIndex="-1"
                 style={btnStyle}
                 disabled={props.disabled || props.readonly}
                 onClick={props.onDropIndexClick(props.index)}
-              />
+              >
+                <CloseIcon width={14} />
+              </IconBtn>
             )}
           </div>
         </div>
@@ -717,12 +721,13 @@ function AddButton({ onClick, disabled }) {
       <p className={pfx("col-xs-3 col-xs-offset-9 array-item-add text-right")}>
         <IconBtn
           type="info"
-          icon="plus"
           className={pfx("btn-add col-xs-12")}
           tabIndex="0"
           onClick={onClick}
           disabled={disabled}
-        />
+        >
+          <PlusIcon width={14} />
+        </IconBtn>
       </p>
     </div>
   );

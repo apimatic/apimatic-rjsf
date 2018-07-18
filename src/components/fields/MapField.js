@@ -8,6 +8,7 @@ import {
   retrieveSchema,
   toIdSchema
 } from "../../utils";
+import { CloseIcon, PlusIcon } from "../Icons";
 
 function MapFieldTitle({
   TitleField,
@@ -54,7 +55,7 @@ function IconBtn(props) {
       }
       {...otherProps}
     >
-      <i className={pfx(`glyphicon glyphicon-${icon}`)} />
+      {props.children}
     </button>
   );
 }
@@ -91,13 +92,14 @@ function DefaultMapItem(props) {
           <div className={pfx("col-xs-1 map-item-toolbox")}>
             <IconBtn
               type="danger"
-              icon="remove"
               className={pfx("map-item-remove")}
               tabIndex="-1"
               style={btnStyle}
               disabled={props.disabled || props.readonly}
               onClick={props.onDropKeyClick}
-            />
+            >
+              <CloseIcon width={14} />
+            </IconBtn>
           </div>
         )}
     </div>
@@ -477,12 +479,13 @@ function AddButton({ onClick, disabled }) {
       <p className={pfx("col-xs-3 col-xs-offset-9 map-item-add text-right")}>
         <IconBtn
           type="info"
-          icon="plus"
           className={pfx("btn-add col-xs-12")}
           tabIndex="0"
           onClick={onClick}
           disabled={disabled}
-        />
+        >
+          <PlusIcon width={14} />
+        </IconBtn>
       </p>
     </div>
   );
