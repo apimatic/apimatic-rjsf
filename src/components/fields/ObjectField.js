@@ -30,6 +30,13 @@ const cmOptions = {
   tabSize: 2
 };
 
+const ViewJsonButtonStyle = {
+  color: "red",
+  fontWeight: "bold",
+  cursor: "pointer",
+  float: "right"
+};
+
 function DefaultObjectFieldTemplate(props) {
   const {
     TitleField,
@@ -39,27 +46,40 @@ function DefaultObjectFieldTemplate(props) {
     disabled
   } = props;
   return (
-    <fieldset>
-      {(props.uiSchema["ui:title"] || props.title) && (
-        <TitleField
-          id={`${props.idSchema.$id}__title`}
-          title={props.title || props.uiSchema["ui:title"]}
-          required={props.required}
-          formContext={props.formContext}
-          nullify={nullify}
-          onNullifyChange={onNullifyChange}
-          disabled={disabled}
+    <div>
+      <p style={ViewJsonButtonStyle} onClick={() => props.toggleEditView()}>
+        View Json
+      </p>
+      {props.showEditView ? (
+        <CodeMirror
+          value={props.formJson}
+          onChange={props.onJsonChange}
+          options={cmOptions}
         />
+      ) : (
+        <fieldset>
+          {(props.uiSchema["ui:title"] || props.title) && (
+            <TitleField
+              id={`${props.idSchema.$id}__title`}
+              title={props.title || props.uiSchema["ui:title"]}
+              required={props.required}
+              formContext={props.formContext}
+              nullify={nullify}
+              onNullifyChange={onNullifyChange}
+              disabled={disabled}
+            />
+          )}
+          {props.description && (
+            <DescriptionField
+              id={`${props.idSchema.$id}__description`}
+              description={props.description}
+              formContext={props.formContext}
+            />
+          )}
+          {props.properties.map(prop => prop.content)}
+        </fieldset>
       )}
-      {props.description && (
-        <DescriptionField
-          id={`${props.idSchema.$id}__description`}
-          description={props.description}
-          formContext={props.formContext}
-        />
-      )}
-      {props.properties.map(prop => prop.content)}
-    </fieldset>
+    </div>
   );
 }
 
@@ -80,6 +100,8 @@ class ObjectField extends Component {
     this.state = this.getStateFromProps(props);
     this.state.formJson = JSON.stringify(props.formData, null, 2);
     this.state.formJsonError = false;
+    this.state.showEditView = false;
+    this.toggleEditView = this.toggleEditView.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -142,6 +164,10 @@ class ObjectField extends Component {
       !this.props.required
     );
   };
+
+  toggleEditView() {
+    this.setState({ showEditView: !this.state.showEditView });
+  }
 
   render() {
     const {
@@ -306,6 +332,10 @@ class ObjectField extends Component {
 
     const newProps = {
       ...templateProps,
+      showEditView: this.state.showEditView,
+      toggleEditView: this.toggleEditView,
+      onJsonChange: this.onJsonChange,
+      formJson: this.state.formJson,
       properties: orderedProperties.map(name => {
         return {
           content: (
