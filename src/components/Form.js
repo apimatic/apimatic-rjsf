@@ -176,7 +176,7 @@ export default class Form extends Component {
       enctype,
       acceptcharset,
       noHtml5Validate,
-      disableFieldJsonEdit
+      disableFormJsonEdit
     } = this.props;
 
     const { schema, uiSchema, formData, errorSchema, idSchema } = this.state;
@@ -210,7 +210,7 @@ export default class Form extends Component {
           registry={registry}
           safeRenderCompletion={safeRenderCompletion}
           required={true}
-          disableFormJsonEdit={disableFieldJsonEdit || false}
+          disableFormJsonEdit={disableFormJsonEdit || false}
         />
         {children ? (
           children
@@ -261,6 +261,6 @@ if (process.env.NODE_ENV !== "production") {
     safeRenderCompletion: PropTypes.bool,
     formContext: PropTypes.object,
     dontAssignDefaults: PropTypes.bool,
-    disableJsonEdit: PropTypes.bool
+    disableFormJsonEdit: PropTypes.bool
   };
 }
