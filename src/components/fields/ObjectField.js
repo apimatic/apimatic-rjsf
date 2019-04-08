@@ -44,59 +44,60 @@ function DefaultObjectFieldTemplate(props) {
     nullify,
     onNullifyChange,
     disabled,
-    containsNestedObject,
-    uiSchema
+    uiSchema,
+    disableFormJsonEdit
   } = props;
 
   return (
     <div>
-      {!uiSchema.disableJsonEdit && (
-        <p style={ViewJsonButtonStyle} onClick={() => props.toggleEditView()}>
-          View JSON
-        </p>
-      )}
-      {containsNestedObject && <span>contains nested objects</span>}
-      {props.showEditView ? (
-        <div>
-          <CodeMirror
-            value={props.formJson}
-            onChange={props.onJsonChange}
-            options={cmOptions}
+      {!disableFormJsonEdit &&
+        !uiSchema.disableFieldJsonEdit && (
+          <p style={ViewJsonButtonStyle} onClick={() => props.toggleEditView()}>
+            View JSON
+          </p>
+        )}
+      <fieldset>
+        {(props.uiSchema["ui:title"] || props.title) && (
+          <TitleField
+            id={`${props.idSchema.$id}__title`}
+            title={props.title || props.uiSchema["ui:title"]}
+            required={props.required}
+            formContext={props.formContext}
+            nullify={nullify}
+            onNullifyChange={onNullifyChange}
+            disabled={disabled}
           />
-          {props.formJsonError && (
-            <div>
-              <p />
-              <ul className={pfx("error-detail bs-callout bs-callout-info")}>
-                <li className={pfx("text-danger")}>
-                  Could not parse JSON. Syntax error.
-                </li>
-              </ul>
-            </div>
-          )}
-        </div>
-      ) : (
-        <fieldset>
-          {(props.uiSchema["ui:title"] || props.title) && (
-            <TitleField
-              id={`${props.idSchema.$id}__title`}
-              title={props.title || props.uiSchema["ui:title"]}
-              required={props.required}
-              formContext={props.formContext}
-              nullify={nullify}
-              onNullifyChange={onNullifyChange}
-              disabled={disabled}
+        )}
+        {props.description && (
+          <DescriptionField
+            id={`${props.idSchema.$id}__description`}
+            description={props.description}
+            formContext={props.formContext}
+          />
+        )}
+
+        {props.showEditView ? (
+          <div>
+            <CodeMirror
+              value={props.formJson}
+              onChange={props.onJsonChange}
+              options={cmOptions}
             />
-          )}
-          {props.description && (
-            <DescriptionField
-              id={`${props.idSchema.$id}__description`}
-              description={props.description}
-              formContext={props.formContext}
-            />
-          )}
-          {props.properties.map(prop => prop.content)}
-        </fieldset>
-      )}
+            {props.formJsonError && (
+              <div>
+                <p />
+                <ul className={pfx("error-detail bs-callout bs-callout-info")}>
+                  <li className={pfx("text-danger")}>
+                    Could not parse JSON. Syntax error.
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
+        ) : (
+          props.properties.map(prop => prop.content)
+        )}
+      </fieldset>
     </div>
   );
 }
@@ -199,8 +200,10 @@ class ObjectField extends Component {
       readonly,
       onBlur,
       onFocus,
-      registry = getDefaultRegistry()
+      registry = getDefaultRegistry(),
+      disableFormJsonEdit
     } = this.props;
+
     const { definitions, fields, formContext } = registry;
     const { SchemaField, TitleField, DescriptionField } = fields;
     const schema = retrieveSchema(this.props.schema, definitions, formData);
@@ -231,7 +234,8 @@ class ObjectField extends Component {
       onFocus,
       errorSchema,
       readonly,
-      registry
+      registry,
+      disableFormJsonEdit
     };
 
     if (schema.properties && Object.keys(schema.properties).length > 0) {
@@ -373,7 +377,7 @@ class ObjectField extends Component {
               registry={templateProps.registry}
               disabled={templateProps.disabled || this.shouldDisable()}
               readonly={templateProps.readonly}
-              containsNestedObject={templateProps.containsNestedObject}
+              disableFormJsonEdit={templateProps.disableFormJsonEdit}
             />
           ),
           name,

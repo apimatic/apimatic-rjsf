@@ -175,7 +175,8 @@ export default class Form extends Component {
       autocomplete,
       enctype,
       acceptcharset,
-      noHtml5Validate
+      noHtml5Validate,
+      disableFieldJsonEdit
     } = this.props;
 
     const { schema, uiSchema, formData, errorSchema, idSchema } = this.state;
@@ -209,6 +210,7 @@ export default class Form extends Component {
           registry={registry}
           safeRenderCompletion={safeRenderCompletion}
           required={true}
+          disableFormJsonEdit={disableFieldJsonEdit || false}
         />
         {children ? (
           children
@@ -258,6 +260,7 @@ if (process.env.NODE_ENV !== "production") {
     transformErrors: PropTypes.func,
     safeRenderCompletion: PropTypes.bool,
     formContext: PropTypes.object,
-    dontAssignDefaults: PropTypes.bool
+    dontAssignDefaults: PropTypes.bool,
+    disableJsonEdit: PropTypes.bool
   };
 }
