@@ -176,6 +176,7 @@ function SchemaFieldRender(props) {
 
   const uiOptions = getUiOptions(uiSchema);
   let { label: displayLabel = true } = uiOptions;
+  let parentSchema;
   if (schema.type === "array") {
     displayLabel =
       isMultiSelect(schema, definitions) ||
@@ -183,6 +184,9 @@ function SchemaFieldRender(props) {
   }
   if (schema.type === "object") {
     displayLabel = false;
+    props.parentSchema === undefined
+      ? (parentSchema = true)
+      : (parentSchema = false);
   }
   if (schema.type === "boolean" && !uiSchema["ui:widget"]) {
     displayLabel = false;
@@ -204,6 +208,7 @@ function SchemaFieldRender(props) {
       autofocus={autofocus}
       errorSchema={fieldErrorSchema}
       formContext={formContext}
+      parentSchema={parentSchema}
     />
   );
 

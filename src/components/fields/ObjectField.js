@@ -31,10 +31,10 @@ const cmOptions = {
 };
 
 const ViewJsonButtonStyle = {
-  color: "red",
-  fontWeight: "bold",
+  color: "#2C6EFA",
+  fontSize: "12px",
   cursor: "pointer",
-  float: "right"
+  textAlign: "right"
 };
 
 function DefaultObjectFieldTemplate(props) {
@@ -43,19 +43,34 @@ function DefaultObjectFieldTemplate(props) {
     DescriptionField,
     nullify,
     onNullifyChange,
-    disabled
+    disabled,
+    parentSchema
   } = props;
   return (
     <div>
-      <p style={ViewJsonButtonStyle} onClick={() => props.toggleEditView()}>
-        View Json
-      </p>
+      {!parentSchema && (
+        <p style={ViewJsonButtonStyle} onClick={() => props.toggleEditView()}>
+          View JSON
+        </p>
+      )}
       {props.showEditView ? (
-        <CodeMirror
-          value={props.formJson}
-          onChange={props.onJsonChange}
-          options={cmOptions}
-        />
+        <div>
+          <CodeMirror
+            value={props.formJson}
+            onChange={props.onJsonChange}
+            options={cmOptions}
+          />
+          {props.formJsonError && (
+            <div>
+              <p />
+              <ul className={pfx("error-detail bs-callout bs-callout-info")}>
+                <li className={pfx("text-danger")}>
+                  Could not parse JSON. Syntax error.
+                </li>
+              </ul>
+            </div>
+          )}
+        </div>
       ) : (
         <fieldset>
           {(props.uiSchema["ui:title"] || props.title) && (
@@ -181,7 +196,8 @@ class ObjectField extends Component {
       readonly,
       onBlur,
       onFocus,
-      registry = getDefaultRegistry()
+      registry = getDefaultRegistry(),
+      parentSchema
     } = this.props;
     const { definitions, fields, formContext } = registry;
     const { SchemaField, TitleField, DescriptionField } = fields;
@@ -213,7 +229,8 @@ class ObjectField extends Component {
       onFocus,
       errorSchema,
       readonly,
-      registry
+      registry,
+      parentSchema
     };
 
     if (schema.properties && Object.keys(schema.properties).length > 0) {
@@ -336,6 +353,7 @@ class ObjectField extends Component {
       toggleEditView: this.toggleEditView,
       onJsonChange: this.onJsonChange,
       formJson: this.state.formJson,
+      formJsonError: this.state.formJsonError,
       properties: orderedProperties.map(name => {
         return {
           content: (
@@ -354,6 +372,7 @@ class ObjectField extends Component {
               registry={templateProps.registry}
               disabled={templateProps.disabled || this.shouldDisable()}
               readonly={templateProps.readonly}
+              parentSchema={templateProps.parentSchema}
             />
           ),
           name,
