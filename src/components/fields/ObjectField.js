@@ -44,15 +44,18 @@ function DefaultObjectFieldTemplate(props) {
     nullify,
     onNullifyChange,
     disabled,
-    parentSchema
+    containsNestedObject,
+    uiSchema
   } = props;
+
   return (
     <div>
-      {!parentSchema && (
+      {!uiSchema.disableJsonEdit && (
         <p style={ViewJsonButtonStyle} onClick={() => props.toggleEditView()}>
           View JSON
         </p>
       )}
+      {containsNestedObject && <span>contains nested objects</span>}
       {props.showEditView ? (
         <div>
           <CodeMirror
@@ -196,8 +199,7 @@ class ObjectField extends Component {
       readonly,
       onBlur,
       onFocus,
-      registry = getDefaultRegistry(),
-      parentSchema
+      registry = getDefaultRegistry()
     } = this.props;
     const { definitions, fields, formContext } = registry;
     const { SchemaField, TitleField, DescriptionField } = fields;
@@ -229,8 +231,7 @@ class ObjectField extends Component {
       onFocus,
       errorSchema,
       readonly,
-      registry,
-      parentSchema
+      registry
     };
 
     if (schema.properties && Object.keys(schema.properties).length > 0) {
@@ -372,7 +373,7 @@ class ObjectField extends Component {
               registry={templateProps.registry}
               disabled={templateProps.disabled || this.shouldDisable()}
               readonly={templateProps.readonly}
-              parentSchema={templateProps.parentSchema}
+              containsNestedObject={templateProps.containsNestedObject}
             />
           ),
           name,
