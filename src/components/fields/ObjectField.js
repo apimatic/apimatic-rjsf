@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import MapField from "./MapField";
 import { prefixClass as pfx } from "../../utils";
+import { toErrorList } from "../../validate";
 import CodeMirror from "react-codemirror2";
 import "codemirror/mode/javascript/javascript";
 
@@ -30,12 +31,40 @@ const cmOptions = {
   tabSize: 2
 };
 
-const ViewJsonButtonStyle = {
+const viewJsonButtonStyle = {
   color: "#2C6EFA",
   fontSize: "12px",
   cursor: "pointer",
-  textAlign: "right"
+  background: "#fff",
+  border: "none",
+  float: "right"
 };
+
+function renderErrorSchema(errorSchema) {
+  let errorList = toErrorList(errorSchema);
+  return (
+    <ul className={pfx("error-detail bs-callout bs-callout-info")}>
+      {errorList.map((key, index) => (
+        <li className={pfx("text-danger")} key={index}>
+          {key.stack}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function renderViewJsonButton(props) {
+  let disableViewJsonButton =
+    props.formJsonError || Object.keys(props.errorSchema).length !== 0;
+
+  return disableViewJsonButton ? (
+    <button style={viewJsonButtonStyle}>View JSON</button>
+  ) : (
+    <button style={viewJsonButtonStyle} onClick={props.toggleEditView}>
+      View JSON
+    </button>
+  );
+}
 
 function DefaultObjectFieldTemplate(props) {
   const {
@@ -43,62 +72,58 @@ function DefaultObjectFieldTemplate(props) {
     DescriptionField,
     nullify,
     onNullifyChange,
-    disabled,
-    uiSchema,
-    disableFormJsonEdit
+    disabled
   } = props;
 
-  return (
-    <div>
-      {!disableFormJsonEdit &&
-        !uiSchema.disableFieldJsonEdit && (
-          <p style={ViewJsonButtonStyle} onClick={() => props.toggleEditView()}>
-            View JSON
-          </p>
-        )}
-      <fieldset>
-        {(props.uiSchema["ui:title"] || props.title) && (
-          <TitleField
-            id={`${props.idSchema.$id}__title`}
-            title={props.title || props.uiSchema["ui:title"]}
-            required={props.required}
-            formContext={props.formContext}
-            nullify={nullify}
-            onNullifyChange={onNullifyChange}
-            disabled={disabled}
-          />
-        )}
-        {props.description && (
-          <DescriptionField
-            id={`${props.idSchema.$id}__description`}
-            description={props.description}
-            formContext={props.formContext}
-          />
-        )}
+  let canEditJson =
+    !props.disableFormJsonEdit && !props.uiSchema.disableFieldJsonEdit;
 
-        {props.showEditView ? (
-          <div>
-            <CodeMirror
-              value={props.formJson}
-              onChange={props.onJsonChange}
-              options={cmOptions}
-            />
-            {props.formJsonError && (
-              <div>
-                <p />
-                <ul className={pfx("error-detail bs-callout bs-callout-info")}>
-                  <li className={pfx("text-danger")}>
-                    Could not parse JSON. Syntax error.
-                  </li>
-                </ul>
-              </div>
-            )}
-          </div>
-        ) : (
-          props.properties.map(prop => prop.content)
-        )}
-      </fieldset>
-    </div>
+  return (
+    <fieldset>
+      <div>{canEditJson && renderViewJsonButton(props)}</div>
+
+      {(props.uiSchema["ui:title"] || props.title) && (
+        <TitleField
+          id={`${props.idSchema.$id}__title`}
+          title={props.title || props.uiSchema["ui:title"]}
+          required={props.required}
+          formContext={props.formContext}
+          nullify={nullify}
+          onNullifyChange={onNullifyChange}
+          disabled={disabled}
+        />
+      )}
+      {props.description && (
+        <DescriptionField
+          id={`${props.idSchema.$id}__description`}
+          description={props.description}
+          formContext={props.formContext}
+        />
+      )}
+
+      {props.showEditView && canEditJson ? (
+        <div>
+          <CodeMirror
+            value={props.formJson}
+            onChange={props.onJsonChange}
+            options={cmOptions}
+          />
+          {props.formJsonError && (
+            <div>
+              <ul className={pfx("error-detail bs-callout bs-callout-info")}>
+                <li className={pfx("text-danger")}>
+                  Could not parse JSON. Syntax error.
+                </li>
+              </ul>
+            </div>
+          )}
+          {Object.keys(props.errorSchema).length !== 0 &&
+            renderErrorSchema(props.errorSchema)}
+        </div>
+      ) : (
+        props.properties.map(prop => prop.content)
+      )}
+    </fieldset>
   );
 }
 
@@ -185,7 +210,9 @@ class ObjectField extends Component {
   };
 
   toggleEditView() {
-    this.setState({ showEditView: !this.state.showEditView });
+    this.setState(state => ({
+      showEditView: !state.showEditView
+    }));
   }
 
   render() {
