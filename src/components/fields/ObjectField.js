@@ -54,20 +54,21 @@ function renderErrorSchema(errorSchema) {
 }
 
 function renderViewJsonButton(props) {
+  let { formJsonError, errorSchema, toggleEditView, showEditView } = props;
   let disableViewJsonButton =
-    props.formJsonError || Object.keys(props.errorSchema).length !== 0;
+    formJsonError || Object.keys(errorSchema).length !== 0;
 
   return disableViewJsonButton ? (
     <button className="view-json-button" style={viewJsonButtonStyle} disabled>
-      View JSON
+      {showEditView ? "View Form" : "View JSON"}
     </button>
   ) : (
     <button
       className="view-json-button"
       style={viewJsonButtonStyle}
-      onClick={props.toggleEditView}
+      onClick={toggleEditView}
     >
-      View JSON
+      {showEditView ? "View Form" : "View JSON"}
     </button>
   );
 }
