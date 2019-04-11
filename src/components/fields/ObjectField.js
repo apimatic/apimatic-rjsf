@@ -17,7 +17,7 @@ import {
 } from "../../utils";
 
 const cmOptions = {
-  theme: "default",
+  theme: "solarized",
   height: "auto",
   viewportMargin: Infinity,
   mode: {
@@ -83,7 +83,9 @@ function DefaultObjectFieldTemplate(props) {
   } = props;
 
   let canEditJson =
-    !props.disableFormJsonEdit && !props.uiSchema.disableFieldJsonEdit;
+    nullify &&
+    !props.disableFormJsonEdit &&
+    !props.uiSchema.disableFieldJsonEdit;
 
   return (
     <fieldset>
@@ -159,6 +161,14 @@ class ObjectField extends Component {
     this.setState(this.getStateFromProps(nextProps));
   }
 
+  isJsonString(str) {
+    try {
+      JSON.parse(str);
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
   getStateFromProps(nextProps) {
     return {
       originalFormData:
@@ -168,7 +178,8 @@ class ObjectField extends Component {
           : nextProps.formData,
       formJson:
         this.state &&
-        deepEquals(nextProps.formData, JSON.parse(this.state.formJson))
+        this.isJsonString(this.state.formJson) &&
+        deepEquals(nextProps.formData, this.state.formJson)
           ? this.state.formJson
           : JSON.stringify(nextProps.formData, null, 2)
     };
@@ -189,6 +200,11 @@ class ObjectField extends Component {
   };
 
   onNullifyChange = () => {
+    this.setState({
+      formJsonError: false,
+      showEditView: false
+    });
+
     if (this.shouldDisable()) {
       if (this.state.originalFormData) {
         this.props.onChange(this.state.originalFormData);
