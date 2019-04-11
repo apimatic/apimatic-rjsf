@@ -43,13 +43,7 @@ const viewJsonButtonStyle = {
 function renderErrorSchema(errorSchema) {
   let errorList = toErrorList(errorSchema);
   return (
-    <ul className={pfx("error-detail bs-callout bs-callout-info")}>
-      {errorList.map((key, index) => (
-        <li className={pfx("text-danger")} key={index}>
-          {key.stack}
-        </li>
-      ))}
-    </ul>
+    <ul>{errorList.map((key, index) => <li key={index}>{key.stack}</li>)}</ul>
   );
 }
 
@@ -59,12 +53,16 @@ function renderViewJsonButton(props) {
     formJsonError || Object.keys(errorSchema).length !== 0;
 
   return disableViewJsonButton ? (
-    <button className="view-json-button" style={viewJsonButtonStyle} disabled>
+    <button
+      className={pfx("view-json-button")}
+      style={viewJsonButtonStyle}
+      disabled
+    >
       {showEditView ? "View Form" : "View JSON"}
     </button>
   ) : (
     <button
-      className="view-json-button"
+      className={pfx("view-json-button")}
       style={viewJsonButtonStyle}
       onClick={toggleEditView}
     >
@@ -117,17 +115,15 @@ function DefaultObjectFieldTemplate(props) {
             onChange={props.onJsonChange}
             options={cmOptions}
           />
-          {props.formJsonError && (
-            <div>
-              <ul className={pfx("error-detail bs-callout bs-callout-info")}>
-                <li className={pfx("text-danger")}>
-                  Could not parse JSON. Syntax error.
-                </li>
+          <div className={pfx("editor-validation-errors")}>
+            {props.formJsonError && (
+              <ul>
+                <li>Could not parse JSON. Syntax error.</li>
               </ul>
-            </div>
-          )}
-          {Object.keys(props.errorSchema).length !== 0 &&
-            renderErrorSchema(props.errorSchema)}
+            )}
+            {Object.keys(props.errorSchema).length !== 0 &&
+              renderErrorSchema(props.errorSchema)}
+          </div>
         </div>
       ) : (
         props.properties.map(prop => prop.content)
