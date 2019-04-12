@@ -17,7 +17,7 @@ import {
 } from "../../utils";
 
 const cmOptions = {
-  theme: "solarized",
+  theme: "default",
   height: "auto",
   viewportMargin: Infinity,
   mode: {
