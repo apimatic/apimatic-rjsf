@@ -109,7 +109,7 @@ function DefaultObjectFieldTemplate(props) {
       )}
 
       {props.showEditView && canEditJson ? (
-        <div>
+        <div style={{ clear: "both" }}>
           <CodeMirror
             value={props.formJson}
             onChange={props.onJsonChange}
