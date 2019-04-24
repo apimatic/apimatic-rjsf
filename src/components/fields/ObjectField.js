@@ -87,7 +87,9 @@ function DefaultObjectFieldTemplate(props) {
 
   return (
     <fieldset>
-      <div>{canEditJson && renderViewJsonButton(props)}</div>
+      <div style={{ height: "17px", marginBottom: "15px" }}>
+        {canEditJson && renderViewJsonButton(props)}
+      </div>
 
       {(props.uiSchema["ui:title"] || props.title) && (
         <TitleField
@@ -109,7 +111,7 @@ function DefaultObjectFieldTemplate(props) {
       )}
 
       {props.showEditView && canEditJson ? (
-        <div style={{ clear: "both" }}>
+        <div>
           <CodeMirror
             value={props.formJson}
             onChange={props.onJsonChange}
