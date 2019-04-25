@@ -40,6 +40,11 @@ const viewJsonButtonStyle = {
   float: "right"
 };
 
+const viewJsonButtonWrapper = {
+  height: "17px",
+  marginBottom: "10px"
+};
+
 function renderErrorSchema(errorSchema) {
   let errorList = toErrorList(errorSchema);
   return (
@@ -52,22 +57,26 @@ function renderViewJsonButton(props) {
   let disableViewJsonButton =
     formJsonError || Object.keys(errorSchema).length !== 0;
 
-  return disableViewJsonButton ? (
-    <button
-      className={pfx("view-json-button")}
-      style={viewJsonButtonStyle}
-      disabled
-    >
-      {showEditView ? "View Form" : "View JSON"}
-    </button>
-  ) : (
-    <button
-      className={pfx("view-json-button")}
-      style={viewJsonButtonStyle}
-      onClick={toggleEditView}
-    >
-      {showEditView ? "View Form" : "View JSON"}
-    </button>
+  return (
+    <div style={viewJsonButtonWrapper}>
+      {disableViewJsonButton ? (
+        <button
+          className={pfx("view-json-button")}
+          style={viewJsonButtonStyle}
+          disabled
+        >
+          {showEditView ? "View Form" : "View JSON"}
+        </button>
+      ) : (
+        <button
+          className={pfx("view-json-button")}
+          style={viewJsonButtonStyle}
+          onClick={toggleEditView}
+        >
+          {showEditView ? "View Form" : "View JSON"}
+        </button>
+      )}
+    </div>
   );
 }
 
@@ -87,9 +96,7 @@ function DefaultObjectFieldTemplate(props) {
 
   return (
     <fieldset>
-      <div style={{ height: "17px", marginBottom: "15px" }}>
-        {canEditJson && renderViewJsonButton(props)}
-      </div>
+      {canEditJson && renderViewJsonButton(props)}
 
       {(props.uiSchema["ui:title"] || props.title) && (
         <TitleField
