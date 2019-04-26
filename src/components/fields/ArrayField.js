@@ -17,6 +17,8 @@ import {
   prefixClass as pfx
 } from "../../utils";
 import { ArrowUpIcon, CloseIcon, PlusIcon, ArrowDownIcon } from "../Icons";
+import "codemirror/mode/javascript/javascript";
+import JsonEditor from "../JsonEditor";
 
 function ArrayFieldTitle({
   TitleField,
@@ -206,17 +208,17 @@ function DefaultNormalArrayFieldTemplate(props) {
       >
         {props.items && props.items.map(p => DefaultArrayItem(p))}
       </div>
-
       {props.canAdd && (
         <AddButton
           onClick={props.onAddClick}
           disabled={props.disabled || props.readonly}
         />
       )}
+
+      <JsonEditor {...props} checkArrayType={true} />
     </fieldset>
   );
 }
-
 class ArrayField extends Component {
   static defaultProps = {
     uiSchema: {},
@@ -398,12 +400,14 @@ class ArrayField extends Component {
   }
 
   renderNormalArray() {
+    console.log("renderNormalArray");
     const {
       schema,
       uiSchema,
       formData,
       errorSchema,
       idSchema,
+      onChange,
       name,
       required,
       disabled,
@@ -457,12 +461,14 @@ class ArrayField extends Component {
       DescriptionField,
       disabled,
       idSchema,
+      onChange,
       uiSchema,
       onAddClick: this.onAddClick,
       readonly,
       required,
       schema,
       itemsSchema,
+      errorSchema,
       title,
       TitleField,
       formContext,
@@ -557,6 +563,7 @@ class ArrayField extends Component {
   }
 
   renderFixedArray() {
+    console.log("renderFixedArray");
     const {
       schema,
       uiSchema,
@@ -638,6 +645,7 @@ class ArrayField extends Component {
       required,
       schema,
       uiSchema,
+      errorSchema,
       title,
       TitleField,
       onNullifyChange: this.onNullifyChange,
@@ -650,6 +658,8 @@ class ArrayField extends Component {
   }
 
   renderArrayFieldItem(props) {
+    console.log("renderArrayFieldItem");
+
     const {
       index,
       canRemove = true,
