@@ -25,6 +25,7 @@ class JsonEditor extends Component {
     this.state = this.getStateFromProps(props);
     this.state.formJson = JSON.stringify(props.formData, null, 2);
     this.state.formJsonError = false;
+    this.state.fromJsonErrorList = [];
   }
 
   componentWillReceiveProps(nextProps) {
@@ -54,27 +55,37 @@ class JsonEditor extends Component {
   onJsonChange = (editor, metadata, code) => {
     var err = false;
     var parsed = null;
+    let fromJsonErrorList = [];
 
     try {
       parsed = JSON.parse(code);
     } catch (e) {
       err = true;
+      fromJsonErrorList.push("Could not parse JSON. Syntax error.");
     }
 
+    //expected array but found object.
+
     this.setState((prevState, props) => {
-      //expected array but found object.
-      if (
-        !err &&
-        ((props.checkArrayType && Array.isArray(parsed)) ||
-          (props.checkObjectType && Array.isObject(parsed)))
-      ) {
-        props.onChange(parsed);
-      } else {
-        err = true;
-      }
+      let isParsedArray = Array.isArray(parsed);
+      let isParsedObject =
+        typeof parsed === "object" && !Array.isArray(parsed) && parsed !== null;
+
+      !err &&
+        props.checkObjectType &&
+        (isParsedObject
+          ? !err && props.onChange(parsed)
+          : fromJsonErrorList.push("Could not parse JSON. Expected object."));
+
+      !err &&
+        props.checkArrayType &&
+        (isParsedArray
+          ? !err && props.onChange(parsed)
+          : fromJsonErrorList.push("Could not parse JSON. Expected array."));
       return {
         formJson: code,
-        formJsonError: err
+        formJsonError: err,
+        fromJsonErrorList: fromJsonErrorList
       };
     });
   };
@@ -94,15 +105,22 @@ class JsonEditor extends Component {
           onChange={this.onJsonChange}
           options={cmOptions}
         />
-        <div className={pfx("editor-validation-errors")}>
-          {this.state.formJsonError && (
+        {
+          <div className={pfx("editor-validation-errors")}>
             <ul>
-              <li>Could not parse JSON. Syntax error.</li>
+              {this.state.fromJsonErrorList.length > 0 &&
+                this.state.fromJsonErrorList.map((error, index) => {
+                  return <li key={index}>{error}</li>;
+                })}
             </ul>
-          )}
-          {Object.keys(this.props.errorSchema).length !== 0 &&
-            this.renderErrorSchema(this.props.errorSchema)}
-        </div>
+            <ul>
+              {this.props.validationErrors.length > 0 &&
+                this.props.validationErrors.map((error, index) => {
+                  return <li key={index}>{error.stack}</li>;
+                })}
+            </ul>
+          </div>
+        }
       </div>
     );
   }

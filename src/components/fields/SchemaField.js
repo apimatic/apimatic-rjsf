@@ -240,6 +240,7 @@ function SchemaFieldRender(props) {
     help: <Help help={help} />,
     rawHelp: typeof help === "string" ? help : undefined,
     errors: <ErrorList errors={errors} />,
+
     rawErrors: errors,
     id,
     label,

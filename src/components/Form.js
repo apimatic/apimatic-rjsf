@@ -179,7 +179,14 @@ export default class Form extends Component {
       disableFormJsonEdit
     } = this.props;
 
-    const { schema, uiSchema, formData, errorSchema, idSchema } = this.state;
+    const {
+      schema,
+      uiSchema,
+      formData,
+      errorSchema,
+      idSchema,
+      errors
+    } = this.state;
     const registry = this.getRegistry();
     const _SchemaField = registry.fields.SchemaField;
 
@@ -202,6 +209,7 @@ export default class Form extends Component {
           schema={schema}
           uiSchema={uiSchema}
           errorSchema={errorSchema}
+          validationErrors={errors}
           idSchema={idSchema}
           formData={formData}
           onChange={this.onChange}

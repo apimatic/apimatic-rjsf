@@ -17,7 +17,6 @@ import {
   prefixClass as pfx
 } from "../../utils";
 import { ArrowUpIcon, CloseIcon, PlusIcon, ArrowDownIcon } from "../Icons";
-import "codemirror/mode/javascript/javascript";
 import JsonEditor from "../JsonEditor";
 
 function ArrayFieldTitle({
@@ -172,10 +171,55 @@ function DefaultFixedArrayFieldTemplate(props) {
     </fieldset>
   );
 }
+const viewJsonButtonWrapper = {
+  height: "17px",
+  marginBottom: "10px"
+};
+const viewJsonButtonStyle = {
+  color: "#2C6EFA",
+  fontSize: "12px",
+  cursor: "pointer",
+  background: "#fff",
+  border: "none",
+  float: "right"
+};
+
+function renderViewJsonButton(props) {
+  let { formJsonError, errorSchema, toggleEditView, showEditView } = props;
+  let disableViewJsonButton =
+    formJsonError || Object.keys(errorSchema).length !== 0;
+
+  return (
+    <div style={viewJsonButtonWrapper}>
+      {disableViewJsonButton ? (
+        <button
+          className={pfx("view-json-button")}
+          style={viewJsonButtonStyle}
+          disabled
+        >
+          {showEditView ? "View Form" : "View JSON"}
+        </button>
+      ) : (
+        <button
+          className={pfx("view-json-button")}
+          style={viewJsonButtonStyle}
+          onClick={toggleEditView}
+        >
+          {showEditView ? "View Form" : "View JSON"}
+        </button>
+      )}
+    </div>
+  );
+}
 
 function DefaultNormalArrayFieldTemplate(props) {
+  let canEditJson =
+    !props.disableFormJsonEdit && !props.uiSchema.disableFieldJsonEdit;
+
   return (
     <fieldset className={pfx(props.className)}>
+      {canEditJson && renderViewJsonButton(props)}
+
       <ArrayFieldTitle
         key={`array-field-title-${props.idSchema.$id}`}
         TitleField={props.TitleField}
@@ -202,20 +246,25 @@ function DefaultNormalArrayFieldTemplate(props) {
         />
       )}
 
-      <div
-        className={pfx("row array-item-list")}
-        key={`array-item-list-${props.idSchema.$id}`}
-      >
-        {props.items && props.items.map(p => DefaultArrayItem(p))}
-      </div>
-      {props.canAdd && (
-        <AddButton
-          onClick={props.onAddClick}
-          disabled={props.disabled || props.readonly}
-        />
-      )}
+      {props.showEditView && canEditJson ? (
+        <JsonEditor {...props} checkArrayType={true} checkObjectType={false} />
+      ) : (
+        <div>
+          <div
+            className={pfx("row array-item-list")}
+            key={`array-item-list-${props.idSchema.$id}`}
+          >
+            {props.items && props.items.map(p => DefaultArrayItem(p))}
+          </div>
 
-      <JsonEditor {...props} checkArrayType={true} />
+          {props.canAdd && (
+            <AddButton
+              onClick={props.onAddClick}
+              disabled={props.disabled || props.readonly}
+            />
+          )}
+        </div>
+      )}
     </fieldset>
   );
 }
@@ -234,6 +283,9 @@ class ArrayField extends Component {
     super(props);
 
     this.state = this.getStateFromProps(props);
+    this.state.showEditView = false;
+    this.state.JsonEditorError = false;
+    this.toggleEditView = this.toggleEditView.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -369,7 +421,11 @@ class ArrayField extends Component {
       this.props.onChange(undefined);
     }
   };
-
+  toggleEditView() {
+    this.setState(state => ({
+      showEditView: !state.showEditView
+    }));
+  }
   render() {
     const {
       schema,
@@ -400,12 +456,12 @@ class ArrayField extends Component {
   }
 
   renderNormalArray() {
-    console.log("renderNormalArray");
     const {
       schema,
       uiSchema,
       formData,
       errorSchema,
+      validationErrors,
       idSchema,
       onChange,
       name,
@@ -469,10 +525,13 @@ class ArrayField extends Component {
       schema,
       itemsSchema,
       errorSchema,
+      validationErrors,
       title,
       TitleField,
       formContext,
       formData,
+      showEditView: this.state.showEditView,
+      toggleEditView: this.toggleEditView,
       onNullifyChange: this.onNullifyChange,
       nullify: formData && formData.length > 0
     };
@@ -563,7 +622,6 @@ class ArrayField extends Component {
   }
 
   renderFixedArray() {
-    console.log("renderFixedArray");
     const {
       schema,
       uiSchema,
@@ -658,8 +716,6 @@ class ArrayField extends Component {
   }
 
   renderArrayFieldItem(props) {
-    console.log("renderArrayFieldItem");
-
     const {
       index,
       canRemove = true,

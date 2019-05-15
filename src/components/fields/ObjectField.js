@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import MapField from "./MapField";
 import { prefixClass as pfx } from "../../utils";
-import { toErrorList } from "../../validate";
+// import { toErrorList } from "../../validate";
 import CodeMirror from "react-codemirror2";
 import "codemirror/mode/javascript/javascript";
-
+import JsonEditor from "../JsonEditor";
 // import "codemirror/lib/codemirror.css";
 
 import {
@@ -45,12 +45,12 @@ const viewJsonButtonWrapper = {
   marginBottom: "10px"
 };
 
-function renderErrorSchema(errorSchema) {
-  let errorList = toErrorList(errorSchema);
-  return (
-    <ul>{errorList.map((key, index) => <li key={index}>{key.stack}</li>)}</ul>
-  );
-}
+// function renderErrorSchema(errorSchema) {
+//   let errorList = toErrorList(errorSchema);
+//   return (
+//     <ul>{errorList.map((key, index) => <li key={index}>{key.stack}</li>)}</ul>
+//   );
+// }
 
 function renderViewJsonButton(props) {
   let { formJsonError, errorSchema, toggleEditView, showEditView } = props;
@@ -90,9 +90,7 @@ function DefaultObjectFieldTemplate(props) {
   } = props;
 
   let canEditJson =
-    nullify &&
-    !props.disableFormJsonEdit &&
-    !props.uiSchema.disableFieldJsonEdit;
+    !props.disableFormJsonEdit && !props.uiSchema.disableFieldJsonEdit;
 
   return (
     <fieldset>
@@ -118,23 +116,24 @@ function DefaultObjectFieldTemplate(props) {
       )}
 
       {props.showEditView && canEditJson ? (
-        <div>
-          <CodeMirror
-            value={props.formJson}
-            onChange={props.onJsonChange}
-            options={cmOptions}
-          />
-          <div className={pfx("editor-validation-errors")}>
-            {props.formJsonError && (
-              <ul>
-                <li>Could not parse JSON. Syntax error.</li>
-              </ul>
-            )}
-            {Object.keys(props.errorSchema).length !== 0 &&
-              renderErrorSchema(props.errorSchema)}
-          </div>
-        </div>
+        <JsonEditor {...props} checkArrayType={false} checkObjectType={true} />
       ) : (
+        // <div>
+        //   <CodeMirror
+        //     value={props.formJson}
+        //     onChange={props.onJsonChange}
+        //     options={cmOptions}
+        //   />
+        //   <div className={pfx("editor-validation-errors")}>
+        //     {props.formJsonError && (
+        //       <ul>
+        //         <li>Could not parse JSON. Syntax error.</li>
+        //       </ul>
+        //     )}
+        //     {Object.keys(props.errorSchema).length !== 0 &&
+        //       renderErrorSchema(props.errorSchema)}
+        //   </div>
+        // </div>
         props.properties.map(prop => prop.content)
       )}
     </fieldset>
@@ -205,11 +204,6 @@ class ObjectField extends Component {
   };
 
   onNullifyChange = () => {
-    this.setState({
-      formJsonError: false,
-      showEditView: false
-    });
-
     if (this.shouldDisable()) {
       if (this.state.originalFormData) {
         this.props.onChange(this.state.originalFormData);
@@ -248,15 +242,18 @@ class ObjectField extends Component {
       uiSchema,
       formData,
       errorSchema,
+      errors,
       idSchema,
       name,
       required,
       disabled,
       readonly,
       onBlur,
+      validationErrors,
       onFocus,
       registry = getDefaultRegistry(),
-      disableFormJsonEdit
+      disableFormJsonEdit,
+      onChange
     } = this.props;
 
     const { definitions, fields, formContext } = registry;
@@ -288,9 +285,12 @@ class ObjectField extends Component {
       onBlur,
       onFocus,
       errorSchema,
+      errors,
       readonly,
       registry,
-      disableFormJsonEdit
+      disableFormJsonEdit,
+      onChange,
+      validationErrors
     };
 
     if (schema.properties && Object.keys(schema.properties).length > 0) {
@@ -411,9 +411,6 @@ class ObjectField extends Component {
       ...templateProps,
       showEditView: this.state.showEditView,
       toggleEditView: this.toggleEditView,
-      onJsonChange: this.onJsonChange,
-      formJson: this.state.formJson,
-      formJsonError: this.state.formJsonError,
       properties: orderedProperties.map(name => {
         return {
           content: (
@@ -424,6 +421,7 @@ class ObjectField extends Component {
               schema={templateProps.schema.properties[name]}
               uiSchema={templateProps.uiSchema[name]}
               errorSchema={templateProps.errorSchema[name]}
+              validationErrors={templateProps.validationErrors}
               idSchema={templateProps.idSchema[name]}
               formData={templateProps.formData[name]}
               onChange={this.onPropertyChange(name)}
