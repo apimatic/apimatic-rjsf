@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import MultiSelect from "./MultiSelectWidget";
 
 import { asNumber, prefixClass as pfx } from "../../utils";
 
@@ -8,6 +9,7 @@ import { asNumber, prefixClass as pfx } from "../../utils";
  * always retrieved as strings.
  */
 function processValue({ type, items }, value) {
+  console.log(value);
   if (value === "") {
     return undefined;
   } else if (
@@ -34,6 +36,15 @@ function getValue(event, multiple) {
     return event.target.value;
   }
 }
+function getSelectedOptionList(selectedOptions) {
+  return selectedOptions.reduce((acc, cv) => {
+    return acc.concat(cv.value);
+  },[]);
+}
+// function handleSelectChange(selectedOption) {
+//   console.log(selectedOption);
+//   processValue(schema, newValue);
+// }
 
 function SelectWidget(props) {
   const {
@@ -54,7 +65,8 @@ function SelectWidget(props) {
   const { enumOptions, enumDisabled } = options;
   const emptyValue = multiple ? [] : "";
   return (
-    <select
+    
+    !multiple ? ( <select
       id={id}
       multiple={multiple}
       className={pfx("form-control")}
@@ -90,7 +102,12 @@ function SelectWidget(props) {
           </option>
         );
       })}
-    </select>
+    </select>) : 
+    <MultiSelect 
+      defaultValue={value} 
+      isMulti
+      options={enumOptions} 
+      onChange={(selectedOption) => {onChange(processValue(schema, getSelectedOptionList(selectedOption))); }} />
   );
 }
 
