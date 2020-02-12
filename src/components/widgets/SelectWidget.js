@@ -1,9 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import MultiSelect from "./MultiSelectWidget";
-
 import { asNumber, prefixClass as pfx } from "../../utils";
-
+import MultiSelect from './MultiSelectWidget';
 /**
  * This is a silly limitation in the DOM where option change event values are
  * always retrieved as strings.

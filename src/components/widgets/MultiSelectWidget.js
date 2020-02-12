@@ -2,7 +2,7 @@ import React from  "react";
 import PropTypes from "prop-types";
 import ReactSelect from 'react-select';
 
-function multiSelect(props) {
+function MultiSelect(props) {
     const { autoFocus, className, classNamePrefix, isDisabled, isMulti, isSearchable, name, onChange, options, placeholder, noOptionsMessage, value } = props;
     return <ReactSelect autoFocus={autoFocus} 
     className={className} 
@@ -20,7 +20,7 @@ function multiSelect(props) {
 
 /* istanbul ignore else */
 if (process.env.NODE_ENV !== "production") {
-    multiSelect.propTypes = {
+  MultiSelect.propTypes = {
       defaultValue: PropTypes.object | PropTypes.array,
       autoFocus: PropTypes.bool,
       className: PropTypes.string,
@@ -37,4 +37,4 @@ if (process.env.NODE_ENV !== "production") {
     };
   }
 
-export default multiSelect;
+export default MultiSelect;

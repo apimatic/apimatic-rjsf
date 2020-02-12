@@ -15,6 +15,7 @@ import PasswordWidget from "./PasswordWidget";
 import RadioWidget from "./RadioWidget";
 import RangeWidget from "./RangeWidget";
 import SelectWidget from "./SelectWidget";
+import MultiSelect from "./MultiSelectWidget";
 import TextareaWidget from "./TextareaWidget";
 import TextWidget from "./TextWidget";
 import URLWidget from "./URLWidget";
@@ -27,6 +28,7 @@ export default {
   UpDownWidget,
   RangeWidget,
   SelectWidget,
+  MultiSelect,
   TextWidget,
   DateWidget,
   DateTimeWidget,
