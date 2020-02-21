@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { asNumber, prefixClass as pfx } from "../../utils";
-import MultiSelect from './MultiSelectWidget';
+import MultiSelect from "./MultiSelectWidget";
 /**
  * This is a silly limitation in the DOM where option change event values are
  * always retrieved as strings.
@@ -37,7 +37,7 @@ function getValue(event, multiple) {
 function getSelectedOptionList(selectedOptions) {
   return selectedOptions.reduce((acc, cv) => {
     return acc.concat(cv.value);
-  },[]);
+  }, []);
 }
 // function handleSelectChange(selectedOption) {
 //   console.log(selectedOption);
@@ -62,9 +62,8 @@ function SelectWidget(props) {
   } = props;
   const { enumOptions, enumDisabled } = options;
   const emptyValue = multiple ? [] : "";
-  return (
-    
-    !multiple ? ( <select
+  return !multiple ? (
+    <select
       id={id}
       multiple={multiple}
       className={pfx("form-control")}
@@ -100,12 +99,17 @@ function SelectWidget(props) {
           </option>
         );
       })}
-    </select>) : 
-    <MultiSelect 
-      defaultValue={value} 
+    </select>
+  ) : (
+    <MultiSelect
+      defaultValue={value}
       isMulti
-      options={enumOptions} 
-      onChange={(selectedOption) => {onChange(processValue(schema, getSelectedOptionList(selectedOption))); }} />
+      className="ap-multi-select"
+      options={enumOptions}
+      onChange={selectedOption => {
+        onChange(processValue(schema, getSelectedOptionList(selectedOption)));
+      }}
+    />
   );
 }
 
