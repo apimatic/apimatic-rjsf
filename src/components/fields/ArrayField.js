@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
@@ -150,7 +151,8 @@ function DefaultFixedArrayFieldTemplate(props) {
           className={pfx("field-description")}
           key={`field-description-${props.idSchema.$id}`}
         >
-          {props.uiSchema["ui:description"] || props.schema.description}
+          {props.uiSchema["ui:description"] ||
+            props.schema.description.replace(/\<br>/gi, "\n")}
         </div>
       )}
 
