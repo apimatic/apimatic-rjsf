@@ -49,7 +49,7 @@
     "codemirror": "^5.30.0",
     "react-codemirror2": "^2.0.2",
     "react-datepicker": "^1.0.4",
-    "moment": "^2.20.1"    
+    "moment": "^2.20.1"
   },
   "dependencies": {
     "ajv": "^5.2.3",
