@@ -86,7 +86,9 @@ function DefaultObjectFieldTemplate(props) {
     DescriptionField,
     nullify,
     onNullifyChange,
-    disabled
+    disabled,
+    collapse,
+    toggleCollapse
   } = props;
 
   let canEditJson =
@@ -97,17 +99,22 @@ function DefaultObjectFieldTemplate(props) {
   return (
     <fieldset>
       {canEditJson && renderViewJsonButton(props)}
-
       {(props.uiSchema["ui:title"] || props.title) && (
-        <TitleField
-          id={`${props.idSchema.$id}__title`}
-          title={props.title || props.uiSchema["ui:title"]}
-          required={props.required}
-          formContext={props.formContext}
-          nullify={nullify}
-          onNullifyChange={onNullifyChange}
-          disabled={disabled}
-        />
+        <span>
+          <TitleField
+            id={`${props.idSchema.$id}__title`}
+            title={props.title || props.uiSchema["ui:title"]}
+            required={props.required}
+            formContext={props.formContext}
+            nullify={nullify}
+            onNullifyChange={onNullifyChange}
+            disabled={disabled}
+          />
+
+          <button onClick={toggleCollapse}>
+            {collapse ? "Show Fields" : "Collapse Fields"}
+          </button>
+        </span>
       )}
       {props.description && (
         <DescriptionField
@@ -135,7 +142,7 @@ function DefaultObjectFieldTemplate(props) {
           </div>
         </div>
       ) : (
-        props.properties.map(prop => prop.content)
+        !collapse && props.properties.map(prop => prop.content)
       )}
     </fieldset>
   );
@@ -143,6 +150,7 @@ function DefaultObjectFieldTemplate(props) {
 
 class ObjectField extends Component {
   static defaultProps = {
+    collapse: true,
     uiSchema: {},
     formData: {},
     errorSchema: {},
@@ -159,7 +167,9 @@ class ObjectField extends Component {
     this.state.formJson = JSON.stringify(props.formData, null, 2);
     this.state.formJsonError = false;
     this.state.showEditView = false;
+    this.state.collapse = true;
     this.toggleEditView = this.toggleEditView.bind(this);
+    this.toggleCollapse = this.toggleCollapse.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -319,6 +329,15 @@ class ObjectField extends Component {
     });
   };
 
+  toggleCollapse() {
+    this.setState((prevState, props) => {
+      return {
+        ...prevState,
+        collapse: !prevState.collapse
+      };
+    });
+  }
+
   renderDynamic(templateProps) {
     const { TitleField, DescriptionField } = templateProps;
 
@@ -410,6 +429,8 @@ class ObjectField extends Component {
     const newProps = {
       ...templateProps,
       showEditView: this.state.showEditView,
+      collapse: this.state.collapse,
+      toggleCollapse: this.toggleCollapse,
       toggleEditView: this.toggleEditView,
       onJsonChange: this.onJsonChange,
       formJson: this.state.formJson,
