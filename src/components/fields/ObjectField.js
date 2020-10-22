@@ -112,21 +112,22 @@ function DefaultObjectFieldTemplate(props) {
 
   return (
     <fieldset>
-      {props.title && (
-        <div>
-          <IconBtn
-            tabIndex="-1"
-            onClick={toggleCollapse}
-            className="btn toggle-button"
-          >
-            {collapse ? (
-              <CheveronIcon width={14} rotate={180} />
-            ) : (
-              <CheveronIcon width={14} />
-            )}
-          </IconBtn>
-        </div>
-      )}
+      {props.title &&
+        !props.uiSchema.disableFieldJsonEdit && (
+          <div>
+            <IconBtn
+              tabIndex="-1"
+              onClick={toggleCollapse}
+              className="btn toggle-button"
+            >
+              {collapse ? (
+                <CheveronIcon width={14} rotate={180} />
+              ) : (
+                <CheveronIcon width={14} />
+              )}
+            </IconBtn>
+          </div>
+        )}
       {canEditJson && renderViewJsonButton(props)}
       {(props.uiSchema["ui:title"] || props.title) && (
         <TitleField
@@ -166,7 +167,8 @@ function DefaultObjectFieldTemplate(props) {
           </div>
         </div>
       ) : (
-        !collapse && props.properties.map(prop => prop.content)
+        (!collapse || props.uiSchema.disableFieldJsonEdit) &&
+        props.properties.map(prop => prop.content)
       )}
     </fieldset>
   );
@@ -174,7 +176,6 @@ function DefaultObjectFieldTemplate(props) {
 
 class ObjectField extends Component {
   static defaultProps = {
-    collapse: true,
     uiSchema: {},
     formData: {},
     errorSchema: {},
