@@ -15,6 +15,7 @@ import {
   getDefaultFormState,
   deepEquals
 } from "../../utils";
+import { CheveronIcon } from "../Icons";
 
 const cmOptions = {
   theme: "default",
@@ -49,6 +50,19 @@ function renderErrorSchema(errorSchema) {
   let errorList = toErrorList(errorSchema);
   return (
     <ul>{errorList.map((key, index) => <li key={index}>{key.stack}</li>)}</ul>
+  );
+}
+
+function IconBtn(props) {
+  const { type = "default", icon, className, ...otherProps } = props;
+  return (
+    <button
+      type="button"
+      className={pfx(`btn btn-${type}`) + " " + className}
+      {...otherProps}
+    >
+      {props.children}
+    </button>
   );
 }
 
@@ -100,7 +114,7 @@ function DefaultObjectFieldTemplate(props) {
     <fieldset>
       {canEditJson && renderViewJsonButton(props)}
       {(props.uiSchema["ui:title"] || props.title) && (
-        <span>
+          // <React.Fragment>
           <TitleField
             id={`${props.idSchema.$id}__title`}
             title={props.title || props.uiSchema["ui:title"]}
@@ -110,12 +124,16 @@ function DefaultObjectFieldTemplate(props) {
             onNullifyChange={onNullifyChange}
             disabled={disabled}
           />
+        ) && (
+          <IconBtn tabIndex="-1" onClick={toggleCollapse}>
+            {collapse ? (
+              <CheveronIcon width={14} rotate={180} />
+            ) : (
+              <CheveronIcon width={14} />
+            )}
+          </IconBtn>
+        )}
 
-          <button onClick={toggleCollapse}>
-            {collapse ? "Show Fields" : "Collapse Fields"}
-          </button>
-        </span>
-      )}
       {props.description && (
         <DescriptionField
           id={`${props.idSchema.$id}__description`}

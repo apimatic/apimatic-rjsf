@@ -64,3 +64,25 @@ export const ArrowDownIcon = ({ width, color }) => (
     />
   </svg>
 );
+
+export const CheveronIcon = ({ width, color, rotate }) => (
+  <svg
+    width={width}
+    height={width * 14.828 / 8.414}
+    className={prefixClass("icon icon-cheveron")}
+    transform={`rotate(${rotate ? rotate : 0})`}
+    viewBox="0 0 14.828 8.414"
+  >
+    <title />
+    <g id="icomoon-ignore" />
+    <path
+      fill="none"
+      stroke={color || "#000"}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2px"
+      d="M9,18l6-6L9,6"
+      transform="translate(-4.586 16) rotate(-90)"
+    />
+  </svg>
+);
