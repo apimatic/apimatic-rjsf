@@ -112,9 +112,23 @@ function DefaultObjectFieldTemplate(props) {
 
   return (
     <fieldset>
+      {props.title && (
+        <div>
+          <IconBtn
+            tabIndex="-1"
+            onClick={toggleCollapse}
+            className="btn toggle-button"
+          >
+            {collapse ? (
+              <CheveronIcon width={14} rotate={180} />
+            ) : (
+              <CheveronIcon width={14} />
+            )}
+          </IconBtn>
+        </div>
+      )}
       {canEditJson && renderViewJsonButton(props)}
       {(props.uiSchema["ui:title"] || props.title) && (
-        // <React.Fragment>
         <TitleField
           id={`${props.idSchema.$id}__title`}
           title={props.title || props.uiSchema["ui:title"]}
@@ -124,20 +138,6 @@ function DefaultObjectFieldTemplate(props) {
           onNullifyChange={onNullifyChange}
           disabled={disabled}
         />
-      )}
-
-      {(props.uiSchema["ui:title"] || props.title) && (
-        <IconBtn
-          tabIndex="-1"
-          onClick={toggleCollapse}
-          className="btn toggle-button"
-        >
-          {collapse ? (
-            <CheveronIcon width={14} rotate={180} />
-          ) : (
-            <CheveronIcon width={14} />
-          )}
-        </IconBtn>
       )}
 
       {props.description && (
