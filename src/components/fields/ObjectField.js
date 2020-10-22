@@ -114,25 +114,31 @@ function DefaultObjectFieldTemplate(props) {
     <fieldset>
       {canEditJson && renderViewJsonButton(props)}
       {(props.uiSchema["ui:title"] || props.title) && (
-          // <React.Fragment>
-          <TitleField
-            id={`${props.idSchema.$id}__title`}
-            title={props.title || props.uiSchema["ui:title"]}
-            required={props.required}
-            formContext={props.formContext}
-            nullify={nullify}
-            onNullifyChange={onNullifyChange}
-            disabled={disabled}
-          />
-        ) && (
-          <IconBtn tabIndex="-1" onClick={toggleCollapse}>
-            {collapse ? (
-              <CheveronIcon width={14} rotate={180} />
-            ) : (
-              <CheveronIcon width={14} />
-            )}
-          </IconBtn>
-        )}
+        // <React.Fragment>
+        <TitleField
+          id={`${props.idSchema.$id}__title`}
+          title={props.title || props.uiSchema["ui:title"]}
+          required={props.required}
+          formContext={props.formContext}
+          nullify={nullify}
+          onNullifyChange={onNullifyChange}
+          disabled={disabled}
+        />
+      )}
+
+      {(props.uiSchema["ui:title"] || props.title) && (
+        <IconBtn
+          tabIndex="-1"
+          onClick={toggleCollapse}
+          className="btn toggle-button"
+        >
+          {collapse ? (
+            <CheveronIcon width={14} rotate={180} />
+          ) : (
+            <CheveronIcon width={14} />
+          )}
+        </IconBtn>
+      )}
 
       {props.description && (
         <DescriptionField
