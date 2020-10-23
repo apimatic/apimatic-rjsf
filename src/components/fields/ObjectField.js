@@ -158,31 +158,31 @@ function DefaultObjectFieldTemplate(props) {
               />
             )}
           </div>
-
-          <div className="rjsf-element-data">
-            {props.showEditView && canEditJson ? (
-              <div>
-                <CodeMirror
-                  value={props.formJson}
-                  onChange={props.onJsonChange}
-                  options={cmOptions}
-                />
-                <div className={pfx("editor-validation-errors")}>
-                  {props.formJsonError && (
-                    <ul>
-                      <li>Could not parse JSON. Syntax error.</li>
-                    </ul>
-                  )}
-                  {Object.keys(props.errorSchema).length !== 0 &&
-                    renderErrorSchema(props.errorSchema)}
-                </div>
-              </div>
-            ) : (
-              (!collapse || props.uiSchema.disableFieldJsonEdit) &&
-              props.properties.map(prop => prop.content)
-            )}
-          </div>
         </div>
+      </div>
+
+      <div className="rjsf-element-data">
+        {props.showEditView && canEditJson ? (
+          <div>
+            <CodeMirror
+              value={props.formJson}
+              onChange={props.onJsonChange}
+              options={cmOptions}
+            />
+            <div className={pfx("editor-validation-errors")}>
+              {props.formJsonError && (
+                <ul>
+                  <li>Could not parse JSON. Syntax error.</li>
+                </ul>
+              )}
+              {Object.keys(props.errorSchema).length !== 0 &&
+                renderErrorSchema(props.errorSchema)}
+            </div>
+          </div>
+        ) : (
+          (!collapse || props.uiSchema.disableFieldJsonEdit) &&
+          props.properties.map(prop => prop.content)
+        )}
       </div>
     </fieldset>
   );
