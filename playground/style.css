@@ -1,0 +1,18 @@
+.rjsf-element,
+.rjsf-element-header {
+  display: flex;
+}
+
+.rjsf-element-header {
+  display: flex;
+}
+
+.rjsf-element-left {
+  width: 30%;
+  padding: 8px;
+}
+
+.rjsf-element-right {
+  width: 70%;
+  padding: 8px;
+}

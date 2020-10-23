@@ -7,6 +7,7 @@ import CodeMirror from "react-codemirror2";
 import "codemirror/mode/javascript/javascript";
 
 // import "codemirror/lib/codemirror.css";
+import "./../../../playground/style.css";
 
 import {
   orderProperties,
@@ -112,64 +113,77 @@ function DefaultObjectFieldTemplate(props) {
 
   return (
     <fieldset>
-      {props.title &&
-        !props.uiSchema.disableFieldJsonEdit && (
-          <div>
-            <IconBtn
-              tabIndex="-1"
-              onClick={toggleCollapse}
-              className="btn toggle-button"
-            >
-              {collapse ? (
-                <CheveronIcon width={14} rotate={180} />
-              ) : (
-                <CheveronIcon width={14} />
-              )}
-            </IconBtn>
+      {canEditJson && renderViewJsonButton(props)}
+
+      <div className="rjsf-element">
+        {(props.uiSchema["ui:title"] || props.title) && (
+          <div className="rjsf-element-header rjsf-element-left">
+            <div className="rjsf-element-header-title">
+              <TitleField
+                id={`${props.idSchema.$id}__title`}
+                title={props.title || props.uiSchema["ui:title"]}
+                required={props.required}
+                formContext={props.formContext}
+                nullify={nullify}
+                onNullifyChange={onNullifyChange}
+                disabled={disabled}
+              />
+            </div>
+
+            {!props.uiSchema.disableFieldJsonEdit && (
+              <div className="rjsf-element-toggle-button-wrapper">
+                <IconBtn
+                  tabIndex="-1"
+                  onClick={toggleCollapse}
+                  className="btn toggle-button"
+                >
+                  {collapse ? (
+                    <CheveronIcon width={14} rotate={180} />
+                  ) : (
+                    <CheveronIcon width={14} />
+                  )}
+                </IconBtn>
+              </div>
+            )}
           </div>
         )}
-      {canEditJson && renderViewJsonButton(props)}
-      {(props.uiSchema["ui:title"] || props.title) && (
-        <TitleField
-          id={`${props.idSchema.$id}__title`}
-          title={props.title || props.uiSchema["ui:title"]}
-          required={props.required}
-          formContext={props.formContext}
-          nullify={nullify}
-          onNullifyChange={onNullifyChange}
-          disabled={disabled}
-        />
-      )}
 
-      {props.description && (
-        <DescriptionField
-          id={`${props.idSchema.$id}__description`}
-          description={props.description}
-          formContext={props.formContext}
-        />
-      )}
-
-      {props.showEditView && canEditJson ? (
-        <div>
-          <CodeMirror
-            value={props.formJson}
-            onChange={props.onJsonChange}
-            options={cmOptions}
-          />
-          <div className={pfx("editor-validation-errors")}>
-            {props.formJsonError && (
-              <ul>
-                <li>Could not parse JSON. Syntax error.</li>
-              </ul>
+        <div className="rjsf-element-content rjsf-element-right">
+          <div className="rjsf-element-description">
+            {props.description && (
+              <DescriptionField
+                id={`${props.idSchema.$id}__description`}
+                description={props.description}
+                formContext={props.formContext}
+              />
             )}
-            {Object.keys(props.errorSchema).length !== 0 &&
-              renderErrorSchema(props.errorSchema)}
+          </div>
+
+          <div className="rjsf-element-data">
+            {props.showEditView && canEditJson ? (
+              <div>
+                <CodeMirror
+                  value={props.formJson}
+                  onChange={props.onJsonChange}
+                  options={cmOptions}
+                />
+                <div className={pfx("editor-validation-errors")}>
+                  {props.formJsonError && (
+                    <ul>
+                      <li>Could not parse JSON. Syntax error.</li>
+                    </ul>
+                  )}
+                  {Object.keys(props.errorSchema).length !== 0 &&
+                    renderErrorSchema(props.errorSchema)}
+                </div>
+              </div>
+            ) : (
+              (!collapse || props.uiSchema.disableFieldJsonEdit) &&
+              props.properties.map(prop => prop.content)
+            )}
           </div>
         </div>
-      ) : (
-        (!collapse || props.uiSchema.disableFieldJsonEdit) &&
-        props.properties.map(prop => prop.content)
-      )}
+      </div>
     </fieldset>
   );
 }
