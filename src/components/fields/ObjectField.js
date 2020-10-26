@@ -7,7 +7,7 @@ import CodeMirror from "react-codemirror2";
 import "codemirror/mode/javascript/javascript";
 
 // import "codemirror/lib/codemirror.css";
-import "./../../../playground/style.css";
+// import "./../../../playground/style.css";
 
 import {
   orderProperties,
