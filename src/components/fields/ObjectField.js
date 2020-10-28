@@ -117,11 +117,17 @@ function DefaultObjectFieldTemplate(props) {
 
       <div className="rjsf-element">
         <div className="rjsf-element-header rjsf-element-left">
-          {(props.uiSchema["ui:title"] || props.title) && (
+          {(props.uiSchema["ui:title"] ||
+            props.title ||
+            props.schema.indexAsTitle) && (
             <div className="rjsf-element-header-title">
               <TitleField
                 id={`${props.idSchema.$id}__title`}
-                title={props.title || props.uiSchema["ui:title"]}
+                title={
+                  props.title ||
+                  props.uiSchema["ui:title"] ||
+                  props.schema.indexAsTitle
+                }
                 required={props.required}
                 formContext={props.formContext}
                 nullify={nullify}
