@@ -111,7 +111,11 @@ function DefaultObjectFieldTemplate(props) {
     !props.disableFormJsonEdit &&
     !props.uiSchema.disableFieldJsonEdit;
 
-  let haveProperties = props.properties && props.properties.length > 0;
+  let canCollapse =
+    props.properties &&
+    props.properties.length > 0 &&
+    !props.disableFormJsonEdit &&
+    !props.uiSchema.disableFieldJsonEdit;
 
   return (
     <fieldset>
@@ -139,7 +143,7 @@ function DefaultObjectFieldTemplate(props) {
             </div>
           )}
 
-          {haveProperties && (
+          {canCollapse && (
             <div className="rjsf-element-toggle-button-wrapper">
               <IconBtn
                 tabIndex="-1"
@@ -188,7 +192,8 @@ function DefaultObjectFieldTemplate(props) {
             </div>
           </div>
         ) : (
-          !collapse && props.properties.map(prop => prop.content)
+          (!collapse || !canCollapse) &&
+          props.properties.map(prop => prop.content)
         )}
       </div>
     </fieldset>
