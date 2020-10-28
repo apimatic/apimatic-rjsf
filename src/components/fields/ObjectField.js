@@ -116,8 +116,8 @@ function DefaultObjectFieldTemplate(props) {
       {canEditJson && renderViewJsonButton(props)}
 
       <div className="rjsf-element">
-        {(props.uiSchema["ui:title"] || props.title) && (
-          <div className="rjsf-element-header rjsf-element-left">
+        <div className="rjsf-element-header rjsf-element-left">
+          {(props.uiSchema["ui:title"] || props.title) && (
             <div className="rjsf-element-header-title">
               <TitleField
                 id={`${props.idSchema.$id}__title`}
@@ -129,24 +129,24 @@ function DefaultObjectFieldTemplate(props) {
                 disabled={disabled}
               />
             </div>
+          )}
 
-            {!props.uiSchema.disableFieldJsonEdit && (
-              <div className="rjsf-element-toggle-button-wrapper">
-                <IconBtn
-                  tabIndex="-1"
-                  onClick={toggleCollapse}
-                  className="btn toggle-button"
-                >
-                  {collapse ? (
-                    <CheveronIcon width={14} rotate={180} />
-                  ) : (
-                    <CheveronIcon width={14} />
-                  )}
-                </IconBtn>
-              </div>
-            )}
-          </div>
-        )}
+          {!props.uiSchema.disableFieldJsonEdit && (
+            <div className="rjsf-element-toggle-button-wrapper">
+              <IconBtn
+                tabIndex="-1"
+                onClick={toggleCollapse}
+                className="btn toggle-button"
+              >
+                {collapse ? (
+                  <CheveronIcon width={14} rotate={180} />
+                ) : (
+                  <CheveronIcon width={14} />
+                )}
+              </IconBtn>
+            </div>
+          )}
+        </div>
 
         <div className="rjsf-element-content rjsf-element-right">
           <div className="rjsf-element-description">
