@@ -454,7 +454,9 @@ class ArrayField extends Component {
           onFocus
         });
       }),
-      className: `field field-array field-array-of-${itemsSchema.type}`,
+      className: `field field-array field-array-of-${itemsSchema.type} ${
+        this.props.isOdd ? "odd" : "even"
+      }`,
       DescriptionField,
       disabled,
       idSchema,
