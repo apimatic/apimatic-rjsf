@@ -187,7 +187,7 @@ function DefaultObjectFieldTemplate(props) {
           </div>
         ) : (
           (!collapse || !canEditJson) &&
-          nullify &&
+          (nullify || props.required) &&
           props.properties.map(prop => prop.content)
         )}
       </div>
