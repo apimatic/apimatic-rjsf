@@ -121,13 +121,13 @@ function DefaultObjectFieldTemplate(props) {
     <fieldset>
       {canEditJson && renderViewJsonButton(props)}
 
-      <div className="rjsf-element">
-        <div className="rjsf-element-left">
-          <div className="rjsf-element-header">
+      <div className={pfx("element")}>
+        <div className={pfx("element-left")}>
+          <div className={pfx("element-header")}>
             {(props.uiSchema["ui:title"] ||
               props.title ||
               props.schema.indexAsTitle) && (
-              <div className="rjsf-element-header-title">
+              <div className={pfx("element-header-title")}>
                 <TitleField
                   id={`${props.idSchema.$id}__title`}
                   title={
@@ -145,7 +145,7 @@ function DefaultObjectFieldTemplate(props) {
             )}
 
             {canCollapse && (
-              <div className="rjsf-element-toggle-button-wrapper">
+              <div className={pfx("element-toggle-button-wrapper")}>
                 <IconBtn
                   tabIndex="-1"
                   onClick={toggleCollapse}
@@ -161,13 +161,16 @@ function DefaultObjectFieldTemplate(props) {
             )}
           </div>
 
-          {props.required && (
-            <div className="rsjf-element-required">Required</div>
-          )}
+          {props.required &&
+            (props.uiSchema["ui:title"] ||
+              props.title ||
+              props.schema.indexAsTitle) && (
+              <div className={pfx("element-required")}>Required</div>
+            )}
         </div>
 
-        <div className="rjsf-element-content rjsf-element-right">
-          <div className="rjsf-element-description">
+        <div className={pfx("element-content element-right")}>
+          <div className={pfx("element-description")}>
             {props.description && (
               <DescriptionField
                 id={`${props.idSchema.$id}__description`}
@@ -179,7 +182,7 @@ function DefaultObjectFieldTemplate(props) {
         </div>
       </div>
 
-      <div className="rjsf-element-data">
+      <div className={pfx("element-data")}>
         {props.showEditView && canEditJson ? (
           <div>
             <CodeMirror
