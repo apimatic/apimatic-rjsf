@@ -170,6 +170,9 @@ function DefaultObjectFieldTemplate(props) {
         </div>
 
         <div className={pfx("element-content element-right")}>
+          <div className={pfx("element-data-type")}>
+            {props.DataType && <div>{props.DataType}</div>}
+          </div>
           <div className={pfx("element-description")}>
             {props.description && (
               <DescriptionField
