@@ -118,7 +118,7 @@ function DefaultObjectFieldTemplate(props) {
     !props.uiSchema.disableFieldJsonEdit;
 
   return (
-    <fieldset>
+    <fieldset className={pfx(props.isOdd ? "odd" : "even")}>
       {canEditJson && renderViewJsonButton(props)}
 
       <div className={pfx("element")} id={`${props.idSchema.$id}__element`}>
@@ -231,6 +231,7 @@ class ObjectField extends Component {
     this.state.formJsonError = false;
     this.state.showEditView = false;
     this.state.collapse = true;
+    this.state.isOdd = props.isOdd ? true : false;
     this.toggleEditView = this.toggleEditView.bind(this);
     this.toggleCollapse = this.toggleCollapse.bind(this);
   }
@@ -494,6 +495,7 @@ class ObjectField extends Component {
       showEditView: this.state.showEditView,
       collapse: this.state.collapse,
       toggleCollapse: this.toggleCollapse,
+      isOdd: this.state.isOdd,
       toggleEditView: this.toggleEditView,
       onJsonChange: this.onJsonChange,
       formJson: this.state.formJson,
@@ -504,6 +506,7 @@ class ObjectField extends Component {
             <SchemaField
               key={name}
               name={name}
+              isOdd={!this.state.isOdd}
               required={this.isRequired(name)}
               schema={templateProps.schema.properties[name]}
               uiSchema={templateProps.uiSchema[name]}
