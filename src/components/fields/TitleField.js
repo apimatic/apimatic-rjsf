@@ -18,7 +18,7 @@ function TitleField(props) {
           />{" "}
         </span>
       )}
-      {legend}
+      {title}
     </legend>
   );
 }

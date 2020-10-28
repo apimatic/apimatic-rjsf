@@ -121,7 +121,7 @@ function DefaultObjectFieldTemplate(props) {
     <fieldset>
       {canEditJson && renderViewJsonButton(props)}
 
-      <div className={pfx("element")}>
+      <div className={pfx("element")} id={`${props.idSchema.$id}__element`}>
         <div className={pfx("element-left")}>
           <div className={pfx("element-header")}>
             {(props.uiSchema["ui:title"] ||
@@ -135,7 +135,7 @@ function DefaultObjectFieldTemplate(props) {
                     props.uiSchema["ui:title"] ||
                     props.schema.indexAsTitle
                   }
-                  // required={props.schema.indexAsTitle ? false : props.required}
+                  required={props.schema.indexAsTitle ? false : props.required}
                   formContext={props.formContext}
                   nullify={nullify}
                   onNullifyChange={onNullifyChange}
@@ -149,7 +149,7 @@ function DefaultObjectFieldTemplate(props) {
                 <IconBtn
                   tabIndex="-1"
                   onClick={toggleCollapse}
-                  className="btn toggle-button"
+                  className={pfx("btn toggle-button")}
                 >
                   {collapse ? (
                     <CheveronIcon width={14} rotate={180} />
