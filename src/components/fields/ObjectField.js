@@ -131,7 +131,7 @@ function DefaultObjectFieldTemplate(props) {
             </div>
           )}
 
-          {!props.uiSchema.disableFieldJsonEdit && (
+          {canEditJson && (
             <div className="rjsf-element-toggle-button-wrapper">
               <IconBtn
                 tabIndex="-1"
@@ -180,7 +180,7 @@ function DefaultObjectFieldTemplate(props) {
             </div>
           </div>
         ) : (
-          (!collapse || props.uiSchema.disableFieldJsonEdit) &&
+          (!collapse || !canEditJson) &&
           props.properties.map(prop => prop.content)
         )}
       </div>
