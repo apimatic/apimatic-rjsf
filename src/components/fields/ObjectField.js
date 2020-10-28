@@ -128,7 +128,7 @@ function DefaultObjectFieldTemplate(props) {
                   props.uiSchema["ui:title"] ||
                   props.schema.indexAsTitle
                 }
-                required={props.required}
+                required={props.schema.indexAsTitle ? false : props.required}
                 formContext={props.formContext}
                 nullify={nullify}
                 onNullifyChange={onNullifyChange}
@@ -187,6 +187,7 @@ function DefaultObjectFieldTemplate(props) {
           </div>
         ) : (
           (!collapse || !canEditJson) &&
+          nullify &&
           props.properties.map(prop => prop.content)
         )}
       </div>

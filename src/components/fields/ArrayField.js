@@ -687,7 +687,7 @@ class ArrayField extends Component {
     return {
       children: (
         <SchemaField
-          schema={{ ...itemSchema, indexAsTitle: index.toString() }}
+          schema={{ ...itemSchema, indexAsTitle: `[${index}]` }}
           index={index}
           uiSchema={itemUiSchema}
           formData={itemData}
