@@ -16,7 +16,13 @@ import {
   getDefaultRegistry,
   prefixClass as pfx
 } from "../../utils";
-import { ArrowUpIcon, CloseIcon, PlusIcon, ArrowDownIcon } from "../Icons";
+import {
+  ArrowUpIcon,
+  CloseIcon,
+  PlusIcon,
+  ArrowDownIcon,
+  CheveronIcon
+} from "../Icons";
 
 function ArrayFieldTitle({
   TitleField,
@@ -175,45 +181,71 @@ function DefaultFixedArrayFieldTemplate(props) {
 function DefaultNormalArrayFieldTemplate(props) {
   return (
     <fieldset className={pfx(props.className)}>
-      <ArrayFieldTitle
-        key={`array-field-title-${props.idSchema.$id}`}
-        TitleField={props.TitleField}
-        idSchema={props.idSchema}
-        title={props.uiSchema["ui:title"] || props.title}
-        required={props.required}
-        nullify={props.nullify}
-        onNullifyChange={props.onNullifyChange}
-        disabled={props.disabled}
-      />
+      <div className={pfx("element")} id={`${props.idSchema.$id}__element`}>
+        <div className={pfx("element-left")}>
+          <div className={pfx("element-header")}>
+            <ArrayFieldTitle
+              key={`array-field-title-${props.idSchema.$id}`}
+              TitleField={props.TitleField}
+              idSchema={props.idSchema}
+              title={props.uiSchema["ui:title"] || props.title}
+              required={props.required}
+              nullify={props.nullify}
+              onNullifyChange={props.onNullifyChange}
+              disabled={props.disabled}
+            />
+            <div className={pfx("element-toggle-button-wrapper")}>
+              <IconBtn
+                tabIndex="-1"
+                onClick={props.toggleCollapse}
+                className={pfx("btn toggle-button")}
+              >
+                {props.collapse ? (
+                  <CheveronIcon width={14} rotate={180} />
+                ) : (
+                  <CheveronIcon width={14} />
+                )}
+              </IconBtn>
+            </div>
+          </div>
+        </div>
 
-      {(props.uiSchema["ui:description"] ||
-        props.schema.description ||
-        props.itemsSchema.description) && (
-        <ArrayFieldDescription
-          key={`array-field-description-${props.idSchema.$id}`}
-          DescriptionField={props.DescriptionField}
-          idSchema={props.idSchema}
-          description={
-            props.uiSchema["ui:description"] ||
-            props.schema.description ||
-            props.itemsSchema.description
-          }
-        />
-      )}
+        <div className={pfx("element-content element-right")}>
+          <div className={pfx("element-description")}>
+            {(props.uiSchema["ui:description"] ||
+              props.schema.description ||
+              props.itemsSchema.description) && (
+              <ArrayFieldDescription
+                key={`array-field-description-${props.idSchema.$id}`}
+                DescriptionField={props.DescriptionField}
+                idSchema={props.idSchema}
+                description={
+                  props.uiSchema["ui:description"] ||
+                  props.schema.description ||
+                  props.itemsSchema.description
+                }
+              />
+            )}
+          </div>
+        </div>
+      </div>
 
       <div
         className={pfx("row array-item-list")}
         key={`array-item-list-${props.idSchema.$id}`}
       >
-        {props.items && props.items.map(p => DefaultArrayItem(p))}
+        {!props.collapse &&
+          props.items &&
+          props.items.map(p => DefaultArrayItem(p))}
       </div>
 
-      {props.canAdd && (
-        <AddButton
-          onClick={props.onAddClick}
-          disabled={props.disabled || props.readonly}
-        />
-      )}
+      {!props.collapse &&
+        props.canAdd && (
+          <AddButton
+            onClick={props.onAddClick}
+            disabled={props.disabled || props.readonly}
+          />
+        )}
     </fieldset>
   );
 }
@@ -233,6 +265,8 @@ class ArrayField extends Component {
     super(props);
 
     this.state = this.getStateFromProps(props);
+    this.state.collapse = true;
+    this.toggleCollapse = this.toggleCollapse.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -398,6 +432,14 @@ class ArrayField extends Component {
     return this.renderNormalArray();
   }
 
+  toggleCollapse() {
+    this.setState((prevState, props) => {
+      return {
+        ...prevState,
+        collapse: !prevState.collapse
+      };
+    });
+  }
   renderNormalArray() {
     const {
       schema,
@@ -457,6 +499,8 @@ class ArrayField extends Component {
       className: `field field-array field-array-of-${itemsSchema.type} ${
         this.props.isOdd ? "odd" : "even"
       }`,
+      collapse: this.state.collapse,
+      toggleCollapse: this.toggleCollapse,
       DescriptionField,
       disabled,
       idSchema,
