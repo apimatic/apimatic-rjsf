@@ -122,41 +122,47 @@ function DefaultObjectFieldTemplate(props) {
       {canEditJson && renderViewJsonButton(props)}
 
       <div className="rjsf-element">
-        <div className="rjsf-element-header rjsf-element-left">
-          {(props.uiSchema["ui:title"] ||
-            props.title ||
-            props.schema.indexAsTitle) && (
-            <div className="rjsf-element-header-title">
-              <TitleField
-                id={`${props.idSchema.$id}__title`}
-                title={
-                  props.title ||
-                  props.uiSchema["ui:title"] ||
-                  props.schema.indexAsTitle
-                }
-                required={props.schema.indexAsTitle ? false : props.required}
-                formContext={props.formContext}
-                nullify={nullify}
-                onNullifyChange={onNullifyChange}
-                disabled={disabled}
-              />
-            </div>
-          )}
+        <div className="rjsf-element-left">
+          <div className="rjsf-element-header">
+            {(props.uiSchema["ui:title"] ||
+              props.title ||
+              props.schema.indexAsTitle) && (
+              <div className="rjsf-element-header-title">
+                <TitleField
+                  id={`${props.idSchema.$id}__title`}
+                  title={
+                    props.title ||
+                    props.uiSchema["ui:title"] ||
+                    props.schema.indexAsTitle
+                  }
+                  // required={props.schema.indexAsTitle ? false : props.required}
+                  formContext={props.formContext}
+                  nullify={nullify}
+                  onNullifyChange={onNullifyChange}
+                  disabled={disabled}
+                />
+              </div>
+            )}
 
-          {canCollapse && (
-            <div className="rjsf-element-toggle-button-wrapper">
-              <IconBtn
-                tabIndex="-1"
-                onClick={toggleCollapse}
-                className="btn toggle-button"
-              >
-                {collapse ? (
-                  <CheveronIcon width={14} rotate={180} />
-                ) : (
-                  <CheveronIcon width={14} />
-                )}
-              </IconBtn>
-            </div>
+            {canCollapse && (
+              <div className="rjsf-element-toggle-button-wrapper">
+                <IconBtn
+                  tabIndex="-1"
+                  onClick={toggleCollapse}
+                  className="btn toggle-button"
+                >
+                  {collapse ? (
+                    <CheveronIcon width={14} rotate={180} />
+                  ) : (
+                    <CheveronIcon width={14} />
+                  )}
+                </IconBtn>
+              </div>
+            )}
+          </div>
+
+          {props.required && (
+            <div className="rsjf-element-required">Required</div>
           )}
         </div>
 
