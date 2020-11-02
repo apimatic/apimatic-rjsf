@@ -181,54 +181,46 @@ function DefaultFixedArrayFieldTemplate(props) {
 function DefaultNormalArrayFieldTemplate(props) {
   return (
     <fieldset className={pfx(props.className)}>
-      <div className={pfx("element")} id={`${props.idSchema.$id}__element`}>
-        <div className={pfx("element-left")}>
-          <div className={pfx("element-header")}>
-            <ArrayFieldTitle
-              key={`array-field-title-${props.idSchema.$id}`}
-              TitleField={props.TitleField}
-              idSchema={props.idSchema}
-              title={props.uiSchema["ui:title"] || props.title}
-              required={props.required}
-              nullify={props.nullify}
-              onNullifyChange={props.onNullifyChange}
-              disabled={props.disabled}
-            />
-            <div className={pfx("element-toggle-button-wrapper")}>
-              <IconBtn
-                tabIndex="-1"
-                onClick={props.toggleCollapse}
-                className={pfx("btn toggle-button")}
-              >
-                {props.collapse ? (
-                  <CheveronIcon width={14} rotate={180} />
-                ) : (
-                  <CheveronIcon width={14} />
-                )}
-              </IconBtn>
-            </div>
-          </div>
-        </div>
-
-        <div className={pfx("element-content element-right")}>
-          <div className={pfx("element-description")}>
-            {(props.uiSchema["ui:description"] ||
-              props.schema.description ||
-              props.itemsSchema.description) && (
-              <ArrayFieldDescription
-                key={`array-field-description-${props.idSchema.$id}`}
-                DescriptionField={props.DescriptionField}
-                idSchema={props.idSchema}
-                description={
-                  props.uiSchema["ui:description"] ||
-                  props.schema.description ||
-                  props.itemsSchema.description
-                }
-              />
+      <div className={pfx("object-header")}>
+        <div className={pfx("header-left")}>
+          <IconBtn
+            tabIndex="-1"
+            onClick={props.toggleCollapse}
+            className={pfx("btn toggle-button")}
+          >
+            {props.collapse ? (
+              <CheveronIcon width={14} rotate={180} />
+            ) : (
+              <CheveronIcon width={14} />
             )}
-          </div>
+          </IconBtn>
+          <ArrayFieldTitle
+            key={`array-field-title-${props.idSchema.$id}`}
+            TitleField={props.TitleField}
+            idSchema={props.idSchema}
+            title={props.uiSchema["ui:title"] || props.title}
+            required={props.required}
+            nullify={props.nullify}
+            onNullifyChange={props.onNullifyChange}
+            disabled={props.disabled}
+          />
         </div>
       </div>
+
+      {(props.uiSchema["ui:description"] ||
+        props.schema.description ||
+        props.itemsSchema.description) && (
+        <ArrayFieldDescription
+          key={`array-field-description-${props.idSchema.$id}`}
+          DescriptionField={props.DescriptionField}
+          idSchema={props.idSchema}
+          description={
+            props.uiSchema["ui:description"] ||
+            props.schema.description ||
+            props.itemsSchema.description
+          }
+        />
+      )}
 
       <div
         className={pfx("row array-item-list")}
@@ -497,7 +489,7 @@ class ArrayField extends Component {
         });
       }),
       className: `field field-array field-array-of-${itemsSchema.type} ${
-        this.props.isEvent ? "even" : "odd"
+        this.props.isEven ? "even" : "odd"
       }`,
       collapse: this.state.collapse,
       toggleCollapse: this.toggleCollapse,
