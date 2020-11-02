@@ -118,96 +118,81 @@ function DefaultObjectFieldTemplate(props) {
     !props.uiSchema.disableFieldJsonEdit;
 
   return (
-    <fieldset className={pfx(props.isOdd ? "odd" : "even")}>
-      {canEditJson && renderViewJsonButton(props)}
-
-      <div className={pfx("element")} id={`${props.idSchema.$id}__element`}>
-        <div className={pfx("element-left")}>
-          <div className={pfx("element-header")}>
-            {(props.uiSchema["ui:title"] ||
-              props.title ||
-              props.schema.indexAsTitle) && (
-              <div className={pfx("element-header-title")}>
-                <TitleField
-                  id={`${props.idSchema.$id}__title`}
-                  title={
-                    props.title ||
-                    props.uiSchema["ui:title"] ||
-                    props.schema.indexAsTitle
-                  }
-                  required={props.schema.indexAsTitle ? false : props.required}
-                  formContext={props.formContext}
-                  nullify={nullify}
-                  onNullifyChange={onNullifyChange}
-                  disabled={disabled}
-                />
-              </div>
-            )}
-
-            {canCollapse && (
-              <div className={pfx("element-toggle-button-wrapper")}>
-                <IconBtn
-                  tabIndex="-1"
-                  onClick={toggleCollapse}
-                  className={pfx("btn toggle-button")}
-                >
-                  {collapse ? (
-                    <CheveronIcon width={14} rotate={180} />
-                  ) : (
-                    <CheveronIcon width={14} />
-                  )}
-                </IconBtn>
-              </div>
-            )}
-          </div>
-
-          {props.required &&
-            (props.uiSchema["ui:title"] ||
-              props.title ||
-              props.schema.indexAsTitle) && (
-              <div className={pfx("element-required")}>Required</div>
-            )}
-        </div>
-
-        <div className={pfx("element-content element-right")}>
-          <div className={pfx("element-data-type")}>
-            {props.DataType && <div>{props.DataType}</div>}
-          </div>
-          <div className={pfx("element-description")}>
-            {props.description && (
-              <DescriptionField
-                id={`${props.idSchema.$id}__description`}
-                description={props.description}
-                formContext={props.formContext}
-              />
-            )}
-          </div>
-        </div>
-      </div>
-
-      <div className={pfx("element-data")}>
-        {props.showEditView && canEditJson ? (
-          <div>
-            <CodeMirror
-              value={props.formJson}
-              onChange={props.onJsonChange}
-              options={cmOptions}
-            />
-            <div className={pfx("editor-validation-errors")}>
-              {props.formJsonError && (
-                <ul>
-                  <li>Could not parse JSON. Syntax error.</li>
-                </ul>
+    <fieldset className={pfx(props.isEven ? "even" : "odd")}>
+      <div className={pfx("object-header")}>
+        <div className={pfx("header-left")}>
+          {canCollapse && (
+            <IconBtn
+              tabIndex="-1"
+              onClick={toggleCollapse}
+              className={pfx("btn toggle-button")}
+            >
+              {collapse ? (
+                <CheveronIcon width={14} rotate={180} />
+              ) : (
+                <CheveronIcon width={14} />
               )}
-              {Object.keys(props.errorSchema).length !== 0 &&
-                renderErrorSchema(props.errorSchema)}
-            </div>
-          </div>
-        ) : (
-          (!collapse || !canCollapse) &&
-          props.properties.map(prop => prop.content)
-        )}
+            </IconBtn>
+          )}
+
+          {(props.uiSchema["ui:title"] ||
+            props.title ||
+            props.schema.indexAsTitle) && (
+            <TitleField
+              id={`${props.idSchema.$id}__title`}
+              title={
+                props.title ||
+                props.uiSchema["ui:title"] ||
+                props.schema.indexAsTitle
+              }
+              required={props.schema.indexAsTitle ? false : props.required}
+              formContext={props.formContext}
+              nullify={nullify}
+              onNullifyChange={onNullifyChange}
+              disabled={disabled}
+            />
+          )}
+        </div>
+
+        {canEditJson && renderViewJsonButton(props)}
+
+        {props.required &&
+          (props.uiSchema["ui:title"] ||
+            props.title ||
+            props.schema.indexAsTitle) && (
+            <div className={pfx("element-required")}>Required</div>
+          )}
       </div>
+
+      {props.description && (
+        <DescriptionField
+          id={`${props.idSchema.$id}__description`}
+          description={props.description}
+          formContext={props.formContext}
+        />
+      )}
+
+      {props.showEditView && canEditJson ? (
+        <div>
+          <CodeMirror
+            value={props.formJson}
+            onChange={props.onJsonChange}
+            options={cmOptions}
+          />
+          <div className={pfx("editor-validation-errors")}>
+            {props.formJsonError && (
+              <ul>
+                <li>Could not parse JSON. Syntax error.</li>
+              </ul>
+            )}
+            {Object.keys(props.errorSchema).length !== 0 &&
+              renderErrorSchema(props.errorSchema)}
+          </div>
+        </div>
+      ) : (
+        (!collapse || !canCollapse) &&
+        props.properties.map(prop => prop.content)
+      )}
     </fieldset>
   );
 }
@@ -231,7 +216,7 @@ class ObjectField extends Component {
     this.state.formJsonError = false;
     this.state.showEditView = false;
     this.state.collapse = true;
-    this.state.isOdd = props.isOdd ? true : false;
+    this.state.isEven = props.isEven ? true : false;
     this.toggleEditView = this.toggleEditView.bind(this);
     this.toggleCollapse = this.toggleCollapse.bind(this);
   }
@@ -495,7 +480,7 @@ class ObjectField extends Component {
       showEditView: this.state.showEditView,
       collapse: this.state.collapse,
       toggleCollapse: this.toggleCollapse,
-      isOdd: this.state.isOdd,
+      isEven: this.state.isEven,
       toggleEditView: this.toggleEditView,
       onJsonChange: this.onJsonChange,
       formJson: this.state.formJson,
@@ -506,7 +491,7 @@ class ObjectField extends Component {
             <SchemaField
               key={name}
               name={name}
-              isOdd={!this.state.isOdd}
+              isEven={!this.state.isEven}
               required={this.isRequired(name)}
               schema={templateProps.schema.properties[name]}
               uiSchema={templateProps.uiSchema[name]}
