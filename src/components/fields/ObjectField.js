@@ -118,7 +118,10 @@ function DefaultObjectFieldTemplate(props) {
     !props.uiSchema.disableFieldJsonEdit;
 
   return (
-    <fieldset className={pfx(props.isEven ? "even" : "odd")}>
+    <fieldset
+      className={pfx(props.isEven ? "even" : "odd")}
+      id={`${props.idSchema.$id}__object`}
+    >
       <div className={pfx("object-header")}>
         <div className={pfx("header-left")}>
           {canCollapse && (
