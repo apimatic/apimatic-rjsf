@@ -497,7 +497,7 @@ class ArrayField extends Component {
         });
       }),
       className: `field field-array field-array-of-${itemsSchema.type} ${
-        this.props.isOdd ? "odd" : "even"
+        this.props.isEvent ? "even" : "odd"
       }`,
       collapse: this.state.collapse,
       toggleCollapse: this.toggleCollapse,
