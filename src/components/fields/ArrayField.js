@@ -222,22 +222,23 @@ function DefaultNormalArrayFieldTemplate(props) {
         />
       )}
 
-      <div
-        className={pfx("row array-item-list")}
-        key={`array-item-list-${props.idSchema.$id}`}
-      >
-        {!props.collapse &&
-          props.items &&
-          props.items.map(p => DefaultArrayItem(p))}
-      </div>
+      {!props.collapse && (
+        <div className={pfx("array-container")}>
+          <div
+            className={pfx("row array-item-list")}
+            key={`array-item-list-${props.idSchema.$id}`}
+          >
+            {props.items && props.items.map(p => DefaultArrayItem(p))}
+          </div>
 
-      {!props.collapse &&
-        props.canAdd && (
-          <AddButton
-            onClick={props.onAddClick}
-            disabled={props.disabled || props.readonly}
-          />
-        )}
+          {props.canAdd && (
+            <AddButton
+              onClick={props.onAddClick}
+              disabled={props.disabled || props.readonly}
+            />
+          )}
+        </div>
+      )}
     </fieldset>
   );
 }

@@ -175,29 +175,29 @@ function DefaultObjectFieldTemplate(props) {
         />
       )}
 
-      {props.showEditView && canEditJson ? (
+      {(!collapse || !canCollapse) && (
         <div className={pfx("element-properties")}>
-          <CodeMirror
-            value={props.formJson}
-            onChange={props.onJsonChange}
-            options={cmOptions}
-          />
-          <div className={pfx("editor-validation-errors")}>
-            {props.formJsonError && (
-              <ul>
-                <li>Could not parse JSON. Syntax error.</li>
-              </ul>
-            )}
-            {Object.keys(props.errorSchema).length !== 0 &&
-              renderErrorSchema(props.errorSchema)}
-          </div>
+          {props.showEditView && canEditJson ? (
+            <div>
+              <CodeMirror
+                value={props.formJson}
+                onChange={props.onJsonChange}
+                options={cmOptions}
+              />
+              <div className={pfx("editor-validation-errors")}>
+                {props.formJsonError && (
+                  <ul>
+                    <li>Could not parse JSON. Syntax error.</li>
+                  </ul>
+                )}
+                {Object.keys(props.errorSchema).length !== 0 &&
+                  renderErrorSchema(props.errorSchema)}
+              </div>
+            </div>
+          ) : (
+            props.properties.map(prop => prop.content)
+          )}
         </div>
-      ) : (
-        (!collapse || !canCollapse) && (
-          <div className={pfx("element-properties")}>
-            {props.properties.map(prop => prop.content)}
-          </div>
-        )
       )}
     </fieldset>
   );
