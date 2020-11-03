@@ -210,7 +210,11 @@ function DefaultNormalArrayFieldTemplate(props) {
 
       <div className={pfx("array-type")}>
         <span>Array</span>
-        {title && <span className={pfx("object-type")}>&lt;{title}&gt;</span>}
+        {title && (
+          <span>
+            &nbsp;&lt;&nbsp;<span className={pfx("object-type")}>{title}</span>&nbsp;&gt;
+          </span>
+        )}
       </div>
 
       {(props.uiSchema["ui:description"] ||
