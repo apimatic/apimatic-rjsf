@@ -112,7 +112,7 @@ function DefaultTemplate(props) {
       {displayLabel && <Label label={label} required={required} id={id} />}
       {displayLabel &&
         props.schema.type && (
-          <div className={pfx("base-type")}>props.schema.type</div>
+          <div className={pfx("base-type")}>{props.schema.type}</div>
         )}
       {displayLabel && description ? description : null}
       {children}
