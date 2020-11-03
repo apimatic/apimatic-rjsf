@@ -110,6 +110,10 @@ function DefaultTemplate(props) {
   return (
     <div className={pfx(classNames)}>
       {displayLabel && <Label label={label} required={required} id={id} />}
+      {displayLabel &&
+        props.schema.type && (
+          <div className={pfx("base-type")}>props.schema.type</div>
+        )}
       {displayLabel && description ? description : null}
       {children}
       {errors}
