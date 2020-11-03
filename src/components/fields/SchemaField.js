@@ -12,7 +12,7 @@ import {
 } from "../../utils";
 import UnsupportedField from "./UnsupportedField";
 
-const REQUIRED_FIELD_SYMBOL = "*";
+// const REQUIRED_FIELD_SYMBOL = "*";
 const COMPONENT_TYPES = {
   array: "ArrayField",
   boolean: "BooleanField",
@@ -52,7 +52,9 @@ function Label(props) {
   }
   return (
     <label className={pfx("control-label")} htmlFor={id}>
-      {required ? label + REQUIRED_FIELD_SYMBOL : label}
+      {/* {required ? label + REQUIRED_FIELD_SYMBOL : label} */}
+      <div>{label}</div>
+      {required && <div className={pfx("element-required")}>Required</div>}
     </label>
   );
 }
