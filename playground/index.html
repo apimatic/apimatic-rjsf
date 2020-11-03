@@ -7,6 +7,57 @@
   <title>react-jsonschema-form playground</title>
   <link rel="stylesheet" id="theme" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <script src="//cdn.polyfill.io/v2/polyfill.min.js"></script>
+
+  <style>
+    .rjsf-object-header {
+    display: flex;
+  }
+
+  .rjsf-header-left {
+    display: flex;
+    flex: 1;
+  }
+
+  .rjsf-element-required {
+    color: red;
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  /* #root__object > .rjsf-object-header {
+    display: none;
+  } */
+
+  fieldset {
+    border: none !important;
+    border-radius: 4px;
+  }
+
+  fieldset.rjsf-even {
+    background-color: white;
+  }
+
+  fieldset.rjsf-odd {
+    background-color: #f5f7f9;
+  }
+
+  .rjsf > div > .rjsf-odd {
+    background-color: white;
+  }
+
+  .rjsf > div > fieldset {
+    padding: 0px;
+    margin: 0px;
+  }
+
+  .rjsf-view-json-button {
+    background-color: transparent !important;
+  }
+
+  .rjsf-toggle-button path {
+    fill: none;
+  }
+  </style>
 </head>
 <body>
   <div id="app"></div>
