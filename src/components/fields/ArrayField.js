@@ -207,6 +207,15 @@ function DefaultNormalArrayFieldTemplate(props) {
         </div>
       </div>
 
+      {props.schema.title && (
+        <div className={pfx("array-type")}>
+          <span>Array</span>
+          <span className={pfx("object-type")}>
+            &lt;{props.schema.title}&gt;
+          </span>
+        </div>
+      )}
+
       {(props.uiSchema["ui:description"] ||
         props.schema.description ||
         props.itemsSchema.description) && (
@@ -453,12 +462,12 @@ class ArrayField extends Component {
     const { ArrayFieldTemplate, definitions, fields } = registry;
     const { TitleField, DescriptionField } = fields;
     const itemsSchema = retrieveSchema(schema.items, definitions);
-    const title =
-      schema.title === undefined && itemsSchema.title === undefined
-        ? name
-        : name === undefined
-          ? schema.title || itemsSchema.title
-          : name + " (" + (schema.title || itemsSchema.title) + ")";
+    const title = name;
+    // schema.title === undefined && itemsSchema.title === undefined
+    //   ? name
+    //   : name === undefined
+    //     ? schema.title || itemsSchema.title
+    //     : name + " (" + (schema.title || itemsSchema.title) + ")";
     const arrayProps = {
       canAdd: this.canAddItem(formData),
       items: formData.map((item, index) => {
