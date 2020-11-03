@@ -179,6 +179,7 @@ function DefaultFixedArrayFieldTemplate(props) {
 }
 
 function DefaultNormalArrayFieldTemplate(props) {
+  const title = props.schema.title || props.itemsSchema.title;
   return (
     <fieldset className={pfx(props.className)}>
       <div className={pfx("object-header")}>
@@ -207,14 +208,10 @@ function DefaultNormalArrayFieldTemplate(props) {
         </div>
       </div>
 
-      {props.schema.title && (
-        <div className={pfx("array-type")}>
-          <span>Array</span>
-          <span className={pfx("object-type")}>
-            &lt;{props.schema.title}&gt;
-          </span>
-        </div>
-      )}
+      <div className={pfx("array-type")}>
+        <span>Array</span>
+        {title && <span className={pfx("object-type")}>&lt;{title}&gt;</span>}
+      </div>
 
       {(props.uiSchema["ui:description"] ||
         props.schema.description ||
