@@ -160,9 +160,8 @@ function DefaultObjectFieldTemplate(props) {
         {canEditJson && renderViewJsonButton(props)}
 
         {props.required &&
-          (props.uiSchema["ui:title"] ||
-            props.title ||
-            props.schema.indexAsTitle) && (
+          (props.uiSchema["ui:title"] || props.title) &&
+          !props.schema.indexAsTitle && (
             <div className={pfx("element-required")}>Required</div>
           )}
       </div>
