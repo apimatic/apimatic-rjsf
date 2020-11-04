@@ -4,27 +4,26 @@ import { prefixClass as pfx } from "../../utils";
 import ReactMarkdown from "react-markdown";
 
 function DescriptionField(props) {
-  const { id, description } = props;
+  const { id, description, uiSchema } = props;
   if (!description) {
     // See #312: Ensure compatibility with old versions of React.
     return <div />;
   }
 
-  if (typeof description === "string") {
-    return (
-      <p id={id} className={pfx("field-description")}>
-        <ReactMarkdown plugins={[]} children={description} />
-        {/* {description.replace(/<br>/gi, "\n")} */}
-      </p>
-    );
-  } else {
-    return (
-      <div id={id} className={pfx("field-description")}>
-        <ReactMarkdown plugins={[]} children={description} />
-        {/* {description.replace(/<br>/gi, "\n")} */}
-      </div>
-    );
+  const renderers = {};
+  if (uiSchema && uiSchema.renderCodeBlock) {
+    renderers.code = uiSchema.renderCodeBlock;
   }
+
+  return (
+    <p id={id} className={pfx("field-description")}>
+      <ReactMarkdown
+        plugins={[]}
+        children={description.replace(/<br>/gi, "\n")}
+        renderers={{ ...renderers }}
+      />
+    </p>
+  );
 }
 
 /* istanbul ignore else */
