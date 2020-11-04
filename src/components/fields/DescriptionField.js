@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { prefixClass as pfx } from "../../utils";
+import ReactMarkdown from "react-markdown";
 
 function DescriptionField(props) {
   const { id, description } = props;
@@ -8,16 +9,19 @@ function DescriptionField(props) {
     // See #312: Ensure compatibility with old versions of React.
     return <div />;
   }
+
   if (typeof description === "string") {
     return (
       <p id={id} className={pfx("field-description")}>
-        {description.replace(/<br>/gi, "\n")}
+        <ReactMarkdown plugins={[]} children={description} />
+        {/* {description.replace(/<br>/gi, "\n")} */}
       </p>
     );
   } else {
     return (
       <div id={id} className={pfx("field-description")}>
-        {description.replace(/<br>/gi, "\n")}
+        <ReactMarkdown plugins={[]} children={description} />
+        {/* {description.replace(/<br>/gi, "\n")} */}
       </div>
     );
   }
