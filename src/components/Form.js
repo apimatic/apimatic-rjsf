@@ -24,7 +24,16 @@ export default class Form extends Component {
 
   constructor(props) {
     super(props);
-    window.renderCodeBlock = props.uiSchema.renderCodeBlock;
+
+    if (
+      props.uiSchema &&
+      props.uiSchema.renderCodeBlock &&
+      typeof props.uiSchema.renderCodeBlock === "function"
+    ) {
+      window.renderCodeBlock = node => {
+        return props.uiSchema.renderCodeBlock({ node });
+      };
+    }
     this.state = this.getStateFromProps(props);
   }
 
