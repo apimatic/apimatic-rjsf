@@ -31,7 +31,8 @@ function ArrayFieldTitle({
   required,
   onNullifyChange,
   nullify,
-  disabled
+  disabled,
+  onClick
 }) {
   if (!title) {
     // See #312: Ensure compatibility with old versions of React.
@@ -46,6 +47,7 @@ function ArrayFieldTitle({
       nullify={nullify}
       onNullifyChange={onNullifyChange}
       disabled={disabled}
+      onClick={onClick}
     />
   );
 }
@@ -193,6 +195,7 @@ function DefaultNormalArrayFieldTemplate(props) {
             nullify={props.nullify}
             onNullifyChange={props.onNullifyChange}
             disabled={props.disabled}
+            onClick={props.toggleCollapse}
           />
         </div>
 
