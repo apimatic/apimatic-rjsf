@@ -11,6 +11,7 @@ import {
   prefixClass as pfx
 } from "../../utils";
 import UnsupportedField from "./UnsupportedField";
+import { RequiredInfoIcon } from "../Icons";
 
 // const REQUIRED_FIELD_SYMBOL = "*";
 const COMPONENT_TYPES = {
@@ -45,7 +46,7 @@ function getFieldComponent(schema, uiSchema, idSchema, fields) {
 }
 
 function Label(props) {
-  const { label, required, id } = props;
+  const { label, id } = props;
   if (!label) {
     // See #312: Ensure compatibility with old versions of React.
     return <div />;
@@ -54,7 +55,6 @@ function Label(props) {
     <label className={pfx("control-label")} htmlFor={id}>
       {/* {required ? label + REQUIRED_FIELD_SYMBOL : label} */}
       <div>{label}</div>
-      {required && <div className={pfx("element-required")}>Required</div>}
     </label>
   );
 }
@@ -112,6 +112,13 @@ function DefaultTemplate(props) {
   return (
     <div className={pfx(classNames)}>
       {displayLabel && <Label label={label} required={required} id={id} />}
+      {displayLabel &&
+        required && (
+          <div className={pfx("element-required")}>
+            <RequiredInfoIcon />
+            <span>Required</span>
+          </div>
+        )}
       {displayLabel &&
         props.schema.type && (
           <div className={pfx("base-type")}>{props.schema.type}</div>

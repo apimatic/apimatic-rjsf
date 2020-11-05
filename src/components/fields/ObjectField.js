@@ -16,7 +16,7 @@ import {
   getDefaultFormState,
   deepEquals
 } from "../../utils";
-import { CheveronIcon } from "../Icons";
+import { CheveronIcon, RequiredInfoIcon, JsonIcon } from "../Icons";
 
 const cmOptions = {
   theme: "default",
@@ -33,19 +33,19 @@ const cmOptions = {
   tabSize: 2
 };
 
-const viewJsonButtonStyle = {
-  color: "#2C6EFA",
-  fontSize: "12px",
-  cursor: "pointer",
-  background: "#fff",
-  border: "none",
-  float: "right"
-};
+// const viewJsonButtonStyle = {
+//   color: "#2C6EFA",
+//   fontSize: "12px",
+//   cursor: "pointer",
+//   background: "#fff",
+//   border: "none",
+//   float: "right"
+// };
 
-const viewJsonButtonWrapper = {
-  height: "17px",
-  marginBottom: "10px"
-};
+// const viewJsonButtonWrapper = {
+//   height: "17px",
+//   marginBottom: "10px"
+// };
 
 function renderErrorSchema(errorSchema) {
   let errorList = toErrorList(errorSchema);
@@ -68,13 +68,24 @@ function IconBtn(props) {
 }
 
 function renderViewJsonButton(props) {
-  let { formJsonError, errorSchema, toggleEditView, showEditView } = props;
+  // let { formJsonError, errorSchema, toggleEditView, showEditView } = props;
+  let { formJsonError, errorSchema, toggleEditView } = props;
   let disableViewJsonButton =
     formJsonError || Object.keys(errorSchema).length !== 0;
 
-  return (
-    <div style={viewJsonButtonWrapper}>
-      {disableViewJsonButton ? (
+  return disableViewJsonButton ? (
+    <IconBtn onClick={toggleEditView}>
+      <JsonIcon />
+    </IconBtn>
+  ) : (
+    <IconBtn onClick={toggleEditView}>
+      <JsonIcon />
+    </IconBtn>
+  );
+
+  /* 
+        <div style={viewJsonButtonWrapper}>
+        {disableViewJsonButton ? (
         <button
           className={pfx("view-json-button")}
           style={viewJsonButtonStyle}
@@ -90,9 +101,9 @@ function renderViewJsonButton(props) {
         >
           {showEditView ? "View Form" : "View JSON"}
         </button>
-      )}
-    </div>
-  );
+      }
+      </div>
+      )} */
 }
 
 function DefaultObjectFieldTemplate(props) {
@@ -124,20 +135,6 @@ function DefaultObjectFieldTemplate(props) {
     >
       <div className={pfx("object-header")}>
         <div className={pfx("header-left")}>
-          {canCollapse && (
-            <IconBtn
-              tabIndex="-1"
-              onClick={toggleCollapse}
-              className={pfx("btn toggle-button")}
-            >
-              {collapse ? (
-                <CheveronIcon width={14} rotate={180} />
-              ) : (
-                <CheveronIcon width={14} />
-              )}
-            </IconBtn>
-          )}
-
           {(props.uiSchema["ui:title"] ||
             props.title ||
             props.schema.indexAsTitle) && (
@@ -151,6 +148,7 @@ function DefaultObjectFieldTemplate(props) {
               required={props.schema.indexAsTitle ? false : props.required}
               formContext={props.formContext}
               nullify={nullify}
+              onClick={toggleCollapse}
               onNullifyChange={onNullifyChange}
               disabled={disabled}
             />
@@ -159,16 +157,34 @@ function DefaultObjectFieldTemplate(props) {
 
         {canEditJson && renderViewJsonButton(props)}
 
-        {props.required &&
-          (props.uiSchema["ui:title"] || props.title) &&
-          !props.schema.indexAsTitle && (
-            <div className={pfx("element-required")}>Required</div>
-          )}
+        {canCollapse && (
+          <IconBtn
+            tabIndex="-1"
+            onClick={toggleCollapse}
+            className={pfx("btn toggle-button")}
+          >
+            {collapse ? (
+              <CheveronIcon width={14} rotate={180} />
+            ) : (
+              <CheveronIcon width={14} />
+            )}
+          </IconBtn>
+        )}
       </div>
 
       {props.schema.title && (
         <div className={pfx("object-type")}>{props.schema.title}</div>
       )}
+
+      {props.required &&
+        (props.uiSchema["ui:title"] || props.title) &&
+        !props.schema.indexAsTitle && (
+          <div className={pfx("element-required")}>
+            <RequiredInfoIcon />
+            <span>Required</span>
+          </div>
+        )}
+
       {props.description && (
         <DescriptionField
           id={`${props.idSchema.$id}__description`}
@@ -306,7 +322,8 @@ class ObjectField extends Component {
 
   toggleEditView() {
     this.setState(state => ({
-      showEditView: !state.showEditView
+      showEditView: !state.showEditView,
+      collapse: false
     }));
   }
 
@@ -386,7 +403,7 @@ class ObjectField extends Component {
     });
   };
 
-  toggleCollapse() {
+  toggleCollapse(show = false) {
     this.setState((prevState, props) => {
       return {
         ...prevState,

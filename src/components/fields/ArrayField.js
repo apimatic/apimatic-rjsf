@@ -18,7 +18,7 @@ import {
 } from "../../utils";
 import {
   ArrowUpIcon,
-  CloseIcon,
+  DeleteIcon,
   PlusIcon,
   ArrowDownIcon,
   CheveronIcon
@@ -80,14 +80,13 @@ function DefaultArrayItem(props) {
     paddingRight: 6,
     fontWeight: "bold"
   };
+
   return (
     <div key={props.index} className={pfx(props.className)}>
-      <div className={pfx(props.hasToolbar ? "col-xs-9" : "col-xs-12")}>
-        {props.children}
-      </div>
+      <div>{props.children}</div>
 
       {props.hasToolbar && (
-        <div className={pfx("col-xs-3 array-item-toolbox")}>
+        <div className={pfx("array-item-toolbox")}>
           <div
             className={pfx("btn-group")}
             style={{ display: "flex", justifyContent: "space-around" }}
@@ -127,7 +126,8 @@ function DefaultArrayItem(props) {
                 disabled={props.disabled || props.readonly}
                 onClick={props.onDropIndexClick(props.index)}
               >
-                <CloseIcon width={14} />
+                <DeleteIcon />
+                {/* <CloseIcon width={14} /> */}
               </IconBtn>
             )}
           </div>

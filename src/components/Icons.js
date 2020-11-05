@@ -33,35 +33,84 @@ export const CloseIcon = ({ width, color }) => (
   </svg>
 );
 
-export const ArrowUpIcon = ({ width, color }) => (
+export const DeleteIcon = ({ width, color }) => (
   <svg
-    width={width}
-    height={width * 448 / 416}
-    className={prefixClass("icon icon-arrow-up")}
-    viewBox="0 0 416 448"
+    xmlns="http://www.w3.org/2000/svg"
+    width={width || "17.756"}
+    height={(width || 20.5) * 17.756 / 20.5}
+    viewBox="0 0 17.756 20.5"
   >
-    <title />
-    <g id="icomoon-ignore" />
-    <path
-      fill={color || "#000"}
-      d="M402.75 242.75c0 8.5-3.5 16.5-9.25 22.5l-18.75 18.75c-6 6-14.25 9.5-22.75 9.5s-16.75-3.5-22.5-9.5l-73.5-73.25v176c0 18-15 29.25-32 29.25h-32c-17 0-32-11.25-32-29.25v-176l-73.5 73.25c-5.75 6-14 9.5-22.5 9.5s-16.75-3.5-22.5-9.5l-18.75-18.75c-6-6-9.5-14-9.5-22.5s3.5-16.75 9.5-22.75l162.75-162.75c5.75-6 14-9.25 22.5-9.25s16.75 3.25 22.75 9.25l162.75 162.75c5.75 6 9.25 14.25 9.25 22.75z"
-    />
+    <g transform="translate(0.75 0.75)">
+      <path
+        d="M3,6H19.256"
+        transform="translate(-3 -2.2)"
+        fill="none"
+        stroke={color || "#3e445d"}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+      />
+      <path
+        d="M17.256,5.8V19.1A1.83,1.83,0,0,1,15.5,21H6.751A1.83,1.83,0,0,1,5,19.1V5.8m2.626,0V3.9A1.83,1.83,0,0,1,9.377,2h3.5a1.83,1.83,0,0,1,1.751,1.9V5.8"
+        transform="translate(-3 -2)"
+        fill="none"
+        stroke={color || "#3e445d"}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+      />
+      <line
+        y2="6"
+        transform="translate(6.322 8.357)"
+        fill="none"
+        stroke={color || "#3e445d"}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+      />
+      <line
+        y2="6"
+        transform="translate(9.934 8.357)"
+        fill="none"
+        stroke={color || "#3e445d"}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+      />
+    </g>
   </svg>
 );
 
-export const ArrowDownIcon = ({ width, color }) => (
+export const ArrowDownIcon = ({ width, color }) =>
+  ArrowUpIcon({ width, color, rotate: 180 });
+
+export const ArrowUpIcon = ({ width, color, rotate }) => (
   <svg
-    width={width}
-    height={width * 448 / 416}
-    className={prefixClass("icon icon-arrow-down")}
-    viewBox="0 0 416 448"
+    xmlns="http://www.w3.org/2000/svg"
+    width={width || 16.121}
+    height={(width || 15.5) * 16.121 / 15.5}
+    transform={`rotate(${rotate ? rotate : 0})`}
+    viewBox="0 0 16.121 15.5"
   >
-    <title />
-    <g id="icomoon-ignore" />
-    <path
-      fill={color || "#000"}
-      d="M402.75 208c0 8.5-3.5 16.75-9.25 22.5l-162.75 163c-6 5.75-14.25 9.25-22.75 9.25s-16.75-3.5-22.5-9.25l-162.75-163c-6-5.75-9.5-14-9.5-22.5s3.5-16.75 9.5-22.75l18.5-18.75c6-5.75 14.25-9.25 22.75-9.25s16.75 3.5 22.5 9.25l73.5 73.5v-176c0-17.5 14.5-32 32-32h32c17.5 0 32 14.5 32 32v176l73.5-73.5c5.75-5.75 14-9.25 22.5-9.25s16.75 3.5 22.75 9.25l18.75 18.75c5.75 6 9.25 14.25 9.25 22.75z"
-    />
+    <g transform="translate(-3.939 -4.25)">
+      <line
+        y1="14"
+        transform="translate(12 5)"
+        fill="none"
+        stroke={color || "#3e445d"}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+      />
+      <path
+        d="M5,12l7-7,7,7"
+        fill="none"
+        stroke={color || "#3e445d"}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+      />
+    </g>
   </svg>
 );
 
@@ -86,3 +135,79 @@ export const CheveronIcon = ({ width, color, rotate }) => (
     />
   </svg>
 );
+
+export const RequiredInfoIcon = ({ width, color }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={width || "11.591"}
+      height={(width | 10.149) * 11.591 / 10.149}
+      viewBox="0 0 11.591 10.149"
+    >
+      <g transform="translate(-1.038 -2.397)">
+        <path
+          d="M5.968,3.384,1.687,10.53a1.011,1.011,0,0,0,.864,1.516h8.562a1.011,1.011,0,0,0,.864-1.516L7.7,3.384a1.011,1.011,0,0,0-1.728,0Z"
+          fill="none"
+          stroke={color || "#f23a25"}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1"
+        />
+        <line
+          y2="2.022"
+          transform="translate(6.832 5.982)"
+          fill="none"
+          stroke={color || "#f23a25"}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1"
+        />
+        <line
+          x2="0.005"
+          transform="translate(6.832 10.025)"
+          fill="none"
+          stroke={color || "#f23a25"}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1"
+        />
+      </g>
+    </svg>
+  );
+};
+
+export const JsonIcon = ({ width, color }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={width || "20.805"}
+      height={(width || 20) * (20.805 / 20)}
+      viewBox="0 0 20.805 20"
+    >
+      <path
+        d="M14.654,9.264v-3.2H11.293a1.763,1.763,0,0,1-1.077-.424,1.525,1.525,0,0,1-.375-1V1.231H1.3a.1.1,0,0,0-.067.03.073.073,0,0,0-.03.068V18.653a.112.112,0,0,0,.03.068.082.082,0,0,0,.067.03h13.26c.03,0,.028-.015.043-.03s.054-.045.054-.068V9.264Zm1.226,9.778a.947.947,0,0,1-.945.945H.915a.947.947,0,0,1-.945-.945V.94A.935.935,0,0,1,.247.272.947.947,0,0,1,.915-.005h9.553a.207.207,0,0,1,.067-.008A.438.438,0,0,1,10.82.1h.015a.132.132,0,0,1,.037.03l4.88,4.942a.46.46,0,0,1,.142.323.507.507,0,0,1-.015.105Zm-4.925-17.6L14.44,4.974Z"
+        transform="translate(4.911 0.013)"
+        fill={color || "#3e445d"}
+        fillRule="evenodd"
+      />
+      <rect
+        width="17.845"
+        height="8.65"
+        rx="2"
+        transform="translate(0 8.497)"
+        fill={color || "#3e445d"}
+      />
+      <text
+        transform="translate(2 9.657)"
+        fill="#fff"
+        fontSize="5"
+        fontFamily="Montserrat-Bold, Montserrat"
+        fontWeight="700"
+      >
+        <tspan x="0" y="5">
+          JSON
+        </tspan>
+      </text>
+    </svg>
+  );
+};
