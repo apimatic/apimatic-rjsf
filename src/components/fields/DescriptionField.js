@@ -4,15 +4,15 @@ import { prefixClass as pfx } from "../../utils";
 import ReactMarkdown from "react-markdown";
 
 function DescriptionField(props) {
-  const { id, description, uiSchema } = props;
+  const { id, description } = props;
   if (!description) {
     // See #312: Ensure compatibility with old versions of React.
     return <div />;
   }
 
   const renderers = {};
-  if (uiSchema && uiSchema.renderCodeBlock) {
-    renderers.code = uiSchema.renderCodeBlock;
+  if (window.renderCodeBlock) {
+    renderers.code = window.renderCodeBlock;
   }
 
   return (

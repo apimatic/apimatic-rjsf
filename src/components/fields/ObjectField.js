@@ -174,7 +174,6 @@ function DefaultObjectFieldTemplate(props) {
           id={`${props.idSchema.$id}__description`}
           description={props.description}
           formContext={props.formContext}
-          uiSchema={props.uiSchema}
         />
       )}
 
@@ -226,7 +225,6 @@ class ObjectField extends Component {
     this.state.showEditView = false;
     this.state.collapse = true;
     this.state.isEven = props.isEven ? true : false;
-    this.state.renderCodeBlock = props.renderCodeBlock;
     this.toggleEditView = this.toggleEditView.bind(this);
     this.toggleCollapse = this.toggleCollapse.bind(this);
   }
@@ -359,8 +357,7 @@ class ObjectField extends Component {
       errorSchema,
       readonly,
       registry,
-      disableFormJsonEdit,
-      renderCodeBlock: this.state.renderCodeBlock
+      disableFormJsonEdit
     };
 
     if (schema.properties && Object.keys(schema.properties).length > 0) {

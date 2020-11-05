@@ -24,6 +24,7 @@ export default class Form extends Component {
 
   constructor(props) {
     super(props);
+    window.renderCodeBlock = props.uiSchema.renderCodeBlock;
     this.state = this.getStateFromProps(props);
   }
 
