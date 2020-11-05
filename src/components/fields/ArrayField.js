@@ -184,17 +184,6 @@ function DefaultNormalArrayFieldTemplate(props) {
     <fieldset className={pfx(props.className)}>
       <div className={pfx("object-header")}>
         <div className={pfx("header-left")}>
-          <IconBtn
-            tabIndex="-1"
-            onClick={props.toggleCollapse}
-            className={pfx("btn toggle-button")}
-          >
-            {props.collapse ? (
-              <CheveronIcon width={14} rotate={180} />
-            ) : (
-              <CheveronIcon width={14} />
-            )}
-          </IconBtn>
           <ArrayFieldTitle
             key={`array-field-title-${props.idSchema.$id}`}
             TitleField={props.TitleField}
@@ -206,13 +195,26 @@ function DefaultNormalArrayFieldTemplate(props) {
             disabled={props.disabled}
           />
         </div>
+
+        <IconBtn
+          tabIndex="-1"
+          onClick={props.toggleCollapse}
+          className={pfx("btn toggle-button")}
+        >
+          {props.collapse ? (
+            <CheveronIcon width={14} rotate={180} />
+          ) : (
+            <CheveronIcon width={14} />
+          )}
+        </IconBtn>
       </div>
 
       <div className={pfx("array-type")}>
         <span>Array</span>
         {title && (
           <span>
-            &nbsp;&lt;&nbsp;<span className={pfx("object-type")}>{title}</span>&nbsp;&gt;
+            &nbsp;&lt;&nbsp;<span className={pfx("object-type")}>{title}</span>
+            &nbsp;&gt;
           </span>
         )}
       </div>
