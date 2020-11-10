@@ -11,7 +11,6 @@ import {
   prefixClass as pfx
 } from "../../utils";
 import UnsupportedField from "./UnsupportedField";
-import { RequiredInfoIcon } from "../Icons";
 
 // const REQUIRED_FIELD_SYMBOL = "*";
 const COMPONENT_TYPES = {
@@ -115,7 +114,17 @@ function DefaultTemplate(props) {
 
   return (
     <div className={pfx(classNames)}>
-      {displayLabel && <Label label={label} required={required} id={id} />}
+      {displayLabel && (
+        <div className={pfx("field-header")}>
+          <Label label={label} required={required} id={id} />
+          {required && (
+            <div className={pfx("element-required")}>
+              {/* <RequiredInfoIcon /> */}
+              <span>Required</span>
+            </div>
+          )}
+        </div>
+      )}
       {displayLabel &&
         dataType && (
           <div
@@ -128,13 +137,6 @@ function DefaultTemplate(props) {
             ) : (
               dataType
             )}
-          </div>
-        )}
-      {displayLabel &&
-        required && (
-          <div className={pfx("element-required")}>
-            <RequiredInfoIcon />
-            <span>Required</span>
           </div>
         )}
       {displayLabel && description ? description : null}

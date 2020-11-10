@@ -16,7 +16,7 @@ import {
   getDefaultFormState,
   deepEquals
 } from "../../utils";
-import { CheveronIcon, RequiredInfoIcon, JsonIcon } from "../Icons";
+import { CheveronIcon, JsonIcon } from "../Icons";
 
 const cmOptions = {
   theme: "default",
@@ -157,6 +157,15 @@ function DefaultObjectFieldTemplate(props) {
               disabled={disabled}
             />
           )}
+
+          {props.required &&
+            (props.uiSchema["ui:title"] || props.title) &&
+            !props.schema.indexAsTitle && (
+              <div className={pfx("element-required")}>
+                {/* <RequiredInfoIcon /> */}
+                <span>Required</span>
+              </div>
+            )}
         </div>
 
         {canEditJson && renderViewJsonButton(props)}
@@ -185,15 +194,6 @@ function DefaultObjectFieldTemplate(props) {
           )}
         </div>
       )}
-
-      {props.required &&
-        (props.uiSchema["ui:title"] || props.title) &&
-        !props.schema.indexAsTitle && (
-          <div className={pfx("element-required")}>
-            <RequiredInfoIcon />
-            <span>Required</span>
-          </div>
-        )}
 
       {props.description && (
         <DescriptionField
