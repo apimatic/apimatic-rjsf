@@ -138,7 +138,7 @@ function DefaultObjectFieldTemplate(props) {
       id={`${props.idSchema.$id}__object`}
     >
       <div className={pfx("object-header")}>
-        <div className={pfx("header-left")} onClick={toggleCollapse}>
+        <div className={pfx("header-left hand")} onClick={toggleCollapse}>
           {(props.uiSchema["ui:title"] ||
             props.title ||
             props.schema.indexAsTitle) && (

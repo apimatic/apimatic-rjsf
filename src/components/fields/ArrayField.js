@@ -185,7 +185,7 @@ function DefaultNormalArrayFieldTemplate(props) {
   return (
     <fieldset className={pfx(props.className)}>
       <div className={pfx("object-header")}>
-        <div className={pfx("header-left")} onClick={props.toggleCollapse}>
+        <div className={pfx("header-left hand")} onClick={props.toggleCollapse}>
           <ArrayFieldTitle
             key={`array-field-title-${props.idSchema.$id}`}
             TitleField={props.TitleField}
@@ -216,7 +216,14 @@ function DefaultNormalArrayFieldTemplate(props) {
         <span>Array</span>
         {title && (
           <span>
-            &nbsp;&lt;&nbsp;<span className={pfx("object-type")}>{title}</span>
+            &nbsp;&lt;&nbsp;
+            <span className={pfx("object-type")}>
+              {props.schema.dataTypeLink ? (
+                <a href={props.schema.dataTypeLink}>{title}</a>
+              ) : (
+                title
+              )}
+            </span>
             &nbsp;&gt;
           </span>
         )}
