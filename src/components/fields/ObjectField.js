@@ -138,7 +138,7 @@ function DefaultObjectFieldTemplate(props) {
       id={`${props.idSchema.$id}__object`}
     >
       <div className={pfx("object-header")}>
-        <div className={pfx("header-left")}>
+        <div className={pfx("header-left")} onClick={toggleCollapse}>
           {(props.uiSchema["ui:title"] ||
             props.title ||
             props.schema.indexAsTitle) && (
@@ -152,7 +152,7 @@ function DefaultObjectFieldTemplate(props) {
               required={props.schema.indexAsTitle ? false : props.required}
               formContext={props.formContext}
               nullify={nullify}
-              onClick={toggleCollapse}
+              // onClick={toggleCollapse}
               onNullifyChange={onNullifyChange}
               disabled={disabled}
             />

@@ -23,6 +23,7 @@ function TitleField(props) {
             checked={nullify}
             onChange={onNullifyChange}
             disabled={disabled}
+            onClick={ev => ev.stopPropagation()}
           />{" "}
         </span>
       )}

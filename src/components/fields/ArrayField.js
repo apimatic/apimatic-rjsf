@@ -185,7 +185,7 @@ function DefaultNormalArrayFieldTemplate(props) {
   return (
     <fieldset className={pfx(props.className)}>
       <div className={pfx("object-header")}>
-        <div className={pfx("header-left")}>
+        <div className={pfx("header-left")} onClick={props.toggleCollapse}>
           <ArrayFieldTitle
             key={`array-field-title-${props.idSchema.$id}`}
             TitleField={props.TitleField}
@@ -195,7 +195,7 @@ function DefaultNormalArrayFieldTemplate(props) {
             nullify={props.nullify}
             onNullifyChange={props.onNullifyChange}
             disabled={props.disabled}
-            onClick={props.toggleCollapse}
+            // onClick={props.toggleCollapse}
           />
         </div>
 
