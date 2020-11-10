@@ -128,6 +128,10 @@ function DefaultObjectFieldTemplate(props) {
     !props.disableFormJsonEdit &&
     !props.uiSchema.disableFieldJsonEdit;
 
+  const dataType = props.schema.dataTypeDisplayText
+    ? props.schema.dataTypeDisplayText
+    : props.schema.title;
+
   return (
     <fieldset
       className={pfx(props.isEven ? "even" : "odd")}
@@ -172,8 +176,14 @@ function DefaultObjectFieldTemplate(props) {
         )}
       </div>
 
-      {props.schema.title && (
-        <div className={pfx("object-type")}>{props.schema.title}</div>
+      {dataType && (
+        <div className={pfx("object-type")}>
+          {props.schema.dataTypeLink ? (
+            <a href={props.schema.dataTypeLink}>{dataType}</a>
+          ) : (
+            dataType
+          )}
+        </div>
       )}
 
       {props.required &&

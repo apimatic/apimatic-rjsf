@@ -109,15 +109,25 @@ function DefaultTemplate(props) {
     return children;
   }
 
+  const dataType = props.schema.dataTypeDisplayText
+    ? props.schema.dataTypeDisplayText
+    : props.schema.type;
+
   return (
     <div className={pfx(classNames)}>
       {displayLabel && <Label label={label} required={required} id={id} />}
       {displayLabel &&
-        props.schema.type && (
-          <div className={pfx("base-type")}>
-            {props.schema.data_type_display_text
-              ? props.schema.data_type_display_text
-              : props.schema.type}
+        dataType && (
+          <div
+            className={pfx(
+              props.schema.dataTypeDisplayText ? "object-type" : "base-type"
+            )}
+          >
+            {props.schema.dataTypeLink ? (
+              <a href={props.schema.dataTypeLink}>{dataType}</a>
+            ) : (
+              dataType
+            )}
           </div>
         )}
       {displayLabel &&
