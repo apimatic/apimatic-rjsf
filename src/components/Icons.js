@@ -38,46 +38,47 @@ export const CloseIcon = ({ width, color }) => (
 export const DeleteIcon = ({ width, color }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={width || "17.756"}
-    height={(width || 20.5) * 17.756 / 20.5}
-    viewBox="0 0 17.756 20.5"
+    width={width || "13.267"}
+    height={(width || 13) * 13.267 / 13}
+    viewBox="0 0 13.267 13"
   >
-    <g transform="translate(0.75 0.75)">
+    <g transform="translate(0.5 0.5)">
       <path
-        d="M3,6H19.256"
-        transform="translate(-3 -2.2)"
+        d="M3,6H15.267"
+        transform="translate(-3 -3.6)"
         fill="none"
-        stroke={color || "#3E445D"}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
+        stroke={color || DEFAULT_GRAY}
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="1"
       />
       <path
-        d="M17.256,5.8V19.1A1.83,1.83,0,0,1,15.5,21H6.751A1.83,1.83,0,0,1,5,19.1V5.8m2.626,0V3.9A1.83,1.83,0,0,1,9.377,2h3.5a1.83,1.83,0,0,1,1.751,1.9V5.8"
+        d="M13.267,4.4v8.4A1.191,1.191,0,0,1,12.086,14h-5.9A1.191,1.191,0,0,1,5,12.8V4.4m1.771,0V3.2A1.191,1.191,0,0,1,7.952,2h2.362A1.191,1.191,0,0,1,11.5,3.2V4.4"
         transform="translate(-3 -2)"
         fill="none"
-        stroke={color || "#3E445D"}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
+        stroke={color || DEFAULT_GRAY}
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="1"
       />
       <line
-        y2="6"
-        transform="translate(6.322 8.357)"
+        y2="4.857"
+        transform="translate(4.77 5)"
         fill="none"
-        stroke={color || "#3E445D"}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
+        stroke={color || DEFAULT_GRAY}
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="1"
       />
       <line
-        y2="6"
-        transform="translate(9.934 8.357)"
+        x1="0.004"
+        y2="4.857"
+        transform="translate(7.496 5)"
         fill="none"
-        stroke={color || "#3E445D"}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
+        stroke={color || DEFAULT_GRAY}
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="1"
       />
     </g>
   </svg>
@@ -89,28 +90,29 @@ export const ArrowDownIcon = ({ width, color }) =>
 export const ArrowUpIcon = ({ width, color, rotate }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={width || 16.121}
-    height={(width || 15.5) * 16.121 / 15.5}
+    width={width || "12.166"}
     transform={`rotate(${rotate ? rotate : 0})`}
-    viewBox="0 0 16.121 15.5"
+    height={(width || 13.023) * 12.166 / 13.023}
+    viewBox="0 0 12.166 13.023"
   >
-    <g transform="translate(-3.939 -4.25)">
+    <g transform="translate(17.82 16.795) rotate(180)">
       <line
-        y1="14"
-        transform="translate(12 5)"
+        y2="10.712"
+        transform="translate(11.737 4.522)"
         fill="none"
-        stroke={color || "#3E445D"}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
+        stroke={color || DEFAULT_GRAY}
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="1.5"
       />
       <path
-        d="M5,12l7-7,7,7"
+        d="M15.045,12l-5.023,4.811L5,12"
+        transform="translate(1.714 -0.766)"
         fill="none"
-        stroke={color || "#3E445D"}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
+        stroke={color || DEFAULT_GRAY}
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="1.5"
       />
     </g>
   </svg>
