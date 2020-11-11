@@ -134,7 +134,7 @@ function DefaultObjectFieldTemplate(props) {
 
   return (
     <fieldset
-      className={pfx(props.isEven ? "even" : "odd")}
+      className={pfx((props.isEven ? "even" : "odd") + ` depth_${props.depth}`)}
       id={`${props.idSchema.$id}__object`}
     >
       <div className={pfx("object-header")}>
@@ -152,7 +152,6 @@ function DefaultObjectFieldTemplate(props) {
               required={props.schema.indexAsTitle ? false : props.required}
               formContext={props.formContext}
               nullify={nullify}
-              // onClick={toggleCollapse}
               onNullifyChange={onNullifyChange}
               disabled={disabled}
             />
@@ -251,6 +250,7 @@ class ObjectField extends Component {
     this.state.showEditView = false;
     this.state.collapse = true;
     this.state.isEven = props.isEven ? true : false;
+    this.state.depth = props.depth ? props.depth : 1;
     this.toggleEditView = this.toggleEditView.bind(this);
     this.toggleCollapse = this.toggleCollapse.bind(this);
   }
@@ -516,6 +516,7 @@ class ObjectField extends Component {
       collapse: this.state.collapse,
       toggleCollapse: this.toggleCollapse,
       isEven: this.state.isEven,
+      depth: this.state.depth,
       toggleEditView: this.toggleEditView,
       onJsonChange: this.onJsonChange,
       formJson: this.state.formJson,
@@ -527,6 +528,7 @@ class ObjectField extends Component {
               key={name}
               name={name}
               isEven={!this.state.isEven}
+              depth={this.state.depth + 1}
               required={this.isRequired(name)}
               schema={templateProps.schema.properties[name]}
               uiSchema={templateProps.uiSchema[name]}

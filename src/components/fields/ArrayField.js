@@ -495,6 +495,8 @@ class ArrayField extends Component {
         );
         return this.renderArrayFieldItem({
           index,
+          depth: this.props.depth,
+          isEven: this.props.isEven,
           canMoveUp: index > 0,
           canMoveDown: index < formData.length - 1,
           itemSchema: {
@@ -513,7 +515,7 @@ class ArrayField extends Component {
       }),
       className: `field field-array field-array-of-${itemsSchema.type} ${
         this.props.isEven ? "even" : "odd"
-      }`,
+      } depth_${this.props.depth}`,
       collapse: this.state.collapse,
       toggleCollapse: this.toggleCollapse,
       DescriptionField,
@@ -714,6 +716,7 @@ class ArrayField extends Component {
   renderArrayFieldItem(props) {
     const {
       index,
+      depth,
       canRemove = true,
       canMoveUp = true,
       canMoveDown = true,
@@ -749,6 +752,8 @@ class ArrayField extends Component {
       children: (
         <SchemaField
           schema={{ ...itemSchema, indexAsTitle: `[${index}]` }}
+          depth={depth + 1}
+          isEven={!this.props.isEven}
           index={index}
           uiSchema={itemUiSchema}
           formData={itemData}
