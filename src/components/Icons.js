@@ -48,27 +48,27 @@ export const DeleteIcon = ({ width, color }) => (
         transform="translate(-3 -3.6)"
         fill="none"
         stroke={color || DEFAULT_GRAY}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1"
       />
       <path
         d="M13.267,4.4v8.4A1.191,1.191,0,0,1,12.086,14h-5.9A1.191,1.191,0,0,1,5,12.8V4.4m1.771,0V3.2A1.191,1.191,0,0,1,7.952,2h2.362A1.191,1.191,0,0,1,11.5,3.2V4.4"
         transform="translate(-3 -2)"
         fill="none"
         stroke={color || DEFAULT_GRAY}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1"
       />
       <line
         y2="4.857"
         transform="translate(4.77 5)"
         fill="none"
         stroke={color || DEFAULT_GRAY}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1"
       />
       <line
         x1="0.004"
@@ -76,9 +76,9 @@ export const DeleteIcon = ({ width, color }) => (
         transform="translate(7.496 5)"
         fill="none"
         stroke={color || DEFAULT_GRAY}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1"
       />
     </g>
   </svg>
@@ -101,18 +101,18 @@ export const ArrowUpIcon = ({ width, color, rotate }) => (
         transform="translate(11.737 4.522)"
         fill="none"
         stroke={color || DEFAULT_GRAY}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
       />
       <path
         d="M15.045,12l-5.023,4.811L5,12"
         transform="translate(1.714 -0.766)"
         fill="none"
         stroke={color || DEFAULT_GRAY}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
       />
     </g>
   </svg>

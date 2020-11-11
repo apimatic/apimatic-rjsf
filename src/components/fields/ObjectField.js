@@ -250,13 +250,23 @@ class ObjectField extends Component {
     this.state.showEditView = false;
     this.state.collapse = true;
     this.state.isEven = props.isEven ? true : false;
+    this.state.expandAllLevel = props.expandAllLevel;
     this.state.depth = props.depth ? props.depth : 1;
     this.toggleEditView = this.toggleEditView.bind(this);
     this.toggleCollapse = this.toggleCollapse.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState(this.getStateFromProps(nextProps));
+    const collapse =
+      this.state.depth === this.state.expandAllLevel
+        ? !nextProps.expandAll
+        : this.state.collapse;
+    this.setState({
+      ...this.getStateFromProps({ nextProps }),
+      collapse,
+      expandAllLevel: this.state.expandAllLevel,
+      expandAll: nextProps.expandAll
+    });
   }
 
   isJsonString(str) {
@@ -517,6 +527,7 @@ class ObjectField extends Component {
       toggleCollapse: this.toggleCollapse,
       isEven: this.state.isEven,
       depth: this.state.depth,
+      expandAll: this.state.expandAll,
       toggleEditView: this.toggleEditView,
       onJsonChange: this.onJsonChange,
       formJson: this.state.formJson,
@@ -529,6 +540,8 @@ class ObjectField extends Component {
               name={name}
               isEven={!this.state.isEven}
               depth={this.state.depth + 1}
+              expandAll={this.state.expandAll}
+              expandAllLevel={this.state.expandAllLevel}
               required={this.isRequired(name)}
               schema={templateProps.schema.properties[name]}
               uiSchema={templateProps.uiSchema[name]}
