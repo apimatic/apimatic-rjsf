@@ -227,7 +227,7 @@ export default class Form extends Component {
         {uiSchema.expandAllLevel && (
           <div className={pfx("expand-all")}>
             <button onClick={this.toggleExpandAll} type="button">
-              {expandAll ? "Collapse All" : "Expand All"}
+              {expandAll ? "- Collapse all" : "+ Expand all"}
             </button>
           </div>
         )}
