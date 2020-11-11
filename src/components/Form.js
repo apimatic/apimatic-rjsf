@@ -224,7 +224,7 @@ export default class Form extends Component {
       >
         {this.renderErrors()}
 
-        {schema.expandAllLevel && (
+        {uiSchema.expandAllLevel && (
           <div className={pfx("expand-all")}>
             <button onClick={this.toggleExpandAll} type="button">
               {expandAll ? "Collapse All" : "Expand All"}
@@ -233,7 +233,7 @@ export default class Form extends Component {
         )}
         <_SchemaField
           schema={schema}
-          expandAllLevel={schema.expandAllLevel}
+          expandAllLevel={uiSchema.expandAllLevel}
           expandAll={expandAll}
           uiSchema={uiSchema}
           errorSchema={errorSchema}
