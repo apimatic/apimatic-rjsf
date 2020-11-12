@@ -74,11 +74,11 @@ function renderViewJsonButton(props) {
     formJsonError || Object.keys(errorSchema).length !== 0;
 
   return disableViewJsonButton ? (
-    <IconBtn onClick={toggleEditView}>
+    <IconBtn onClick={toggleEditView} className={pfx("btn json-button")}>
       <JsonIcon />
     </IconBtn>
   ) : (
-    <IconBtn onClick={toggleEditView}>
+    <IconBtn onClick={toggleEditView} className={pfx("btn json-button")}>
       <JsonIcon />
     </IconBtn>
   );
