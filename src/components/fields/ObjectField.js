@@ -258,7 +258,8 @@ class ObjectField extends Component {
 
   componentWillReceiveProps(nextProps) {
     const collapse =
-      this.state.depth === this.state.expandAllLevel
+      this.state.depth === this.state.expandAllLevel &&
+      this.state.expandAll !== nextProps.expandAll
         ? !nextProps.expandAll
         : this.state.collapse;
     this.setState({
