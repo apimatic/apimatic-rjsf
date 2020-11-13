@@ -17,17 +17,18 @@ function TitleField(props) {
   return (
     <legend id={id}>
       {required || !onNullifyChange ? null : (
-        <span>
+        <label onClick={ev => ev.stopPropagation()}>
           <input
             type="checkbox"
             checked={nullify}
+            className={nullify ? "checked" : "unchecked"}
             onChange={onNullifyChange}
             disabled={disabled}
-            onClick={ev => ev.stopPropagation()}
-          />{" "}
-        </span>
+          />
+          <span />
+        </label>
       )}
-      <span onClick={() => (onClick ? onClick() : null)}>{title}</span>
+      <div onClick={() => (onClick ? onClick() : null)}>{title}</div>
     </legend>
   );
 }

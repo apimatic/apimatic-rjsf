@@ -1,80 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>react-jsonschema-form playground</title>
-  <link rel="stylesheet" id="theme" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <script src="//cdn.polyfill.io/v2/polyfill.min.js"></script>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>react-jsonschema-form playground</title>
+    <link
+      rel="stylesheet"
+      id="theme"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+    />
+    <script src="//cdn.polyfill.io/v2/polyfill.min.js"></script>
 
-  <style>
-    .rjsf-object-header {
-    display: flex;
-  }
+    <style>
+      .rjsf-object-header {
+        display: flex;
+      }
 
-  .rjsf-header-left {
-    display: flex;
-    flex: 1;
-  }
+      .rjsf-header-left {
+        display: flex;
+        flex: 1;
+      }
 
-  .rjsf-element-required {
-    color: red;
-    font-size: 12px;
-    line-height: 16px;
-  }
+      .rjsf-element-required {
+        color: red;
+        font-size: 12px;
+        line-height: 16px;
+      }
 
-  .rjsf-control-label {
-    display: flex;
-  }
+      .rjsf-control-label {
+        display: flex;
+      }
 
-  .rjsf-control-label > div:first-child {
-    flex: 1;
-  }
-  /* #root__object > .rjsf-object-header {
+      .rjsf-control-label > div:first-child {
+        flex: 1;
+      }
+      /* #root__object > .rjsf-object-header {
     display: none;
   } */
 
-  fieldset {
-    border: none !important;
-    border-radius: 4px;
-  }
+      fieldset {
+        border: none !important;
+        border-radius: 4px;
+      }
 
-  fieldset.rjsf-even {
-    background-color: white;
-  }
+      fieldset.rjsf-even {
+        background-color: white;
+      }
 
-  fieldset.rjsf-odd {
-    background-color: #f5f7f9;
-  }
+      fieldset.rjsf-odd {
+        background-color: #f5f7f9;
+      }
 
-  .rjsf > div > .rjsf-odd {
-    background-color: white;
-  }
+      .rjsf > div > .rjsf-odd {
+        background-color: white;
+      }
 
-  .rjsf > div > fieldset {
-    padding: 0px;
-    margin: 0px;
-  }
+      .rjsf > div > fieldset {
+        padding: 0px;
+        margin: 0px;
+      }
 
-  .rjsf-view-json-button {
-    background-color: transparent !important;
-  }
+      .rjsf-view-json-button {
+        background-color: transparent !important;
+      }
 
-  .rjsf-toggle-button path {
-    fill: none;
-  }
-  </style>
-</head>
-<body>
-  <div id="app"></div>
-  <p style="text-align:center">
-    Powered by
-    <a href="https://github.com/mozilla-services/react-jsonschema-form">react-jsonschema-form</a>.
-    Bootstrap themes courtsesy of
-    <a href="http://bootswatch.com/">Bootswatch</a> and
-    <a href="https://github.com/aalpern/bootstrap-solarized/">bootstrap-solarized</a>.
-  </p>
-  <script src="/static/bundle.js"></script>
-</body>
+      .rjsf-toggle-button path {
+        fill: none;
+      }
+
+      legend label {
+        position: relative;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      legend label input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+      }
+
+      legend label span {
+        margin-left: 22px;
+      }
+
+      legend label span::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 14px;
+        width: 14px;
+        background-color: white;
+        border: 1px solid gray;
+        border-radius: 2px;
+      }
+
+      legend label:hover input ~ span::before {
+        /* background-color: #ccc; */
+      }
+
+      legend label input.checked ~ span::before {
+        border: none;
+        background-color: #3784f7;
+      }
+
+      legend label input.checked:hover ~ span::before {
+        background-color: #005ce6;
+      }
+
+      legend label input.checked ~ span::before {
+        border: none;
+      }
+
+      legend label span:after {
+        content: "";
+        position: absolute;
+        display: none;
+      }
+
+      legend label input.checked ~ span:after {
+        display: block;
+      }
+
+      legend label span:after {
+        left: 5px;
+        top: 1px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <p style="text-align: center">
+      Powered by
+      <a href="https://github.com/mozilla-services/react-jsonschema-form"
+        >react-jsonschema-form</a
+      >. Bootstrap themes courtsesy of
+      <a href="http://bootswatch.com/">Bootswatch</a> and
+      <a href="https://github.com/aalpern/bootstrap-solarized/"
+        >bootstrap-solarized</a
+      >.
+    </p>
+    <script src="/static/bundle.js"></script>
+  </body>
 </html>
