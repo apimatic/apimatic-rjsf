@@ -263,7 +263,7 @@ class ObjectField extends Component {
         ? !nextProps.expandAll
         : this.state.collapse;
     this.setState({
-      ...this.getStateFromProps({ nextProps }),
+      ...this.getStateFromProps(nextProps),
       collapse,
       expandAllLevel: this.state.expandAllLevel,
       expandAll: nextProps.expandAll
