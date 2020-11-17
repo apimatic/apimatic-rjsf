@@ -235,6 +235,7 @@ export default class Form extends Component {
           schema={schema}
           expandAllLevel={uiSchema.expandAllLevel}
           expandAll={expandAll}
+          levelReversal={uiSchema && uiSchema.levelReversal ? true : false}
           uiSchema={uiSchema}
           errorSchema={errorSchema}
           idSchema={idSchema}
