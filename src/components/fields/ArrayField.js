@@ -182,6 +182,11 @@ function DefaultFixedArrayFieldTemplate(props) {
 
 function DefaultNormalArrayFieldTemplate(props) {
   const title = props.schema.title || props.itemsSchema.title;
+
+  const dataType = props.schema.dataTypeDisplayText
+    ? props.schema.dataTypeDisplayText
+    : title;
+
   return (
     <fieldset className={pfx(props.className)}>
       <div className={pfx("object-header")}>
@@ -212,7 +217,7 @@ function DefaultNormalArrayFieldTemplate(props) {
         </IconBtn>
       </div>
 
-      <div className={pfx("array-type")}>
+      {/* <div className={pfx("array-type")}>
         <span>Array</span>
         {title && (
           <span>
@@ -227,7 +232,17 @@ function DefaultNormalArrayFieldTemplate(props) {
             &nbsp;&gt;
           </span>
         )}
-      </div>
+      </div> */}
+
+      {dataType && (
+        <div className={pfx("array-type")}>
+          {props.schema.dataTypeLink ? (
+            <a href={props.schema.dataTypeLink}>{dataType}</a>
+          ) : (
+            dataType
+          )}
+        </div>
+      )}
 
       {(props.uiSchema["ui:description"] ||
         props.schema.description ||
