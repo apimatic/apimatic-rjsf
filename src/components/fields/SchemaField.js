@@ -53,7 +53,7 @@ function Label(props) {
   return (
     <label className={pfx("control-label")} htmlFor={id}>
       {/* {required ? label + REQUIRED_FIELD_SYMBOL : label} */}
-      <div>{label}</div>
+      <div className="label-text">{label}</div>
     </label>
   );
 }
