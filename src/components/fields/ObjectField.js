@@ -194,6 +194,10 @@ function DefaultObjectFieldTemplate(props) {
         </div>
       )}
 
+      {props.schema.paramType && (
+        <div className={pfx("param-type")}>{props.schema.paramType}</div>
+      )}
+
       {props.description && (
         <DescriptionField
           id={`${props.idSchema.$id}__description`}

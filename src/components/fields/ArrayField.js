@@ -244,6 +244,10 @@ function DefaultNormalArrayFieldTemplate(props) {
         </div>
       )}
 
+      {props.schema.paramType && (
+        <div className={pfx("param-type")}>{props.schema.paramType}</div>
+      )}
+
       {(props.uiSchema["ui:description"] ||
         props.schema.description ||
         props.itemsSchema.description) && (
