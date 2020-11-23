@@ -139,6 +139,11 @@ function DefaultTemplate(props) {
             )}
           </div>
         )}
+
+      {displayLabel &&
+        props.schema.paramType && (
+          <div className={pfx("param-type")}>{props.schema.paramType}</div>
+        )}
       {displayLabel && description ? description : null}
       {children}
       {errors}
