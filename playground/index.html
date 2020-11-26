@@ -139,6 +139,59 @@
         -ms-transform: rotate(45deg);
         transform: rotate(45deg);
       }
+
+      .rjsf-tooltip {
+        position: relative;
+        display: none;
+      }
+      
+
+      .rjsf-json-button .rjsf-tooltip::before {
+        content: "View JSON";
+      }
+
+      .rjsf-json-button:hover .rjsf-tooltip {
+        display: block;
+      }
+
+      
+      .rjsf-json-button-disabled .rjsf-tooltip::before {
+        content: "Please fix the validation errors before closing";
+      }
+
+      .rjsf-json-button:hover .rjsf-tooltip {
+        display: block;
+      }
+
+      .rjsf-tooltip::before {
+        min-width: 120px;
+	      max-width: 210px;
+        position: absolute;
+        display: block;
+        background: rgba(0, 0, 0, 0.7);
+	      border-radius: 3px;
+	      color: #fff;
+	      font-size: 0.75rem;
+	      line-height: 1.4;
+	      padding: 0.55em;
+	      text-align: center;
+
+        bottom: calc(100% + 10px);
+	      left: 50%;
+	      transform: translateX(-50%);
+      }
+
+      .rjsf-tooltip::after {
+        content: '';
+	      position: absolute;
+	      border-left: 5px solid transparent;
+	      border-right: 5px solid transparent;
+	      border-top: 5px solid rgba(0, 0, 0, 0.7);
+	      bottom: calc(100% + 5px);
+	      left: 50%;
+	      transform: translateX(-50%);
+      }
+
     </style>
   </head>
   <body>

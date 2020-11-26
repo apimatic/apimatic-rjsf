@@ -62,6 +62,7 @@ function IconBtn(props) {
       className={pfx(`btn btn-${type}`) + " " + className}
       {...otherProps}
     >
+      <span className={pfx("tooltip")} />
       {props.children}
     </button>
   );
@@ -74,7 +75,7 @@ function renderViewJsonButton(props) {
     formJsonError || Object.keys(errorSchema).length !== 0;
 
   return disableViewJsonButton ? (
-    <IconBtn className={pfx("btn json-button")} disabled>
+    <IconBtn className={pfx("btn json-button json-button-disabled")} disabled>
       <JsonIcon />
     </IconBtn>
   ) : (
