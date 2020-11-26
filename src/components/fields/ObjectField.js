@@ -74,7 +74,7 @@ function renderViewJsonButton(props) {
     formJsonError || Object.keys(errorSchema).length !== 0;
 
   return disableViewJsonButton ? (
-    <IconBtn className={pfx("btn json-button")}>
+    <IconBtn className={pfx("btn json-button")} disabled>
       <JsonIcon />
     </IconBtn>
   ) : (
