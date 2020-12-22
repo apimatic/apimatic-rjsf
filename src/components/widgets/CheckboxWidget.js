@@ -4,6 +4,10 @@ import DescriptionField from "../fields/DescriptionField.js";
 import { prefixClass as pfx } from "../../utils";
 
 function CheckboxWidget(props) {
+  const dataType = props.schema.dataTypeDisplayText
+    ? props.schema.dataTypeDisplayText
+    : props.schema.title;
+
   const {
     schema,
     id,
@@ -17,23 +21,40 @@ function CheckboxWidget(props) {
   } = props;
   return (
     <div className={pfx(`checkbox ${disabled || readonly ? "disabled" : ""}`)}>
+      <div className={pfx(`checkbox-title`)}>
+        <label>
+          <input
+            type="checkbox"
+            id={id}
+            checked={typeof value === "undefined" ? false : value}
+            required={required}
+            className={value ? "checked" : "unchecked"}
+            disabled={disabled || readonly}
+            autoFocus={autofocus}
+            onChange={event => onChange(event.target.checked)}
+          />
+          <span />
+        </label>
+        <div>{label}</div>
+      </div>
+
+      {dataType && (
+        <div className={pfx("object-type")}>
+          {props.schema.dataTypeLink ? (
+            <a href={props.schema.dataTypeLink}>{dataType}</a>
+          ) : (
+            dataType
+          )}
+        </div>
+      )}
+
+      {props.schema.paramType && (
+        <div className={pfx("param-type")}>{props.schema.paramType}</div>
+      )}
+
       {schema.description && (
         <DescriptionField description={schema.description} />
       )}
-      <label>
-        <input
-          type="checkbox"
-          id={id}
-          checked={typeof value === "undefined" ? false : value}
-          required={required}
-          className={value ? "checked" : "unchecked"}
-          disabled={disabled || readonly}
-          autoFocus={autofocus}
-          onChange={event => onChange(event.target.checked)}
-        />
-        <span />
-      </label>
-      <div>{label}</div>
     </div>
   );
 }
