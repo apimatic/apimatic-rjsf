@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import DescriptionField from "../fields/DescriptionField.js";
 import { prefixClass as pfx } from "../../utils";
-
+import TitleField from "../fields/TitleField";
 function CheckboxWidget(props) {
   const {
     schema,
