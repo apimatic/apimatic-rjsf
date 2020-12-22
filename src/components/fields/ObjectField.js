@@ -441,6 +441,10 @@ class ObjectField extends Component {
   renderDynamic(templateProps) {
     const { TitleField, DescriptionField } = templateProps;
 
+    const dataType = templateProps.schema.dataTypeDisplayText
+      ? templateProps.schema.dataTypeDisplayText
+      : templateProps.schema.title;
+
     return (
       <fieldset>
         {(templateProps.uiSchema["ui:title"] || templateProps.title) && (
@@ -454,6 +458,23 @@ class ObjectField extends Component {
             disabled={templateProps.disabled}
           />
         )}
+
+        {dataType && (
+          <div className={pfx("object-type")}>
+            {templateProps.schema.dataTypeLink ? (
+              <a href={templateProps.schema.dataTypeLink}>{dataType}</a>
+            ) : (
+              dataType
+            )}
+          </div>
+        )}
+
+        {templateProps.schema.paramType && (
+          <div className={pfx("param-type")}>
+            {templateProps.schema.paramType}
+          </div>
+        )}
+
         {templateProps.description && (
           <DescriptionField
             id={`${templateProps.idSchema.$id}__description`}
