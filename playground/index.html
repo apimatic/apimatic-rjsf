@@ -140,6 +140,81 @@
         transform: rotate(45deg);
       }
 
+      /* TEST @ */
+      
+      .rjsf-checkbox label {
+        position: relative;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      .rjsf-checkbox label input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+      }
+
+      .rjsf-checkbox label span {
+        margin-left: 22px;
+      }
+
+      .rjsf-checkbox label span::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 14px;
+        width: 14px;
+        background-color: white;
+        border: 1px solid gray;
+        border-radius: 2px;
+      }
+
+      .rjsf-checkbox label:hover input ~ span::before {
+        /* background-color: #ccc; */
+      }
+
+      .rjsf-checkbox label input.checked ~ span::before {
+        border: none;
+        background-color: #3784f7;
+      }
+
+      .rjsf-checkbox label input.checked:hover ~ span::before {
+        background-color: #005ce6;
+      }
+
+      .rjsf-checkbox label input.checked ~ span::before {
+        border: none;
+      }
+
+      .rjsf-checkbox label span:after {
+        content: "";
+        position: absolute;
+        display: none;
+      }
+
+      .rjsf-checkbox label input.checked ~ span:after {
+        display: block;
+      }
+
+      .rjsf-checkbox label span:after {
+        left: 5px;
+        top: 1px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+      }
+
+      /* END */
+
       .rjsf-tooltip {
         position: relative;
         display: none;
