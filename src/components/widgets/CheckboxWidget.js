@@ -33,7 +33,7 @@ function CheckboxWidget(props) {
         />
         <span />
       </label>
-      <span>{label}</span>
+      <div>{label}</div>
     </div>
   );
 }
