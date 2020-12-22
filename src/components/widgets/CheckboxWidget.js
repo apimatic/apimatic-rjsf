@@ -4,10 +4,6 @@ import DescriptionField from "../fields/DescriptionField.js";
 import { prefixClass as pfx } from "../../utils";
 
 function CheckboxWidget(props) {
-  const dataType = props.schema.dataTypeDisplayText
-    ? props.schema.dataTypeDisplayText
-    : props.schema.title;
-
   const {
     schema,
     id,
@@ -17,32 +13,37 @@ function CheckboxWidget(props) {
     readonly,
     label,
     autofocus,
+    formContext,
     onChange
   } = props;
+
+  const dataType = schema.dataTypeDisplayText
+    ? schema.dataTypeDisplayText
+    : schema.title;
   return (
     <div>
-      {props.title && (
+      {label && (
         <TitleField
-          id={`${props.idSchema.$id}__title`}
-          title={props.title}
-          required={props.required}
-          formContext={props.formContext}
+          id={`${id}__title`}
+          title={label}
+          required={required}
+          formContext={formContext}
           disabled={disabled}
         />
       )}
 
       {dataType && (
         <div className={pfx("object-type")}>
-          {props.schema.dataTypeLink ? (
-            <a href={props.schema.dataTypeLink}>{dataType}</a>
+          {schema.dataTypeLink ? (
+            <a href={schema.dataTypeLink}>{dataType}</a>
           ) : (
             dataType
           )}
         </div>
       )}
 
-      {props.schema.paramType && (
-        <div className={pfx("param-type")}>{props.schema.paramType}</div>
+      {schema.paramType && (
+        <div className={pfx("param-type")}>{schema.paramType}</div>
       )}
 
       {schema.description && (
