@@ -20,23 +20,16 @@ function CheckboxWidget(props) {
     onChange
   } = props;
   return (
-    <div className={pfx(`checkbox ${disabled || readonly ? "disabled" : ""}`)}>
-      <div className={pfx(`checkbox-title`)}>
-        <label>
-          <input
-            type="checkbox"
-            id={id}
-            checked={typeof value === "undefined" ? false : value}
-            required={required}
-            className={value ? "checked" : "unchecked"}
-            disabled={disabled || readonly}
-            autoFocus={autofocus}
-            onChange={event => onChange(event.target.checked)}
-          />
-          <span />
-        </label>
-        <div>{label}</div>
-      </div>
+    <div>
+      {props.title && (
+        <TitleField
+          id={`${props.idSchema.$id}__title`}
+          title={props.title}
+          required={props.required}
+          formContext={props.formContext}
+          disabled={disabled}
+        />
+      )}
 
       {dataType && (
         <div className={pfx("object-type")}>
@@ -55,6 +48,27 @@ function CheckboxWidget(props) {
       {schema.description && (
         <DescriptionField description={schema.description} />
       )}
+
+      <div
+        className={pfx(`checkbox ${disabled || readonly ? "disabled" : ""}`)}
+      >
+        <div className={pfx(`checkbox-title`)}>
+          <label>
+            <input
+              type="checkbox"
+              id={id}
+              checked={typeof value === "undefined" ? false : value}
+              required={required}
+              className={value ? "checked" : "unchecked"}
+              disabled={disabled || readonly}
+              autoFocus={autofocus}
+              onChange={event => onChange(event.target.checked)}
+            />
+            <span />
+          </label>
+          <div>{label}</div>
+        </div>
+      </div>
     </div>
   );
 }
