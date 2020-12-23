@@ -4,6 +4,7 @@ import MapField from "./MapField";
 import { prefixClass as pfx } from "../../utils";
 import { toErrorList } from "../../validate";
 import CodeMirror from "react-codemirror2";
+import DataType from "../fields/DataType";
 import "codemirror/mode/javascript/javascript";
 
 // import "codemirror/lib/codemirror.css";
