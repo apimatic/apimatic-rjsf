@@ -234,7 +234,7 @@ function DefaultNormalArrayFieldTemplate(props) {
         )}
       </div> */}
 
-      {dataType && (
+      {/* {dataType && (
         <div className={pfx("array-type")}>
           {props.schema.dataTypeLink ? (
             <a href={props.schema.dataTypeLink}>{dataType}</a>
@@ -242,7 +242,13 @@ function DefaultNormalArrayFieldTemplate(props) {
             dataType
           )}
         </div>
-      )}
+      )} */}
+
+      <DataType
+        title={dataType}
+        link={props.schema.dataTypeLink}
+        type="array-type"
+      />
 
       {props.schema.paramType && (
         <div className={pfx("param-type")}>{props.schema.paramType}</div>

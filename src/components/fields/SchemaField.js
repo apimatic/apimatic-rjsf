@@ -125,20 +125,28 @@ function DefaultTemplate(props) {
           )}
         </div>
       )}
-      {displayLabel &&
-        dataType && (
-          <div
-            className={pfx(
-              props.schema.dataTypeDisplayText ? "object-type" : "base-type"
-            )}
-          >
-            {props.schema.dataTypeLink ? (
-              <a href={props.schema.dataTypeLink}>{dataType}</a>
-            ) : (
-              dataType
-            )}
-          </div>
-        )}
+      {displayLabel && (
+        <DataType
+          title={dataType}
+          link={props.schema.dataTypeLink}
+          type="schema"
+        />
+      )
+
+      // dataType && (
+      //   <div
+      //     className={pfx(
+      //       props.schema.dataTypeDisplayText ? "object-type" : "base-type"
+      //     )}
+      //   >
+      //     {props.schema.dataTypeLink ? (
+      //       <a href={props.schema.dataTypeLink}>{dataType}</a>
+      //     ) : (
+      //       dataType
+      //     )}
+      //   </div>
+      // )
+      }
 
       {displayLabel &&
         props.schema.paramType && (

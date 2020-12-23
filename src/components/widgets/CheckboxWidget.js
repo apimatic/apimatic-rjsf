@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import DescriptionField from "../fields/DescriptionField.js";
 import { prefixClass as pfx } from "../../utils";
 import TitleField from "../fields/TitleField";
+import DataType from "../fields/DataType";
 function CheckboxWidget(props) {
   const {
     schema,
@@ -32,15 +33,7 @@ function CheckboxWidget(props) {
         />
       )}
 
-      {dataType && (
-        <div className={pfx("object-type")}>
-          {schema.dataTypeLink ? (
-            <a href={schema.dataTypeLink}>{dataType}</a>
-          ) : (
-            dataType
-          )}
-        </div>
-      )}
+      <DataType title={dataType} link={schema.dataTypeLink} type="schema" />
 
       {schema.paramType && (
         <div className={pfx("param-type")}>{schema.paramType}</div>

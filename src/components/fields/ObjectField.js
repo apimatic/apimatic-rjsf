@@ -185,7 +185,7 @@ function DefaultObjectFieldTemplate(props) {
         )}
       </div>
 
-      {dataType && (
+      {/* {dataType && (
         <div className={pfx("object-type")}>
           {props.schema.dataTypeLink ? (
             <a href={props.schema.dataTypeLink}>{dataType}</a>
@@ -193,7 +193,13 @@ function DefaultObjectFieldTemplate(props) {
             dataType
           )}
         </div>
-      )}
+      )} */}
+
+      <DataType
+        title={dataType}
+        link={props.schema.dataTypeLink}
+        type="object-type"
+      />
 
       {props.schema.paramType && (
         <div className={pfx("param-type")}>{props.schema.paramType}</div>
@@ -459,7 +465,7 @@ class ObjectField extends Component {
           />
         )}
 
-        {dataType && (
+        {/* {dataType && (
           <div className={pfx("object-type")}>
             {templateProps.schema.dataTypeLink ? (
               <a href={templateProps.schema.dataTypeLink}>{dataType}</a>
@@ -467,7 +473,13 @@ class ObjectField extends Component {
               dataType
             )}
           </div>
-        )}
+        )} */}
+
+        <DataType
+          title={dataType}
+          link={templateProps.schema.dataTypeLink}
+          type="object-type"
+        />
 
         {templateProps.schema.paramType && (
           <div className={pfx("param-type")}>
