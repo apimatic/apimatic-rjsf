@@ -3,16 +3,19 @@ import PropTypes from "prop-types";
 import { prefixClass as pfx } from "../../utils";
 function DataType(props) {
   const { title, link, type } = props;
+
+  if (!title) {
+    // See #312: Ensure compatibility with old versions of React.
+    return <div />;
+  }
   return (
-    title && (
-      <div
-        className={pfx(
-          type !== "schema" ? type : link ? "object-type" : "base-type"
-        )}
-      >
-        {link ? <a href={link}>{title}</a> : title}
-      </div>
-    )
+    <div
+      className={pfx(
+        type !== "schema" ? type : link ? "object-type" : "base-type"
+      )}
+    >
+      {link ? <a href={link}>{title}</a> : title}
+    </div>
   );
 }
 
