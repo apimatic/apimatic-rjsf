@@ -811,11 +811,11 @@ class ArrayField extends Component {
 
 function AddButton({ onClick, disabled }) {
   return (
-    <div className={pfx("row")}>
-      <p className={pfx("col-xs-3 col-xs-offset-9 array-item-add text-right")}>
+    <div>
+      <p className={pfx("array-item-add text-right")}>
         <IconBtn
           type="info"
-          className={pfx("btn-add col-xs-12")}
+          className={pfx("btn-add")}
           tabIndex="0"
           onClick={onClick}
           disabled={disabled}
