@@ -74,18 +74,22 @@ function DefaultArrayItem(props) {
     paddingRight: 6,
     fontWeight: "bold"
   };
+  const arrayItemWrapper = {
+    display: "flex",
+    flexDirection: "column"
+  };
   return (
-    <div key={props.index} className={pfx(props.className)}>
-      <div className={pfx(props.hasToolbar ? "col-xs-9" : "col-xs-12")}>
-        {props.children}
-      </div>
-
+    <div
+      key={props.index}
+      className={pfx(`array-item-wrapper ${props.className}`)}
+      style={arrayItemWrapper}
+    >
       {props.hasToolbar && (
-        <div className={pfx("col-xs-3 array-item-toolbox")}>
-          <div
-            className={pfx("btn-group")}
-            style={{ display: "flex", justifyContent: "space-around" }}
-          >
+        <div
+          className={pfx(" array-item-toolbox")}
+          style={{ display: "flex", justifyContent: "flex-end" }}
+        >
+          <div className={pfx(" btn-group")}>
             {(props.hasMoveUp || props.hasMoveDown) && (
               <IconBtn
                 className={pfx("array-item-move-up")}
@@ -127,6 +131,7 @@ function DefaultArrayItem(props) {
           </div>
         </div>
       )}
+      <div>{props.children}</div>
     </div>
   );
 }
@@ -728,6 +733,7 @@ function AddButton({ onClick, disabled }) {
           disabled={disabled}
         >
           <PlusIcon width={14} />
+          Add New
         </IconBtn>
       </p>
     </div>

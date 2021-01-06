@@ -485,6 +485,7 @@ function AddButton({ onClick, disabled }) {
           disabled={disabled}
         >
           <PlusIcon width={14} />
+          Add New
         </IconBtn>
       </p>
     </div>
