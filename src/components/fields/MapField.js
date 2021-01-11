@@ -8,7 +8,7 @@ import {
   retrieveSchema,
   toIdSchema
 } from "../../utils";
-import { CloseIcon, PlusIcon } from "../Icons";
+import { CloseIcon } from "../Icons";
 
 function MapFieldTitle({
   TitleField,
@@ -69,8 +69,22 @@ function DefaultMapItem(props) {
     fontWeight: "bold"
   };
   return (
-    <div key={props.index} className={pfx(props.className)}>
-      <div className={pfx("col-xs-3")}>
+    <div className={pfx("row")}>
+      {props.index > 0 && (
+        <div
+          className="divider"
+          style={{ borderTop: "1px solid #e2e5e7", margin: "30px 0" }}
+        />
+      )}
+
+      <div
+        className={pfx("col-xs-12")}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between"
+        }}
+      >
         <input
           type="text"
           className={pfx("form-control")}
@@ -78,30 +92,36 @@ function DefaultMapItem(props) {
           value={props.key}
           required
         />
+        {props.hasToolbar &&
+          props.hasRemove && (
+            <div className={pfx("col-xs-1 map-item-toolbox")}>
+              <IconBtn
+                type="danger"
+                className={pfx("map-item-remove")}
+                tabIndex="-1"
+                style={btnStyle}
+                disabled={props.disabled || props.readonly}
+                onClick={props.onDropKeyClick}
+              >
+                <CloseIcon width={14} />
+              </IconBtn>
+            </div>
+          )}
       </div>
-      <div
-        className={pfx(
-          props.hasToolbar && props.hasRemove ? "col-xs-8" : "col-xs-9"
-        )}
-      >
-        {props.children}
-      </div>
-
-      {props.hasToolbar &&
-        props.hasRemove && (
-          <div className={pfx("col-xs-1 map-item-toolbox")}>
-            <IconBtn
-              type="danger"
-              className={pfx("map-item-remove")}
-              tabIndex="-1"
-              style={btnStyle}
-              disabled={props.disabled || props.readonly}
-              onClick={props.onDropKeyClick}
-            >
-              <CloseIcon width={14} />
-            </IconBtn>
+      <div key={props.index} className={pfx(props.className)}>
+        <div className={pfx("col-xs-12 flex")} style={{ display: "flex" }}>
+          <div
+            className={pfx(
+              `flex-1 ${
+                props.hasToolbar && props.hasRemove ? "col-xs-8" : "col-xs-9"
+              }`
+            )}
+            style={{ flex: "1" }}
+          >
+            {props.children}
           </div>
-        )}
+        </div>
+      </div>
     </div>
   );
 }
@@ -484,8 +504,8 @@ function AddButton({ onClick, disabled }) {
           onClick={onClick}
           disabled={disabled}
         >
-          <PlusIcon width={14} />
-          Add New
+          {/* <PlusIcon width={14} /> */}
+          Add Property
         </IconBtn>
       </p>
     </div>
