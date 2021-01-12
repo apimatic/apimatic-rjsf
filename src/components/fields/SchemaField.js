@@ -8,7 +8,8 @@ import {
   getUiOptions,
   isFilesArray,
   deepEquals,
-  prefixClass as pfx
+  prefixClass as pfx,
+  getSchemaType
 } from "../../utils";
 import UnsupportedField from "./UnsupportedField";
 
@@ -30,7 +31,8 @@ function getFieldComponent(schema, uiSchema, idSchema, fields) {
   if (typeof field === "string" && field in fields) {
     return fields[field];
   }
-  const componentName = COMPONENT_TYPES[schema.type];
+
+  const componentName = COMPONENT_TYPES[getSchemaType(schema)];
   return componentName in fields
     ? fields[componentName]
     : () => {
@@ -51,8 +53,9 @@ function Label(props) {
     return <div />;
   }
   return (
-    <label className={pfx("control-label")} htmlFor={id}>
-      {required ? label + REQUIRED_FIELD_SYMBOL : label}
+    <label className="control-label" htmlFor={id}>
+      {label}
+      {required && <span className="required">{REQUIRED_FIELD_SYMBOL}</span>}
     </label>
   );
 }

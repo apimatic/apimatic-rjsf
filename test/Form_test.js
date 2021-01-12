@@ -44,6 +44,30 @@ describe("Form", () => {
     });
   });
 
+  describe("Option idPrefix", function() {
+    it("should change the rendered ids", function() {
+      const schema = {
+        type: "object",
+        title: "root object",
+        required: ["foo"],
+        properties: {
+          count: {
+            type: "number"
+          }
+        }
+      };
+      const comp = renderIntoDocument(<Form schema={schema} idPrefix="rjsf" />);
+      const node = findDOMNode(comp);
+      const inputs = node.querySelectorAll("input");
+      const ids = [];
+      for (var i = 0, len = inputs.length; i < len; i++) {
+        const input = inputs[i];
+        ids.push(input.getAttribute("id"));
+      }
+      expect(ids).to.eql(["rjsf_count"]);
+    });
+  });
+
   describe("Custom field template", () => {
     const schema = {
       type: "object",
@@ -1258,6 +1282,102 @@ describe("Form", () => {
       });
 
       expect(comp.state.formData).eql({ foo: "foo", baz: "baz" });
+    });
+  });
+
+  describe("idSchema updates based on formData", () => {
+    const schema = {
+      type: "object",
+      properties: {
+        a: { type: "string", enum: ["int", "bool"] }
+      },
+      dependencies: {
+        a: {
+          oneOf: [
+            {
+              properties: {
+                a: { enum: ["int"] }
+              }
+            },
+            {
+              properties: {
+                a: { enum: ["bool"] },
+                b: { type: "boolean" }
+              }
+            }
+          ]
+        }
+      }
+    };
+
+    it("should not update idSchema for a falsey value", () => {
+      const formData = { a: "int" };
+      const { comp } = createFormComponent({ schema, formData });
+      comp.componentWillReceiveProps({
+        schema: {
+          type: "object",
+          properties: {
+            a: { type: "string", enum: ["int", "bool"] }
+          },
+          dependencies: {
+            a: {
+              oneOf: [
+                {
+                  properties: {
+                    a: { enum: ["int"] }
+                  }
+                },
+                {
+                  properties: {
+                    a: { enum: ["bool"] },
+                    b: { type: "boolean" }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        formData: { a: "int" }
+      });
+      expect(comp.state.idSchema).eql({ $id: "root", a: { $id: "root_a" } });
+    });
+
+    it("should update idSchema based on truthy value", () => {
+      const formData = {
+        a: "int"
+      };
+      const { comp } = createFormComponent({ schema, formData });
+      comp.componentWillReceiveProps({
+        schema: {
+          type: "object",
+          properties: {
+            a: { type: "string", enum: ["int", "bool"] }
+          },
+          dependencies: {
+            a: {
+              oneOf: [
+                {
+                  properties: {
+                    a: { enum: ["int"] }
+                  }
+                },
+                {
+                  properties: {
+                    a: { enum: ["bool"] },
+                    b: { type: "boolean" }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        formData: { a: "bool" }
+      });
+      expect(comp.state.idSchema).eql({
+        $id: "root",
+        a: { $id: "root_a" },
+        b: { $id: "root_b" }
+      });
     });
   });
 

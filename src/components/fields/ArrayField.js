@@ -429,7 +429,8 @@ class ArrayField extends Component {
       registry = getDefaultRegistry(),
       formContext,
       onBlur,
-      onFocus
+      onFocus,
+      idPrefix
     } = this.props;
     const { ArrayFieldTemplate, definitions, fields } = registry;
     const { TitleField, DescriptionField } = fields;
@@ -450,7 +451,8 @@ class ArrayField extends Component {
           itemSchema,
           itemIdPrefix,
           definitions,
-          item
+          item,
+          idPrefix
         );
         return this.renderArrayFieldItem({
           index,
@@ -579,6 +581,7 @@ class ArrayField extends Component {
       uiSchema,
       formData,
       errorSchema,
+      idPrefix,
       idSchema,
       name,
       required,
@@ -626,7 +629,8 @@ class ArrayField extends Component {
           itemSchema,
           itemIdPrefix,
           definitions,
-          item
+          item,
+          idPrefix
         );
         const itemUiSchema = additional
           ? uiSchema.additionalItems || {}

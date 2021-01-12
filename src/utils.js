@@ -62,8 +62,16 @@ export function getDefaultRegistry() {
   };
 }
 
+export function getSchemaType(schema) {
+  let { type } = schema;
+  if (!type && schema.enum) {
+    type = "string";
+  }
+  return type;
+}
+
 export function getWidget(schema, widget, registeredWidgets = {}) {
-  const { type } = schema;
+  const type = getSchemaType(schema);
 
   function mergeOptions(Widget) {
     // cache return value as property of widget for proper react reconciliation
@@ -71,7 +79,13 @@ export function getWidget(schema, widget, registeredWidgets = {}) {
       const defaultOptions =
         (Widget.defaultProps && Widget.defaultProps.options) || {};
       Widget.MergedWidget = ({ options = {}, ...props }) => (
-        <Widget options={{ ...defaultOptions, ...options }} {...props} />
+        <Widget
+          options={{
+            ...defaultOptions,
+            ...options
+          }}
+          {...props}
+        />
       );
     }
     return Widget.MergedWidget;
@@ -199,9 +213,15 @@ export function getUiOptions(uiSchema) {
         };
       }
       if (key === "ui:options" && isObject(value)) {
-        return { ...options, ...value };
+        return {
+          ...options,
+          ...value
+        };
       }
-      return { ...options, [key.substring(3)]: value };
+      return {
+        ...options,
+        [key.substring(3)]: value
+      };
     }, {});
 }
 
@@ -361,14 +381,20 @@ export function optionsList(schema) {
   if (schema.enum) {
     return schema.enum.map((value, i) => {
       const label = (schema.enumNames && schema.enumNames[i]) || String(value);
-      return { label, value };
+      return {
+        label,
+        value
+      };
     });
   } else {
     const altSchemas = schema.oneOf || schema.anyOf;
     return altSchemas.map((schema, i) => {
       const value = toConstant(schema);
       const label = schema.title || String(value);
-      return { label, value };
+      return {
+        label,
+        value
+      };
     });
   }
 }
@@ -403,7 +429,10 @@ export function retrieveSchema(schema, definitions = {}, formData = {}) {
     const { $ref, ...localSchema } = schema;
     // Update referenced schema definition with local schema properties.
     return retrieveSchema(
-      { ...$refSchema, ...localSchema },
+      {
+        ...$refSchema,
+        ...localSchema
+      },
       definitions,
       formData
     );
@@ -448,7 +477,10 @@ function withDependentProperties(schema, additionallyRequired) {
   const required = Array.isArray(schema.required)
     ? Array.from(new Set([...schema.required, ...additionallyRequired]))
     : additionallyRequired;
-  return { ...schema, required: required };
+  return {
+    ...schema,
+    required: required
+  };
 }
 
 function withDependentSchema(
@@ -514,7 +546,10 @@ function withExactlyOneSubschema(
     [dependencyKey]: conditionPropertySchema,
     ...dependentSubschema
   } = subschema.properties;
-  const dependentSchema = { ...subschema, properties: dependentSubschema };
+  const dependentSchema = {
+    ...subschema,
+    properties: dependentSubschema
+  };
   return mergeSchemas(
     schema,
     retrieveSchema(dependentSchema, definitions, formData)
@@ -611,16 +646,22 @@ export function shouldRender(comp, nextProps, nextState) {
   return !deepEquals(props, nextProps) || !deepEquals(state, nextState);
 }
 
-export function toIdSchema(schema, id, definitions, formData = {}) {
+export function toIdSchema(
+  schema,
+  id,
+  definitions,
+  formData = {},
+  idPrefix = "root"
+) {
   const idSchema = {
-    $id: id || "root"
+    $id: id || idPrefix
   };
   if ("$ref" in schema) {
     const _schema = retrieveSchema(schema, definitions, formData);
-    return toIdSchema(_schema, id, definitions, formData);
+    return toIdSchema(_schema, id, definitions, formData, idPrefix);
   }
   if ("items" in schema && !schema.items.$ref) {
-    return toIdSchema(schema.items, id, definitions, formData);
+    return toIdSchema(schema.items, id, definitions, formData, idPrefix);
   }
   if (schema.type !== "object") {
     return idSchema;
@@ -628,7 +669,13 @@ export function toIdSchema(schema, id, definitions, formData = {}) {
   for (const name in schema.properties || {}) {
     const field = schema.properties[name];
     const fieldId = idSchema.$id + "_" + name;
-    idSchema[name] = toIdSchema(field, fieldId, definitions, formData[name]);
+    idSchema[name] = toIdSchema(
+      field,
+      fieldId,
+      definitions,
+      formData[name],
+      idPrefix
+    );
   }
   return idSchema;
 }
@@ -713,9 +760,14 @@ export function dataURItoBlob(dataURI) {
     array.push(binary.charCodeAt(i));
   }
   // Create the blob object
-  const blob = new window.Blob([new Uint8Array(array)], { type });
+  const blob = new window.Blob([new Uint8Array(array)], {
+    type
+  });
 
-  return { blob, name };
+  return {
+    blob,
+    name
+  };
 }
 
 export function rangeSpec(schema) {
