@@ -6,7 +6,6 @@ function EmailWidget(props) {
   return <BaseInput type="email" {...props} />;
 }
 
-/* istanbul ignore else */
 if (process.env.NODE_ENV !== "production") {
   EmailWidget.propTypes = {
     value: PropTypes.string

@@ -1,22 +1,29 @@
 import React from "react";
 import PropTypes from "prop-types";
-import DescriptionField from "../fields/DescriptionField.js";
-import { prefixClass as pfx } from "../../utils";
+import { schemaRequiresTrueValue } from "../../utils";
 
 function CheckboxWidget(props) {
   const {
     schema,
     id,
     value,
-    required,
     disabled,
     readonly,
     label,
     autofocus,
-    onChange
+    onBlur,
+    onFocus,
+    onChange,
+    DescriptionField
   } = props;
+
+  // Because an unchecked checkbox will cause html5 validation to fail, only add
+  // the "required" attribute if the field value must be "true", due to the
+  // "const" or "enum" keywords
+  const required = schemaRequiresTrueValue(schema);
+
   return (
-    <div className={pfx(`checkbox ${disabled || readonly ? "disabled" : ""}`)}>
+    <div className={`checkbox ${disabled || readonly ? "disabled" : ""}`}>
       {schema.description && (
         <DescriptionField description={schema.description} />
       )}
@@ -29,6 +36,8 @@ function CheckboxWidget(props) {
           disabled={disabled || readonly}
           autoFocus={autofocus}
           onChange={event => onChange(event.target.checked)}
+          onBlur={onBlur && (event => onBlur(id, event.target.checked))}
+          onFocus={onFocus && (event => onFocus(id, event.target.checked))}
         />
         <span>{label}</span>
       </label>
@@ -40,7 +49,6 @@ CheckboxWidget.defaultProps = {
   autofocus: false
 };
 
-/* istanbul ignore else */
 if (process.env.NODE_ENV !== "production") {
   CheckboxWidget.propTypes = {
     schema: PropTypes.object.isRequired,

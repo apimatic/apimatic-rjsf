@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { prefixClass as pfx } from "../../utils";
 
 function selectValue(value, selected, all) {
   const at = all.indexOf(value);
@@ -16,19 +15,22 @@ function deselectValue(value, selected) {
 
 function CheckboxesWidget(props) {
   const { id, disabled, options, value, autofocus, readonly, onChange } = props;
-  const { enumOptions, inline } = options;
+  const { enumOptions, enumDisabled, inline } = options;
   return (
-    <div className={pfx("checkboxes")} id={id}>
+    <div className="checkboxes" id={id}>
       {enumOptions.map((option, index) => {
         const checked = value.indexOf(option.value) !== -1;
-        const disabledCls = disabled || readonly ? "disabled" : "";
+        const itemDisabled =
+          enumDisabled && enumDisabled.indexOf(option.value) != -1;
+        const disabledCls =
+          disabled || itemDisabled || readonly ? "disabled" : "";
         const checkbox = (
           <span>
             <input
               type="checkbox"
               id={`${id}_${index}`}
               checked={checked}
-              disabled={disabled || readonly}
+              disabled={disabled || itemDisabled || readonly}
               autoFocus={autofocus && index === 0}
               onChange={event => {
                 const all = enumOptions.map(({ value }) => value);
@@ -43,11 +45,11 @@ function CheckboxesWidget(props) {
           </span>
         );
         return inline ? (
-          <label key={index} className={pfx(`checkbox-inline ${disabledCls}`)}>
+          <label key={index} className={`checkbox-inline ${disabledCls}`}>
             {checkbox}
           </label>
         ) : (
-          <div key={index} className={pfx(`checkbox ${disabledCls}`)}>
+          <div key={index} className={`checkbox ${disabledCls}`}>
             <label>{checkbox}</label>
           </div>
         );
@@ -63,7 +65,6 @@ CheckboxesWidget.defaultProps = {
   }
 };
 
-/* istanbul ignore else */
 if (process.env.NODE_ENV !== "production") {
   CheckboxesWidget.propTypes = {
     schema: PropTypes.object.isRequired,

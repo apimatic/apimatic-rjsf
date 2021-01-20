@@ -1,13 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import {
-  shouldRender,
-  parseDateString,
-  toDateString,
-  pad,
-  prefixClass as pfx
-} from "../../utils";
+import { shouldRender, parseDateString, toDateString, pad } from "../../utils";
 
 function rangeOptions(start, stop) {
   let options = [];
@@ -40,7 +34,7 @@ function DateElement(props) {
     <SelectWidget
       schema={{ type: "integer" }}
       id={id}
-      className={pfx("form-control")}
+      className="form-control"
       options={{ enumOptions: rangeOptions(range[0], range[1]) }}
       placeholder={type}
       value={value}
@@ -58,7 +52,10 @@ class AltDateWidget extends Component {
     time: false,
     disabled: false,
     readonly: false,
-    autofocus: false
+    autofocus: false,
+    options: {
+      yearsRange: [1900, new Date().getFullYear() + 2]
+    }
   };
 
   constructor(props) {
@@ -66,7 +63,7 @@ class AltDateWidget extends Component {
     this.state = parseDateString(props.value, props.time);
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState(parseDateString(nextProps.value, nextProps.time));
   }
 
@@ -106,10 +103,14 @@ class AltDateWidget extends Component {
   };
 
   get dateElementProps() {
-    const { time } = this.props;
+    const { time, options } = this.props;
     const { year, month, day, hour, minute, second } = this.state;
     const data = [
-      { type: "year", range: [1900, 2020], value: year },
+      {
+        type: "year",
+        range: options.yearsRange,
+        value: year
+      },
       { type: "month", range: [1, 12], value: month },
       { type: "day", range: [1, 31], value: day }
     ];
@@ -124,9 +125,17 @@ class AltDateWidget extends Component {
   }
 
   render() {
-    const { id, disabled, readonly, autofocus, registry, onBlur } = this.props;
+    const {
+      id,
+      disabled,
+      readonly,
+      autofocus,
+      registry,
+      onBlur,
+      options
+    } = this.props;
     return (
-      <ul className={pfx("list-inline")}>
+      <ul className="list-inline">
         {this.dateElementProps.map((elemProps, i) => (
           <li key={i}>
             <DateElement
@@ -141,30 +150,33 @@ class AltDateWidget extends Component {
             />
           </li>
         ))}
-        <li>
-          <a
-            href="#"
-            className={pfx("btn btn-info btn-now")}
-            onClick={this.setNow}
-          >
-            Now
-          </a>
-        </li>
-        <li>
-          <a
-            href="#"
-            className={pfx("btn btn-warning btn-clear")}
-            onClick={this.clear}
-          >
-            Clear
-          </a>
-        </li>
+        {(options.hideNowButton !== "undefined"
+          ? !options.hideNowButton
+          : true) && (
+          <li>
+            <a href="#" className="btn btn-info btn-now" onClick={this.setNow}>
+              Now
+            </a>
+          </li>
+        )}
+        {(options.hideClearButton !== "undefined"
+          ? !options.hideClearButton
+          : true) && (
+          <li>
+            <a
+              href="#"
+              className="btn btn-warning btn-clear"
+              onClick={this.clear}
+            >
+              Clear
+            </a>
+          </li>
+        )}
       </ul>
     );
   }
 }
 
-/* istanbul ignore else */
 if (process.env.NODE_ENV !== "production") {
   AltDateWidget.propTypes = {
     schema: PropTypes.object.isRequired,
@@ -176,7 +188,8 @@ if (process.env.NODE_ENV !== "production") {
     autofocus: PropTypes.bool,
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
-    time: PropTypes.bool
+    time: PropTypes.bool,
+    options: PropTypes.object
   };
 }
 

@@ -1,21 +1,17 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import {
-  dataURItoBlob,
-  shouldRender,
-  setState,
-  prefixClass as pfx
-} from "../../utils";
+import { dataURItoBlob, shouldRender } from "../../utils";
 
 function addNameToDataURL(dataURL, name) {
-  return dataURL.replace(";base64", `;name=${name};base64`);
+  return dataURL.replace(";base64", `;name=${encodeURIComponent(name)};base64`);
 }
 
 function processFile(file) {
   const { name, size, type } = file;
   return new Promise((resolve, reject) => {
     const reader = new window.FileReader();
+    reader.onerror = reject;
     reader.onload = event => {
       resolve({
         dataURL: addNameToDataURL(event.target.result, name),
@@ -38,7 +34,7 @@ function FilesInfo(props) {
     return null;
   }
   return (
-    <ul className={pfx("file-info")}>
+    <ul className="file-info">
       {filesInfo.map((fileInfo, key) => {
         const { name, size, type } = fileInfo;
         return (
@@ -65,10 +61,6 @@ function extractFileInfo(dataURLs) {
 }
 
 class FileWidget extends Component {
-  defaultProps = {
-    multiple: false
-  };
-
   constructor(props) {
     super(props);
     const { value } = props;
@@ -87,7 +79,7 @@ class FileWidget extends Component {
         values: filesInfo.map(fileInfo => fileInfo.dataURL),
         filesInfo
       };
-      setState(this, state, () => {
+      this.setState(state, () => {
         if (multiple) {
           onChange(state.values);
         } else {
@@ -98,7 +90,7 @@ class FileWidget extends Component {
   };
 
   render() {
-    const { multiple, id, readonly, disabled, autofocus } = this.props;
+    const { multiple, id, readonly, disabled, autofocus, options } = this.props;
     const { filesInfo } = this.state;
     return (
       <div>
@@ -112,6 +104,7 @@ class FileWidget extends Component {
             defaultValue=""
             autoFocus={autofocus}
             multiple={multiple}
+            accept={options.accept}
           />
         </p>
         <FilesInfo filesInfo={filesInfo} />
@@ -124,7 +117,6 @@ FileWidget.defaultProps = {
   autofocus: false
 };
 
-/* istanbul ignore else */
 if (process.env.NODE_ENV !== "production") {
   FileWidget.propTypes = {
     multiple: PropTypes.bool,

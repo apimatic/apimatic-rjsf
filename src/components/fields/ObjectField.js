@@ -1,112 +1,25 @@
+import AddButton from "../AddButton";
 import React, { Component } from "react";
-import PropTypes from "prop-types";
-import MapField from "./MapField";
-import { prefixClass as pfx } from "../../utils";
-import { toErrorList } from "../../validate";
-import CodeMirror from "react-codemirror2";
-import "codemirror/mode/javascript/javascript";
-
-// import "codemirror/lib/codemirror.css";
+import * as types from "../../types";
 
 import {
   orderProperties,
   retrieveSchema,
   getDefaultRegistry,
-  getDefaultFormState,
-  deepEquals
+  canExpand,
+  ADDITIONAL_PROPERTY_FLAG
 } from "../../utils";
 
-const cmOptions = {
-  theme: "default",
-  height: "auto",
-  viewportMargin: Infinity,
-  mode: {
-    name: "javascript",
-    json: true,
-    statementIndent: 2
-  },
-  lineNumbers: true,
-  lineWrapping: true,
-  indentWithTabs: false,
-  tabSize: 2
-};
-
-const viewJsonButtonStyle = {
-  color: "#2C6EFA",
-  fontSize: "12px",
-  cursor: "pointer",
-  background: "#fff",
-  border: "none",
-  float: "right"
-};
-
-const viewJsonButtonWrapper = {
-  height: "17px",
-  marginBottom: "10px"
-};
-
-function renderErrorSchema(errorSchema) {
-  let errorList = toErrorList(errorSchema);
-  return (
-    <ul>{errorList.map((key, index) => <li key={index}>{key.stack}</li>)}</ul>
-  );
-}
-
-function renderViewJsonButton(props) {
-  let { formJsonError, errorSchema, toggleEditView, showEditView } = props;
-  let disableViewJsonButton =
-    formJsonError || Object.keys(errorSchema).length !== 0;
-
-  return (
-    <div style={viewJsonButtonWrapper}>
-      {disableViewJsonButton ? (
-        <button
-          className={pfx("view-json-button")}
-          style={viewJsonButtonStyle}
-          disabled
-        >
-          {showEditView ? "View Form" : "View JSON"}
-        </button>
-      ) : (
-        <button
-          className={pfx("view-json-button")}
-          style={viewJsonButtonStyle}
-          onClick={toggleEditView}
-        >
-          {showEditView ? "View Form" : "View JSON"}
-        </button>
-      )}
-    </div>
-  );
-}
-
 function DefaultObjectFieldTemplate(props) {
-  const {
-    TitleField,
-    DescriptionField,
-    nullify,
-    onNullifyChange,
-    disabled
-  } = props;
-
-  let canEditJson =
-    nullify &&
-    !props.disableFormJsonEdit &&
-    !props.uiSchema.disableFieldJsonEdit;
-
+  const { TitleField, DescriptionField } = props;
   return (
-    <fieldset>
-      {canEditJson && renderViewJsonButton(props)}
-
+    <fieldset id={props.idSchema.$id}>
       {(props.uiSchema["ui:title"] || props.title) && (
         <TitleField
           id={`${props.idSchema.$id}__title`}
           title={props.title || props.uiSchema["ui:title"]}
           required={props.required}
           formContext={props.formContext}
-          nullify={nullify}
-          onNullifyChange={onNullifyChange}
-          disabled={disabled}
         />
       )}
       {props.description && (
@@ -116,26 +29,13 @@ function DefaultObjectFieldTemplate(props) {
           formContext={props.formContext}
         />
       )}
-
-      {props.showEditView && canEditJson ? (
-        <div>
-          <CodeMirror
-            value={props.formJson}
-            onChange={props.onJsonChange}
-            options={cmOptions}
-          />
-          <div className={pfx("editor-validation-errors")}>
-            {props.formJsonError && (
-              <ul>
-                <li>Could not parse JSON. Syntax error.</li>
-              </ul>
-            )}
-            {Object.keys(props.errorSchema).length !== 0 &&
-              renderErrorSchema(props.errorSchema)}
-          </div>
-        </div>
-      ) : (
-        props.properties.map(prop => prop.content)
+      {props.properties.map(prop => prop.content)}
+      {canExpand(props.schema, props.uiSchema, props.formData) && (
+        <AddButton
+          className="object-property-expand"
+          onClick={props.onAddClick(props.schema)}
+          disabled={props.disabled || props.readonly}
+        />
       )}
     </fieldset>
   );
@@ -152,43 +52,10 @@ class ObjectField extends Component {
     readonly: false
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = this.getStateFromProps(props);
-    this.state.formJson = JSON.stringify(props.formData, null, 2);
-    this.state.formJsonError = false;
-    this.state.showEditView = false;
-    this.toggleEditView = this.toggleEditView.bind(this);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState(this.getStateFromProps(nextProps));
-  }
-
-  isJsonString(str) {
-    try {
-      JSON.parse(str);
-    } catch (e) {
-      return false;
-    }
-    return true;
-  }
-  getStateFromProps(nextProps) {
-    return {
-      originalFormData:
-        nextProps.formData === undefined ||
-        Object.keys(nextProps.formData).length === 0
-          ? this.state ? this.state.originalFormData : undefined
-          : nextProps.formData,
-      formJson:
-        this.state &&
-        this.isJsonString(this.state.formJson) &&
-        deepEquals(nextProps.formData, this.state.formJson)
-          ? this.state.formJson
-          : JSON.stringify(nextProps.formData, null, 2)
-    };
-  }
+  state = {
+    wasPropertyKeyModified: false,
+    additionalProperties: {}
+  };
 
   isRequired(name) {
     const schema = this.props.schema;
@@ -197,51 +64,118 @@ class ObjectField extends Component {
     );
   }
 
-  onPropertyChange = name => {
-    return (value, options) => {
+  onPropertyChange = (name, addedByAdditionalProperties = false) => {
+    return (value, errorSchema) => {
+      if (!value && addedByAdditionalProperties) {
+        // Don't set value = undefined for fields added by
+        // additionalProperties. Doing so removes them from the
+        // formData, which causes them to completely disappear
+        // (including the input field for the property name). Unlike
+        // fields which are "mandated" by the schema, these fields can
+        // be set to undefined by clicking a "delete field" button, so
+        // set empty values to the empty string.
+        value = "";
+      }
       const newFormData = { ...this.props.formData, [name]: value };
-      this.props.onChange(newFormData, options);
+      this.props.onChange(
+        newFormData,
+        errorSchema &&
+          this.props.errorSchema && {
+            ...this.props.errorSchema,
+            [name]: errorSchema
+          }
+      );
     };
   };
 
-  onNullifyChange = () => {
-    this.setState({
-      formJsonError: false,
-      showEditView: false
-    });
+  onDropPropertyClick = key => {
+    return event => {
+      event.preventDefault();
+      const { onChange, formData } = this.props;
+      const copiedFormData = { ...formData };
+      delete copiedFormData[key];
+      onChange(copiedFormData);
+    };
+  };
 
-    if (this.shouldDisable()) {
-      if (this.state.originalFormData) {
-        this.props.onChange(this.state.originalFormData);
-      } else if (!this.props.schema.properties) {
-        this.props.onChange({ key: "value" });
-      } else {
-        this.props.onChange(
-          getDefaultFormState(
-            this.props.schema,
-            this.props.formData,
-            this.props.definitions
-          )
-        );
-      }
-    } else {
-      this.props.onChange(undefined);
+  getAvailableKey = (preferredKey, formData) => {
+    var index = 0;
+    var newKey = preferredKey;
+    while (formData.hasOwnProperty(newKey)) {
+      newKey = `${preferredKey}-${++index}`;
     }
+    return newKey;
   };
 
-  shouldDisable = () => {
-    return (
-      (this.props.formData === undefined ||
-        Object.keys(this.props.formData).length === 0) &&
-      !this.props.required
-    );
+  onKeyChange = oldValue => {
+    return (value, errorSchema) => {
+      if (oldValue === value) {
+        return;
+      }
+
+      value = this.getAvailableKey(value, this.props.formData);
+      const newFormData = { ...this.props.formData };
+      const newKeys = { [oldValue]: value };
+      const keyValues = Object.keys(newFormData).map(key => {
+        const newKey = newKeys[key] || key;
+        return { [newKey]: newFormData[key] };
+      });
+      const renamedObj = Object.assign({}, ...keyValues);
+
+      this.setState({ wasPropertyKeyModified: true });
+
+      this.props.onChange(
+        renamedObj,
+        errorSchema &&
+          this.props.errorSchema && {
+            ...this.props.errorSchema,
+            [value]: errorSchema
+          }
+      );
+    };
   };
 
-  toggleEditView() {
-    this.setState(state => ({
-      showEditView: !state.showEditView
-    }));
+  getDefaultValue(type) {
+    switch (type) {
+      case "string":
+        return "New Value";
+      case "array":
+        return [];
+      case "boolean":
+        return false;
+      case "null":
+        return null;
+      case "number":
+        return 0;
+      case "object":
+        return {};
+      default:
+        // We don't have a datatype for some reason (perhaps additionalProperties was true)
+        return "New Value";
+    }
   }
+
+  handleAddClick = schema => () => {
+    let type = schema.additionalProperties.type;
+    const newFormData = { ...this.props.formData };
+
+    if (schema.additionalProperties.hasOwnProperty("$ref")) {
+      const { registry = getDefaultRegistry() } = this.props;
+      const refSchema = retrieveSchema(
+        { $ref: schema.additionalProperties["$ref"] },
+        registry.rootSchema,
+        this.props.formData
+      );
+
+      type = refSchema.type;
+    }
+
+    newFormData[
+      this.getAvailableKey("newKey", newFormData)
+    ] = this.getDefaultValue(type);
+
+    this.props.onChange(newFormData);
+  };
 
   render() {
     const {
@@ -253,220 +187,99 @@ class ObjectField extends Component {
       required,
       disabled,
       readonly,
+      idPrefix,
       onBlur,
       onFocus,
-      registry = getDefaultRegistry(),
-      disableFormJsonEdit
+      registry = getDefaultRegistry()
     } = this.props;
 
-    const { definitions, fields, formContext } = registry;
+    const { rootSchema, fields, formContext } = registry;
     const { SchemaField, TitleField, DescriptionField } = fields;
-    const schema = retrieveSchema(this.props.schema, definitions, formData);
-    const title =
-      schema.title === undefined
-        ? name
-        : name === undefined ? schema.title : name + " (" + schema.title + ")";
+    const schema = retrieveSchema(this.props.schema, rootSchema, formData);
+
+    const title = schema.title === undefined ? name : schema.title;
     const description = uiSchema["ui:description"] || schema.description;
-
-    const templateProps = {
-      name,
-      title: uiSchema["ui:title"] || title,
-      description,
-      TitleField,
-      DescriptionField,
-      SchemaField,
-      required,
-      idSchema,
-      uiSchema,
-      schema,
-      formData,
-      formContext,
-      disabled,
-      onNullifyChange: /* schema.type === "array" ? null :  */ this
-        .onNullifyChange,
-      nullify: formData && Object.keys(formData).length > 0,
-      onBlur,
-      onFocus,
-      errorSchema,
-      readonly,
-      registry,
-      disableFormJsonEdit
-    };
-
-    if (schema.properties && Object.keys(schema.properties).length > 0) {
-      return this.renderObject(templateProps);
-    } else if (schema.additionalProperties) {
-      return this.renderMap(templateProps);
-    } else {
-      return this.renderDynamic(templateProps);
-    }
-  }
-
-  onJsonChange = (editor, metadata, code) => {
-    var err = false;
-    var parsed = null;
-    try {
-      parsed = JSON.parse(code);
-    } catch (e) {
-      err = true;
-    }
-    this.setState((prevState, props) => {
-      !err && props.onChange(parsed);
-      return {
-        formJson: code,
-        formJsonError: err
-      };
-    });
-  };
-
-  renderDynamic(templateProps) {
-    const { TitleField, DescriptionField } = templateProps;
-
-    return (
-      <fieldset>
-        {(templateProps.uiSchema["ui:title"] || templateProps.title) && (
-          <TitleField
-            id={`${templateProps.idSchema.$id}__title`}
-            title={templateProps.title || templateProps.uiSchema["ui:title"]}
-            required={templateProps.required}
-            formContext={templateProps.formContext}
-            nullify={templateProps.nullify}
-            onNullifyChange={this.onNullifyChange}
-            disabled={templateProps.disabled}
-          />
-        )}
-        {templateProps.description && (
-          <DescriptionField
-            id={`${templateProps.idSchema.$id}__description`}
-            description={templateProps.description}
-            formContext={templateProps.formContext}
-          />
-        )}
-        <div style={{ position: "relative" }}>
-          <CodeMirror
-            value={this.state.formJson}
-            onChange={this.onJsonChange}
-            options={cmOptions}
-          />
-          <div
-            style={{
-              position: "absolute",
-              left: 0,
-              top: 0,
-              zIndex: 100,
-              width: "100%",
-              height: "100%",
-              backgroundColor: "rgba(1,1,1,0.3)",
-              display:
-                templateProps.disabled || this.shouldDisable()
-                  ? "block"
-                  : "none"
-            }}
-          />
-        </div>
-        {this.state.formJsonError && (
-          <div>
-            <p />
-            <ul className={pfx("error-detail bs-callout bs-callout-info")}>
-              <li className={pfx("text-danger")}>
-                Could not parse JSON. Syntax error.
-              </li>
-            </ul>
-          </div>
-        )}
-      </fieldset>
-    );
-  }
-
-  renderMap(templateProps) {
-    return <MapField {...templateProps} onChange={this.props.onChange} />;
-  }
-
-  renderObject(templateProps) {
-    const { name, SchemaField } = templateProps;
     let orderedProperties;
-
     try {
-      const properties = Object.keys(templateProps.schema.properties);
-      orderedProperties = orderProperties(
-        properties,
-        templateProps.uiSchema["ui:order"]
-      );
+      const properties = Object.keys(schema.properties || {});
+      orderedProperties = orderProperties(properties, uiSchema["ui:order"]);
     } catch (err) {
       return (
         <div>
-          <p className={pfx("config-error")} style={{ color: "red" }}>
+          <p className="config-error" style={{ color: "red" }}>
             Invalid {name || "root"} object field configuration:
             <em>{err.message}</em>.
           </p>
-          <pre>{JSON.stringify(templateProps.schema)}</pre>
+          <pre>{JSON.stringify(schema)}</pre>
         </div>
       );
     }
 
     const Template =
-      templateProps.registry.ObjectFieldTemplate || DefaultObjectFieldTemplate;
+      uiSchema["ui:ObjectFieldTemplate"] ||
+      registry.ObjectFieldTemplate ||
+      DefaultObjectFieldTemplate;
 
-    const newProps = {
-      ...templateProps,
-      showEditView: this.state.showEditView,
-      toggleEditView: this.toggleEditView,
-      onJsonChange: this.onJsonChange,
-      formJson: this.state.formJson,
-      formJsonError: this.state.formJsonError,
+    const templateProps = {
+      title: uiSchema["ui:title"] || title,
+      description,
+      TitleField,
+      DescriptionField,
       properties: orderedProperties.map(name => {
+        const addedByAdditionalProperties = schema.properties[
+          name
+        ].hasOwnProperty(ADDITIONAL_PROPERTY_FLAG);
         return {
           content: (
             <SchemaField
               key={name}
               name={name}
               required={this.isRequired(name)}
-              schema={templateProps.schema.properties[name]}
-              uiSchema={templateProps.uiSchema[name]}
-              errorSchema={templateProps.errorSchema[name]}
-              idSchema={templateProps.idSchema[name]}
-              formData={templateProps.formData[name]}
-              onChange={this.onPropertyChange(name)}
-              onBlur={templateProps.onBlur}
-              onFocus={templateProps.onFocus}
-              registry={templateProps.registry}
-              disabled={templateProps.disabled || this.shouldDisable()}
-              readonly={templateProps.readonly}
-              disableFormJsonEdit={templateProps.disableFormJsonEdit}
+              schema={schema.properties[name]}
+              uiSchema={
+                addedByAdditionalProperties
+                  ? uiSchema.additionalProperties
+                  : uiSchema[name]
+              }
+              errorSchema={errorSchema[name]}
+              idSchema={idSchema[name]}
+              idPrefix={idPrefix}
+              formData={(formData || {})[name]}
+              wasPropertyKeyModified={this.state.wasPropertyKeyModified}
+              onKeyChange={this.onKeyChange(name)}
+              onChange={this.onPropertyChange(
+                name,
+                addedByAdditionalProperties
+              )}
+              onBlur={onBlur}
+              onFocus={onFocus}
+              registry={registry}
+              disabled={disabled}
+              readonly={readonly}
+              onDropPropertyClick={this.onDropPropertyClick}
             />
           ),
           name,
-          readonly: templateProps.readonly,
-          disabled: templateProps.disabled || this.shouldDisable(),
-          required: templateProps.required
+          readonly,
+          disabled,
+          required
         };
-      })
+      }),
+      readonly,
+      disabled,
+      required,
+      idSchema,
+      uiSchema,
+      schema,
+      formData,
+      formContext
     };
-    return <Template {...newProps} />;
+    return <Template {...templateProps} onAddClick={this.handleAddClick} />;
   }
 }
 
-/* istanbul ignore else */
 if (process.env.NODE_ENV !== "production") {
-  ObjectField.propTypes = {
-    schema: PropTypes.object.isRequired,
-    uiSchema: PropTypes.object,
-    errorSchema: PropTypes.object,
-    idSchema: PropTypes.object,
-    onChange: PropTypes.func.isRequired,
-    formData: PropTypes.object,
-    required: PropTypes.bool,
-    disabled: PropTypes.bool,
-    readonly: PropTypes.bool,
-    registry: PropTypes.shape({
-      widgets: PropTypes.objectOf(
-        PropTypes.oneOfType([PropTypes.func, PropTypes.object])
-      ).isRequired,
-      fields: PropTypes.objectOf(PropTypes.func).isRequired,
-      definitions: PropTypes.object.isRequired,
-      formContext: PropTypes.object.isRequired
-    })
-  };
+  ObjectField.propTypes = types.fieldProps;
 }
 
 export default ObjectField;

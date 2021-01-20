@@ -11,7 +11,6 @@ function HiddenWidget({ id, value }) {
   );
 }
 
-/* istanbul ignore else */
 if (process.env.NODE_ENV !== "production") {
   HiddenWidget.propTypes = {
     id: PropTypes.string.isRequired,
