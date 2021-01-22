@@ -1,4 +1,7 @@
 import arrays from "./arrays";
+import anyOf from "./anyOf";
+import oneOf from "./oneOf";
+import allOf from "./allOf";
 import nested from "./nested";
 import numbers from "./numbers";
 import simple from "./simple";
@@ -43,5 +46,8 @@ export const samples = {
   "Schema dependencies": schemaDependencies,
   "Nested Object": nestedObject,
   Object: object,
-  "Add. Props.": additionalProperties
+  "Add. Props.": additionalProperties,
+  "Any Of": anyOf,
+  "One Of": oneOf,
+  "All Of": allOf
 };
