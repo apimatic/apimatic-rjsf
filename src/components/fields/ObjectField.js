@@ -68,14 +68,14 @@ function renderViewJsonButton(props) {
           {showEditView ? "View Form" : "View JSON"}
         </button>
       ) : (
-        <button
-          className={pfx("view-json-button")}
-          style={viewJsonButtonStyle}
-          onClick={toggleEditView}
-        >
-          {showEditView ? "View Form" : "View JSON"}
-        </button>
-      )}
+          <button
+            className={pfx("view-json-button")}
+            style={viewJsonButtonStyle}
+            onClick={toggleEditView}
+          >
+            {showEditView ? "View Form" : "View JSON"}
+          </button>
+        )}
     </div>
   );
 }
@@ -135,8 +135,8 @@ function DefaultObjectFieldTemplate(props) {
           </div>
         </div>
       ) : (
-        props.properties.map(prop => prop.content)
-      )}
+          props.properties.map(prop => prop.content)
+        )}
     </fieldset>
   );
 }
@@ -178,13 +178,13 @@ class ObjectField extends Component {
     return {
       originalFormData:
         nextProps.formData === undefined ||
-        Object.keys(nextProps.formData).length === 0
+          Object.keys(nextProps.formData).length === 0
           ? this.state ? this.state.originalFormData : undefined
           : nextProps.formData,
       formJson:
         this.state &&
-        this.isJsonString(this.state.formJson) &&
-        deepEquals(nextProps.formData, this.state.formJson)
+          this.isJsonString(this.state.formJson) &&
+          deepEquals(nextProps.formData, this.state.formJson)
           ? this.state.formJson
           : JSON.stringify(nextProps.formData, null, 2)
     };
@@ -297,6 +297,8 @@ class ObjectField extends Component {
       return this.renderObject(templateProps);
     } else if (schema.additionalProperties) {
       return this.renderMap(templateProps);
+    } else if (schema.hasOwnProperty('oneOf')) {
+      return <div></div>;
     } else {
       return this.renderDynamic(templateProps);
     }
@@ -342,28 +344,29 @@ class ObjectField extends Component {
             formContext={templateProps.formContext}
           />
         )}
-        <div style={{ position: "relative" }}>
-          <CodeMirror
-            value={this.state.formJson}
-            onChange={this.onJsonChange}
-            options={cmOptions}
-          />
-          <div
-            style={{
-              position: "absolute",
-              left: 0,
-              top: 0,
-              zIndex: 100,
-              width: "100%",
-              height: "100%",
-              backgroundColor: "rgba(1,1,1,0.3)",
-              display:
-                templateProps.disabled || this.shouldDisable()
-                  ? "block"
-                  : "none"
-            }}
-          />
-        </div>
+        {!templateProps.schema.oneOfType &&
+          <div style={{ position: "relative" }}>
+            <CodeMirror
+              value={this.state.formJson}
+              onChange={this.onJsonChange}
+              options={cmOptions}
+            />
+            <div
+              style={{
+                position: "absolute",
+                left: 0,
+                top: 0,
+                zIndex: 100,
+                width: "100%",
+                height: "100%",
+                backgroundColor: "rgba(1,1,1,0.3)",
+                display:
+                  templateProps.disabled || this.shouldDisable()
+                    ? "block"
+                    : "none"
+              }}
+            />
+          </div>}
         {this.state.formJsonError && (
           <div>
             <p />
