@@ -2,12 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import {
+  isSelect,
   isMultiSelect,
   retrieveSchema,
   getDefaultRegistry,
   getUiOptions,
   isFilesArray,
   deepEquals,
+  getSchemaType,
   prefixClass as pfx
 } from "../../utils";
 import UnsupportedField from "./UnsupportedField";
@@ -30,7 +32,14 @@ function getFieldComponent(schema, uiSchema, idSchema, fields) {
   if (typeof field === "string" && field in fields) {
     return fields[field];
   }
-  const componentName = COMPONENT_TYPES[schema.type];
+  const componentName = COMPONENT_TYPES[getSchemaType(schema)];
+
+  // If the type is not defined and the schema uses 'anyOf' or 'oneOf', don't
+  // render a field and let the MultiSchemaField component handle the form display
+  if (!componentName && (schema.anyOf || schema.oneOf)) {
+    return () => null;
+  }
+
   return componentName in fields
     ? fields[componentName]
     : () => {
@@ -255,7 +264,59 @@ function SchemaFieldRender(props) {
     uiSchema
   };
 
-  return <FieldTemplate {...fieldProps}>{field}</FieldTemplate>;
+  const _AnyOfField = registry.fields.AnyOfField;
+  const _OneOfField = registry.fields.OneOfField;
+
+  return (
+    <FieldTemplate {...fieldProps}>
+      <div>
+        {field}
+
+        {/*
+        If the schema `anyOf` or 'oneOf' can be rendered as a select control, don't
+        render the selection and let `StringField` component handle
+        rendering
+      */}
+        {schema.anyOf &&
+          !isSelect(schema) && (
+            <_AnyOfField
+              disabled={disabled}
+              errorSchema={errorSchema}
+              formData={formData}
+              idPrefix={id}
+              idSchema={idSchema}
+              onBlur={props.onBlur}
+              onChange={props.onChange}
+              onFocus={props.onFocus}
+              options={schema.anyOf}
+              baseType={schema.type}
+              registry={registry}
+              schema={schema}
+              uiSchema={uiSchema}
+            />
+          )}
+
+        {schema.oneOf &&
+          !isSelect(schema) && (
+            <_OneOfField
+              disabled={disabled}
+              errorSchema={errorSchema}
+              formData={formData}
+              idPrefix={id}
+              idSchema={idSchema}
+              onBlur={props.onBlur}
+              onChange={props.onChange}
+              onFocus={props.onFocus}
+              options={schema.oneOf}
+              baseType={schema.type}
+              registry={registry}
+              schema={schema}
+              uiSchema={uiSchema}
+            />
+          )}
+      </div>
+    </FieldTemplate>
+  );
 }
 
 class SchemaField extends React.Component {
