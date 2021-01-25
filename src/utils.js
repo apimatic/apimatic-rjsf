@@ -89,6 +89,22 @@ export function getSchemaType(schema) {
   return type;
 }
 
+export function hasWidget(schema, widget, registeredWidgets = {}) {
+  try {
+    getWidget(schema, widget, registeredWidgets);
+    return true;
+  } catch (e) {
+    if (
+      e.message &&
+      (e.message.startsWith("No widget") ||
+        e.message.startsWith("Unsupported widget"))
+    ) {
+      return false;
+    }
+    throw e;
+  }
+}
+
 export function getWidget(schema, widget, registeredWidgets = {}) {
   const type = getSchemaType(schema);
 
