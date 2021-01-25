@@ -297,6 +297,8 @@ class ObjectField extends Component {
       return this.renderObject(templateProps);
     } else if (schema.additionalProperties) {
       return this.renderMap(templateProps);
+    } else if (schema.hasOwnProperty("oneOf")) {
+      return <div />;
     } else {
       return this.renderDynamic(templateProps);
     }
@@ -342,28 +344,30 @@ class ObjectField extends Component {
             formContext={templateProps.formContext}
           />
         )}
-        <div style={{ position: "relative" }}>
-          <CodeMirror
-            value={this.state.formJson}
-            onChange={this.onJsonChange}
-            options={cmOptions}
-          />
-          <div
-            style={{
-              position: "absolute",
-              left: 0,
-              top: 0,
-              zIndex: 100,
-              width: "100%",
-              height: "100%",
-              backgroundColor: "rgba(1,1,1,0.3)",
-              display:
-                templateProps.disabled || this.shouldDisable()
-                  ? "block"
-                  : "none"
-            }}
-          />
-        </div>
+        {!templateProps.schema.oneOfType && (
+          <div style={{ position: "relative" }}>
+            <CodeMirror
+              value={this.state.formJson}
+              onChange={this.onJsonChange}
+              options={cmOptions}
+            />
+            <div
+              style={{
+                position: "absolute",
+                left: 0,
+                top: 0,
+                zIndex: 100,
+                width: "100%",
+                height: "100%",
+                backgroundColor: "rgba(1,1,1,0.3)",
+                display:
+                  templateProps.disabled || this.shouldDisable()
+                    ? "block"
+                    : "none"
+              }}
+            />
+          </div>
+        )}
         {this.state.formJsonError && (
           <div>
             <p />
