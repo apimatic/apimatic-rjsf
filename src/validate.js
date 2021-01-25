@@ -176,3 +176,11 @@ export default function validateFormData(
 
   return { errors: newErrors, errorSchema: newErrorSchema };
 }
+
+export function isValid(schema, data) {
+  try {
+    return ajv.validate(schema, data);
+  } catch (e) {
+    return false;
+  }
+}
