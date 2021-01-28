@@ -7,18 +7,20 @@ module.exports = {
           lorem: {
             type: "string"
           }
-        }
-        // required: ["lorem"],
+        },
+        required: ["lorem"]
       },
       {
         properties: {
           ipsum: {
             type: "string"
           }
-        }
-        // required: ["ipsum"],
+        },
+        required: ["ipsum"]
       }
     ]
   },
-  formData: {}
+  formData: {
+    lorem: "dsadadad"
+  }
 };
