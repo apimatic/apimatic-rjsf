@@ -220,6 +220,7 @@ function computeDefaults(schema, parentDefaults, definitions = {}) {
 }
 
 export function getDefaultFormState(_schema, formData, definitions = {}) {
+  console.log(formData);
   if (!isObject(_schema)) {
     throw new Error("Invalid schema: " + _schema);
   }
@@ -1014,7 +1015,7 @@ export function rangeSpec(schema) {
   return spec;
 }
 
-export const classPrefix = "";
+export const classPrefix = "rjsf";
 
 export function prefixClass(className) {
   return className && classPrefix
