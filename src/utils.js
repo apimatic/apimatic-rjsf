@@ -1015,7 +1015,7 @@ export function rangeSpec(schema) {
   return spec;
 }
 
-export const classPrefix = "rjsf";
+export const classPrefix = "rjsf-";
 
 export function prefixClass(className) {
   return className && classPrefix
