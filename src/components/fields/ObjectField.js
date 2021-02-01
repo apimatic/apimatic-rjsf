@@ -297,7 +297,11 @@ class ObjectField extends Component {
       return this.renderObject(templateProps);
     } else if (schema.additionalProperties) {
       return this.renderMap(templateProps);
-    } else if (schema.hasOwnProperty("oneOf")) {
+    } else if (
+      schema.hasOwnProperty("oneOf") ||
+      schema.hasOwnProperty("anyOf") ||
+      schema.hasOwnProperty("allOf")
+    ) {
       return <div />;
     } else {
       return this.renderDynamic(templateProps);
