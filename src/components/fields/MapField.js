@@ -69,7 +69,7 @@ function DefaultMapItem(props) {
     fontWeight: "bold"
   };
   return (
-    <div className={pfx("row")}>
+    <div key={props.$id} className={pfx("row")}>
       {props.index > 0 && (
         <div
           className="divider"

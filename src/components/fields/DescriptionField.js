@@ -17,7 +17,7 @@ function DescriptionField(props) {
   } else {
     return (
       <div id={id} className={pfx("field-description")}>
-        {description.replace(/<br>/gi, "\n")}
+        {description}
       </div>
     );
   }
