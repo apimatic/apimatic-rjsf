@@ -69,7 +69,7 @@ function DefaultMapItem(props) {
     fontWeight: "bold"
   };
   return (
-    <div key={props.$id} className={pfx("row")}>
+    <div key={props.index} className={pfx(`row ${props.className}`)}>
       {props.index > 0 && (
         <div
           className="divider"
@@ -108,7 +108,7 @@ function DefaultMapItem(props) {
             </div>
           )}
       </div>
-      <div key={props.index} className={pfx(props.className)}>
+      <div>
         <div className={pfx("col-xs-12 flex")} style={{ display: "flex" }}>
           <div
             className={pfx(
