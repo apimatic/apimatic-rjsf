@@ -20,11 +20,14 @@ import schemaDependencies from "./schemaDependencies";
 import nestedObject from "./nestedObject";
 import object from "./object";
 import additionalProperties from "./additionalProperties";
-
+import arrayOfMap from "./arrayOfMap";
+import mapOfArray from "./arrayOfMap";
 export const samples = {
   Simple: simple,
   Nested: nested,
   Arrays: arrays,
+  ArrayOfMap: arrayOfMap,
+  MapOfArray: mapOfArray,
   Numbers: numbers,
   Widgets: widgets,
   Ordering: ordering,
