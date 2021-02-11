@@ -17,13 +17,7 @@ import {
   getDefaultRegistry,
   prefixClass as pfx
 } from "../../utils";
-import {
-  ArrowUpIcon,
-  DeleteIcon,
-  PlusIcon,
-  ArrowDownIcon,
-  CheveronIcon
-} from "../Icons";
+import { ArrowUpIcon, CloseIcon, ArrowDownIcon, CheveronIcon } from "../Icons";
 
 function ArrayFieldTitle({
   TitleField,
@@ -83,59 +77,75 @@ function DefaultArrayItem(props) {
     paddingRight: 6,
     fontWeight: "bold"
   };
-
+  const arrayItemWrapper = {
+    display: "flex",
+    flexDirection: "column"
+  };
   return (
-    <div key={props.index} className={pfx(props.className)}>
-      <div>{props.children}</div>
-
-      {props.hasToolbar && (
-        <div className={pfx("array-item-toolbox")}>
+    <div
+      key={props.index}
+      className={pfx(`array-item-wrapper ${props.className}`)}
+      style={arrayItemWrapper}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center"
+        }}
+      >
+        <label>[{props.index}]</label>
+        {props.hasToolbar && (
           <div
-            className={pfx("btn-group")}
-            style={{ display: "flex", justifyContent: "space-around" }}
+            className={pfx("array-item-toolbox")}
+            style={{ display: "flex", justifyContent: "flex-end" }}
           >
-            {(props.hasMoveUp || props.hasMoveDown) && (
-              <IconBtn
-                className={pfx("array-item-move-up")}
-                tabIndex="-1"
-                style={btnStyle}
-                disabled={props.disabled || props.readonly || !props.hasMoveUp}
-                onClick={props.onReorderClick(props.index, props.index - 1)}
-              >
-                <ArrowUpIcon width={14} />
-              </IconBtn>
-            )}
+            <div className={pfx(" btn-group")}>
+              {(props.hasMoveUp || props.hasMoveDown) && (
+                <IconBtn
+                  className={pfx("array-item-move-up")}
+                  tabIndex="-1"
+                  style={btnStyle}
+                  disabled={
+                    props.disabled || props.readonly || !props.hasMoveUp
+                  }
+                  onClick={props.onReorderClick(props.index, props.index - 1)}
+                >
+                  <ArrowUpIcon width={14} />
+                </IconBtn>
+              )}
 
-            {(props.hasMoveUp || props.hasMoveDown) && (
-              <IconBtn
-                className={pfx("array-item-move-down")}
-                tabIndex="-1"
-                style={btnStyle}
-                disabled={
-                  props.disabled || props.readonly || !props.hasMoveDown
-                }
-                onClick={props.onReorderClick(props.index, props.index + 1)}
-              >
-                <ArrowDownIcon width={14} />
-              </IconBtn>
-            )}
+              {(props.hasMoveUp || props.hasMoveDown) && (
+                <IconBtn
+                  className={pfx("array-item-move-down")}
+                  tabIndex="-1"
+                  style={btnStyle}
+                  disabled={
+                    props.disabled || props.readonly || !props.hasMoveDown
+                  }
+                  onClick={props.onReorderClick(props.index, props.index + 1)}
+                >
+                  <ArrowDownIcon width={14} />
+                </IconBtn>
+              )}
 
-            {props.hasRemove && (
-              <IconBtn
-                type="danger"
-                className={pfx("array-item-remove")}
-                tabIndex="-1"
-                style={btnStyle}
-                disabled={props.disabled || props.readonly}
-                onClick={props.onDropIndexClick(props.index)}
-              >
-                <DeleteIcon />
-                {/* <CloseIcon width={14} /> */}
-              </IconBtn>
-            )}
+              {props.hasRemove && (
+                <IconBtn
+                  type="danger"
+                  className={pfx("array-item-remove")}
+                  tabIndex="-1"
+                  style={btnStyle}
+                  disabled={props.disabled || props.readonly}
+                  onClick={props.onDropIndexClick(props.index)}
+                >
+                  <CloseIcon width={14} />
+                </IconBtn>
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
+      <div>{props.children}</div>
     </div>
   );
 }
@@ -820,7 +830,8 @@ function AddButton({ onClick, disabled }) {
           onClick={onClick}
           disabled={disabled}
         >
-          <PlusIcon width={14} />
+          {/* <PlusIcon width={14} /> */}
+          Add Item
         </IconBtn>
       </p>
     </div>
