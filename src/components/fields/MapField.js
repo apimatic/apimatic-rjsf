@@ -50,9 +50,7 @@ function IconBtn(props) {
   return (
     <button
       type="button"
-      className={
-        pfx(`btn btn-${type}`) + " " + className + " " + pfx("col-xs-12")
-      }
+      className={pfx(`btn btn-${type}`) + " " + className + " " + pfx("")}
       {...otherProps}
     >
       {props.children}
@@ -69,7 +67,7 @@ function DefaultMapItem(props) {
     fontWeight: "bold"
   };
   return (
-    <div key={props.index} className={pfx(`row ${props.className}`)}>
+    <div key={props.index} className={pfx(`${props.className}`)}>
       {props.index > 0 && (
         <div
           className="divider"
@@ -78,7 +76,7 @@ function DefaultMapItem(props) {
       )}
 
       <div
-        className={pfx("col-xs-12")}
+        className={pfx("")}
         style={{
           display: "flex",
           alignItems: "center",
@@ -94,7 +92,7 @@ function DefaultMapItem(props) {
         />
         {props.hasToolbar &&
           props.hasRemove && (
-            <div className={pfx("col-xs-1 map-item-toolbox")}>
+            <div className={pfx("map-item-toolbox")}>
               <IconBtn
                 type="danger"
                 className={pfx("map-item-remove")}
@@ -109,12 +107,10 @@ function DefaultMapItem(props) {
           )}
       </div>
       <div>
-        <div className={pfx("col-xs-12 flex")} style={{ display: "flex" }}>
+        <div className={pfx("flex")} style={{ display: "flex" }}>
           <div
             className={pfx(
-              `flex-1 ${
-                props.hasToolbar && props.hasRemove ? "col-xs-8" : "col-xs-9"
-              }`
+              `flex-1 ${props.hasToolbar && props.hasRemove ? "" : ""}`
             )}
             style={{ flex: "1" }}
           >
@@ -152,7 +148,7 @@ function DefaultNormalMapFieldTemplate(props) {
       />
 
       <div
-        className={pfx("row map-item-list")}
+        className={pfx("map-item-list")}
         key={`map-item-list-${props.idSchema.$id}`}
       >
         {props.items && props.items.map(p => DefaultMapItem(p))}
@@ -508,10 +504,10 @@ class MapField extends Component {
 function AddButton({ onClick, disabled }) {
   return (
     <div className={pfx("row")}>
-      <p className={pfx("col-xs-3 col-xs-offset-9 map-item-add text-right")}>
+      <p className={pfx("map-item-add text-right")}>
         <IconBtn
           type="info"
-          className={pfx("btn-add col-xs-12")}
+          className={pfx("btn-add")}
           tabIndex="0"
           onClick={onClick}
           disabled={disabled}
