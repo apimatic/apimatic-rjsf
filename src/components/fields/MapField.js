@@ -76,7 +76,7 @@ function DefaultMapItem(props) {
       )} */}
 
       <div
-        className={pfx("")}
+        className={pfx("map-field-key")}
         style={{
           display: "flex",
           alignItems: "center",
@@ -106,7 +106,7 @@ function DefaultMapItem(props) {
             </div>
           )}
       </div>
-      <div>
+      <div className={pfx("map-field-value-container")}>
         <div className={pfx("flex")} style={{ display: "flex" }}>
           <div
             className={pfx(
