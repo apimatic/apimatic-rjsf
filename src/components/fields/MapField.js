@@ -472,7 +472,14 @@ class MapField extends Component {
       index,
       children: (
         <SchemaField
-          schema={itemSchema}
+          schema={
+            itemSchema.title
+              ? itemSchema
+              : {
+                  ...itemSchema,
+                  title: key
+                }
+          }
           uiSchema={itemUiSchema}
           formData={itemData}
           errorSchema={itemErrorSchema}
