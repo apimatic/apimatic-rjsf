@@ -94,7 +94,7 @@ function DefaultArrayItem(props) {
           alignItems: "center"
         }}
       >
-        <label>[{props.index}]</label>
+        {/* <label>[{props.index}]</label> */}
         {props.hasToolbar && (
           <div
             className={pfx("array-item-toolbox")}
@@ -720,6 +720,7 @@ class ArrayField extends Component {
 
         return this.renderArrayFieldItem({
           index,
+          indexAsTitle: `[${index}]`,
           canRemove: additional,
           canMoveUp: index >= itemSchemas.length + 1,
           canMoveDown: additional && index < items.length - 1,
