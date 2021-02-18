@@ -68,12 +68,12 @@ function DefaultMapItem(props) {
   };
   return (
     <div key={props.index} className={pfx(`${props.className}`)}>
-      {props.index > 0 && (
+      {/* {props.index > 0 && (
         <div
           className="divider"
           style={{ borderTop: "1px solid #e2e5e7", margin: "30px 0" }}
         />
-      )}
+      )} */}
 
       <div
         className={pfx("")}
