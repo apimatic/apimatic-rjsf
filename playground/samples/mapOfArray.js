@@ -14,54 +14,10 @@ module.exports = {
             additionalProperties: {
               description: "",
               type: "array",
-              items: {
-                id: "Person",
-                title: "Person",
-                description: "",
-                type: "object",
-                properties: {
-                  ArrayField: {
-                    description: "",
-                    type: "array",
-                    items: {
-                      type: "string"
-                    }
-                  },
-                  MapField: {
-                    type: "object",
-                    additionalProperties: {
-                      type: "string"
-                    }
-                  },
-                  ArrayOfMaps: {
-                    description: "",
-                    type: "array",
-                    items: {
-                      type: "object",
-                      additionalProperties: {
-                        type: "string"
-                      }
-                    }
-                  },
-                  MapOfArrays: {
-                    type: "object",
-                    additionalProperties: {
-                      description: "",
-                      type: "array",
-                      items: {
-                        type: "string"
-                      }
-                    }
-                  }
-                },
-                required: [
-                  "ArrayField",
-                  "MapField",
-                  "ArrayOfMaps",
-                  "MapOfArrays"
-                ]
-              }
-            }
+              items: { type: "string" }
+            },
+            dataTypeDisplayText: "map<array<String>>",
+            paramType: "Body"
           }
         },
         required: ["MapOfArrayParam"]

@@ -379,10 +379,10 @@ class MapField extends Component {
         : name === undefined ? schema.title : name + " (" + schema.title + ")";
     const { definitions, fields } = registry;
     const { TitleField, DescriptionField } = fields;
-    const addPropsSchema = retrieveSchema(
-      schema.additionalProperties,
-      definitions
-    );
+    const addPropsSchema = {
+      ...this.props.schema,
+      ...retrieveSchema(schema.additionalProperties, definitions)
+    };
     const itemSchema = { ...addPropsSchema, description: undefined };
     const duplicationCounts = this.getDuplicateCounts(this.state.hash);
     const mapProps = {
@@ -468,18 +468,18 @@ class MapField extends Component {
     };
     has.toolbar = Object.keys(has).some(key => has[key]);
 
+    const schema = itemSchema.title
+      ? itemSchema
+      : {
+          ...itemSchema,
+          title: key
+        };
+
     return {
       index,
       children: (
         <SchemaField
-          schema={
-            itemSchema.title
-              ? itemSchema
-              : {
-                  ...itemSchema,
-                  title: key
-                }
-          }
+          schema={schema}
           uiSchema={itemUiSchema}
           formData={itemData}
           errorSchema={itemErrorSchema}
