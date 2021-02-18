@@ -373,7 +373,9 @@ class MapField extends Component {
       registry,
       formContext,
       onBlur,
-      onFocus
+      onFocus,
+      depth,
+      isEven
     } = this.props;
     const title =
       schema.title === undefined
@@ -413,10 +415,14 @@ class MapField extends Component {
           itemUiSchema: uiSchema.items,
           autofocus: autofocus && index === 0,
           onBlur,
-          onFocus
+          onFocus,
+          depth,
+          isEven
         });
       }),
-      className: `field field-array field-array-of-${addPropsSchema.type}`,
+      className: `field field-array field-array-of-${addPropsSchema.type}  ${
+        isEven ? "even" : "odd"
+      } depth_${depth}`,
       DescriptionField,
       disabled,
       idSchema,
@@ -431,7 +437,9 @@ class MapField extends Component {
       formContext,
       formData,
       onNullifyChange: this.onNullifyChange,
-      nullify: formData && Object.keys(formData).length > 0
+      nullify: formData && Object.keys(formData).length > 0,
+      depth: depth,
+      isEven: isEven
     };
 
     return <DefaultNormalMapFieldTemplate {...mapProps} />;
@@ -449,7 +457,9 @@ class MapField extends Component {
       itemErrorSchema,
       autofocus,
       onBlur,
-      onFocus
+      onFocus,
+      depth,
+      isEven
     } = props;
     const { disabled, readonly, uiSchema, registry } = this.props;
     const { fields: { SchemaField } } = registry;
@@ -479,6 +489,8 @@ class MapField extends Component {
           disabled={this.props.disabled}
           readonly={this.props.readonly}
           autofocus={autofocus}
+          depth={depth + 1}
+          isEven={!isEven}
         />
       ),
       className: "map-item",

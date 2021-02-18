@@ -373,7 +373,9 @@ class ObjectField extends Component {
       onBlur,
       onFocus,
       registry = getDefaultRegistry(),
-      disableFormJsonEdit
+      disableFormJsonEdit,
+      depth,
+      isEven
     } = this.props;
 
     const { definitions, fields, formContext } = registry;
@@ -407,7 +409,9 @@ class ObjectField extends Component {
       errorSchema,
       readonly,
       registry,
-      disableFormJsonEdit
+      disableFormJsonEdit,
+      depth,
+      isEven
     };
 
     if (schema.properties && Object.keys(schema.properties).length > 0) {
