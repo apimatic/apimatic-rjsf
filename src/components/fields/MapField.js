@@ -8,7 +8,7 @@ import {
   retrieveSchema,
   toIdSchema
 } from "../../utils";
-import { CloseIcon } from "../Icons";
+import { CloseIcon, CheveronIcon } from "../Icons";
 
 function MapFieldTitle({
   TitleField,
@@ -83,6 +83,18 @@ function DefaultMapItem(props) {
           justifyContent: "space-between"
         }}
       >
+        <IconBtn
+          tabIndex="-1"
+          onClick={() => props.toggleCollapse(props.key)}
+          className={pfx("btn toggle-button")}
+        >
+          {props.collapse ? (
+            <CheveronIcon width={14} rotate={180} />
+          ) : (
+            <CheveronIcon width={14} />
+          )}
+        </IconBtn>
+
         <input
           type="text"
           className={pfx("form-control")}
@@ -106,18 +118,20 @@ function DefaultMapItem(props) {
             </div>
           )}
       </div>
-      <div className={pfx("map-field-value-container")}>
-        <div className={pfx("flex")} style={{ display: "flex" }}>
-          <div
-            className={pfx(
-              `flex-1 ${props.hasToolbar && props.hasRemove ? "" : ""}`
-            )}
-            style={{ flex: "1" }}
-          >
-            {props.children}
+      {!props.collapse && (
+        <div className={pfx("map-field-value-container")}>
+          <div className={pfx("flex")} style={{ display: "flex" }}>
+            <div
+              className={pfx(
+                `flex-1 ${props.hasToolbar && props.hasRemove ? "" : ""}`
+              )}
+              style={{ flex: "1" }}
+            >
+              {props.children}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
@@ -179,6 +193,8 @@ class MapField extends Component {
     super(props);
 
     this.state = this.getStateFromProps(props);
+    this.state.collapseInfo = {};
+    this.toggleCollapse = this.toggleCollapse.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -275,6 +291,18 @@ class MapField extends Component {
       }
     }
     return false;
+  }
+
+  toggleCollapse(key) {
+    this.setState(prevState => {
+      return {
+        ...prevState,
+        collapseInfo: {
+          ...prevState.collapseInfo,
+          [key]: !prevState.collapseInfo[key]
+        }
+      };
+    });
   }
 
   onKeyChange(pair, i) {
@@ -401,6 +429,8 @@ class MapField extends Component {
           definitions,
           item
         );
+
+        const collapse = this.state.collapseInfo[pair.k] ? true : false;
         return this.renderMapFieldItem({
           index,
           key: pair.k,
@@ -413,7 +443,8 @@ class MapField extends Component {
           onBlur,
           onFocus,
           depth,
-          isEven
+          isEven,
+          collapse
         });
       }),
       className: `field field-array field-array-of-${addPropsSchema.type}  ${
@@ -503,6 +534,8 @@ class MapField extends Component {
       key,
       onDropKeyClick: this.onKeyDelete(index),
       onKeyChange: this.onKeyChange({ k: key, v: itemData }, index),
+      toggleCollapse: this.toggleCollapse,
+      collapse: props.collapse,
       readonly
     };
   }

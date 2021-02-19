@@ -94,7 +94,7 @@ function DefaultArrayItem(props) {
           alignItems: "center"
         }}
       >
-        {/* <label>[{props.index}]</label> */}
+        <label>[{props.index}]</label>
         {props.hasToolbar && (
           <div
             className={pfx("array-item-toolbox")}
