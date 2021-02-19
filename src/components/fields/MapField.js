@@ -193,7 +193,7 @@ class MapField extends Component {
     super(props);
 
     this.state = this.getStateFromProps(props);
-    this.state.collapseInfo = {};
+    this.state.expandInfo = {};
     this.toggleCollapse = this.toggleCollapse.bind(this);
   }
 
@@ -297,9 +297,9 @@ class MapField extends Component {
     this.setState(prevState => {
       return {
         ...prevState,
-        collapseInfo: {
-          ...prevState.collapseInfo,
-          [key]: !prevState.collapseInfo[key]
+        expandInfo: {
+          ...prevState.expandInfo,
+          [key]: !prevState.expandInfo[key]
         }
       };
     });
@@ -430,7 +430,7 @@ class MapField extends Component {
           item
         );
 
-        const collapse = this.state.collapseInfo[pair.k] ? true : false;
+        const collapse = this.state.expandInfo[pair.k] ? false : true;
         return this.renderMapFieldItem({
           index,
           key: pair.k,
