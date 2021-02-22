@@ -71,6 +71,14 @@ function IconBtn(props) {
 
 // Used in the two templates
 function DefaultArrayItem(props) {
+  const isObj = (() => {
+    try {
+      return props.children.props.schema.type === "object";
+    } catch (e) {
+      return false;
+    }
+  })();
+
   const btnStyle = {
     flex: 1,
     paddingLeft: 6,
@@ -94,7 +102,7 @@ function DefaultArrayItem(props) {
           alignItems: "center"
         }}
       >
-        <label>[{props.index}]</label>
+        {!isObj && <label>[{props.index}]</label>}
         {props.hasToolbar && (
           <div
             className={pfx("array-item-toolbox")}
