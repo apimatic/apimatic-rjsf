@@ -139,10 +139,7 @@ function DefaultMapItem(props) {
 }
 
 function DefaultNormalMapFieldTemplate(props) {
-  const dataType =
-    props.schema.dataTypeDisplayText ||
-    props.schema.title ||
-    props.itemsSchema.title;
+  const dataType = props.schema.dataTypeDisplayText;
 
   return (
     <fieldset className={pfx(props.className)}>
