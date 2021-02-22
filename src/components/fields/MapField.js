@@ -143,16 +143,35 @@ function DefaultNormalMapFieldTemplate(props) {
 
   return (
     <fieldset className={pfx(props.className)}>
-      <MapFieldTitle
-        key={`map-field-title-${props.idSchema.$id}`}
-        TitleField={props.TitleField}
-        idSchema={props.idSchema}
-        title={props.title}
-        required={props.required}
-        nullify={props.nullify}
-        onNullifyChange={props.onNullifyChange}
-        disabled={props.disabled}
-      />
+      <div className={pfx("object-header")}>
+        <div
+          className={pfx("header-left hand")}
+          onClick={props.toggleGroupCollapse}
+        >
+          <MapFieldTitle
+            key={`map-field-title-${props.idSchema.$id}`}
+            TitleField={props.TitleField}
+            idSchema={props.idSchema}
+            title={props.title}
+            required={props.required}
+            nullify={props.nullify}
+            onNullifyChange={props.onNullifyChange}
+            disabled={props.disabled}
+          />
+        </div>
+
+        <IconBtn
+          tabIndex="-1"
+          onClick={props.toggleGroupCollapse}
+          className={pfx("btn toggle-button")}
+        >
+          {props.collapse ? (
+            <CheveronIcon width={14} rotate={180} />
+          ) : (
+            <CheveronIcon width={14} />
+          )}
+        </IconBtn>
+      </div>
 
       <DataType
         title={dataType}
@@ -175,18 +194,22 @@ function DefaultNormalMapFieldTemplate(props) {
         }
       />
 
-      <div
-        className={pfx("map-item-list")}
-        key={`map-item-list-${props.idSchema.$id}`}
-      >
-        {props.items && props.items.map(p => DefaultMapItem(p))}
-      </div>
+      {!props.collapse && (
+        <div>
+          <div
+            className={pfx("map-item-list")}
+            key={`map-item-list-${props.idSchema.$id}`}
+          >
+            {props.items && props.items.map(p => DefaultMapItem(p))}
+          </div>
 
-      {props.canAdd && (
-        <AddButton
-          onClick={props.onAddClick}
-          disabled={props.disabled || props.readonly}
-        />
+          {props.canAdd && (
+            <AddButton
+              onClick={props.onAddClick}
+              disabled={props.disabled || props.readonly}
+            />
+          )}
+        </div>
       )}
     </fieldset>
   );
@@ -208,7 +231,9 @@ class MapField extends Component {
 
     this.state = this.getStateFromProps(props);
     this.state.expandInfo = {};
+    this.state.collapse = true;
     this.toggleCollapse = this.toggleCollapse.bind(this);
+    this.toggleGroupCollapse = this.toggleGroupCollapse.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -315,6 +340,15 @@ class MapField extends Component {
           ...prevState.expandInfo,
           [key]: !prevState.expandInfo[key]
         }
+      };
+    });
+  }
+
+  toggleGroupCollapse() {
+    this.setState(prevState => {
+      return {
+        ...prevState,
+        collapse: !prevState.collapse
       };
     });
   }
@@ -480,7 +514,9 @@ class MapField extends Component {
       onNullifyChange: this.onNullifyChange,
       nullify: formData && Object.keys(formData).length > 0,
       depth: depth,
-      isEven: isEven
+      isEven: isEven,
+      toggleGroupCollapse: this.toggleGroupCollapse,
+      collapse: this.state.collapse
     };
 
     return <DefaultNormalMapFieldTemplate {...mapProps} />;
