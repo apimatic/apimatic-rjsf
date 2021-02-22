@@ -10,6 +10,8 @@ import {
 } from "../../utils";
 import { CloseIcon, CheveronIcon } from "../Icons";
 
+import DataType from "../fields/DataType";
+
 function MapFieldTitle({
   TitleField,
   idSchema,
@@ -137,6 +139,11 @@ function DefaultMapItem(props) {
 }
 
 function DefaultNormalMapFieldTemplate(props) {
+  const dataType =
+    props.schema.dataTypeDisplayText ||
+    props.schema.title ||
+    props.itemsSchema.title;
+
   return (
     <fieldset className={pfx(props.className)}>
       <MapFieldTitle
@@ -149,6 +156,16 @@ function DefaultNormalMapFieldTemplate(props) {
         onNullifyChange={props.onNullifyChange}
         disabled={props.disabled}
       />
+
+      <DataType
+        title={dataType}
+        link={props.schema.dataTypeLink}
+        type="map-field-type"
+      />
+
+      {props.schema.paramType && (
+        <div className={pfx("param-type")}>{props.schema.paramType}</div>
+      )}
 
       <MapFieldDescription
         key={`map-field-description-${props.idSchema.$id}`}
@@ -407,10 +424,10 @@ class MapField extends Component {
         : name === undefined ? schema.title : name + " (" + schema.title + ")";
     const { definitions, fields } = registry;
     const { TitleField, DescriptionField } = fields;
-    const addPropsSchema = {
-      ...this.props.schema,
-      ...retrieveSchema(schema.additionalProperties, definitions)
-    };
+    const addPropsSchema = retrieveSchema(
+      schema.additionalProperties,
+      definitions
+    );
     const itemSchema = { ...addPropsSchema, description: undefined };
     const duplicationCounts = this.getDuplicateCounts(this.state.hash);
     const mapProps = {
