@@ -582,7 +582,7 @@ class ObjectField extends Component {
             <SchemaField
               key={name}
               name={name}
-              isEven={!this.state.isEven}
+              isEven={this.state.isEven}
               depth={this.state.depth + 1}
               expandAll={this.state.expandAll}
               expandAllLevel={this.state.expandAllLevel}
