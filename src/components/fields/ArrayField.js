@@ -71,13 +71,13 @@ function IconBtn(props) {
 
 // Used in the two templates
 function DefaultArrayItem(props) {
-  const isObj = (() => {
-    try {
-      return props.children.props.schema.type === "object";
-    } catch (e) {
-      return false;
-    }
-  })();
+  // const isObj = (() => {
+  //   try {
+  //     return props.children.props.schema.type === "object";
+  //   } catch (e) {
+  //     return false;
+  //   }
+  // })();
 
   const btnStyle = {
     flex: 1,
@@ -102,7 +102,7 @@ function DefaultArrayItem(props) {
           alignItems: "center"
         }}
       >
-        {!isObj && <label>[{props.index}]</label>}
+        {/* {!isObj && <label>[{props.index}]</label>} */}
         {props.hasToolbar && (
           <div
             className={pfx("array-item-toolbox")}
@@ -546,7 +546,7 @@ class ArrayField extends Component {
           itemSchema: {
             ...itemSchema,
             description: undefined,
-            title: undefined
+            title: `[${index}]`
           },
           itemIdSchema,
           itemErrorSchema,
@@ -728,11 +728,11 @@ class ArrayField extends Component {
 
         return this.renderArrayFieldItem({
           index,
-          indexAsTitle: `[${index}]`,
+          // indexAsTitle: `[${index}]`,
           canRemove: additional,
           canMoveUp: index >= itemSchemas.length + 1,
           canMoveDown: additional && index < items.length - 1,
-          itemSchema,
+          itemSchema: { ...itemSchema, title: `[${index}]` },
           itemData: item,
           itemUiSchema,
           itemIdSchema,
@@ -796,7 +796,7 @@ class ArrayField extends Component {
     return {
       children: (
         <SchemaField
-          schema={{ ...itemSchema, indexAsTitle: `[${index}]` }}
+          schema={itemSchema}
           depth={depth + 1}
           isEven={!this.props.isEven}
           index={index}
