@@ -195,7 +195,7 @@ function DefaultNormalMapFieldTemplate(props) {
       />
 
       {!props.collapse && (
-        <div>
+        <div class="map-item-list-container">
           <div
             className={pfx("map-item-list")}
             key={`map-item-list-${props.idSchema.$id}`}
