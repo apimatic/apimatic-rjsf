@@ -9,15 +9,23 @@ module.exports = {
         title: "endpoint_7C26ABBCDB1F9",
         type: "object",
         properties: {
-          MapOfArrayParam: {
+          args: {
+            id: "endpoint_7C26ABBCDB1F9",
+            title: "endpoint_7C26ABBCDB1F9",
             type: "object",
-            additionalProperties: {
-              description: "",
-              type: "array",
-              items: { type: "string" }
+            properties: {
+              MapOfArrayParam: {
+                type: "object",
+                additionalProperties: {
+                  description: "",
+                  type: "array",
+                  items: { type: "string" }
+                },
+                dataTypeDisplayText: "map<array<String>>",
+                paramType: "Body"
+              }
             },
-            dataTypeDisplayText: "map<array<String>>",
-            paramType: "Body"
+            required: ["MapOfArrayParam"]
           }
         },
         required: ["MapOfArrayParam"]
