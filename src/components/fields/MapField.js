@@ -574,7 +574,7 @@ class MapField extends Component {
           readonly={this.props.readonly}
           autofocus={autofocus}
           depth={depth + 1}
-          isEven={!isEven}
+          isEven={isEven}
         />
       ),
       className: "map-item",
