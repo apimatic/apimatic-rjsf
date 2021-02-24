@@ -372,7 +372,9 @@ class ObjectField extends Component {
       registry = getDefaultRegistry(),
       disableFormJsonEdit,
       depth,
-      isEven
+      isEven,
+      expandAllLevel,
+      expandAll
     } = this.props;
 
     const { definitions, fields, formContext } = registry;
@@ -408,7 +410,9 @@ class ObjectField extends Component {
       registry,
       disableFormJsonEdit,
       depth,
-      isEven
+      isEven,
+      expandAllLevel,
+      expandAll
     };
 
     if (schema.properties && Object.keys(schema.properties).length > 0) {
