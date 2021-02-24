@@ -143,15 +143,13 @@ function DefaultObjectFieldTemplate(props) {
         <div className={pfx("header-left hand")} onClick={toggleCollapse}>
           {(props.uiSchema["ui:title"] ||
             props.title ||
-            props.schema.indexAsTitle) && (
+            props.schema.title) && (
             <TitleField
               id={`${props.idSchema.$id}__title`}
               title={
-                props.title ||
-                props.uiSchema["ui:title"] ||
-                props.schema.indexAsTitle
+                props.title || props.uiSchema["ui:title"] || props.schema.title
               }
-              required={props.schema.indexAsTitle ? false : props.required}
+              required={props.required}
               formContext={props.formContext}
               nullify={nullify}
               onNullifyChange={onNullifyChange}
@@ -160,8 +158,7 @@ function DefaultObjectFieldTemplate(props) {
           )}
 
           {props.required &&
-            (props.uiSchema["ui:title"] || props.title) &&
-            !props.schema.indexAsTitle && (
+            (props.uiSchema["ui:title"] || props.title) && (
               <div className={pfx("element-required")}>
                 {/* <RequiredInfoIcon /> */}
                 <span>Required</span>
