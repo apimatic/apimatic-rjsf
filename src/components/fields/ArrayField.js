@@ -325,11 +325,24 @@ class ArrayField extends Component {
 
     this.state = this.getStateFromProps(props);
     this.state.collapse = true;
+    this.state.expandAllLevel = props.expandAllLevel;
+    this.state.depth = props.depth ? props.depth : 1;
+
     this.toggleCollapse = this.toggleCollapse.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState(this.getStateFromProps(nextProps));
+    const collapse =
+      this.state.depth === this.state.expandAllLevel &&
+      this.state.expandAll !== nextProps.expandAll
+        ? !nextProps.expandAll
+        : this.state.collapse;
+    this.setState({
+      ...this.getStateFromProps(nextProps),
+      expandAllLevel: this.state.expandAllLevel,
+      expandAll: nextProps.expandAll,
+      collapse
+    });
   }
 
   getStateFromProps(nextProps) {
