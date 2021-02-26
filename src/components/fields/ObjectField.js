@@ -210,7 +210,11 @@ function DefaultObjectFieldTemplate(props) {
       )}
 
       {(!collapse || !canCollapse) && (
-        <div className={pfx("element-properties")}>
+        <div
+          className={pfx(
+            `element-properties ${props.showEditView ? "json-edit-view" : ""}`
+          )}
+        >
           {props.showEditView && canEditJson ? (
             <div>
               <CodeMirror
