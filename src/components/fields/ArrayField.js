@@ -202,9 +202,7 @@ function DefaultFixedArrayFieldTemplate(props) {
 function DefaultNormalArrayFieldTemplate(props) {
   const title = props.schema.title || props.itemsSchema.title;
 
-  const dataType = props.schema.dataTypeDisplayText
-    ? props.schema.dataTypeDisplayText
-    : title;
+  const dataType = props.schema.dataTypeDisplayText;
 
   return (
     <fieldset className={pfx(props.className)}>
