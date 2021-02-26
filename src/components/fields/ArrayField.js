@@ -17,7 +17,7 @@ import {
   getDefaultRegistry,
   prefixClass as pfx
 } from "../../utils";
-import { ArrowUpIcon, CloseIcon, ArrowDownIcon, CheveronIcon } from "../Icons";
+import { ArrowUpIcon, DeleteIcon, ArrowDownIcon, CheveronIcon } from "../Icons";
 
 function ArrayFieldTitle({
   TitleField,
@@ -146,7 +146,7 @@ function DefaultArrayItem(props) {
                   disabled={props.disabled || props.readonly}
                   onClick={props.onDropIndexClick(props.index)}
                 >
-                  <CloseIcon width={14} />
+                  <DeleteIcon width={14} />
                 </IconBtn>
               )}
             </div>

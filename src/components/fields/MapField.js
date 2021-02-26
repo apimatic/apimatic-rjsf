@@ -8,7 +8,7 @@ import {
   retrieveSchema,
   toIdSchema
 } from "../../utils";
-import { CloseIcon, CheveronIcon } from "../Icons";
+import { DeleteIcon, CheveronIcon } from "../Icons";
 
 import DataType from "../fields/DataType";
 
@@ -115,7 +115,7 @@ function DefaultMapItem(props) {
                 disabled={props.disabled || props.readonly}
                 onClick={props.onDropKeyClick}
               >
-                <CloseIcon width={14} />
+                <DeleteIcon width={14} />
               </IconBtn>
             </div>
           )}
