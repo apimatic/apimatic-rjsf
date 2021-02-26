@@ -16,13 +16,13 @@ function DescriptionField(props) {
   }
 
   return (
-    <p id={id} className={pfx("field-description")}>
+    <div id={id} className={pfx("field-description")}>
       <ReactMarkdown
         plugins={[]}
         children={description.replace(/<br>/gi, "\n")}
         renderers={{ ...renderers }}
       />
-    </p>
+    </div>
   );
 }
 
