@@ -132,6 +132,8 @@ function DefaultObjectFieldTemplate(props) {
 
   const dataType = props.schema.dataTypeDisplayText;
 
+  const title = props.uiSchema["ui:title"] || props.schema.title || props.title;
+
   return (
     <fieldset
       className={pfx((props.isEven ? "even" : "odd") + ` depth_${props.depth}`)}
@@ -144,9 +146,7 @@ function DefaultObjectFieldTemplate(props) {
             props.schema.title) && (
             <TitleField
               id={`${props.idSchema.$id}__title`}
-              title={
-                props.title || props.uiSchema["ui:title"] || props.schema.title
-              }
+              title={title}
               required={props.required}
               formContext={props.formContext}
               nullify={nullify}
@@ -457,12 +457,16 @@ class ObjectField extends Component {
 
     const dataType = templateProps.schema.dataTypeDisplayText;
 
+    const title =
+      templateProps.uiSchema["ui:title"] ||
+      templateProps.schema.title ||
+      templateProps.title;
     return (
       <fieldset>
-        {(templateProps.uiSchema["ui:title"] || templateProps.title) && (
+        {title && (
           <TitleField
             id={`${templateProps.idSchema.$id}__title`}
-            title={templateProps.title || templateProps.uiSchema["ui:title"]}
+            title={title}
             required={templateProps.required}
             formContext={templateProps.formContext}
             nullify={templateProps.nullify}

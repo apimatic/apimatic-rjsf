@@ -200,7 +200,11 @@ function DefaultFixedArrayFieldTemplate(props) {
 }
 
 function DefaultNormalArrayFieldTemplate(props) {
-  const title = props.schema.title || props.itemsSchema.title;
+  const title =
+    props.uiSchema["ui:title"] ||
+    props.schema.title ||
+    props.itemsSchema.title ||
+    props.title;
 
   const dataType = props.schema.dataTypeDisplayText;
 
@@ -212,7 +216,7 @@ function DefaultNormalArrayFieldTemplate(props) {
             key={`array-field-title-${props.idSchema.$id}`}
             TitleField={props.TitleField}
             idSchema={props.idSchema}
-            title={props.uiSchema["ui:title"] || props.title || title}
+            title={title}
             required={props.required}
             nullify={props.nullify}
             onNullifyChange={props.onNullifyChange}
