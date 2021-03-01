@@ -130,9 +130,7 @@ function DefaultObjectFieldTemplate(props) {
     !props.disableFormJsonEdit &&
     !props.uiSchema.disableFieldJsonEdit;
 
-  const dataType = props.schema.dataTypeDisplayText
-    ? props.schema.dataTypeDisplayText
-    : props.schema.title;
+  const dataType = props.schema.dataTypeDisplayText;
 
   return (
     <fieldset
@@ -457,9 +455,7 @@ class ObjectField extends Component {
   renderDynamic(templateProps) {
     const { TitleField, DescriptionField } = templateProps;
 
-    const dataType = templateProps.schema.dataTypeDisplayText
-      ? templateProps.schema.dataTypeDisplayText
-      : templateProps.schema.title;
+    const dataType = templateProps.schema.dataTypeDisplayText;
 
     return (
       <fieldset>
