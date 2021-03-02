@@ -461,10 +461,7 @@ class MapField extends Component {
       depth,
       isEven
     } = this.props;
-    const title =
-      schema.title === undefined
-        ? name
-        : name === undefined ? schema.title : name + " (" + schema.title + ")";
+    const title = schema.title || name;
     const { definitions, fields } = registry;
     const { TitleField, DescriptionField } = fields;
     const addPropsSchema = retrieveSchema(
