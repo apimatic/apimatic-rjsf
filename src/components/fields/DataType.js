@@ -9,14 +9,12 @@ function DataType(props) {
     return <div />;
   }
   return (
-    <div className={pfx("type-container")}>
-      <div
-        className={pfx(
-          type !== "schema" ? type : link ? "object-type" : "base-type"
-        )}
-      >
-        {link ? <a href={link}>{title}</a> : title}
-      </div>
+    <div
+      className={pfx(
+        type !== "schema" ? type : link ? "object-type" : "base-type"
+      )}
+    >
+      {link ? <a href={link}>{title}</a> : title}
     </div>
   );
 }

@@ -33,11 +33,13 @@ function CheckboxWidget(props) {
         />
       )}
 
-      <DataType title={dataType} link={schema.dataTypeLink} type="schema" />
+      <div className={pfx("type-container")}>
+        <DataType title={dataType} link={schema.dataTypeLink} type="schema" />
 
-      {schema.paramType && (
-        <div className={pfx("param-type")}>{schema.paramType}</div>
-      )}
+        {schema.paramType && (
+          <div className={pfx("param-type")}>{schema.paramType}</div>
+        )}
+      </div>
 
       {schema.description && (
         <DescriptionField description={schema.description} />

@@ -191,15 +191,17 @@ function DefaultObjectFieldTemplate(props) {
         </div>
       )} */}
 
-      <DataType
-        title={dataType}
-        link={props.schema.dataTypeLink}
-        type="object-type"
-      />
+      <div className={pfx("type-container")}>
+        <DataType
+          title={dataType}
+          link={props.schema.dataTypeLink}
+          type="object-type"
+        />
 
-      {props.schema.paramType && (
-        <div className={pfx("param-type")}>{props.schema.paramType}</div>
-      )}
+        {props.schema.paramType && (
+          <div className={pfx("param-type")}>{props.schema.paramType}</div>
+        )}
+      </div>
 
       {props.description && (
         <DescriptionField
@@ -475,27 +477,19 @@ class ObjectField extends Component {
           />
         )}
 
-        {/* {dataType && (
-          <div className={pfx("object-type")}>
-            {templateProps.schema.dataTypeLink ? (
-              <a href={templateProps.schema.dataTypeLink}>{dataType}</a>
-            ) : (
-              dataType
-            )}
-          </div>
-        )} */}
+        <div className={pfx("type-container")}>
+          <DataType
+            title={dataType}
+            link={templateProps.schema.dataTypeLink}
+            type="object-type"
+          />
 
-        <DataType
-          title={dataType}
-          link={templateProps.schema.dataTypeLink}
-          type="object-type"
-        />
-
-        {templateProps.schema.paramType && (
-          <div className={pfx("param-type")}>
-            {templateProps.schema.paramType}
-          </div>
-        )}
+          {templateProps.schema.paramType && (
+            <div className={pfx("param-type")}>
+              {templateProps.schema.paramType}
+            </div>
+          )}
+        </div>
 
         {templateProps.description && (
           <DescriptionField

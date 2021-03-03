@@ -173,15 +173,17 @@ function DefaultNormalMapFieldTemplate(props) {
         </IconBtn>
       </div>
 
-      <DataType
-        title={dataType}
-        link={props.schema.dataTypeLink}
-        type="map-field-type"
-      />
+      <div className={pfx("type-container")}>
+        <DataType
+          title={dataType}
+          link={props.schema.dataTypeLink}
+          type="map-field-type"
+        />
 
-      {props.schema.paramType && (
-        <div className={pfx("param-type")}>{props.schema.paramType}</div>
-      )}
+        {props.schema.paramType && (
+          <div className={pfx("param-type")}>{props.schema.paramType}</div>
+        )}
+      </div>
 
       <MapFieldDescription
         key={`map-field-description-${props.idSchema.$id}`}

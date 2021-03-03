@@ -265,15 +265,17 @@ function DefaultNormalArrayFieldTemplate(props) {
         </div>
       )} */}
 
-      <DataType
-        title={dataType}
-        link={props.schema.dataTypeLink}
-        type="array-type"
-      />
+      <div className={pfx("type-container")}>
+        <DataType
+          title={dataType}
+          link={props.schema.dataTypeLink}
+          type="array-type"
+        />
 
-      {props.schema.paramType && (
-        <div className={pfx("param-type")}>{props.schema.paramType}</div>
-      )}
+        {props.schema.paramType && (
+          <div className={pfx("param-type")}>{props.schema.paramType}</div>
+        )}
+      </div>
 
       {(props.uiSchema["ui:description"] ||
         props.schema.description ||
