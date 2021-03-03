@@ -8,7 +8,7 @@ import {
   retrieveSchema,
   toIdSchema
 } from "../../utils";
-import { DeleteIcon, CheveronIcon } from "../Icons";
+import { DeleteIcon, ChevronIcon } from "../Icons";
 
 import DataType from "../fields/DataType";
 
@@ -91,9 +91,9 @@ function DefaultMapItem(props) {
           className={pfx("btn toggle-button")}
         >
           {props.collapse ? (
-            <CheveronIcon width={14} rotate={180} />
+            <ChevronIcon width={14} rotate={180} />
           ) : (
-            <CheveronIcon width={14} />
+            <ChevronIcon width={14} />
           )}
         </IconBtn>
 
@@ -166,9 +166,9 @@ function DefaultNormalMapFieldTemplate(props) {
           className={pfx("btn toggle-button")}
         >
           {props.collapse ? (
-            <CheveronIcon width={14} rotate={180} />
+            <ChevronIcon width={14} rotate={180} />
           ) : (
-            <CheveronIcon width={14} />
+            <ChevronIcon width={14} />
           )}
         </IconBtn>
       </div>

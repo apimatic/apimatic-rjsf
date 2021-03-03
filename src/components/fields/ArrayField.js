@@ -17,7 +17,7 @@ import {
   getDefaultRegistry,
   prefixClass as pfx
 } from "../../utils";
-import { ArrowUpIcon, DeleteIcon, ArrowDownIcon, CheveronIcon } from "../Icons";
+import { ArrowUpIcon, DeleteIcon, ArrowDownIcon, ChevronIcon } from "../Icons";
 
 function ArrayFieldTitle({
   TitleField,
@@ -231,9 +231,9 @@ function DefaultNormalArrayFieldTemplate(props) {
           className={pfx("btn toggle-button")}
         >
           {props.collapse ? (
-            <CheveronIcon width={14} rotate={180} />
+            <ChevronIcon width={14} rotate={180} />
           ) : (
-            <CheveronIcon width={14} />
+            <ChevronIcon width={14} />
           )}
         </IconBtn>
       </div>

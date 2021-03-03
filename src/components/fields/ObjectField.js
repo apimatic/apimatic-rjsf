@@ -17,7 +17,7 @@ import {
   getDefaultFormState,
   deepEquals
 } from "../../utils";
-import { CheveronIcon, JsonIcon } from "../Icons";
+import { ChevronIcon, JsonIcon } from "../Icons";
 
 const cmOptions = {
   theme: "default",
@@ -173,9 +173,9 @@ function DefaultObjectFieldTemplate(props) {
             className={pfx("btn toggle-button")}
           >
             {collapse ? (
-              <CheveronIcon width={14} rotate={180} />
+              <ChevronIcon width={14} rotate={180} />
             ) : (
-              <CheveronIcon width={14} />
+              <ChevronIcon width={14} />
             )}
           </IconBtn>
         )}
