@@ -231,7 +231,7 @@ function DefaultNormalArrayFieldTemplate(props) {
           className={pfx("btn toggle-button")}
         >
           {props.collapse ? (
-            <ChevronIcon width={14} rotate={180} />
+            <ChevronIcon width={14} rotate={-90} />
           ) : (
             <ChevronIcon width={14} />
           )}

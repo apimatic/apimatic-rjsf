@@ -173,7 +173,7 @@ function DefaultObjectFieldTemplate(props) {
             className={pfx("btn toggle-button")}
           >
             {collapse ? (
-              <ChevronIcon width={14} rotate={180} />
+              <ChevronIcon width={14} rotate={-90} />
             ) : (
               <ChevronIcon width={14} />
             )}
