@@ -1,13 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-
 import { asNumber, prefixClass as pfx } from "../../utils";
-
+import MultipleSelect from "./MultipleSelect";
 /**
  * This is a silly limitation in the DOM where option change event values are
  * always retrieved as strings.
  */
-function processValue({ type, items }, value) {
+export function processValue({ type, items }, value) {
   if (value === "") {
     return undefined;
   } else if (
@@ -26,10 +25,7 @@ function processValue({ type, items }, value) {
 
 function getValue(event, multiple) {
   if (multiple) {
-    return [].slice
-      .call(event.target.options)
-      .filter(o => o.selected)
-      .map(o => o.value);
+    return event.reduce((acc, cv, i) => acc.concat(cv.value), []);
   } else {
     return event.target.value;
   }
@@ -52,13 +48,42 @@ function SelectWidget(props) {
     placeholder
   } = props;
   const { enumOptions, enumDisabled } = options;
-  const emptyValue = multiple ? [] : "";
-  return (
+
+  return multiple ? (
+    <MultipleSelect
+      id={id}
+      multiple={multiple}
+      className={pfx("form-control")}
+      value={value}
+      required={required}
+      disabled={disabled || readonly}
+      options={options}
+      autoFocus={autofocus}
+      onBlur={
+        onBlur &&
+        (event => {
+          const newValue = getValue(event, multiple);
+          onBlur(id, processValue(schema, newValue));
+        })
+      }
+      onFocus={
+        onFocus &&
+        (event => {
+          const newValue = getValue(event, multiple);
+          onFocus(id, processValue(schema, newValue));
+        })
+      }
+      onChange={event => {
+        const newValue = getValue(event, multiple);
+        onChange(processValue(schema, newValue));
+      }}
+    />
+  ) : (
     <select
       id={id}
       multiple={multiple}
       className={pfx("form-control")}
-      value={typeof value === "undefined" ? emptyValue : value}
+      value={typeof value === "undefined" ? "" : value}
       required={required}
       disabled={disabled || readonly}
       autoFocus={autofocus}
