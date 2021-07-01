@@ -382,7 +382,9 @@ class App extends Component {
 
   onShare = () => {
     const { formData, schema, uiSchema } = this.state;
-    const { location: { origin, pathname } } = document;
+    const {
+      location: { origin, pathname }
+    } = document;
     try {
       const hash = btoa(JSON.stringify({ formData, schema, uiSchema }));
       this.setState({ shareURL: `${origin}${pathname}#${hash}` });
@@ -476,6 +478,7 @@ class App extends Component {
               }
               transformErrors={transformErrors}
               onError={log("errors")}
+              expandAllLevel={true}
             >
               <div className="row">
                 <div className="col-sm-3">

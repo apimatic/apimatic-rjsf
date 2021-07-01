@@ -28,7 +28,7 @@ function getValue(event, multiple) {
   if (multiple) {
     return event.reduce((acc, cv, i) => acc.concat(cv.value), []);
   } else {
-    return event.target.value;
+    return event.value;
   }
 }
 
