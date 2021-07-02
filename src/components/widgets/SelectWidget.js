@@ -81,6 +81,7 @@ function SelectWidget(props) {
     <Select
       id={id}
       className={pfx("form-control")}
+      classNamePrefix="react-select"
       isMulti={multiple}
       options={newOptions}
       defaultValue={
