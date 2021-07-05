@@ -63,8 +63,8 @@ function SelectWidget(props) {
     multiple,
     autofocus,
     onChange,
-    // onBlur,
-    // onFocus,
+    onBlur,
+    onFocus,
     placeholder
   } = props;
   const { enumOptions, enumDisabled } = options;
@@ -94,20 +94,8 @@ function SelectWidget(props) {
       autoFocus={autofocus}
       placeholder={placeholder}
       required={required}
-      // onBlur={
-      //   onBlur &&
-      //   (event => {
-      //     const newValue = getValue(event, multiple);
-      //     onBlur(id, processValue(schema, newValue));
-      //   })
-      // }
-      // onFocus={
-      //   onFocus &&
-      //   (event => {
-      //     const newValue = getValue(event, multiple);
-      //     onFocus(id, processValue(schema, newValue));
-      //   })
-      // }
+      onBlur={onBlur}
+      onFocus={onFocus}
       onChange={event => {
         const newValue = getValue(event, multiple);
         onChange(processValue(schema, newValue));
