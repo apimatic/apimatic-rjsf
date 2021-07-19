@@ -89,6 +89,7 @@ function SelectWidget(props) {
           ? emptyValue
           : getDefaultValue(value, multiple, enumOptions, enumDisabled)
       }
+      closeMenuOnSelect={false}
       isDisabled={disabled || readonly}
       required={required}
       autoFocus={autofocus}
