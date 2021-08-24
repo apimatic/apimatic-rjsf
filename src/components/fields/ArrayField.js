@@ -171,13 +171,6 @@ function DefaultFixedArrayFieldTemplate(props) {
         onNullifyChange={props.onNullifyChange}
         disabled={props.disabled}
       />
-      {props.itemsSchema &&
-        props.itemsSchema.required &&
-        (props.uiSchema["ui:title"] || props.title) && (
-          <div className={pfx("element-required")}>
-            <span>Required</span>
-          </div>
-        )}
 
       {(props.uiSchema["ui:description"] || props.schema.description) && (
         <div
@@ -230,15 +223,11 @@ function DefaultNormalArrayFieldTemplate(props) {
             disabled={props.disabled}
             // onClick={props.toggleCollapse}
           />
-          {props.items &&
-            props.items.length > 0 &&
-            props.itemsSchema &&
-            props.itemsSchema.required &&
-            (props.uiSchema["ui:title"] || props.title) && (
-              <div className={pfx("element-required")}>
-                <span>Required</span>
-              </div>
-            )}
+          {title && props.itemsSchema && props.itemsSchema.required && (
+            <div className={pfx("element-required")}>
+              <span>Required</span>
+            </div>
+          )}
         </div>
 
         <IconBtn
@@ -253,33 +242,6 @@ function DefaultNormalArrayFieldTemplate(props) {
           )}
         </IconBtn>
       </div>
-
-      {/* <div className={pfx("array-type")}>
-        <span>Array</span>
-        {title && (
-          <span>
-            &nbsp;&lt;&nbsp;
-            <span className={pfx("object-type")}>
-              {props.schema.dataTypeLink ? (
-                <a href={props.schema.dataTypeLink}>{title}</a>
-              ) : (
-                title
-              )}
-            </span>
-            &nbsp;&gt;
-          </span>
-        )}
-      </div> */}
-
-      {/* {dataType && (
-        <div className={pfx("array-type")}>
-          {props.schema.dataTypeLink ? (
-            <a href={props.schema.dataTypeLink}>{dataType}</a>
-          ) : (
-            dataType
-          )}
-        </div>
-      )} */}
 
       <div className={pfx("type-container")}>
         <DataType
