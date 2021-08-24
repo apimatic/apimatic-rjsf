@@ -171,6 +171,13 @@ function DefaultFixedArrayFieldTemplate(props) {
         onNullifyChange={props.onNullifyChange}
         disabled={props.disabled}
       />
+      {props.itemsSchema &&
+        props.itemsSchema.required &&
+        (props.uiSchema["ui:title"] || props.title) && (
+          <div className={pfx("element-required")}>
+            <span>Required</span>
+          </div>
+        )}
 
       {(props.uiSchema["ui:description"] || props.schema.description) && (
         <div
@@ -223,6 +230,15 @@ function DefaultNormalArrayFieldTemplate(props) {
             disabled={props.disabled}
             // onClick={props.toggleCollapse}
           />
+          {props.items &&
+            props.items.length > 0 &&
+            props.itemsSchema &&
+            props.itemsSchema.required &&
+            (props.uiSchema["ui:title"] || props.title) && (
+              <div className={pfx("element-required")}>
+                <span>Required</span>
+              </div>
+            )}
         </div>
 
         <IconBtn
@@ -354,7 +370,9 @@ class ArrayField extends Component {
       originalFormData:
         nextProps.formData === undefined ||
         (nextProps.formData && nextProps.formData.length === 0)
-          ? this.state ? this.state.originalFormData : undefined
+          ? this.state
+            ? this.state.originalFormData
+            : undefined
           : nextProps.formData
     };
   }
@@ -410,7 +428,10 @@ class ArrayField extends Component {
       }
       const { formData, onChange } = this.props;
       // refs #195: revalidate to ensure properly reindexing errors
-      onChange(formData.filter((_, i) => i !== index), { validate: true });
+      onChange(
+        formData.filter((_, i) => i !== index),
+        { validate: true }
+      );
     };
   };
 
@@ -657,7 +678,9 @@ class ArrayField extends Component {
     const title =
       schema.title === undefined
         ? name
-        : name === undefined ? schema.title : name + " (" + schema.title + ")";
+        : name === undefined
+        ? schema.title
+        : name + " (" + schema.title + ")";
     const items = this.props.formData;
     const { widgets, formContext } = registry;
     const { widget = "files", ...options } = getUiOptions(uiSchema);
@@ -700,7 +723,9 @@ class ArrayField extends Component {
     const title =
       schema.title === undefined
         ? name
-        : name === undefined ? schema.title : name + " (" + schema.title + ")";
+        : name === undefined
+        ? schema.title
+        : name + " (" + schema.title + ")";
     let items = this.props.formData;
     const { ArrayFieldTemplate, definitions, fields } = registry;
     const { TitleField } = fields;
@@ -739,8 +764,8 @@ class ArrayField extends Component {
         const itemUiSchema = additional
           ? uiSchema.additionalItems || {}
           : Array.isArray(uiSchema.items)
-            ? uiSchema.items[index]
-            : uiSchema.items || {};
+          ? uiSchema.items[index]
+          : uiSchema.items || {};
         const itemErrorSchema = errorSchema ? errorSchema[index] : undefined;
 
         return this.renderArrayFieldItem({
@@ -797,7 +822,9 @@ class ArrayField extends Component {
       uiSchema,
       registry = getDefaultRegistry()
     } = this.props;
-    const { fields: { SchemaField } } = registry;
+    const {
+      fields: { SchemaField }
+    } = registry;
     const { orderable, removable } = {
       orderable: true,
       removable: true,
