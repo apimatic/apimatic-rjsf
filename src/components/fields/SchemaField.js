@@ -45,7 +45,7 @@ function getFieldComponent(schema, uiSchema, idSchema, fields) {
       };
 }
 
-function Label(props) {
+export function Label(props) {
   const { label, id } = props;
   if (!label) {
     // See #312: Ensure compatibility with old versions of React.
@@ -120,7 +120,6 @@ function DefaultTemplate(props) {
           <Label label={label} required={required} id={id} />
           {required && (
             <div className={pfx("element-required")}>
-              {/* <RequiredInfoIcon /> */}
               <span>Required</span>
             </div>
           )}

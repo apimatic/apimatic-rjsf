@@ -2,8 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import DescriptionField from "../fields/DescriptionField.js";
 import { prefixClass as pfx } from "../../utils";
-import TitleField from "../fields/TitleField";
+// import TitleField from "../fields/TitleField";
 import DataType from "../fields/DataType";
+import { Label } from "../fields/SchemaField";
+
 function CheckboxWidget(props) {
   const {
     schema,
@@ -14,7 +16,7 @@ function CheckboxWidget(props) {
     readonly,
     label,
     autofocus,
-    formContext,
+    // formContext,
     onChange
   } = props;
 
@@ -23,7 +25,7 @@ function CheckboxWidget(props) {
     : schema.title;
   return (
     <div>
-      {label && (
+      {/* {label && (
         <TitleField
           id={`${id}__title`}
           title={label}
@@ -31,8 +33,17 @@ function CheckboxWidget(props) {
           formContext={formContext}
           disabled={disabled}
         />
+      )} */}
+      {label && (
+        <div className={pfx("field-header")}>
+          <Label label={label} required={required} id={id} />
+          {required && (
+            <div className={pfx("element-required")}>
+              <span>Required</span>
+            </div>
+          )}
+        </div>
       )}
-
       <div className={pfx("type-container")}>
         <DataType title={dataType} link={schema.dataTypeLink} type="schema" />
 
