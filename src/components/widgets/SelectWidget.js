@@ -82,7 +82,7 @@ function SelectWidget(props) {
       id={id}
       className={pfx("form-control")}
       classNamePrefix="react-select"
-      isMulti={multiple}
+      isMulti={multiple ? true : false}
       options={newOptions}
       defaultValue={
         typeof value === "undefined"
