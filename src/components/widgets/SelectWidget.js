@@ -82,14 +82,14 @@ function SelectWidget(props) {
       id={id}
       className={pfx("form-control")}
       classNamePrefix="react-select"
-      isMulti={multiple ? true : false}
+      isMulti={multiple}
       options={newOptions}
       defaultValue={
         typeof value === "undefined"
           ? emptyValue
           : getDefaultValue(value, multiple, enumOptions, enumDisabled)
       }
-      closeMenuOnSelect={false}
+      closeMenuOnSelect={!multiple}
       isDisabled={disabled || readonly}
       required={required}
       autoFocus={autofocus}
