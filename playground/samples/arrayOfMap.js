@@ -1,6 +1,6 @@
 module.exports = {
   schema: {
-    title: "Endpoint Arguments",
+    title: "Endpoint Arguments_1",
     type: "object",
     additionalProperties: false,
     properties: {
@@ -10,58 +10,15 @@ module.exports = {
         type: "object",
         properties: {
           ArrayOfMapParam: {
-            description: "",
+            example: [{ string1: "test1" }, { string2: "test2" }],
             type: "array",
             items: {
-              title: "Person",
+              example: [{ string1: "test1" }, { string2: "test2" }],
               type: "object",
-              additionalProperties: {
-                id: "Person",
-                description: "",
-                type: "object",
-                properties: {
-                  ArrayField: {
-                    description: "",
-                    type: "array",
-                    items: {
-                      type: "string"
-                    }
-                  },
-                  MapField: {
-                    type: "object",
-                    additionalProperties: {
-                      type: "string"
-                    }
-                  },
-                  ArrayOfMaps: {
-                    description: "",
-                    type: "array",
-                    items: {
-                      type: "object",
-                      additionalProperties: {
-                        type: "string"
-                      }
-                    }
-                  },
-                  MapOfArrays: {
-                    type: "object",
-                    additionalProperties: {
-                      description: "",
-                      type: "array",
-                      items: {
-                        type: "string"
-                      }
-                    }
-                  }
-                },
-                required: [
-                  "ArrayField",
-                  "MapField",
-                  "ArrayOfMaps",
-                  "MapOfArrays"
-                ]
-              }
-            }
+              additionalProperties: { type: "string" }
+            },
+            dataTypeDisplayText: "array<map<String>>",
+            paramType: "Body"
           }
         },
         required: ["ArrayOfMapParam"]

@@ -9,59 +9,23 @@ module.exports = {
         title: "endpoint_7C26ABBCDB1F9",
         type: "object",
         properties: {
-          MapOfArrayParam: {
+          args: {
+            id: "endpoint_7C26ABBCDB1F9",
+            title: "endpoint_7C26ABBCDB1F9",
             type: "object",
-            additionalProperties: {
-              description: "",
-              type: "array",
-              items: {
-                id: "Person",
-                title: "Person",
-                description: "",
+            properties: {
+              MapOfArrayParam: {
                 type: "object",
-                properties: {
-                  ArrayField: {
-                    description: "",
-                    type: "array",
-                    items: {
-                      type: "string"
-                    }
-                  },
-                  MapField: {
-                    type: "object",
-                    additionalProperties: {
-                      type: "string"
-                    }
-                  },
-                  ArrayOfMaps: {
-                    description: "",
-                    type: "array",
-                    items: {
-                      type: "object",
-                      additionalProperties: {
-                        type: "string"
-                      }
-                    }
-                  },
-                  MapOfArrays: {
-                    type: "object",
-                    additionalProperties: {
-                      description: "",
-                      type: "array",
-                      items: {
-                        type: "string"
-                      }
-                    }
-                  }
+                additionalProperties: {
+                  description: "",
+                  type: "array",
+                  items: { type: "string" }
                 },
-                required: [
-                  "ArrayField",
-                  "MapField",
-                  "ArrayOfMaps",
-                  "MapOfArrays"
-                ]
+                dataTypeDisplayText: "map<array<String>>",
+                paramType: "Body"
               }
-            }
+            },
+            required: ["MapOfArrayParam"]
           }
         },
         required: ["MapOfArrayParam"]

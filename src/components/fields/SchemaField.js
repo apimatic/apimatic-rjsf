@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import DataType from "./DataType";
 
 import {
   isMultiSelect,
@@ -12,7 +13,7 @@ import {
 } from "../../utils";
 import UnsupportedField from "./UnsupportedField";
 
-const REQUIRED_FIELD_SYMBOL = "*";
+// const REQUIRED_FIELD_SYMBOL = "*";
 const COMPONENT_TYPES = {
   array: "ArrayField",
   boolean: "BooleanField",
@@ -44,15 +45,16 @@ function getFieldComponent(schema, uiSchema, idSchema, fields) {
       };
 }
 
-function Label(props) {
-  const { label, required, id } = props;
+export function Label(props) {
+  const { label, id } = props;
   if (!label) {
     // See #312: Ensure compatibility with old versions of React.
     return <div />;
   }
   return (
     <label className={pfx("control-label")} htmlFor={id}>
-      {required ? label + REQUIRED_FIELD_SYMBOL : label}
+      {/* {required ? label + REQUIRED_FIELD_SYMBOL : label} */}
+      <div className="label-text">{label}</div>
     </label>
   );
 }
@@ -107,9 +109,37 @@ function DefaultTemplate(props) {
     return children;
   }
 
+  const dataType = props.schema.dataTypeDisplayText
+    ? props.schema.dataTypeDisplayText
+    : props.schema.type;
+
   return (
     <div className={pfx(classNames)}>
-      {displayLabel && <Label label={label} required={required} id={id} />}
+      {displayLabel && (
+        <div className={pfx("field-header")}>
+          <Label label={label} required={required} id={id} />
+          {required && (
+            <div className={pfx("element-required")}>
+              <span>Required</span>
+            </div>
+          )}
+        </div>
+      )}
+
+      {displayLabel && (
+        <div className={pfx("type-container")}>
+          <DataType
+            title={dataType}
+            link={props.schema.dataTypeLink}
+            type="schema"
+          />
+
+          {props.schema.paramType && (
+            <div className={pfx("param-type")}>{props.schema.paramType}</div>
+          )}
+        </div>
+      )}
+
       {displayLabel && description ? description : null}
       {children}
       {errors}

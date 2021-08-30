@@ -21,7 +21,7 @@ import nestedObject from "./nestedObject";
 import object from "./object";
 import additionalProperties from "./additionalProperties";
 import arrayOfMap from "./arrayOfMap";
-import mapOfArray from "./arrayOfMap";
+import mapOfArray from "./mapOfArray";
 export const samples = {
   Simple: simple,
   Nested: nested,

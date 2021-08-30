@@ -4,9 +4,11 @@ import MapField from "./MapField";
 import { prefixClass as pfx } from "../../utils";
 import { toErrorList } from "../../validate";
 import CodeMirror from "react-codemirror2";
+import DataType from "../fields/DataType";
 import "codemirror/mode/javascript/javascript";
 
 // import "codemirror/lib/codemirror.css";
+// import "./../../../playground/style.css";
 
 import {
   orderProperties,
@@ -15,6 +17,7 @@ import {
   getDefaultFormState,
   deepEquals
 } from "../../utils";
+import { ChevronIcon, JsonIcon } from "../Icons";
 
 const cmOptions = {
   theme: "default",
@@ -31,35 +34,64 @@ const cmOptions = {
   tabSize: 2
 };
 
-const viewJsonButtonStyle = {
-  color: "#2C6EFA",
-  fontSize: "12px",
-  cursor: "pointer",
-  background: "#fff",
-  border: "none",
-  float: "right"
-};
+// const viewJsonButtonStyle = {
+//   color: "#2C6EFA",
+//   fontSize: "12px",
+//   cursor: "pointer",
+//   background: "#fff",
+//   border: "none",
+//   float: "right"
+// };
 
-const viewJsonButtonWrapper = {
-  height: "17px",
-  marginBottom: "10px"
-};
+// const viewJsonButtonWrapper = {
+//   height: "17px",
+//   marginBottom: "10px"
+// };
 
 function renderErrorSchema(errorSchema) {
   let errorList = toErrorList(errorSchema);
   return (
-    <ul>{errorList.map((key, index) => <li key={index}>{key.stack}</li>)}</ul>
+    <ul>
+      {errorList.map((key, index) => (
+        <li key={index}>{key.stack}</li>
+      ))}
+    </ul>
+  );
+}
+
+function IconBtn(props) {
+  const { type = "default", icon, className, ...otherProps } = props;
+  return (
+    <button
+      type="button"
+      className={pfx(`btn btn-${type}`) + " " + className}
+      {...otherProps}
+    >
+      <span className={pfx("tooltip")} />
+      {props.children}
+    </button>
   );
 }
 
 function renderViewJsonButton(props) {
-  let { formJsonError, errorSchema, toggleEditView, showEditView } = props;
+  // let { formJsonError, errorSchema, toggleEditView, showEditView } = props;
+  let { formJsonError, errorSchema, toggleEditView } = props;
   let disableViewJsonButton =
     formJsonError || Object.keys(errorSchema).length !== 0;
 
-  return (
-    <div style={viewJsonButtonWrapper}>
-      {disableViewJsonButton ? (
+  return disableViewJsonButton ? (
+    <IconBtn className={pfx("btn json-button json-button-disabled")} disabled>
+      <JsonIcon />
+    </IconBtn>
+  ) : (
+    <IconBtn onClick={toggleEditView} className={pfx("btn json-button")}>
+      <JsonIcon />
+    </IconBtn>
+  );
+
+  /* 
+        <div style={viewJsonButtonWrapper}>
+        {disableViewJsonButton ? (
         <button
           className={pfx("view-json-button")}
           style={viewJsonButtonStyle}
@@ -75,9 +107,9 @@ function renderViewJsonButton(props) {
         >
           {showEditView ? "View Form" : "View JSON"}
         </button>
-      )}
-    </div>
-  );
+      }
+      </div>
+      )} */
 }
 
 function DefaultObjectFieldTemplate(props) {
@@ -86,7 +118,9 @@ function DefaultObjectFieldTemplate(props) {
     DescriptionField,
     nullify,
     onNullifyChange,
-    disabled
+    disabled,
+    collapse,
+    toggleCollapse
   } = props;
 
   let canEditJson =
@@ -94,21 +128,74 @@ function DefaultObjectFieldTemplate(props) {
     !props.disableFormJsonEdit &&
     !props.uiSchema.disableFieldJsonEdit;
 
-  return (
-    <fieldset>
-      {canEditJson && renderViewJsonButton(props)}
+  let canCollapse =
+    props.properties &&
+    props.properties.length > 0 &&
+    !props.disableFormJsonEdit &&
+    !props.uiSchema.disableFieldJsonEdit;
 
-      {(props.uiSchema["ui:title"] || props.title) && (
-        <TitleField
-          id={`${props.idSchema.$id}__title`}
-          title={props.title || props.uiSchema["ui:title"]}
-          required={props.required}
-          formContext={props.formContext}
-          nullify={nullify}
-          onNullifyChange={onNullifyChange}
-          disabled={disabled}
+  const dataType = props.schema.dataTypeDisplayText;
+
+  const title = props.uiSchema["ui:title"] || props.schema.title || props.title;
+
+  return (
+    <fieldset
+      className={pfx((props.isEven ? "even" : "odd") + ` depth_${props.depth}`)}
+      id={`${props.idSchema.$id}__object`}
+    >
+      <div className={pfx("object-header")}>
+        <div className={pfx("header-left hand")} onClick={toggleCollapse}>
+          {(props.uiSchema["ui:title"] ||
+            props.title ||
+            props.schema.title) && (
+            <TitleField
+              id={`${props.idSchema.$id}__title`}
+              title={title}
+              required={props.required}
+              formContext={props.formContext}
+              nullify={nullify}
+              onNullifyChange={onNullifyChange}
+              disabled={disabled}
+            />
+          )}
+
+          {props.required && (props.uiSchema["ui:title"] || props.title) && (
+            <div className={pfx("element-required")}>
+              {/* <RequiredInfoIcon /> */}
+              <span>Required</span>
+            </div>
+          )}
+        </div>
+
+        {canEditJson && renderViewJsonButton(props)}
+
+        {canCollapse && (
+          <IconBtn
+            tabIndex="-1"
+            onClick={toggleCollapse}
+            className={pfx("btn toggle-button")}
+          >
+            {collapse ? (
+              <ChevronIcon width={14} rotate={-90} />
+            ) : (
+              <ChevronIcon width={14} />
+            )}
+          </IconBtn>
+        )}
+      </div>
+
+      <div className={pfx("type-container")}>
+        <DataType
+          title={dataType}
+          link={props.schema.dataTypeLink}
+          type="object-type"
         />
-      )}
+
+        {props.schema.paramType && (
+          <div className={pfx("param-type")}>{props.schema.paramType}</div>
+        )}
+      </div>
+
       {props.description && (
         <DescriptionField
           id={`${props.idSchema.$id}__description`}
@@ -117,25 +204,33 @@ function DefaultObjectFieldTemplate(props) {
         />
       )}
 
-      {props.showEditView && canEditJson ? (
-        <div>
-          <CodeMirror
-            value={props.formJson}
-            onChange={props.onJsonChange}
-            options={cmOptions}
-          />
-          <div className={pfx("editor-validation-errors")}>
-            {props.formJsonError && (
-              <ul>
-                <li>Could not parse JSON. Syntax error.</li>
-              </ul>
-            )}
-            {Object.keys(props.errorSchema).length !== 0 &&
-              renderErrorSchema(props.errorSchema)}
-          </div>
+      {(!collapse || !canCollapse) && (
+        <div
+          className={pfx(
+            `element-properties ${props.showEditView ? "json-edit-view" : ""}`
+          )}
+        >
+          {props.showEditView && canEditJson ? (
+            <div>
+              <CodeMirror
+                value={props.formJson}
+                onChange={props.onJsonChange}
+                options={cmOptions}
+              />
+              <div className={pfx("editor-validation-errors")}>
+                {props.formJsonError && (
+                  <ul>
+                    <li>Could not parse JSON. Syntax error.</li>
+                  </ul>
+                )}
+                {Object.keys(props.errorSchema).length !== 0 &&
+                  renderErrorSchema(props.errorSchema)}
+              </div>
+            </div>
+          ) : (
+            props.properties.map(prop => prop.content)
+          )}
         </div>
-      ) : (
-        props.properties.map(prop => prop.content)
       )}
     </fieldset>
   );
@@ -159,11 +254,26 @@ class ObjectField extends Component {
     this.state.formJson = JSON.stringify(props.formData, null, 2);
     this.state.formJsonError = false;
     this.state.showEditView = false;
+    this.state.collapse = true;
+    this.state.isEven = props.isEven || props.levelReversal ? true : false;
+    this.state.expandAllLevel = props.expandAllLevel;
+    this.state.depth = props.depth ? props.depth : 1;
     this.toggleEditView = this.toggleEditView.bind(this);
+    this.toggleCollapse = this.toggleCollapse.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState(this.getStateFromProps(nextProps));
+    const collapse =
+      this.state.depth === this.state.expandAllLevel &&
+      this.state.expandAll !== nextProps.expandAll
+        ? !nextProps.expandAll
+        : this.state.collapse;
+    this.setState({
+      ...this.getStateFromProps(nextProps),
+      collapse,
+      expandAllLevel: this.state.expandAllLevel,
+      expandAll: nextProps.expandAll
+    });
   }
 
   isJsonString(str) {
@@ -179,7 +289,9 @@ class ObjectField extends Component {
       originalFormData:
         nextProps.formData === undefined ||
         Object.keys(nextProps.formData).length === 0
-          ? this.state ? this.state.originalFormData : undefined
+          ? this.state
+            ? this.state.originalFormData
+            : undefined
           : nextProps.formData,
       formJson:
         this.state &&
@@ -239,7 +351,8 @@ class ObjectField extends Component {
 
   toggleEditView() {
     this.setState(state => ({
-      showEditView: !state.showEditView
+      showEditView: !state.showEditView,
+      collapse: false
     }));
   }
 
@@ -256,16 +369,20 @@ class ObjectField extends Component {
       onBlur,
       onFocus,
       registry = getDefaultRegistry(),
-      disableFormJsonEdit
+      disableFormJsonEdit,
+      depth,
+      isEven,
+      expandAllLevel,
+      expandAll
     } = this.props;
 
     const { definitions, fields, formContext } = registry;
     const { SchemaField, TitleField, DescriptionField } = fields;
     const schema = retrieveSchema(this.props.schema, definitions, formData);
-    const title =
-      schema.title === undefined
-        ? name
-        : name === undefined ? schema.title : name + " (" + schema.title + ")";
+    const title = name;
+    // schema.title === undefined
+    //   ? name
+    //   : name === undefined ? schema.title : name + " (" + schema.title + ")";
     const description = uiSchema["ui:description"] || schema.description;
 
     const templateProps = {
@@ -290,7 +407,11 @@ class ObjectField extends Component {
       errorSchema,
       readonly,
       registry,
-      disableFormJsonEdit
+      disableFormJsonEdit,
+      depth,
+      isEven,
+      expandAllLevel,
+      expandAll
     };
 
     if (schema.properties && Object.keys(schema.properties).length > 0) {
@@ -319,15 +440,30 @@ class ObjectField extends Component {
     });
   };
 
+  toggleCollapse(show = false) {
+    this.setState((prevState, props) => {
+      return {
+        ...prevState,
+        collapse: !prevState.collapse
+      };
+    });
+  }
+
   renderDynamic(templateProps) {
     const { TitleField, DescriptionField } = templateProps;
 
+    const dataType = templateProps.schema.dataTypeDisplayText;
+
+    const title =
+      templateProps.uiSchema["ui:title"] ||
+      templateProps.schema.title ||
+      templateProps.title;
     return (
       <fieldset>
-        {(templateProps.uiSchema["ui:title"] || templateProps.title) && (
+        {title && (
           <TitleField
             id={`${templateProps.idSchema.$id}__title`}
-            title={templateProps.title || templateProps.uiSchema["ui:title"]}
+            title={title}
             required={templateProps.required}
             formContext={templateProps.formContext}
             nullify={templateProps.nullify}
@@ -335,6 +471,21 @@ class ObjectField extends Component {
             disabled={templateProps.disabled}
           />
         )}
+
+        <div className={pfx("type-container")}>
+          <DataType
+            title={dataType}
+            link={templateProps.schema.dataTypeLink}
+            type="object-type"
+          />
+
+          {templateProps.schema.paramType && (
+            <div className={pfx("param-type")}>
+              {templateProps.schema.paramType}
+            </div>
+          )}
+        </div>
+
         {templateProps.description && (
           <DescriptionField
             id={`${templateProps.idSchema.$id}__description`}
@@ -410,6 +561,11 @@ class ObjectField extends Component {
     const newProps = {
       ...templateProps,
       showEditView: this.state.showEditView,
+      collapse: this.state.collapse,
+      toggleCollapse: this.toggleCollapse,
+      isEven: this.state.isEven,
+      depth: this.state.depth,
+      expandAll: this.state.expandAll,
       toggleEditView: this.toggleEditView,
       onJsonChange: this.onJsonChange,
       formJson: this.state.formJson,
@@ -420,6 +576,10 @@ class ObjectField extends Component {
             <SchemaField
               key={name}
               name={name}
+              isEven={!this.state.isEven}
+              depth={this.state.depth + 1}
+              expandAll={this.state.expandAll}
+              expandAllLevel={this.state.expandAllLevel}
               required={this.isRequired(name)}
               schema={templateProps.schema.properties[name]}
               uiSchema={templateProps.uiSchema[name]}

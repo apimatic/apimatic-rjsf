@@ -1,0 +1,24 @@
+.rjsf-element,
+.rjsf-element-header {
+  background-color: white;
+  display: flex;
+}
+
+.rjsf-element-header {
+  display: flex;
+}
+
+.rjsf-element-left {
+  width: 30%;
+  padding: 8px;
+}
+
+.rjsf-element-right {
+  width: 70%;
+  padding: 8px;
+}
+
+.rjsf-element-data {
+  padding: 8px;
+  background-color: #f5f7f9;
+}

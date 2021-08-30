@@ -4,21 +4,31 @@ import PropTypes from "prop-types";
 const REQUIRED_FIELD_SYMBOL = "*";
 
 function TitleField(props) {
-  const { id, title, required, nullify, onNullifyChange, disabled } = props;
+  const {
+    id,
+    title,
+    required,
+    nullify,
+    onNullifyChange,
+    disabled,
+    onClick
+  } = props;
   const legend = required ? title + REQUIRED_FIELD_SYMBOL : title;
   return (
     <legend id={id}>
       {required || !onNullifyChange ? null : (
-        <span>
+        <label onClick={ev => ev.stopPropagation()}>
           <input
             type="checkbox"
             checked={nullify}
+            className={nullify ? "checked" : "unchecked"}
             onChange={onNullifyChange}
             disabled={disabled}
-          />{" "}
-        </span>
+          />
+          <span />
+        </label>
       )}
-      {legend}
+      <div onClick={() => (onClick ? onClick() : null)}>{title}</div>
     </legend>
   );
 }

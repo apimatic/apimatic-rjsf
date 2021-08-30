@@ -24,7 +24,18 @@ export default class Form extends Component {
 
   constructor(props) {
     super(props);
+
+    if (
+      props.uiSchema &&
+      props.uiSchema.renderCodeBlock &&
+      typeof props.uiSchema.renderCodeBlock === "function"
+    ) {
+      window.renderCodeBlock = node => {
+        return props.uiSchema.renderCodeBlock({ node });
+      };
+    }
     this.state = this.getStateFromProps(props);
+    this.state.expandAll = false;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -162,6 +173,13 @@ export default class Form extends Component {
     };
   }
 
+  toggleExpandAll = () => {
+    this.setState(previousState => ({
+      ...previousState,
+      expandAll: !previousState.expandAll
+    }));
+  };
+
   render() {
     const {
       children,
@@ -179,7 +197,14 @@ export default class Form extends Component {
       disableFormJsonEdit
     } = this.props;
 
-    const { schema, uiSchema, formData, errorSchema, idSchema } = this.state;
+    const {
+      schema,
+      uiSchema,
+      formData,
+      errorSchema,
+      idSchema,
+      expandAll
+    } = this.state;
     const registry = this.getRegistry();
     const _SchemaField = registry.fields.SchemaField;
 
@@ -198,8 +223,19 @@ export default class Form extends Component {
         onSubmit={this.onSubmit}
       >
         {this.renderErrors()}
+
+        {uiSchema.expandAllLevel && (
+          <div className={pfx("expand-all")}>
+            <button onClick={this.toggleExpandAll} type="button">
+              {expandAll ? "- Collapse all" : "+ Expand all"}
+            </button>
+          </div>
+        )}
         <_SchemaField
           schema={schema}
+          expandAllLevel={uiSchema.expandAllLevel}
+          expandAll={expandAll}
+          levelReversal={uiSchema && uiSchema.levelReversal ? true : false}
           uiSchema={uiSchema}
           errorSchema={errorSchema}
           idSchema={idSchema}

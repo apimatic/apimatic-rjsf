@@ -8,7 +8,9 @@ import {
   retrieveSchema,
   toIdSchema
 } from "../../utils";
-import { CloseIcon } from "../Icons";
+import { DeleteIcon, ChevronIcon } from "../Icons";
+
+import DataType from "../fields/DataType";
 
 function MapFieldTitle({
   TitleField,
@@ -50,9 +52,7 @@ function IconBtn(props) {
   return (
     <button
       type="button"
-      className={
-        pfx(`btn btn-${type}`) + " " + className + " " + pfx("col-xs-12")
-      }
+      className={pfx(`btn btn-${type}`) + " " + className + " " + pfx("")}
       {...otherProps}
     >
       {props.children}
@@ -69,22 +69,28 @@ function DefaultMapItem(props) {
     fontWeight: "bold"
   };
   return (
-    <div key={props.index} className={pfx(`row ${props.className}`)}>
-      {props.index > 0 && (
-        <div
-          className="divider"
-          style={{ borderTop: "1px solid #e2e5e7", margin: "30px 0" }}
-        />
-      )}
-
+    <div key={props.index} className={pfx(`${props.className}`)}>
       <div
-        className={pfx("col-xs-12")}
+        className={pfx("map-field-key")}
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between"
         }}
       >
+        <IconBtn
+          tabIndex="-1"
+          onClick={() => props.toggleCollapse(props.key)}
+          className={pfx("btn toggle-button")}
+        >
+          // TODO: condition should be in rotate prop e.g props.collapse ? 90: 0
+          {props.collapse ? (
+            <ChevronIcon width={14} rotate={-90} />
+          ) : (
+            <ChevronIcon width={14} />
+          )}
+        </IconBtn>
+
         <input
           type="text"
           className={pfx("form-control")}
@@ -92,53 +98,86 @@ function DefaultMapItem(props) {
           value={props.key}
           required
         />
-        {props.hasToolbar &&
-          props.hasRemove && (
-            <div className={pfx("col-xs-1 map-item-toolbox")}>
-              <IconBtn
-                type="danger"
-                className={pfx("map-item-remove")}
-                tabIndex="-1"
-                style={btnStyle}
-                disabled={props.disabled || props.readonly}
-                onClick={props.onDropKeyClick}
-              >
-                <CloseIcon width={14} />
-              </IconBtn>
-            </div>
-          )}
+        {props.hasToolbar && props.hasRemove && (
+          <div className={pfx("map-item-toolbox")}>
+            <IconBtn
+              type="danger"
+              className={pfx("map-item-remove")}
+              tabIndex="-1"
+              style={btnStyle}
+              disabled={props.disabled || props.readonly}
+              onClick={props.onDropKeyClick}
+            >
+              <DeleteIcon width={14} />
+            </IconBtn>
+          </div>
+        )}
       </div>
-      <div>
-        <div className={pfx("col-xs-12 flex")} style={{ display: "flex" }}>
-          <div
-            className={pfx(
-              `flex-1 ${
-                props.hasToolbar && props.hasRemove ? "col-xs-8" : "col-xs-9"
-              }`
-            )}
-            style={{ flex: "1" }}
-          >
-            {props.children}
+      {!props.collapse && (
+        <div className={pfx("map-field-value-container")}>
+          <div className={pfx("flex")} style={{ display: "flex" }}>
+            <div
+              className={pfx(
+                `flex-1 ${props.hasToolbar && props.hasRemove ? "" : ""}`
+              )}
+              style={{ flex: "1" }}
+            >
+              {props.children}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
 
 function DefaultNormalMapFieldTemplate(props) {
+  const dataType = props.schema.dataTypeDisplayText;
+
   return (
     <fieldset className={pfx(props.className)}>
-      <MapFieldTitle
-        key={`map-field-title-${props.idSchema.$id}`}
-        TitleField={props.TitleField}
-        idSchema={props.idSchema}
-        title={props.title}
-        required={props.required}
-        nullify={props.nullify}
-        onNullifyChange={props.onNullifyChange}
-        disabled={props.disabled}
-      />
+      <div className={pfx("object-header")}>
+        <div
+          className={pfx("header-left hand")}
+          onClick={props.toggleGroupCollapse}
+        >
+          <MapFieldTitle
+            key={`map-field-title-${props.idSchema.$id}`}
+            TitleField={props.TitleField}
+            idSchema={props.idSchema}
+            title={props.title}
+            required={props.required}
+            nullify={props.nullify}
+            onNullifyChange={props.onNullifyChange}
+            disabled={props.disabled}
+          />
+        </div>
+
+        <IconBtn
+          tabIndex="-1"
+          onClick={props.toggleGroupCollapse}
+          className={pfx("btn toggle-button")}
+        >
+          // TODO: condition should be in rotate prop e.g props.collapse ? 90: 0
+          {props.collapse ? (
+            <ChevronIcon width={14} rotate={-90} />
+          ) : (
+            <ChevronIcon width={14} />
+          )}
+        </IconBtn>
+      </div>
+
+      <div className={pfx("type-container")}>
+        <DataType
+          title={dataType}
+          link={props.schema.dataTypeLink}
+          type="map-field-type"
+        />
+
+        {props.schema.paramType && (
+          <div className={pfx("param-type")}>{props.schema.paramType}</div>
+        )}
+      </div>
 
       <MapFieldDescription
         key={`map-field-description-${props.idSchema.$id}`}
@@ -151,18 +190,22 @@ function DefaultNormalMapFieldTemplate(props) {
         }
       />
 
-      <div
-        className={pfx("row map-item-list")}
-        key={`map-item-list-${props.idSchema.$id}`}
-      >
-        {props.items && props.items.map(p => DefaultMapItem(p))}
-      </div>
+      {!props.collapse && (
+        <div className={pfx("map-item-list-container")}>
+          <div
+            className={pfx("map-item-list")}
+            key={`map-item-list-${props.idSchema.$id}`}
+          >
+            {props.items && props.items.map(p => DefaultMapItem(p))}
+          </div>
 
-      {props.canAdd && (
-        <AddButton
-          onClick={props.onAddClick}
-          disabled={props.disabled || props.readonly}
-        />
+          {props.canAdd && (
+            <AddButton
+              onClick={props.onAddClick}
+              disabled={props.disabled || props.readonly}
+            />
+          )}
+        </div>
       )}
     </fieldset>
   );
@@ -183,10 +226,28 @@ class MapField extends Component {
     super(props);
 
     this.state = this.getStateFromProps(props);
+    this.state.expandInfo = {};
+    this.state.collapse = true;
+    this.state.expandAllLevel = props.expandAllLevel;
+    this.state.depth = props.depth ? props.depth : 1;
+    this.toggleCollapse = this.toggleCollapse.bind(this);
+    this.toggleGroupCollapse = this.toggleGroupCollapse.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState(this.getStateFromProps(nextProps));
+    const collapse =
+      this.state.depth === this.state.expandAllLevel &&
+      this.state.expandAll !== nextProps.expandAll
+        ? !nextProps.expandAll
+        : this.state.collapse;
+
+    // TODO: use this.setState( st => ({...st, ...this.getStateFromProps(nextPorps), collapse, expandAll: ..})
+    this.setState({
+      ...this.getStateFromProps(nextProps),
+      collapse,
+      expandAllLevel: this.state.expandAllLevel,
+      expandAll: nextProps.expandAll
+    });
   }
 
   getStateFromProps(nextProps) {
@@ -194,7 +255,9 @@ class MapField extends Component {
       originalFormData:
         nextProps.formData === undefined ||
         (nextProps.formData && Object.keys(nextProps.formData).length === 0)
-          ? this.state ? this.state.originalFormData : undefined
+          ? this.state
+            ? this.state.originalFormData
+            : undefined
           : nextProps.formData,
       hash:
         !this.state ||
@@ -279,6 +342,27 @@ class MapField extends Component {
       }
     }
     return false;
+  }
+
+  toggleCollapse(key) {
+    this.setState(prevState => {
+      return {
+        ...prevState,
+        expandInfo: {
+          ...prevState.expandInfo,
+          [key]: !prevState.expandInfo[key]
+        }
+      };
+    });
+  }
+
+  toggleGroupCollapse() {
+    this.setState(prevState => {
+      return {
+        ...prevState,
+        collapse: !prevState.collapse
+      };
+    });
   }
 
   onKeyChange(pair, i) {
@@ -373,12 +457,11 @@ class MapField extends Component {
       registry,
       formContext,
       onBlur,
-      onFocus
+      onFocus,
+      depth,
+      isEven
     } = this.props;
-    const title =
-      schema.title === undefined
-        ? name
-        : name === undefined ? schema.title : name + " (" + schema.title + ")";
+    const title = schema.title || name;
     const { definitions, fields } = registry;
     const { TitleField, DescriptionField } = fields;
     const addPropsSchema = retrieveSchema(
@@ -403,6 +486,8 @@ class MapField extends Component {
           definitions,
           item
         );
+        // TODO: You can use this for code readability Boolean(this.state.expandInfo[pair.k])
+        const collapse = this.state.expandInfo[pair.k] ? false : true;
         return this.renderMapFieldItem({
           index,
           key: pair.k,
@@ -413,10 +498,15 @@ class MapField extends Component {
           itemUiSchema: uiSchema.items,
           autofocus: autofocus && index === 0,
           onBlur,
-          onFocus
+          onFocus,
+          depth,
+          isEven,
+          collapse
         });
       }),
-      className: `field field-array field-array-of-${addPropsSchema.type}`,
+      className: `field field-array field-array-of-${addPropsSchema.type}  ${
+        isEven ? "even" : "odd"
+      } depth_${depth}`,
       DescriptionField,
       disabled,
       idSchema,
@@ -431,7 +521,11 @@ class MapField extends Component {
       formContext,
       formData,
       onNullifyChange: this.onNullifyChange,
-      nullify: formData && Object.keys(formData).length > 0
+      nullify: formData && Object.keys(formData).length > 0,
+      depth: depth,
+      isEven: isEven,
+      toggleGroupCollapse: this.toggleGroupCollapse,
+      collapse: this.state.collapse
     };
 
     return <DefaultNormalMapFieldTemplate {...mapProps} />;
@@ -449,10 +543,14 @@ class MapField extends Component {
       itemErrorSchema,
       autofocus,
       onBlur,
-      onFocus
+      onFocus,
+      depth,
+      isEven
     } = props;
     const { disabled, readonly, uiSchema, registry } = this.props;
-    const { fields: { SchemaField } } = registry;
+    const {
+      fields: { SchemaField }
+    } = registry;
     const { removable } = {
       removable: true,
       ...uiSchema["ui:options"]
@@ -462,11 +560,18 @@ class MapField extends Component {
     };
     has.toolbar = Object.keys(has).some(key => has[key]);
 
+    const schema = itemSchema.title
+      ? itemSchema
+      : {
+          ...itemSchema,
+          title: key
+        };
+
     return {
       index,
       children: (
         <SchemaField
-          schema={itemSchema}
+          schema={schema}
           uiSchema={itemUiSchema}
           formData={itemData}
           errorSchema={itemErrorSchema}
@@ -479,6 +584,8 @@ class MapField extends Component {
           disabled={this.props.disabled}
           readonly={this.props.readonly}
           autofocus={autofocus}
+          depth={depth + 1}
+          isEven={isEven}
         />
       ),
       className: "map-item",
@@ -488,6 +595,8 @@ class MapField extends Component {
       key,
       onDropKeyClick: this.onKeyDelete(index),
       onKeyChange: this.onKeyChange({ k: key, v: itemData }, index),
+      toggleCollapse: this.toggleCollapse,
+      collapse: props.collapse,
       readonly
     };
   }
@@ -496,10 +605,10 @@ class MapField extends Component {
 function AddButton({ onClick, disabled }) {
   return (
     <div className={pfx("row")}>
-      <p className={pfx("col-xs-3 col-xs-offset-9 map-item-add text-right")}>
+      <p className={pfx("map-item-add text-right")}>
         <IconBtn
           type="info"
-          className={pfx("btn-add col-xs-12")}
+          className={pfx("btn-add")}
           tabIndex="0"
           onClick={onClick}
           disabled={disabled}

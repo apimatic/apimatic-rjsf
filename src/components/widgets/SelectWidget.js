@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { asNumber, prefixClass as pfx } from "../../utils";
-
+import Select from "react-select";
 /**
  * This is a silly limitation in the DOM where option change event values are
  * always retrieved as strings.
@@ -26,12 +26,28 @@ function processValue({ type, items }, value) {
 
 function getValue(event, multiple) {
   if (multiple) {
-    return [].slice
-      .call(event.target.options)
-      .filter(o => o.selected)
-      .map(o => o.value);
+    return event.reduce((acc, cv, i) => acc.concat(cv.value), []);
   } else {
-    return event.target.value;
+    return event.value;
+  }
+}
+
+function getDefaultValue(value, multiple, options, disabledOptions) {
+  if (multiple) {
+    let filter = options.filter(o => {
+      if (disabledOptions) {
+        return (
+          disabledOptions.indexOf(o.value) === -1 &&
+          value.indexOf(o.value) !== -1
+        );
+      } else {
+        return value.indexOf(o.value) !== -1;
+      }
+    });
+
+    return filter;
+  } else {
+    return value;
   }
 }
 
@@ -53,44 +69,40 @@ function SelectWidget(props) {
   } = props;
   const { enumOptions, enumDisabled } = options;
   const emptyValue = multiple ? [] : "";
+  let newOptions = enumOptions.map(o => {
+    let a = {
+      ...o,
+      disabled: !!(enumDisabled && enumDisabled.indexOf(o.value) !== -1)
+    };
+    return a;
+  });
+
   return (
-    <select
+    <Select
       id={id}
-      multiple={multiple}
       className={pfx("form-control")}
-      value={typeof value === "undefined" ? emptyValue : value}
+      classNamePrefix="react-select"
+      isMulti={multiple}
+      options={newOptions}
+      defaultValue={
+        value
+          ? getDefaultValue(value, multiple, enumOptions, enumDisabled)
+          : emptyValue
+      }
+      closeMenuOnSelect={!multiple}
+      isDisabled={disabled || readonly}
       required={required}
-      disabled={disabled || readonly}
       autoFocus={autofocus}
-      onBlur={
-        onBlur &&
-        (event => {
-          const newValue = getValue(event, multiple);
-          onBlur(id, processValue(schema, newValue));
-        })
-      }
-      onFocus={
-        onFocus &&
-        (event => {
-          const newValue = getValue(event, multiple);
-          onFocus(id, processValue(schema, newValue));
-        })
-      }
+      placeholder={placeholder}
+      required={required}
+      onBlur={onBlur}
+      onFocus={onFocus}
       onChange={event => {
         const newValue = getValue(event, multiple);
         onChange(processValue(schema, newValue));
       }}
-    >
-      {!multiple && !schema.default && <option value="">{placeholder}</option>}
-      {enumOptions.map(({ value, label }, i) => {
-        const disabled = enumDisabled && enumDisabled.indexOf(value) != -1;
-        return (
-          <option key={i} value={value} disabled={disabled}>
-            {label}
-          </option>
-        );
-      })}
-    </select>
+      isOptionDisabled={newOptions => newOptions.disabled}
+    />
   );
 }
 
