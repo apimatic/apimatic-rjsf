@@ -51,7 +51,11 @@ const cmOptions = {
 function renderErrorSchema(errorSchema) {
   let errorList = toErrorList(errorSchema);
   return (
-    <ul>{errorList.map((key, index) => <li key={index}>{key.stack}</li>)}</ul>
+    <ul>
+      {errorList.map((key, index) => (
+        <li key={index}>{key.stack}</li>
+      ))}
+    </ul>
   );
 }
 
@@ -155,13 +159,12 @@ function DefaultObjectFieldTemplate(props) {
             />
           )}
 
-          {props.required &&
-            (props.uiSchema["ui:title"] || props.title) && (
-              <div className={pfx("element-required")}>
-                {/* <RequiredInfoIcon /> */}
-                <span>Required</span>
-              </div>
-            )}
+          {props.required && (props.uiSchema["ui:title"] || props.title) && (
+            <div className={pfx("element-required")}>
+              {/* <RequiredInfoIcon /> */}
+              <span>Required</span>
+            </div>
+          )}
         </div>
 
         {canEditJson && renderViewJsonButton(props)}
@@ -180,16 +183,6 @@ function DefaultObjectFieldTemplate(props) {
           </IconBtn>
         )}
       </div>
-
-      {/* {dataType && (
-        <div className={pfx("object-type")}>
-          {props.schema.dataTypeLink ? (
-            <a href={props.schema.dataTypeLink}>{dataType}</a>
-          ) : (
-            dataType
-          )}
-        </div>
-      )} */}
 
       <div className={pfx("type-container")}>
         <DataType
@@ -296,7 +289,9 @@ class ObjectField extends Component {
       originalFormData:
         nextProps.formData === undefined ||
         Object.keys(nextProps.formData).length === 0
-          ? this.state ? this.state.originalFormData : undefined
+          ? this.state
+            ? this.state.originalFormData
+            : undefined
           : nextProps.formData,
       formJson:
         this.state &&

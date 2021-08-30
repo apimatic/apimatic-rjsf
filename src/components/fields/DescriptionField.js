@@ -17,8 +17,8 @@ function DescriptionField(props) {
 
   return (
     <div id={id} className={pfx("field-description")}>
+      // TODO: children should be in child level
       <ReactMarkdown
-        plugins={[]}
         children={description.replace(/<br>/gi, "\n")}
         renderers={{ ...renderers }}
       />

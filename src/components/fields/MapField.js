@@ -70,13 +70,6 @@ function DefaultMapItem(props) {
   };
   return (
     <div key={props.index} className={pfx(`${props.className}`)}>
-      {/* {props.index > 0 && (
-        <div
-          className="divider"
-          style={{ borderTop: "1px solid #e2e5e7", margin: "30px 0" }}
-        />
-      )} */}
-
       <div
         className={pfx("map-field-key")}
         style={{
@@ -90,6 +83,7 @@ function DefaultMapItem(props) {
           onClick={() => props.toggleCollapse(props.key)}
           className={pfx("btn toggle-button")}
         >
+          // TODO: condition should be in rotate prop e.g props.collapse ? 90: 0
           {props.collapse ? (
             <ChevronIcon width={14} rotate={-90} />
           ) : (
@@ -104,21 +98,20 @@ function DefaultMapItem(props) {
           value={props.key}
           required
         />
-        {props.hasToolbar &&
-          props.hasRemove && (
-            <div className={pfx("map-item-toolbox")}>
-              <IconBtn
-                type="danger"
-                className={pfx("map-item-remove")}
-                tabIndex="-1"
-                style={btnStyle}
-                disabled={props.disabled || props.readonly}
-                onClick={props.onDropKeyClick}
-              >
-                <DeleteIcon width={14} />
-              </IconBtn>
-            </div>
-          )}
+        {props.hasToolbar && props.hasRemove && (
+          <div className={pfx("map-item-toolbox")}>
+            <IconBtn
+              type="danger"
+              className={pfx("map-item-remove")}
+              tabIndex="-1"
+              style={btnStyle}
+              disabled={props.disabled || props.readonly}
+              onClick={props.onDropKeyClick}
+            >
+              <DeleteIcon width={14} />
+            </IconBtn>
+          </div>
+        )}
       </div>
       {!props.collapse && (
         <div className={pfx("map-field-value-container")}>
@@ -165,6 +158,7 @@ function DefaultNormalMapFieldTemplate(props) {
           onClick={props.toggleGroupCollapse}
           className={pfx("btn toggle-button")}
         >
+          // TODO: condition should be in rotate prop e.g props.collapse ? 90: 0
           {props.collapse ? (
             <ChevronIcon width={14} rotate={-90} />
           ) : (
@@ -246,6 +240,8 @@ class MapField extends Component {
       this.state.expandAll !== nextProps.expandAll
         ? !nextProps.expandAll
         : this.state.collapse;
+
+    // TODO: use this.setState( st => ({...st, ...this.getStateFromProps(nextPorps), collapse, expandAll: ..})
     this.setState({
       ...this.getStateFromProps(nextProps),
       collapse,
@@ -259,7 +255,9 @@ class MapField extends Component {
       originalFormData:
         nextProps.formData === undefined ||
         (nextProps.formData && Object.keys(nextProps.formData).length === 0)
-          ? this.state ? this.state.originalFormData : undefined
+          ? this.state
+            ? this.state.originalFormData
+            : undefined
           : nextProps.formData,
       hash:
         !this.state ||
@@ -488,7 +486,7 @@ class MapField extends Component {
           definitions,
           item
         );
-
+        // TODO: You can use this for code readability Boolean(this.state.expandInfo[pair.k])
         const collapse = this.state.expandInfo[pair.k] ? false : true;
         return this.renderMapFieldItem({
           index,
@@ -550,7 +548,9 @@ class MapField extends Component {
       isEven
     } = props;
     const { disabled, readonly, uiSchema, registry } = this.props;
-    const { fields: { SchemaField } } = registry;
+    const {
+      fields: { SchemaField }
+    } = registry;
     const { removable } = {
       removable: true,
       ...uiSchema["ui:options"]
