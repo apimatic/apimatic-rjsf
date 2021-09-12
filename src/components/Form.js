@@ -34,6 +34,7 @@ export default class Form extends Component {
         return props.uiSchema.renderCodeBlock({ node });
       };
     }
+    window.renderers = props.uiSchema.renderers;
     this.state = this.getStateFromProps(props);
     this.state.expandAll = false;
   }

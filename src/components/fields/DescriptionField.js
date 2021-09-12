@@ -10,17 +10,17 @@ function DescriptionField(props) {
     return <div />;
   }
 
-  const renderers = {};
+  const renderers = window.renderers || {};
   if (window.renderCodeBlock) {
     renderers.code = window.renderCodeBlock;
   }
 
   return (
     <div id={id} className={pfx("field-description")}>
-      // TODO: children should be in child level
       <ReactMarkdown
         children={description.replace(/<br>/gi, "\n")}
         renderers={{ ...renderers }}
+        transformLinkUri={null}
       />
     </div>
   );
