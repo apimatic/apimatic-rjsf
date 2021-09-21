@@ -203,7 +203,7 @@ export default class Form extends Component {
     const _SchemaField = registry.fields.SchemaField;
 
     return (
-      <ContextProvider markdownRenderer={markdownRenderer}>
+      <ContextProvider value={markdownRenderer}>
         <form
           className={className ? className : "rjsf"}
           id={id}
