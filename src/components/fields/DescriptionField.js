@@ -13,7 +13,9 @@ function DescriptionField(props) {
   return (
     <div id={id} className={pfx("field-description")}>
       <ContextConsumer>
-        {markdownRenderer => markdownRenderer(description)}
+        {markdownRenderer =>
+          markdownRenderer(description.replace(/<br>/gi, "\n"))
+        }
       </ContextConsumer>
     </div>
   );
