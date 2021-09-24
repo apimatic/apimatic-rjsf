@@ -11,6 +11,7 @@ import {
   prefixClass as pfx
 } from "../utils";
 import validateFormData from "../validate";
+import { ContextProvider } from "./context";
 
 export default class Form extends Component {
   static defaultProps = {
@@ -19,21 +20,13 @@ export default class Form extends Component {
     liveValidate: false,
     safeRenderCompletion: false,
     noHtml5Validate: false,
-    ErrorList: DefaultErrorList
+    ErrorList: DefaultErrorList,
+    markdownRenderer: source => source
   };
 
   constructor(props) {
     super(props);
 
-    if (
-      props.uiSchema &&
-      props.uiSchema.renderCodeBlock &&
-      typeof props.uiSchema.renderCodeBlock === "function"
-    ) {
-      window.renderCodeBlock = node => {
-        return props.uiSchema.renderCodeBlock({ node });
-      };
-    }
     this.state = this.getStateFromProps(props);
     this.state.expandAll = false;
   }
@@ -194,7 +187,8 @@ export default class Form extends Component {
       enctype,
       acceptcharset,
       noHtml5Validate,
-      disableFormJsonEdit
+      disableFormJsonEdit,
+      markdownRenderer
     } = this.props;
 
     const {
@@ -209,55 +203,56 @@ export default class Form extends Component {
     const _SchemaField = registry.fields.SchemaField;
 
     return (
-      <form
-        className={className ? className : "rjsf"}
-        id={id}
-        name={name}
-        method={method}
-        target={target}
-        action={action}
-        autoComplete={autocomplete}
-        encType={enctype}
-        acceptCharset={acceptcharset}
-        noValidate={noHtml5Validate}
-        onSubmit={this.onSubmit}
-      >
-        {this.renderErrors()}
-
-        {uiSchema.expandAllLevel && (
-          <div className={pfx("expand-all")}>
-            <button onClick={this.toggleExpandAll} type="button">
-              {expandAll ? "- Collapse all" : "+ Expand all"}
-            </button>
-          </div>
-        )}
-        <_SchemaField
-          schema={schema}
-          expandAllLevel={uiSchema.expandAllLevel}
-          expandAll={expandAll}
-          levelReversal={uiSchema && uiSchema.levelReversal ? true : false}
-          uiSchema={uiSchema}
-          errorSchema={errorSchema}
-          idSchema={idSchema}
-          formData={formData}
-          onChange={this.onChange}
-          onBlur={this.onBlur}
-          onFocus={this.onFocus}
-          registry={registry}
-          safeRenderCompletion={safeRenderCompletion}
-          required={true}
-          disableFormJsonEdit={disableFormJsonEdit || false}
-        />
-        {children ? (
-          children
-        ) : (
-          <p>
-            <button type="submit" className={pfx("btn btn-info")}>
-              Submit
-            </button>
-          </p>
-        )}
-      </form>
+      <ContextProvider value={markdownRenderer}>
+        <form
+          className={className ? className : "rjsf"}
+          id={id}
+          name={name}
+          method={method}
+          target={target}
+          action={action}
+          autoComplete={autocomplete}
+          encType={enctype}
+          acceptCharset={acceptcharset}
+          noValidate={noHtml5Validate}
+          onSubmit={this.onSubmit}
+        >
+          {this.renderErrors()}
+          {uiSchema.expandAllLevel && (
+            <div className={pfx("expand-all")}>
+              <button onClick={this.toggleExpandAll} type="button">
+                {expandAll ? "- Collapse all" : "+ Expand all"}
+              </button>
+            </div>
+          )}
+          <_SchemaField
+            schema={schema}
+            expandAllLevel={uiSchema.expandAllLevel}
+            expandAll={expandAll}
+            levelReversal={uiSchema && uiSchema.levelReversal ? true : false}
+            uiSchema={uiSchema}
+            errorSchema={errorSchema}
+            idSchema={idSchema}
+            formData={formData}
+            onChange={this.onChange}
+            onBlur={this.onBlur}
+            onFocus={this.onFocus}
+            registry={registry}
+            safeRenderCompletion={safeRenderCompletion}
+            required={true}
+            disableFormJsonEdit={disableFormJsonEdit || false}
+          />
+          {children ? (
+            children
+          ) : (
+            <p>
+              <button type="submit" className={pfx("btn btn-info")}>
+                Submit
+              </button>
+            </p>
+          )}
+        </form>
+      </ContextProvider>
     );
   }
 }
@@ -297,6 +292,7 @@ if (process.env.NODE_ENV !== "production") {
     safeRenderCompletion: PropTypes.bool,
     formContext: PropTypes.object,
     dontAssignDefaults: PropTypes.bool,
-    disableFormJsonEdit: PropTypes.bool
+    disableFormJsonEdit: PropTypes.bool,
+    markdownRenderer: PropTypes.func
   };
 }

@@ -100,7 +100,6 @@
     "react-codemirror2": "^2.0.2",
     "react-datepicker": "^1.8.0",
     "react-dom": "^16.4.0",
-    "react-markdown": "^3.6.0",
     "react-transform-catch-errors": "^1.0.0",
     "react-transform-hmr": "^1.0.1",
     "redbox-react": "^1.6.0",

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { prefixClass as pfx } from "../../utils";
-import ReactMarkdown from "react-markdown";
+import { ContextConsumer } from "../context";
 
 function DescriptionField(props) {
   const { id, description } = props;
@@ -10,18 +10,13 @@ function DescriptionField(props) {
     return <div />;
   }
 
-  const renderers = {};
-  if (window.renderCodeBlock) {
-    renderers.code = window.renderCodeBlock;
-  }
-
   return (
     <div id={id} className={pfx("field-description")}>
-      // TODO: children should be in child level
-      <ReactMarkdown
-        children={description.replace(/<br>/gi, "\n")}
-        renderers={{ ...renderers }}
-      />
+      <ContextConsumer>
+        {markdownRenderer =>
+          markdownRenderer(description.replace(/<br>/gi, "\n"))
+        }
+      </ContextConsumer>
     </div>
   );
 }
