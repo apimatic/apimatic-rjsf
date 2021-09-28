@@ -83,7 +83,6 @@ function DefaultMapItem(props) {
           onClick={() => props.toggleCollapse(props.key)}
           className={pfx("btn toggle-button")}
         >
-          // TODO: condition should be in rotate prop e.g props.collapse ? 90: 0
           {props.collapse ? (
             <ChevronIcon width={14} rotate={-90} />
           ) : (
@@ -158,7 +157,6 @@ function DefaultNormalMapFieldTemplate(props) {
           onClick={props.toggleGroupCollapse}
           className={pfx("btn toggle-button")}
         >
-          // TODO: condition should be in rotate prop e.g props.collapse ? 90: 0
           {props.collapse ? (
             <ChevronIcon width={14} rotate={-90} />
           ) : (
@@ -241,7 +239,6 @@ class MapField extends Component {
         ? !nextProps.expandAll
         : this.state.collapse;
 
-    // TODO: use this.setState( st => ({...st, ...this.getStateFromProps(nextPorps), collapse, expandAll: ..})
     this.setState({
       ...this.getStateFromProps(nextProps),
       collapse,
@@ -486,7 +483,6 @@ class MapField extends Component {
           definitions,
           item
         );
-        // TODO: You can use this for code readability Boolean(this.state.expandInfo[pair.k])
         const collapse = this.state.expandInfo[pair.k] ? false : true;
         return this.renderMapFieldItem({
           index,
