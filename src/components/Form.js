@@ -28,7 +28,7 @@ export default class Form extends Component {
     super(props);
 
     this.state = this.getStateFromProps(props);
-    this.state.expandAll = false;
+    this.state.expandAll = true;
   }
 
   componentWillReceiveProps(nextProps) {
