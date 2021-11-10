@@ -20,7 +20,8 @@ const COMPONENT_TYPES = {
   integer: "NumberField",
   number: "NumberField",
   object: "ObjectField",
-  string: "StringField"
+  string: "StringField",
+  discriminator: "DiscriminatorField"
 };
 
 function getFieldComponent(schema, uiSchema, idSchema, fields) {
@@ -31,7 +32,15 @@ function getFieldComponent(schema, uiSchema, idSchema, fields) {
   if (typeof field === "string" && field in fields) {
     return fields[field];
   }
+
   const componentName = COMPONENT_TYPES[schema.type];
+
+  if (!componentName && (schema.oneOf || schema.anyOf)) {
+    const a = fields["DiscriminatorField"];
+    return a;
+  }
+
+  console.log(componentName);
   return componentName in fields
     ? fields[componentName]
     : () => {
