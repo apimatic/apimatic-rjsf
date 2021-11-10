@@ -1,6 +1,6 @@
 import React from "react";
 import "setimmediate";
-import validateFormData from "./validate";
+import validateFormData, { isValid } from "./validate";
 
 const widgetMap = {
   boolean: {
@@ -120,6 +120,12 @@ function computeDefaults(schema, parentDefaults, definitions = {}) {
     defaults = schema.items.map(itemSchema =>
       computeDefaults(itemSchema, undefined, definitions)
     );
+  } else if ("oneOf" in schema) {
+    schema =
+      schema.oneOf[getMatchingOption(undefined, schema.oneOf, definitions)];
+  } else if ("anyOf" in schema) {
+    schema =
+      schema.anyOf[getMatchingOption(undefined, schema.anyOf, definitions)];
   }
   // Not defaults defined for this node, fallback to generic typed ones.
   if (typeof defaults === "undefined") {
@@ -738,9 +744,64 @@ export function prefixClass(className) {
   return className && classPrefix
     ? className
         .split(" ")
-        .map(
-          e => (e !== "" && e.indexOf(classPrefix) !== 0 ? classPrefix + e : e)
+        .map(e =>
+          e !== "" && e.indexOf(classPrefix) !== 0 ? classPrefix + e : e
         )
         .join(" ")
     : className;
+}
+
+export function getMatchingOption(formData, options, rootSchema) {
+  for (let i = 0; i < options.length; i++) {
+    const option = options[i];
+
+    // If the schema describes an object then we need to add slightly more
+    // strict matching to the schema, because unless the schema uses the
+    // "requires" keyword, an object will match the schema as long as it
+    // doesn't have matching keys with a conflicting type. To do this we use an
+    // "anyOf" with an array of requires. This augmentation expresses that the
+    // schema should match if any of the keys in the schema are present on the
+    // object and pass validation.
+    if (option.properties) {
+      // Create an "anyOf" schema that requires at least one of the keys in the
+      // "properties" object
+      const requiresAnyOf = {
+        anyOf: Object.keys(option.properties).map(key => ({
+          required: [key]
+        }))
+      };
+
+      let augmentedSchema;
+
+      // If the "anyOf" keyword already exists, wrap the augmentation in an "allOf"
+      if (option.anyOf) {
+        // Create a shallow clone of the option
+        const { ...shallowClone } = option;
+
+        // if (!shallowClone.allOf) {
+        //   shallowClone.allOf = [];
+        // } else {
+        //   // If "allOf" already exists, shallow clone the array
+        //   shallowClone.allOf = shallowClone.allOf.slice();
+        // }
+
+        // shallowClone.allOf.push(requiresAnyOf);
+
+        augmentedSchema = shallowClone;
+      } else {
+        augmentedSchema = Object.assign({}, option, requiresAnyOf);
+      }
+
+      // Remove the "required" field as it's likely that not all fields have
+      // been filled in yet, which will mean that the schema is not valid
+      delete augmentedSchema.required;
+
+      if (isValid(augmentedSchema, formData)) {
+        return i;
+      }
+    } else if (isValid(options[i], formData)) {
+      return i;
+    }
+  }
+  return 0;
 }

@@ -7,6 +7,7 @@ import SchemaField from "./SchemaField";
 import StringField from "./StringField";
 import TitleField from "./TitleField";
 import UnsupportedField from "./UnsupportedField";
+import DiscriminatorField from "./DiscriminatorField";
 
 export default {
   ArrayField,
@@ -18,4 +19,5 @@ export default {
   StringField,
   TitleField,
   UnsupportedField,
+  DiscriminatorField
 };
