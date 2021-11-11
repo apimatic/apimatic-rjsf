@@ -28,6 +28,7 @@ export default class Form extends Component {
     super(props);
 
     this.state = this.getStateFromProps(props);
+    //TODO: Changing for development
     this.state.expandAll = true;
   }
 
@@ -201,7 +202,9 @@ export default class Form extends Component {
     } = this.state;
     const registry = this.getRegistry();
     const _SchemaField = registry.fields.SchemaField;
-
+    console.log(registry);
+    console.log(schema);
+    console.log(formData);
     return (
       <ContextProvider value={markdownRenderer}>
         <form

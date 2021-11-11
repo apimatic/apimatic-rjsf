@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { getDefaultFormState } from "../../utils";
 
 class DiscriminatorField extends React.Component {
   state;
@@ -47,24 +48,41 @@ class DiscriminatorField extends React.Component {
   };
 
   selectOnChange = e => {
+    const { formData, onChange, options, definitions } = this.props;
+    console.log(options);
     this.setState({
       selectedSchema: e
     });
+
+    let defaultFormState = getDefaultFormState(e, {}, definitions);
+
+    // Retain matching object properties
+    for (let key in formData) {
+      if (defaultFormState.hasOwnProperty(key)) {
+        defaultFormState = {
+          ...defaultFormState,
+          [key]: formData[key]
+        };
+      }
+    }
+
+    onChange(defaultFormState);
   };
 
   render() {
-    const { disabled, required, registry, schema } = this.props;
+    const { disabled, required, registry, schema, formData } = this.props;
     const _SelectWidget = registry.widgets.SelectWidget;
     const altSchema = schema.oneOf || schema.anyOf;
+    console.log("Discriminator");
+    console.log(formData);
     const selectOptions = altSchema.reduce((optionList, schema, i) => {
+      const label = schema.title ? schema.title : `Option ${i + 1}`;
       optionList.push({
-        label: schema.title,
+        label,
         value: schema
       });
       return optionList;
     }, []);
-
-    console.log(selectOptions);
 
     return (
       <div>

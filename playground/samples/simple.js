@@ -94,5 +94,29 @@ module.exports = {
       "session"
     ]
   },
+  formData: {
+    session: {
+      offerDinner: true
+    }
+  }
+};
+module.exports = {
+  schema: {
+    oneOf: [
+      {
+        lorem: {
+          type: "string"
+        }
+      },
+      {
+        properties: {
+          ipsum: {
+            type: "string"
+          }
+        },
+        required: ["ipsum"]
+      }
+    ]
+  },
   formData: {}
 };

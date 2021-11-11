@@ -71,7 +71,13 @@ export function getWidget(schema, widget, registeredWidgets = {}) {
       const defaultOptions =
         (Widget.defaultProps && Widget.defaultProps.options) || {};
       Widget.MergedWidget = ({ options = {}, ...props }) => (
-        <Widget options={{ ...defaultOptions, ...options }} {...props} />
+        <Widget
+          options={{
+            ...defaultOptions,
+            ...options
+          }}
+          {...props}
+        />
       );
     }
     return Widget.MergedWidget;
@@ -121,11 +127,9 @@ function computeDefaults(schema, parentDefaults, definitions = {}) {
       computeDefaults(itemSchema, undefined, definitions)
     );
   } else if ("oneOf" in schema) {
-    schema =
-      schema.oneOf[getMatchingOption(undefined, schema.oneOf, definitions)];
+    schema = schema.oneOf[0];
   } else if ("anyOf" in schema) {
-    schema =
-      schema.anyOf[getMatchingOption(undefined, schema.anyOf, definitions)];
+    schema = schema.anyOf[0];
   }
   // Not defaults defined for this node, fallback to generic typed ones.
   if (typeof defaults === "undefined") {
@@ -138,11 +142,33 @@ function computeDefaults(schema, parentDefaults, definitions = {}) {
       return Object.keys(schema.properties || {}).reduce((acc, key) => {
         // Compute the defaults for this node, with the parent defaults we might
         // have from a previous run: defaults[key].
-        acc[key] = computeDefaults(
-          schema.properties[key],
-          (defaults || {})[key],
-          definitions
-        );
+
+        if (
+          isObject(schema.properties[key]) &&
+          schema.properties[key].hasOwnProperty("oneOf" || "anyOf")
+        ) {
+          const _defaultKey = {
+            ...(defaults || {})[key]
+          };
+          acc = {
+            ...acc,
+            [`$$_${key}_discriminator`]: 0,
+            [key]: {
+              ...computeDefaults(
+                schema.properties[key],
+                _defaultKey,
+                definitions
+              )
+            }
+          };
+        } else {
+          acc[key] = computeDefaults(
+            schema.properties[key],
+            (defaults || {})[key],
+            definitions
+          );
+        }
+
         return acc;
       }, {});
 
@@ -182,7 +208,7 @@ export function getDefaultFormState(_schema, formData, definitions = {}) {
   }
   if (isObject(formData)) {
     // Override schema defaults with form data.
-    return mergeObjects(defaults, formData);
+    return mergeDefaultsWithFormData(defaults, formData);
   }
   return formData || defaults;
 }
@@ -205,9 +231,15 @@ export function getUiOptions(uiSchema) {
         };
       }
       if (key === "ui:options" && isObject(value)) {
-        return { ...options, ...value };
+        return {
+          ...options,
+          ...value
+        };
       }
-      return { ...options, [key.substring(3)]: value };
+      return {
+        ...options,
+        [key.substring(3)]: value
+      };
     }, {});
 }
 
@@ -232,6 +264,39 @@ export function mergeObjects(obj1, obj2, concatArrays = false) {
   }, acc);
 }
 
+/**
+ * When merging defaults and form data, we want to merge in this specific way:
+ * - objects are deeply merged
+ * - arrays are merged in such a way that:
+ *   - when the array is set in form data, only array entries set in form data
+ *     are deeply merged; additional entries from the defaults are ignored
+ *   - when the array is not set in form data, the default is copied over
+ * - scalars are overwritten/set by form data
+ */
+export function mergeDefaultsWithFormData(defaults, formData) {
+  if (Array.isArray(formData)) {
+    if (!Array.isArray(defaults)) {
+      defaults = [];
+    }
+    return formData.map((value, idx) => {
+      if (defaults[idx]) {
+        return mergeDefaultsWithFormData(defaults[idx], value);
+      }
+      return value;
+    });
+  } else if (isObject(formData)) {
+    const acc = Object.assign({}, defaults); // Prevent mutation of source object.
+    return Object.keys(formData).reduce((acc, key) => {
+      acc[key] = mergeDefaultsWithFormData(
+        defaults ? defaults[key] : {},
+        formData[key]
+      );
+      return acc;
+    }, acc);
+  } else {
+    return formData;
+  }
+}
 export function asNumber(value) {
   if (value === "") {
     return undefined;
@@ -367,14 +432,20 @@ export function optionsList(schema) {
   if (schema.enum) {
     return schema.enum.map((value, i) => {
       const label = (schema.enumNames && schema.enumNames[i]) || String(value);
-      return { label, value };
+      return {
+        label,
+        value
+      };
     });
   } else {
     const altSchemas = schema.oneOf || schema.anyOf;
     return altSchemas.map((schema, i) => {
       const value = toConstant(schema);
       const label = schema.title || String(value);
-      return { label, value };
+      return {
+        label,
+        value
+      };
     });
   }
 }
@@ -409,7 +480,10 @@ export function retrieveSchema(schema, definitions = {}, formData = {}) {
     const { $ref, ...localSchema } = schema;
     // Update referenced schema definition with local schema properties.
     return retrieveSchema(
-      { ...$refSchema, ...localSchema },
+      {
+        ...$refSchema,
+        ...localSchema
+      },
       definitions,
       formData
     );
@@ -454,7 +528,10 @@ function withDependentProperties(schema, additionallyRequired) {
   const required = Array.isArray(schema.required)
     ? Array.from(new Set([...schema.required, ...additionallyRequired]))
     : additionallyRequired;
-  return { ...schema, required: required };
+  return {
+    ...schema,
+    required: required
+  };
 }
 
 function withDependentSchema(
@@ -520,7 +597,10 @@ function withExactlyOneSubschema(
     [dependencyKey]: conditionPropertySchema,
     ...dependentSubschema
   } = subschema.properties;
-  const dependentSchema = { ...subschema, properties: dependentSubschema };
+  const dependentSchema = {
+    ...subschema,
+    properties: dependentSubschema
+  };
   return mergeSchemas(
     schema,
     retrieveSchema(dependentSchema, definitions, formData)
@@ -719,9 +799,14 @@ export function dataURItoBlob(dataURI) {
     array.push(binary.charCodeAt(i));
   }
   // Create the blob object
-  const blob = new window.Blob([new Uint8Array(array)], { type });
+  const blob = new window.Blob([new Uint8Array(array)], {
+    type
+  });
 
-  return { blob, name };
+  return {
+    blob,
+    name
+  };
 }
 
 export function rangeSpec(schema) {
@@ -778,14 +863,14 @@ export function getMatchingOption(formData, options, rootSchema) {
         // Create a shallow clone of the option
         const { ...shallowClone } = option;
 
-        // if (!shallowClone.allOf) {
-        //   shallowClone.allOf = [];
-        // } else {
-        //   // If "allOf" already exists, shallow clone the array
-        //   shallowClone.allOf = shallowClone.allOf.slice();
-        // }
+        if (!shallowClone.allOf) {
+          shallowClone.allOf = [];
+        } else {
+          // If "allOf" already exists, shallow clone the array
+          shallowClone.allOf = shallowClone.allOf.slice();
+        }
 
-        // shallowClone.allOf.push(requiresAnyOf);
+        shallowClone.allOf.push(requiresAnyOf);
 
         augmentedSchema = shallowClone;
       } else {

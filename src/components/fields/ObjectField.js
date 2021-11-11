@@ -254,7 +254,7 @@ class ObjectField extends Component {
     this.state.formJson = JSON.stringify(props.formData, null, 2);
     this.state.formJsonError = false;
     this.state.showEditView = false;
-    this.state.collapse = true;
+    this.state.collapse = false;
     this.state.isEven = props.isEven || props.levelReversal ? true : false;
     this.state.expandAllLevel = props.expandAllLevel;
     this.state.depth = props.depth ? props.depth : 1;
