@@ -76,6 +76,10 @@ function SelectWidget(props) {
     };
     return a;
   });
+  // Default value needs object instead of value(string)
+  const defaultExample = newOptions.find(
+    option => option.value === schema.example
+  );
 
   return (
     <Select
@@ -85,9 +89,10 @@ function SelectWidget(props) {
       isMulti={multiple}
       options={newOptions}
       defaultValue={
-        value
+        defaultExample ||
+        (value
           ? getDefaultValue(value, multiple, enumOptions, enumDisabled)
-          : emptyValue
+          : emptyValue)
       }
       closeMenuOnSelect={!multiple}
       isDisabled={disabled || readonly}
