@@ -108,7 +108,12 @@ export function getWidget(schema, widget, registeredWidgets = {}) {
   throw new Error(`No widget "${widget}" for type "${type}"`);
 }
 
-function computeDefaults(schema, parentDefaults, definitions = {}) {
+function computeDefaults(
+  schema,
+  parentDefaults,
+  definitions = {},
+  schemaIndex = 0
+) {
   // Compute the defaults recursively: give highest priority to deepest nodes.
   let defaults = parentDefaults;
   if (isObject(defaults) && isObject(schema.default)) {
@@ -127,9 +132,12 @@ function computeDefaults(schema, parentDefaults, definitions = {}) {
       computeDefaults(itemSchema, undefined, definitions)
     );
   } else if ("oneOf" in schema) {
-    schema = schema.oneOf[0];
+    schema = schema.oneOf[schemaIndex];
+    // if (schema.type === 'array') {
+    //   defaults = undefined;
+    // }
   } else if ("anyOf" in schema) {
-    schema = schema.anyOf[0];
+    schema = schema.anyOf[schemaIndex];
   }
   // Not defaults defined for this node, fallback to generic typed ones.
   if (typeof defaults === "undefined") {
@@ -138,8 +146,9 @@ function computeDefaults(schema, parentDefaults, definitions = {}) {
 
   switch (schema.type) {
     // We need to recur for object schema inner default values.
-    case "object":
-      return Object.keys(schema.properties || {}).reduce((acc, key) => {
+    case "object": {
+      console.log("Object keys _ " + Object.keys(schema.properties || {}));
+      defaults = Object.keys(schema.properties || {}).reduce((acc, key) => {
         // Compute the defaults for this node, with the parent defaults we might
         // have from a previous run: defaults[key].
 
@@ -147,19 +156,15 @@ function computeDefaults(schema, parentDefaults, definitions = {}) {
           isObject(schema.properties[key]) &&
           schema.properties[key].hasOwnProperty("oneOf" || "anyOf")
         ) {
-          const _defaultKey = {
-            ...(defaults || {})[key]
-          };
+          const _defaultKey = (defaults || {})[key];
           acc = {
             ...acc,
             [`$$_${key}_discriminator`]: 0,
-            [key]: {
-              ...computeDefaults(
-                schema.properties[key],
-                _defaultKey,
-                definitions
-              )
-            }
+            [key]: computeDefaults(
+              schema.properties[key],
+              (_defaultKey || {})[key],
+              definitions
+            )
           };
         } else {
           acc[key] = computeDefaults(
@@ -171,8 +176,21 @@ function computeDefaults(schema, parentDefaults, definitions = {}) {
 
         return acc;
       }, {});
+      break;
+    }
 
     case "array":
+      // Inject defaults into existing array defaults
+      if (Array.isArray(defaults)) {
+        defaults = defaults.map((item, idx) => {
+          return computeDefaults(
+            schema.items[idx] || schema.additionalItems || {},
+            item,
+            definitions
+          );
+        });
+      }
+
       if (schema.minItems) {
         if (!isMultiSelect(schema, definitions)) {
           const defaultsLength = defaults ? defaults.length : 0;
@@ -208,7 +226,7 @@ export function getDefaultFormState(_schema, formData, definitions = {}) {
   }
   if (isObject(formData)) {
     // Override schema defaults with form data.
-    return mergeDefaultsWithFormData(defaults, formData);
+    return mergeObjects(defaults, formData);
   }
   return formData || defaults;
 }

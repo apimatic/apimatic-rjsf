@@ -208,6 +208,10 @@ function SchemaFieldRender(props) {
   const readonly = Boolean(props.readonly || uiSchema["ui:readonly"]);
   const autofocus = Boolean(props.autofocus || uiSchema["ui:autofocus"]);
 
+  console.log("schema field" + fields);
+
+  console.log(formData);
+
   if (Object.keys(schema).length === 0) {
     // See #312: Ensure compatibility with old versions of React.
     return <div />;

@@ -9,7 +9,10 @@ class DiscriminatorField extends React.Component {
     console.log(props);
     const altSchema = props.schema.oneOf || props.schema.anyOf;
     this.state = {
-      selectedSchema: altSchema[0]
+      selectedSchema: {
+        index: 0,
+        schema: altSchema[0]
+      }
     };
   }
 
@@ -30,7 +33,7 @@ class DiscriminatorField extends React.Component {
 
     return this.state ? (
       <_SchemaField
-        schema={this.state.selectedSchema}
+        schema={this.state.selectedSchema.schema}
         uiSchema={uiSchema}
         errorSchema={errorSchema}
         idSchema={idSchema}
@@ -54,17 +57,38 @@ class DiscriminatorField extends React.Component {
       selectedSchema: e
     });
 
-    let defaultFormState = getDefaultFormState(e, {}, definitions);
-
-    // Retain matching object properties
-    for (let key in formData) {
-      if (defaultFormState.hasOwnProperty(key)) {
-        defaultFormState = {
-          ...defaultFormState,
-          [key]: formData[key]
-        };
+    let defaultFormState = null;
+    if (e.schema.type === "object") {
+      defaultFormState = getDefaultFormState(
+        e.schema,
+        {},
+        definitions,
+        e.index
+      );
+      for (let key in formData) {
+        if (defaultFormState.hasOwnProperty(key)) {
+          defaultFormState = {
+            ...defaultFormState,
+            [key]: formData[key]
+          };
+        }
       }
+    } else if (e.schema.type === "array") {
+      defaultFormState = getDefaultFormState(
+        e.schema,
+        [],
+        definitions,
+        e.index
+      );
+    } else {
+      defaultFormState = getDefaultFormState(
+        e.schema,
+        undefined,
+        definitions,
+        e.index
+      );
     }
+    // Retain matching object properties
 
     onChange(defaultFormState);
   };
@@ -79,7 +103,10 @@ class DiscriminatorField extends React.Component {
       const label = schema.title ? schema.title : `Option ${i + 1}`;
       optionList.push({
         label,
-        value: schema
+        value: {
+          index: i,
+          schema: schema
+        }
       });
       return optionList;
     }, []);
