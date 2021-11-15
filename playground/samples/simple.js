@@ -102,21 +102,179 @@ module.exports = {
 };
 module.exports = {
   schema: {
-    oneOf: [
-      {
-        lorem: {
-          type: "string"
-        }
-      },
-      {
+    title: "Endpoint Arguments",
+    type: "object",
+    additionalProperties: false,
+    properties: {
+      args: {
+        id: "endpoint_7C26ABBCDB1F9",
+        title: "endpoint_7C26ABBCDB1F9",
+        type: "object",
         properties: {
-          ipsum: {
-            type: "string"
+          isPrimitiveType: {
+            type: "boolean"
+          },
+          isAtEndpointLevel: {
+            type: "boolean"
+          },
+          hasDiscriminator: {
+            type: "boolean"
+          },
+          Array: {
+            type: "array",
+            items: {
+              type: "number"
+            }
+          },
+          "Simple oneOf Fields": {
+            oneOf: [
+              {
+                type: "number"
+              },
+              {
+                type: "boolean"
+              }
+            ]
+          },
+          "Simple oneOf Array": {
+            oneOf: [
+              {
+                type: "array",
+                items: {
+                  type: "number"
+                }
+              },
+              {
+                type: "array",
+                items: {
+                  type: "boolean"
+                }
+              }
+            ]
+          },
+          "Simple number array + boolean": {
+            oneOf: [
+              {
+                type: "array",
+                items: {
+                  type: "number"
+                }
+              },
+              {
+                type: "boolean"
+              }
+            ]
+          },
+          "Simple boolean array + number": {
+            oneOf: [
+              {
+                type: "array",
+                items: {
+                  type: "number"
+                }
+              },
+              {
+                type: "boolean"
+              }
+            ]
+          },
+          "Simple Object": {
+            oneOf: [
+              {
+                type: "object",
+                additionalProperties: {
+                  type: "number"
+                }
+              },
+              {
+                type: "object",
+                additionalProperties: {
+                  type: "boolean"
+                }
+              }
+            ]
+          },
+          "Simple Object + boolean": {
+            oneOf: [
+              {
+                type: "object",
+                additionalProperties: {
+                  type: "number"
+                }
+              },
+              {
+                type: "boolean"
+              }
+            ]
           }
         },
-        required: ["ipsum"]
+        required: [
+          "isPrimitiveType",
+          "isAtEndpointLevel",
+          "hasDiscriminator",
+          "value"
+        ]
       }
-    ]
+    },
+    required: ["args"]
   },
   formData: {}
 };
+
+// module.exports = {
+//   schema: {
+//     "title": "Endpoint Arguments",
+//     "type": "object",
+//     "additionalProperties": false,
+//     "properties": {
+//       "args": {
+//         "id": "endpoint_7C26ABBCDB1F9",
+//         "title": "endpoint_7C26ABBCDB1F9",
+//         "type": "object",
+//         "properties": {
+//           "Array":{
+//             "type": "array",
+//             "items": {
+//               "type": "number"
+//             }
+//           },
+//           "Simple oneOf Array": {
+//             "oneOf": [
+//               {
+//                 "type": "array",
+//                 "items": {
+//                   "type": "number"
+//                 }
+//               },
+//               {
+//                 "type": "array",
+//                 "items": {
+//                   "type": "boolean"
+//                 }
+//               }
+//             ]
+//           },
+//           // "Simple boolean array + number": {
+//           //   "oneOf": [{
+//           //       "type": "array",
+//           //       "items": {
+//           //         "type": "number"
+//           //       }
+//           //     },
+//           //     {
+//           //       "type": "boolean"
+//           //     }
+//           //   ]
+//           // },
+//         },
+//         "required": [
+
+//         ]
+//       }
+//     },
+//     "required": [
+//       "args"
+//     ]
+//   },
+//   formData: {}
+// };

@@ -23,9 +23,9 @@ import additionalProperties from "./additionalProperties";
 import arrayOfMap from "./arrayOfMap";
 import mapOfArray from "./mapOfArray";
 export const samples = {
+  Arrays: arrays,
   Simple: simple,
   Nested: nested,
-  Arrays: arrays,
   ArrayOfMap: arrayOfMap,
   MapOfArray: mapOfArray,
   Numbers: numbers,
