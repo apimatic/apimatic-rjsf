@@ -32,11 +32,13 @@ function getValue(event, multiple) {
   }
 }
 
-function getDefaultValue(value = "", multiple, options) {
-  if (multiple) {
-    return options.filter(option => value === option.value && !option.disabled);
-  } else {
+function makeSelectedValue(value = "", options) {
+  if (typeof value === "string") {
     return options.find(option => value === option.value && !option.disabled);
+  } else if (Array.isArray(value)) {
+    return options.filter(
+      option => value.includes(option.value) && !option.disabled
+    );
   }
 }
 
@@ -64,16 +66,16 @@ function SelectWidget(props) {
     };
     return a;
   });
-  const defaultValue = getDefaultValue(value, multiple, newOptions);
+  const selected = makeSelectedValue(value, newOptions);
 
   return (
     <Select
       id={id}
+      value={selected}
       className={pfx("form-control")}
       classNamePrefix="react-select"
       isMulti={multiple}
       options={newOptions}
-      defaultValue={defaultValue}
       closeMenuOnSelect={!multiple}
       isDisabled={disabled || readonly}
       required={required}
