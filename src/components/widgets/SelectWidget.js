@@ -64,6 +64,7 @@ function SelectWidget(props) {
     };
     return a;
   });
+  const defaultValue = getDefaultValue(value, multiple, newOptions);
 
   return (
     <Select
@@ -72,7 +73,7 @@ function SelectWidget(props) {
       classNamePrefix="react-select"
       isMulti={multiple}
       options={newOptions}
-      defaultValue={getDefaultValue(value, multiple, newOptions)}
+      defaultValue={defaultValue}
       closeMenuOnSelect={!multiple}
       isDisabled={disabled || readonly}
       required={required}
