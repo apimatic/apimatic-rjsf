@@ -32,15 +32,11 @@ function getValue(event, multiple) {
   }
 }
 
-function getDefaultValue(value, multiple, options) {
+function getDefaultValue(value = "", multiple, options) {
   if (multiple) {
-    return options.filter(
-      option => value.indexOf(option.value) !== -1 && !options.disabled
-    );
+    return options.filter(option => value === option.value && !option.disabled);
   } else {
-    return options.find(
-      option => value.indexOf(option.value) !== -1 && !options.disabled
-    );
+    return options.find(option => value === option.value && !option.disabled);
   }
 }
 
