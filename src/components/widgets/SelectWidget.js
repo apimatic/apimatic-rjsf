@@ -32,22 +32,15 @@ function getValue(event, multiple) {
   }
 }
 
-function getDefaultValue(value, multiple, options, disabledOptions) {
+function getDefaultValue(value, multiple, options) {
   if (multiple) {
-    let filter = options.filter(o => {
-      if (disabledOptions) {
-        return (
-          disabledOptions.indexOf(o.value) === -1 &&
-          value.indexOf(o.value) !== -1
-        );
-      } else {
-        return value.indexOf(o.value) !== -1;
-      }
-    });
-
-    return filter;
+    return options.filter(
+      option => value.indexOf(option.value) !== -1 && !options.disabled
+    );
   } else {
-    return value;
+    return options.find(
+      option => value.indexOf(option.value) !== -1 && !options.disabled
+    );
   }
 }
 
@@ -68,7 +61,6 @@ function SelectWidget(props) {
     placeholder
   } = props;
   const { enumOptions, enumDisabled } = options;
-  const emptyValue = multiple ? [] : "";
   let newOptions = enumOptions.map(o => {
     let a = {
       ...o,
@@ -76,10 +68,6 @@ function SelectWidget(props) {
     };
     return a;
   });
-  // Default value needs object instead of value(string)
-  const defaultExample = newOptions.find(
-    option => option.value === schema.example
-  );
 
   return (
     <Select
@@ -88,12 +76,7 @@ function SelectWidget(props) {
       classNamePrefix="react-select"
       isMulti={multiple}
       options={newOptions}
-      defaultValue={
-        defaultExample ||
-        (value
-          ? getDefaultValue(value, multiple, enumOptions, enumDisabled)
-          : emptyValue)
-      }
+      defaultValue={getDefaultValue(value, multiple, newOptions)}
       closeMenuOnSelect={!multiple}
       isDisabled={disabled || readonly}
       required={required}
@@ -106,7 +89,7 @@ function SelectWidget(props) {
         const newValue = getValue(event, multiple);
         onChange(processValue(schema, newValue));
       }}
-      isOptionDisabled={newOptions => newOptions.disabled}
+      isOptionDisabled={option => option.disabled}
     />
   );
 }
