@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { prefixClass as pfx } from "../../utils";
+import { ContextConsumer } from "../context";
+
 function DataType(props) {
   const { title, link, type } = props;
 
@@ -9,13 +11,17 @@ function DataType(props) {
     return <div />;
   }
   return (
-    <div
-      className={pfx(
-        type !== "schema" ? type : link ? "object-type" : "base-type"
+    <ContextConsumer>
+      {({ onRouteChange }) => (
+        <div
+          className={pfx(
+            type !== "schema" ? type : link ? "object-type" : "base-type"
+          )}
+        >
+          {link ? <a onClick={() => onRouteChange(link)}>{title}</a> : title}
+        </div>
       )}
-    >
-      {link ? <a href={link}>{title}</a> : title}
-    </div>
+    </ContextConsumer>
   );
 }
 
