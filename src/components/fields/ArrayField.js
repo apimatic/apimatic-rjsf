@@ -15,7 +15,8 @@ import {
   retrieveSchema,
   toIdSchema,
   getDefaultRegistry,
-  prefixClass as pfx
+  prefixClass as pfx,
+  generateKey
 } from "../../utils";
 import { ArrowUpIcon, DeleteIcon, ArrowDownIcon, ChevronIcon } from "../Icons";
 
@@ -186,7 +187,10 @@ function DefaultFixedArrayFieldTemplate(props) {
         className={pfx("row array-item-list")}
         key={`array-item-list-${props.idSchema.$id}`}
       >
-        {props.items && props.items.map(DefaultArrayItem)}
+        {props.items &&
+          props.items.map((item, index) => (
+            <DefaultArrayItem key={generateKey(index)} {...item} />
+          ))}
       </div>
 
       {props.canAdd && (
@@ -276,7 +280,10 @@ function DefaultNormalArrayFieldTemplate(props) {
             className={pfx("row array-item-list")}
             key={`array-item-list-${props.idSchema.$id}`}
           >
-            {props.items && props.items.map(p => DefaultArrayItem(p))}
+            {props.items &&
+              props.items.map((item, index) => (
+                <DefaultArrayItem key={generateKey(index)} {...item} />
+              ))}
           </div>
 
           {props.canAdd && (
