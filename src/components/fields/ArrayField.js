@@ -188,7 +188,11 @@ function DefaultFixedArrayFieldTemplate(props) {
       >
         {props.items &&
           props.items.map((item, index) => (
-            <DefaultArrayItem key={`outer-array-item-${index}`} {...item} />
+            <DefaultArrayItem
+              key={`outer-array-item-${index}`}
+              {...item}
+              index={index}
+            />
           ))}
       </div>
 
@@ -281,7 +285,11 @@ function DefaultNormalArrayFieldTemplate(props) {
           >
             {props.items &&
               props.items.map((item, index) => (
-                <DefaultArrayItem key={`inner-array-item-${index}`} {...item} />
+                <DefaultArrayItem
+                  key={`inner-array-item-${index}`}
+                  {...item}
+                  index={index}
+                />
               ))}
           </div>
 

@@ -66,7 +66,7 @@ function SelectWidget(props) {
     };
     return a;
   });
-  const selected = makeSelectedValue(value, newOptions);
+  const selected = makeSelectedValue(value, newOptions) || "";
 
   return (
     <Select
