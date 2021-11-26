@@ -333,6 +333,7 @@ if (process.env.NODE_ENV !== "production") {
     idSchema: PropTypes.object,
     formData: PropTypes.any,
     errorSchema: PropTypes.object,
+    schemaIndex: PropTypes.number,
     registry: PropTypes.shape({
       widgets: PropTypes.objectOf(
         PropTypes.oneOfType([PropTypes.func, PropTypes.object])

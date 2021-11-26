@@ -44,6 +44,7 @@ class DiscriminatorField extends React.Component {
         onFocus={onFocus}
         registry={registry}
         disabled={disabled}
+        schemaIndex={this.state.selectedSchema.index}
       />
     ) : (
       <p>schema not available</p>
@@ -51,7 +52,7 @@ class DiscriminatorField extends React.Component {
   };
 
   selectOnChange = e => {
-    const { formData, onChange, options, definitions } = this.props;
+    const { onChange, options, definitions } = this.props;
     console.log(options);
     this.setState({
       selectedSchema: e
@@ -59,20 +60,20 @@ class DiscriminatorField extends React.Component {
 
     let defaultFormState = null;
     if (e.schema.type === "object") {
+      // for (let key in formData) {
+      //   if (defaultFormState.hasOwnProperty(key)) {
+      //     defaultFormState = {
+      //       ...defaultFormState,
+      //       [key]: formData[key]
+      //     };
+      //   }
+      // }
       defaultFormState = getDefaultFormState(
         e.schema,
         {},
         definitions,
         e.index
       );
-      for (let key in formData) {
-        if (defaultFormState.hasOwnProperty(key)) {
-          defaultFormState = {
-            ...defaultFormState,
-            [key]: formData[key]
-          };
-        }
-      }
     } else if (e.schema.type === "array") {
       defaultFormState = getDefaultFormState(
         e.schema,
@@ -90,7 +91,7 @@ class DiscriminatorField extends React.Component {
     }
     // Retain matching object properties
 
-    onChange(defaultFormState);
+    onChange(defaultFormState, { validate: true }, e.index);
   };
 
   render() {

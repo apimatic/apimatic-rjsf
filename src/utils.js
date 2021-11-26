@@ -132,12 +132,12 @@ function computeDefaults(
       computeDefaults(itemSchema, undefined, definitions)
     );
   } else if ("oneOf" in schema) {
-    schema = schema.oneOf[schemaIndex];
+    schema = schema.oneOf[0];
     // if (schema.type === 'array') {
     //   defaults = undefined;
     // }
   } else if ("anyOf" in schema) {
-    schema = schema.anyOf[schemaIndex];
+    schema = schema.anyOf[0];
   }
   // Not defaults defined for this node, fallback to generic typed ones.
   if (typeof defaults === "undefined") {
@@ -214,12 +214,22 @@ function computeDefaults(
   return defaults;
 }
 
-export function getDefaultFormState(_schema, formData, definitions = {}) {
+export function getDefaultFormState(
+  _schema,
+  formData,
+  definitions = {},
+  schemaIndex = 0
+) {
   if (!isObject(_schema)) {
     throw new Error("Invalid schema: " + _schema);
   }
   const schema = retrieveSchema(_schema, definitions, formData);
-  const defaults = computeDefaults(schema, _schema.default, definitions);
+  const defaults = computeDefaults(
+    schema,
+    _schema.default,
+    definitions,
+    schemaIndex
+  );
   if (typeof formData === "undefined") {
     // No form data? Use schema defaults.
     return defaults;
