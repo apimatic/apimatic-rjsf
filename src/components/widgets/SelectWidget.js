@@ -33,12 +33,12 @@ function getValue(event, multiple) {
 }
 
 function makeSelectedValue(value = "", options) {
-  if (typeof value === "string" || "number") {
-    return options.find(option => value === option.value && !option.disabled);
-  } else if (Array.isArray(value)) {
+  if (Array.isArray(value)) {
     return options.filter(
       option => value.includes(option.value) && !option.disabled
     );
+  } else if (typeof value === "string" || "number") {
+    return options.find(option => value === option.value && !option.disabled);
   }
 }
 
