@@ -738,9 +738,13 @@ export function prefixClass(className) {
   return className && classPrefix
     ? className
         .split(" ")
-        .map(
-          e => (e !== "" && e.indexOf(classPrefix) !== 0 ? classPrefix + e : e)
+        .map(e =>
+          e !== "" && e.indexOf(classPrefix) !== 0 ? classPrefix + e : e
         )
         .join(" ")
     : className;
+}
+
+export function generateKey(pre) {
+  return `${pre}_${new Date().getTime()}`;
 }
