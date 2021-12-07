@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { getDefaultFormState } from "../../utils";
+import { getDefaultFormState, isObject } from "../../utils";
 
 class DiscriminatorField extends React.Component {
   state;
@@ -38,7 +38,7 @@ class DiscriminatorField extends React.Component {
         errorSchema={errorSchema}
         idSchema={idSchema}
         idPrefix={idPrefix}
-        formData={formData}
+        formData={formData.value}
         onChange={onChange}
         onBlur={onBlur}
         onFocus={onFocus}
@@ -89,17 +89,22 @@ class DiscriminatorField extends React.Component {
         e.index
       );
     }
-    // Retain matching object properties
 
-    onChange(defaultFormState, { validate: true }, e.index);
+    if (
+      isObject(defaultFormState) &&
+      defaultFormState.hasOwnProperty("$$__case")
+    ) {
+      onChange(defaultFormState.value, { validate: true }, e.index);
+    } else {
+      onChange(defaultFormState, { validate: true }, e.index);
+    }
   };
 
   render() {
-    const { disabled, required, registry, schema, formData } = this.props;
+    const { disabled, required, registry, schema } = this.props;
     const _SelectWidget = registry.widgets.SelectWidget;
     const altSchema = schema.oneOf || schema.anyOf;
-    console.log("Discriminator");
-    console.log(formData);
+
     const selectOptions = altSchema.reduce((optionList, schema, i) => {
       const label = schema.title ? schema.title : `Option ${i + 1}`;
       optionList.push({
@@ -118,7 +123,7 @@ class DiscriminatorField extends React.Component {
           schema={schema}
           id={altSchema[0].title}
           options={{ enumOptions: selectOptions }}
-          value=""
+          value={selectOptions[0]}
           required={required}
           disabled={disabled}
           readonly={false}

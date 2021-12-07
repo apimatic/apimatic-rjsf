@@ -426,7 +426,12 @@ class ArrayField extends Component {
         // We need to treat undefined items as nulls to have validation.
         // See https://github.com/tdegrunt/jsonschema/issues/206
         const jsonValue = typeof value === "undefined" ? null : value;
-        return index === i ? jsonValue : item;
+        return index === i
+          ? {
+              ...item,
+              value: jsonValue
+            }
+          : item;
       });
       onChange(newFormData, { validate: false });
     };

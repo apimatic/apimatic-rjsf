@@ -159,12 +159,14 @@ function computeDefaults(
           const _defaultKey = (defaults || {})[key];
           acc = {
             ...acc,
-            [`$$_${key}_discriminator`]: 0,
-            [key]: computeDefaults(
-              schema.properties[key],
-              (_defaultKey || {})[key],
-              definitions
-            )
+            [key]: {
+              $$__case: schemaIndex,
+              value: computeDefaults(
+                schema.properties[key],
+                (_defaultKey || {})[key],
+                definitions
+              )
+            }
           };
         } else {
           acc[key] = computeDefaults(
@@ -179,7 +181,7 @@ function computeDefaults(
       break;
     }
 
-    case "array":
+    case "array": {
       // Inject defaults into existing array defaults
       if (Array.isArray(defaults)) {
         defaults = defaults.map((item, idx) => {
@@ -210,6 +212,15 @@ function computeDefaults(
           return [];
         }
       }
+      break;
+    }
+
+    default: {
+      defaults = {
+        $$__case: schemaIndex,
+        value: undefined
+      };
+    }
   }
   return defaults;
 }
