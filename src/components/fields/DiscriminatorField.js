@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { getDefaultFormState, isObject } from "../../utils";
+import { getDefaultFormState, isObject, checkDiscriminator } from "../../utils";
 
 class DiscriminatorField extends React.Component {
   state;
@@ -60,6 +60,7 @@ class DiscriminatorField extends React.Component {
 
     let defaultFormState = null;
     if (e.schema.type === "object") {
+      // Retain matching object keys
       // for (let key in formData) {
       //   if (defaultFormState.hasOwnProperty(key)) {
       //     defaultFormState = {
@@ -90,10 +91,7 @@ class DiscriminatorField extends React.Component {
       );
     }
 
-    if (
-      isObject(defaultFormState) &&
-      defaultFormState.hasOwnProperty("$$__case")
-    ) {
+    if (isObject(defaultFormState) && checkDiscriminator(defaultFormState)) {
       onChange(defaultFormState.value, { validate: true }, e.index);
     } else {
       onChange(defaultFormState, { validate: true }, e.index);
@@ -105,12 +103,12 @@ class DiscriminatorField extends React.Component {
     const _SelectWidget = registry.widgets.SelectWidget;
     const altSchema = schema.oneOf || schema.anyOf;
 
-    const selectOptions = altSchema.reduce((optionList, schema, i) => {
-      const label = schema.title ? schema.title : `Option ${i + 1}`;
+    const selectOptions = altSchema.reduce((optionList, schema, index) => {
+      const label = schema.title ? schema.title : `Option ${index + 1}`;
       optionList.push({
         label,
         value: {
-          index: i,
+          index: index,
           schema: schema
         }
       });

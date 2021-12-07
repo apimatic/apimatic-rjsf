@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import MapField from "./MapField";
-import { prefixClass as pfx, isObject } from "../../utils";
+import { prefixClass as pfx, checkDiscriminator } from "../../utils";
 import { toErrorList } from "../../validate";
 import CodeMirror from "react-codemirror2";
 import DataType from "../fields/DataType";
@@ -309,27 +309,20 @@ class ObjectField extends Component {
     );
   }
 
-  checkDiscriminator(data) {
-    if (isObject(data) && data.hasOwnProperty("$$__case")) {
-      return true;
-    }
-    return false;
-  }
-
   onPropertyChange = name => {
     return (value, options, schemaIndex) => {
       let newFormData = {};
       if (schemaIndex !== undefined) {
         newFormData = {
           ...this.props.formData,
-          [name]: {
+          [name]:  {
             ...this.props.formData[name],
             $$__case: schemaIndex,
             value
           }
         };
       } else {
-        if (this.checkDiscriminator(this.props.formData[name])) {
+        if (checkDiscriminator(this.props.formData[name])) {
           newFormData = {
             ...this.props.formData,
             [name]: {
@@ -343,6 +336,7 @@ class ObjectField extends Component {
             [name]: value
           };
         }
+        
       }
 
       this.props.onChange(newFormData, options);

@@ -929,3 +929,10 @@ export function getMatchingOption(formData, options, rootSchema) {
   }
   return 0;
 }
+
+export function checkDiscriminator(data) {
+  if (isObject(data) && data.hasOwnProperty("$$__case")) {
+    return true;
+  }
+  return false;
+}
