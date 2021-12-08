@@ -58,7 +58,7 @@ class DiscriminatorField extends React.Component {
       selectedSchema: e
     });
 
-    let defaultFormState = null;
+    let defaultFormState;
     if (e.schema.type === "object") {
       // Retain matching object keys
       // for (let key in formData) {

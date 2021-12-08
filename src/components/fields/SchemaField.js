@@ -193,6 +193,7 @@ function SchemaFieldRender(props) {
     idSchema,
     name,
     required,
+    schemaIndex,
     registry = getDefaultRegistry()
   } = props;
   const {
@@ -247,6 +248,7 @@ function SchemaFieldRender(props) {
       autofocus={autofocus}
       errorSchema={fieldErrorSchema}
       formContext={formContext}
+      schemaIndex={schemaIndex}
     />
   );
 

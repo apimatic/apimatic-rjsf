@@ -377,10 +377,27 @@ class ArrayField extends Component {
     if (isFixedItems(schema) && allowAdditionalItems(schema)) {
       itemSchema = schema.additionalItems;
     }
-    this.props.onChange(
-      [...formData, getDefaultFormState(itemSchema, undefined, definitions)],
-      { validate: false }
-    );
+    if (itemSchema && itemSchema.hasOwnProperty("oneOf" || "anyOf")) {
+      this.props.onChange(
+        [
+          ...formData,
+          getDefaultFormState(
+            itemSchema,
+            {
+              $$__case: 0,
+              value: undefined
+            },
+            definitions
+          )
+        ],
+        { validate: false }
+      );
+    } else {
+      this.props.onChange(
+        [...formData, getDefaultFormState(itemSchema, undefined, definitions)],
+        { validate: false }
+      );
+    }
   };
 
   onDropIndexClick = index => {
@@ -421,17 +438,24 @@ class ArrayField extends Component {
 
   onChangeForIndex = index => {
     return value => {
-      const { formData, onChange } = this.props;
+      const { formData, onChange, schema } = this.props;
       const newFormData = formData.map((item, i) => {
         // We need to treat undefined items as nulls to have validation.
         // See https://github.com/tdegrunt/jsonschema/issues/206
         const jsonValue = typeof value === "undefined" ? null : value;
-        return index === i
-          ? {
-              ...item,
-              value: jsonValue
-            }
-          : item;
+        if (
+          schema &&
+          schema.items &&
+          schema.items.hasOwnProperty("oneOf" || "anyOf")
+        ) {
+          return index === i
+            ? {
+                ...item,
+                value: jsonValue
+              }
+            : item;
+        }
+        return index === i ? jsonValue : item;
       });
       onChange(newFormData, { validate: false });
     };

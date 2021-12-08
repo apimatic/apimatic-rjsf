@@ -133,9 +133,6 @@ function computeDefaults(
     );
   } else if ("oneOf" in schema) {
     schema = schema.oneOf[0];
-    // if (schema.type === 'array') {
-    //   defaults = undefined;
-    // }
   } else if ("anyOf" in schema) {
     schema = schema.anyOf[0];
   }
@@ -192,7 +189,6 @@ function computeDefaults(
           );
         });
       }
-
       if (schema.minItems) {
         if (!isMultiSelect(schema, definitions)) {
           const defaultsLength = defaults ? defaults.length : 0;
@@ -213,13 +209,6 @@ function computeDefaults(
         }
       }
       break;
-    }
-
-    default: {
-      defaults = {
-        $$__case: schemaIndex,
-        value: undefined
-      };
     }
   }
   return defaults;
@@ -247,7 +236,7 @@ export function getDefaultFormState(
   }
   if (isObject(formData)) {
     // Override schema defaults with form data.
-    return mergeObjects(defaults, formData);
+    return mergeDefaultsWithFormData(defaults, formData);
   }
   return formData || defaults;
 }
