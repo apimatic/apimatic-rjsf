@@ -436,6 +436,29 @@ module.exports = {
               }
             }
           },
+          send_oneof_arrayOfMap_flag_of_mixed_arrayOfMap_flag: {
+            description: "",
+            type: "array",
+            items: {
+              type: "object",
+              additionalProperties: {
+                oneOf: [
+                  {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      additionalProperties: {
+                        type: "number"
+                      }
+                    }
+                  },
+                  {
+                    type: "boolean"
+                  }
+                ]
+              }
+            }
+          },
           send_oneof_inner_mapOfArray: {
             oneOf: [
               {
@@ -519,6 +542,307 @@ module.exports = {
   formData: {
     // session: {
     //   offerDinner: true
+    // }
+  }
+};
+
+module.exports = {
+  schema: {
+    title: "Endpoint Arguments",
+    type: "object",
+    additionalProperties: false,
+    properties: {
+      args: {
+        id: "endpoint_7C26ABBCDB1F9",
+        title: "endpoint_7C26ABBCDB1F9",
+        type: "object",
+        properties: {
+          isPrimitiveType: {
+            type: "boolean"
+          },
+          isAtEndpointLevel: {
+            type: "boolean"
+          },
+          hasDiscriminator: {
+            type: "boolean"
+          },
+          value: {
+            description: "",
+            type: "array",
+            items: {
+              oneOf: [
+                {
+                  type: "number"
+                },
+                {
+                  type: "boolean"
+                }
+              ]
+            }
+          }
+        },
+        required: [
+          "isPrimitiveType",
+          "isAtEndpointLevel",
+          "hasDiscriminator",
+          "value"
+        ]
+      }
+    },
+    required: ["args"]
+  },
+  // schema: {
+  //   title: "Endpoint Arguments",
+  //   type: "object",
+  //   additionalProperties: false,
+  //   properties: {
+  //     args: {
+  //       id: "endpoint_7C26ABBCDB1F9",
+  //       title: "endpoint_7C26ABBCDB1F9",
+  //       type: "object",
+  //       properties: {
+  //         // isPrimitiveType: {
+  //         //   type: "boolean"
+  //         // },
+  //         // isAtEndpointLevel: {
+  //         //   type: "boolean"
+  //         // },
+  //         // hasDiscriminator: {
+  //         //   type: "boolean"
+  //         // },
+  //         // "value": {
+  //         //   "description": "",
+  //         //   "type": "array",
+  //         //   "items": {
+  //         //     "oneOf": [
+  //         //       {
+  //         //         "type": "number"
+  //         //       },
+  //         //       {
+  //         //         "type": "boolean"
+  //         //       }
+  //         //     ]
+  //         //   }
+  //         // },
+  //         // Array: {
+  //         //   type: "array",
+  //         //   items: {
+  //         //     type: "number"
+  //         //   }
+  //         // },
+  //         // "value": {
+  //         //   "description": "",
+  //         //   "type": "array",
+  //         //   "items": {
+  //         //     "oneOf": [
+  //         //       {
+  //         //         "type": "number"
+  //         //       },
+  //         //       {
+  //         //         "type": "boolean"
+  //         //       }
+  //         //     ]
+  //         //   }
+  //         // },
+  //         // send_oneof_inner_mapOfArray: {
+  //         //   oneOf: [
+  //         //     {
+  //         //       type: "object",
+  //         //       additionalProperties: {
+  //         //         type: "array",
+  //         //         items: {
+  //         //           type: "number"
+  //         //         }
+  //         //       }
+  //         //     },
+  //         //     {
+  //         //       type: "object",
+  //         //       additionalProperties: {
+  //         //         type: "array",
+  //         //         items: {
+  //         //           type: "boolean"
+  //         //         }
+  //         //       }
+  //         //     }
+  //         //   ]
+  //         // },
+  //         // session: {
+  //         //   description: "Course session",
+  //         //   oneOf: [
+  //         //     {
+  //         //       id: "Morning",
+  //         //       title: "Morning",
+  //         //       description: "Course morning session",
+  //         //       type: "object",
+  //         //       properties: {
+  //         //         startsAt: {
+  //         //           description: "Session start time",
+  //         //           type: "string"
+  //         //         },
+  //         //         endsAt: {
+  //         //           description: "Session end time",
+  //         //           type: "string"
+  //         //         },
+  //         //         offerTeaBreak: {
+  //         //           description: "Offer tea break during session",
+  //         //           type: "boolean"
+  //         //         }
+  //         //       },
+  //         //       required: ["startsAt", "endsAt", "offerTeaBreak"]
+  //         //     },
+  //         //     {
+  //         //       id: "Evening",
+  //         //       title: "Evening",
+  //         //       description: "Course evening session",
+  //         //       type: "object",
+  //         //       properties: {
+  //         //         startsAt: {
+  //         //           description: "Session start time",
+  //         //           type: "string"
+  //         //         },
+  //         //         endsAt: {
+  //         //           description: "Session end time",
+  //         //           type: "string"
+  //         //         },
+  //         //         offerDinner: {
+  //         //           description: "Offer dinner during session",
+  //         //           type: "boolean"
+  //         //         }
+  //         //       },
+  //         //       required: ["startsAt", "endsAt", "offerDinner", "offerTeaBreak"]
+  //         //     }
+  //         //   ]
+  //         // },
+  //         // "Simple oneOf Fields": {
+  //         //   oneOf: [
+  //         //     {
+  //         //       type: "number"
+  //         //     },
+  //         //     {
+  //         //       type: "boolean"
+  //         //     }
+  //         //   ]
+  //         // },
+  //         // "send_oneof_inner_arrayOfMap_flag": {
+  //         //   "oneOf": [{
+  //         //       "type": "array",
+  //         //       "items": {
+  //         //         "type": "object",
+  //         //         "additionalProperties": {
+  //         //           "type": "number"
+  //         //         }
+  //         //       }
+  //         //     },
+  //         //     {
+  //         //       "type": "array",
+  //         //       "items": {
+  //         //         "type": "object",
+  //         //         "additionalProperties": {
+  //         //           "type": "boolean"
+  //         //         }
+  //         //       }
+  //         //     }
+  //         //   ]
+  //         // },
+  //         // "Simple oneOf Array": {
+  //         //   oneOf: [
+  //         //     {
+  //         //       type: "array",
+  //         //       items: {
+  //         //         type: "number"
+  //         //       }
+  //         //     },
+  //         //     {
+  //         //       type: "array",
+  //         //       items: {
+  //         //         type: "boolean"
+  //         //       }
+  //         //     }
+  //         //   ]
+  //         // },
+  //         // "Simple number array + boolean": {
+  //         //   oneOf: [
+  //         //     {
+  //         //       type: "array",
+  //         //       items: {
+  //         //         type: "number"
+  //         //       }
+  //         //     },
+  //         //     {
+  //         //       type: "boolean"
+  //         //     }
+  //         //   ]
+  //         // },
+  //         // "Simple boolean array + number": {
+  //         //   oneOf: [
+  //         //     {
+  //         //       type: "array",
+  //         //       items: {
+  //         //         type: "number"
+  //         //       }
+  //         //     },
+  //         //     {
+  //         //       type: "boolean"
+  //         //     }
+  //         //   ]
+  //         // },
+  //         // "Simple Object": {
+  //         //   oneOf: [
+  //         //     {
+  //         //       type: "object",
+  //         //       additionalProperties: {
+  //         //         type: "number"
+  //         //       }
+  //         //     },
+  //         //     {
+  //         //       type: "object",
+  //         //       additionalProperties: {
+  //         //         type: "boolean"
+  //         //       }
+  //         //     }
+  //         //   ]
+  //         // },
+  //         // "Simple Object + boolean": {
+  //         //   oneOf: [
+  //         //     {
+  //         //       type: "object",
+  //         //       additionalProperties: {
+  //         //         type: "number"
+  //         //       }
+  //         //     },
+  //         //     {
+  //         //       type: "boolean"
+  //         //     }
+  //         //   ]
+  //         // }
+  //       },
+  //       required: [
+  //         "isPrimitiveType",
+  //         "isAtEndpointLevel",
+  //         "hasDiscriminator",
+  //         "value"
+  //       ]
+  //     }
+  //   },
+  //   required: ["args"]
+  // },
+  formData: {
+    // "additionalQueryParams": null,
+    // "additionalFieldParams": null,
+    // "args": {
+    //   "isPrimitiveType": false,
+    //   "isAtEndpointLevel": false,
+    //   "hasDiscriminator": false,
+    //   "value": [
+    //     {
+    //       "$$__case": 0,
+    //       "value": 249.28
+    //     },
+    //     {
+    //       "$$__case": 0,
+    //       "value": 249.29
+    //     }
+    //   ]
     // }
   }
 };
