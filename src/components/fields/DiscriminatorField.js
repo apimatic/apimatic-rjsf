@@ -31,7 +31,7 @@ class DiscriminatorField extends React.Component {
     } = this.props;
     const _SchemaField = registry.fields.SchemaField;
 
-    return this.state ? (
+    return this.state && formData ? (
       <_SchemaField
         schema={this.state.selectedSchema.schema}
         uiSchema={uiSchema}
@@ -47,7 +47,7 @@ class DiscriminatorField extends React.Component {
         schemaIndex={this.state.selectedSchema.index}
       />
     ) : (
-      <p>schema not available</p>
+      <p>schema or formdata not available</p>
     );
   };
 
