@@ -6,7 +6,6 @@ class DiscriminatorField extends React.Component {
   state;
   constructor(props) {
     super(props);
-    console.log(props);
     const altSchema = props.schema.oneOf || props.schema.anyOf;
     this.state = {
       selectedSchema: {

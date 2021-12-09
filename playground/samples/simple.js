@@ -567,18 +567,14 @@ module.exports = {
             type: "boolean"
           },
           value: {
-            description: "",
-            type: "array",
-            items: {
-              oneOf: [
-                {
-                  type: "number"
-                },
-                {
-                  type: "boolean"
-                }
-              ]
-            }
+            oneOf: [
+              {
+                type: "number"
+              },
+              {
+                type: "boolean"
+              }
+            ]
           }
         },
         required: [
@@ -827,22 +823,21 @@ module.exports = {
   //   required: ["args"]
   // },
   formData: {
-    // "additionalQueryParams": null,
-    // "additionalFieldParams": null,
-    // "args": {
-    //   "isPrimitiveType": false,
-    //   "isAtEndpointLevel": false,
-    //   "hasDiscriminator": false,
-    //   "value": [
-    //     {
+    // "EndpointGroupName": "oneOfPrimitiveTypesInRequestBody",
+    // "EndpointName": "send_oneof_simple",
+    // "Index": 0,
+    // "CallModel": {
+    //   "additionalQueryParams": null,
+    //   "additionalFieldParams": null,
+    //   "args": {
+    //     "isPrimitiveType": false,
+    //     "isAtEndpointLevel": false,
+    //     "hasDiscriminator": false,
+    //     "value": {
     //       "$$__case": 0,
     //       "value": 249.28
-    //     },
-    //     {
-    //       "$$__case": 0,
-    //       "value": 249.29
     //     }
-    //   ]
+    //   }
     // }
   }
 };
