@@ -437,7 +437,7 @@ class ArrayField extends Component {
   };
 
   onChangeForIndex = index => {
-    return value => {
+    return (value, options, schemaIndex) => {
       const { formData, onChange, schema } = this.props;
       const newFormData = formData.map((item, i) => {
         // We need to treat undefined items as nulls to have validation.
@@ -448,12 +448,21 @@ class ArrayField extends Component {
           schema.items &&
           schema.items.hasOwnProperty("oneOf" || "anyOf")
         ) {
-          return index === i
-            ? {
-                ...item,
-                value: jsonValue
-              }
-            : item;
+          if (schemaIndex) {
+            return index === i
+              ? {
+                  $$__case: schemaIndex,
+                  value: jsonValue
+                }
+              : item;
+          } else {
+            return index === i
+              ? {
+                  ...item,
+                  value: jsonValue
+                }
+              : item;
+          }
         }
         return index === i ? jsonValue : item;
       });
@@ -498,6 +507,7 @@ class ArrayField extends Component {
       idSchema,
       registry = getDefaultRegistry()
     } = this.props;
+    console.log("ArrayField" + this.props.schemaIndex);
     const { definitions } = registry;
     if (!schema.hasOwnProperty("items")) {
       return (
@@ -543,8 +553,10 @@ class ArrayField extends Component {
       registry = getDefaultRegistry(),
       formContext,
       onBlur,
-      onFocus
+      onFocus,
+      schemaIndex
     } = this.props;
+    console.log("renderNormalArray" + schemaIndex);
     const { ArrayFieldTemplate, definitions, fields } = registry;
     const { TitleField, DescriptionField } = fields;
     const itemsSchema = retrieveSchema(schema.items, definitions);
@@ -583,7 +595,8 @@ class ArrayField extends Component {
           itemUiSchema: uiSchema.items,
           autofocus: autofocus && index === 0,
           onBlur,
-          onFocus
+          onFocus,
+          schemaIndex
         });
       }),
       className: `field field-array field-array-of-${itemsSchema.type} ${
@@ -805,7 +818,8 @@ class ArrayField extends Component {
       itemErrorSchema,
       autofocus,
       onBlur,
-      onFocus
+      onFocus,
+      schemaIndex
     } = props;
     const {
       disabled,
@@ -840,7 +854,7 @@ class ArrayField extends Component {
           errorSchema={itemErrorSchema}
           idSchema={itemIdSchema}
           required={this.isItemRequired(itemSchema)}
-          onChange={this.onChangeForIndex(index)}
+          onChange={this.onChangeForIndex(index, schemaIndex)}
           onBlur={onBlur}
           onFocus={onFocus}
           registry={this.props.registry}

@@ -51,7 +51,7 @@ class DiscriminatorField extends React.Component {
   };
 
   selectOnChange = e => {
-    const { onChange, options, definitions } = this.props;
+    const { onChange, options, definitions, formData } = this.props;
     console.log(options);
     this.setState({
       selectedSchema: e
@@ -82,12 +82,24 @@ class DiscriminatorField extends React.Component {
         e.index
       );
     } else {
-      defaultFormState = getDefaultFormState(
-        e.schema,
-        undefined,
-        definitions,
-        e.index
-      );
+      if (formData) {
+        defaultFormState = getDefaultFormState(
+          e.schema,
+          {
+            $$__case: e.index,
+            value: undefined
+          },
+          definitions,
+          e.index
+        );
+      } else {
+        defaultFormState = getDefaultFormState(
+          e.schema,
+          undefined,
+          definitions,
+          e.index
+        );
+      }
     }
 
     if (isObject(defaultFormState) && checkDiscriminator(defaultFormState)) {
