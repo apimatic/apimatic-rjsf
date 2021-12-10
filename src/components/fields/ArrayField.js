@@ -448,24 +448,19 @@ class ArrayField extends Component {
           schema.items &&
           schema.items.hasOwnProperty("oneOf" || "anyOf")
         ) {
-          if (schemaIndex) {
-            return index === i
-              ? {
-                  $$__case: schemaIndex,
-                  value: jsonValue
-                }
-              : item;
-          } else {
-            return index === i
-              ? {
-                  ...item,
-                  value: jsonValue
-                }
-              : item;
-          }
+          return index === i
+            ? {
+                ...item,
+                $$__case:
+                  schemaIndex !== undefined ? schemaIndex : item.$$__case,
+                value: jsonValue
+              }
+            : item;
+        } else {
+          return index === i ? jsonValue : item;
         }
-        return index === i ? jsonValue : item;
       });
+
       onChange(newFormData, { validate: false });
     };
   };
