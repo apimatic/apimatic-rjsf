@@ -2,6 +2,203 @@ import React from "react";
 import "setimmediate";
 import validateFormData, { isValid } from "./validate";
 
+// const dummyFormData = {
+//   "args": {
+//     "hasDiscriminator": true,
+//     "value": [{
+//         "$$__case": 0,
+//         "value": "z"
+//       },
+//       {
+//         "$$__case": 0
+//       }
+//     ],
+//     "send_oneof_inner_mapOfArray": {
+//       "$$__case": 0,
+//       "value": {
+//         "key0": [
+//           "z"
+//         ]
+//       }
+//     },
+//     "session": {
+//       "$$__case": 0,
+//       "value": {
+//         "startsAt": "zxcxzxz"
+//       }
+//     },
+//     "Simple oneOf Fields": {
+//       "$$__case": 0
+//     },
+//     "send_oneof_inner_arrayOfMap_flag": {
+//       "$$__case": 0,
+//       "value": [{}]
+//     },
+//     "Simple oneOf Array": {
+//       "$$__case": 0,
+//       "value": [
+//         "s"
+//       ]
+//     },
+//     "Simple number array + boolean": {
+//       "$$__case": 0
+//     },
+//     "Simple boolean array + number": {
+//       "$$__case": 0,
+//       "value": [
+//         null
+//       ]
+//     },
+//     "Simple Object": {
+//       "$$__case": 0,
+//       "value": {
+//         "key0": "ddddd"
+//       }
+//     },
+//     "Simple Object + boolean": {
+//       "$$__case": 0,
+//       "value": {
+//         "key0": "sds"
+//       }
+//     },
+//     "Outer array": [{
+//         "$$__case": 1,
+//         "value": null
+//       },
+//       {
+//         "$$__case": 0,
+//         "value": "sss"
+//       }
+//     ],
+//     "oneof_outer_map": {
+//       "key1": {
+//         "$$__case": 0,
+//         "value": "s"
+//       }
+//     }
+//   }
+// };
+
+export function flattenedFormData(formData) {
+  let newFormData = formData;
+
+  if (isObject(newFormData)) {
+    for (const key in newFormData) {
+      // if (checkDiscriminator(formData[key])) {
+      //   newFormData = {
+      //     ...newFormData,
+      //     [key]: flattenedFormData(newFormData[key].value)
+      //   };
+      // } else {
+      //   newFormData = {
+      //     ...newFormData,
+      //     [key]: flattenedFormData(newFormData[key])
+      //   };
+      // }
+
+      newFormData = {
+        ...newFormData,
+        [key]: flattenedFormData(
+          checkDiscriminator(formData[key])
+            ? newFormData[key].value
+            : newFormData[key]
+        )
+      };
+    }
+  }
+
+  if (Array.isArray(newFormData)) {
+    newFormData = newFormData.map(item => {
+      if (item && isObject(item)) {
+        if (checkDiscriminator(item)) {
+          return item.value;
+        } else {
+          return flattenedFormData(item);
+        }
+      } else {
+        return item;
+      }
+    });
+  }
+
+  return newFormData;
+}
+
+console.log(
+  flattenedFormData({
+    args: {
+      hasDiscriminator: true,
+      value: [
+        {
+          $$__case: 0,
+          value: "z"
+        },
+        {
+          $$__case: 0
+        }
+      ],
+      send_oneof_inner_mapOfArray: {
+        $$__case: 0,
+        value: {
+          key0: ["z"]
+        }
+      },
+      session: {
+        $$__case: 0,
+        value: {
+          startsAt: "zxcxzxz"
+        }
+      },
+      "Simple oneOf Fields": {
+        $$__case: 0
+      },
+      send_oneof_inner_arrayOfMap_flag: {
+        $$__case: 0,
+        value: [{}]
+      },
+      "Simple oneOf Array": {
+        $$__case: 0,
+        value: ["s"]
+      },
+      "Simple number array + boolean": {
+        $$__case: 0
+      },
+      "Simple boolean array + number": {
+        $$__case: 0,
+        value: [null]
+      },
+      "Simple Object": {
+        $$__case: 0,
+        value: {
+          key0: "ddddd"
+        }
+      },
+      "Simple Object + boolean": {
+        $$__case: 0,
+        value: {
+          key0: "sds"
+        }
+      },
+      "Outer array": [
+        {
+          $$__case: 1,
+          value: null
+        },
+        {
+          $$__case: 0,
+          value: "sss"
+        }
+      ],
+      oneof_outer_map: {
+        key1: {
+          $$__case: 0,
+          value: "s"
+        }
+      }
+    }
+  })
+);
+
 const widgetMap = {
   boolean: {
     checkbox: "CheckboxWidget",
@@ -920,7 +1117,7 @@ export function getMatchingOption(formData, options, rootSchema) {
 }
 
 export function checkDiscriminator(data) {
-  if (isObject(data) && data.hasOwnProperty("$$__case")) {
+  if (data && isObject(data) && data.hasOwnProperty("$$__case")) {
     return true;
   }
   return false;

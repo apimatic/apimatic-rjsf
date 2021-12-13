@@ -8,6 +8,7 @@ import {
   toIdSchema,
   setState,
   getDefaultRegistry,
+  flattenedFormData,
   prefixClass as pfx
 } from "../utils";
 import validateFormData from "../validate";
@@ -47,8 +48,9 @@ export default class Form extends Component {
     const formData = props.dontAssignDefaults
       ? props.formData
       : getDefaultFormState(schema, props.formData, definitions);
+    const newFormData = flattenedFormData(formData);
     const { errors, errorSchema } = mustValidate
-      ? this.validate(formData, schema)
+      ? this.validate(newFormData, schema)
       : {
           errors: state.errors || [],
           errorSchema: state.errorSchema || {}
@@ -106,8 +108,9 @@ export default class Form extends Component {
     const mustValidate =
       !this.props.noValidate && (this.props.liveValidate || options.validate);
     let state = { formData };
+    let newFormData = flattenedFormData(formData);
     if (mustValidate) {
-      const { errors, errorSchema } = this.validate(formData);
+      const { errors, errorSchema } = this.validate(newFormData);
       state = { ...state, errors, errorSchema };
     }
     setState(this, state, () => {
@@ -133,7 +136,8 @@ export default class Form extends Component {
     event.preventDefault();
 
     if (!this.props.noValidate) {
-      const { errors, errorSchema } = this.validate(this.state.formData);
+      const newFormData = flattenedFormData(this.state.formData);
+      const { errors, errorSchema } = this.validate(newFormData);
       if (Object.keys(errors).length > 0) {
         setState(this, { errors, errorSchema }, () => {
           if (this.props.onError) {
@@ -202,9 +206,7 @@ export default class Form extends Component {
     } = this.state;
     const registry = this.getRegistry();
     const _SchemaField = registry.fields.SchemaField;
-    console.log(registry);
-    console.log(schema);
-    console.log(formData);
+
     return (
       <ContextProvider value={markdownRenderer}>
         <form
