@@ -44,6 +44,7 @@ class DiscriminatorField extends React.Component {
         registry={registry}
         disabled={disabled}
         schemaIndex={this.state.selectedSchema.index}
+        depth={this.props.depth + 1}
       />
     ) : (
       <p>schema or formdata not available</p>
@@ -127,7 +128,11 @@ class DiscriminatorField extends React.Component {
     }, []);
 
     return (
-      <div>
+      <div
+        className={`rjsf-${this.props.isEven ? "even" : "odd"} rjsf-depth_${
+          this.props.depth
+        }`}
+      >
         <_SelectWidget
           schema={schema}
           id={altSchema[0].title}
