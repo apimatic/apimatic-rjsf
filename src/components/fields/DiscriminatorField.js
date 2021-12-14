@@ -128,7 +128,7 @@ class DiscriminatorField extends React.Component {
     }, []);
 
     return (
-      <div
+      <fieldset
         className={`rjsf-${this.props.isEven ? "even" : "odd"} rjsf-depth_${
           this.props.depth
         }`}
@@ -146,7 +146,7 @@ class DiscriminatorField extends React.Component {
           placeholder={altSchema[0].title}
         />
         {this.renderSchema()}
-      </div>
+      </fieldset>
     );
   }
 }
