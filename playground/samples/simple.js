@@ -596,15 +596,15 @@ module.exports = {
         title: "endpoint_7C26ABBCDB1F9",
         type: "object",
         properties: {
-          // isPrimitiveType: {
-          //   type: "boolean"
-          // },
-          // isAtEndpointLevel: {
-          //   type: "boolean"
-          // },
-          // hasDiscriminator: {
-          //   type: "boolean"
-          // },
+          isPrimitiveType: {
+            type: "boolean"
+          },
+          isAtEndpointLevel: {
+            type: "boolean"
+          },
+          hasDiscriminator: {
+            type: "boolean"
+          },
           // "value": {
           //   "description": "",
           //   "type": "array",
@@ -625,20 +625,35 @@ module.exports = {
           //     type: "number"
           //   }
           // },
-          // "value": {
-          //   "description": "",
-          //   "type": "array",
-          //   "items": {
-          //     "oneOf": [
-          //       {
-          //         "type": "number"
-          //       },
-          //       {
-          //         "type": "boolean"
-          //       }
-          //     ]
-          //   }
-          // },
+          multiLevelOneOf: {
+            id: "MultiLevelOneOf",
+            title: "MultiLevelOneOf",
+            description: "This class contains multi level oneOf case.",
+            type: "object",
+            properties: {
+              scalarValue: {
+                oneOf: [
+                  {
+                    oneOf: [
+                      {
+                        type: "array",
+                        items: {
+                          type: "boolean"
+                        }
+                      },
+                      {
+                        type: "boolean"
+                      }
+                    ]
+                  },
+                  {
+                    type: "number"
+                  }
+                ]
+              }
+            },
+            required: ["scalarValue"]
+          },
           // send_oneof_inner_mapOfArray: {
           //   oneOf: [
           //     {
@@ -739,7 +754,7 @@ module.exports = {
                 }
               }
             ]
-          },
+          }
           // "Simple oneOf Array": {
           //   oneOf: [
           //     {
@@ -811,33 +826,33 @@ module.exports = {
           //     }
           //   ]
           // },
-          "Outer array": {
-            description: "",
-            type: "array",
-            items: {
-              oneOf: [
-                {
-                  type: "number"
-                },
-                {
-                  type: "boolean"
-                }
-              ]
-            }
-          },
-          oneof_outer_map: {
-            type: "object",
-            additionalProperties: {
-              oneOf: [
-                {
-                  type: "number"
-                },
-                {
-                  type: "boolean"
-                }
-              ]
-            }
-          }
+          // "Outer array": {
+          //   description: "",
+          //   type: "array",
+          //   items: {
+          //     oneOf: [
+          //       {
+          //         type: "number"
+          //       },
+          //       {
+          //         type: "boolean"
+          //       }
+          //     ]
+          //   }
+          // },
+          // oneof_outer_map: {
+          //   type: "object",
+          //   additionalProperties: {
+          //     oneOf: [
+          //       {
+          //         type: "number"
+          //       },
+          //       {
+          //         type: "boolean"
+          //       }
+          //     ]
+          //   }
+          // }
         },
         required: [
           "isPrimitiveType",
