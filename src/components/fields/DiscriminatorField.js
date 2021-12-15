@@ -6,6 +6,7 @@ import {
   checkDiscriminator,
   prefixClass
 } from "../../utils";
+import TagSelector from "../widgets/TagSelector";
 
 class DiscriminatorField extends React.Component {
   state;
@@ -116,8 +117,7 @@ class DiscriminatorField extends React.Component {
   };
 
   render() {
-    const { disabled, required, registry, schema } = this.props;
-    const _SelectWidget = registry.widgets.SelectWidget;
+    const { schema } = this.props;
     const altSchema = schema.oneOf || schema.anyOf;
 
     const selectOptions = altSchema.reduce((optionList, schema, index) => {
@@ -140,17 +140,10 @@ class DiscriminatorField extends React.Component {
           } discriminator-field`
         )}
       >
-        <_SelectWidget
-          schema={schema}
-          id={altSchema[0].title}
-          options={{ enumOptions: selectOptions }}
-          value={selectOptions[0]}
-          required={required}
-          disabled={disabled}
-          readonly={false}
-          multiple={false}
+        <TagSelector
+          title="anyof"
+          options={selectOptions}
           onChange={this.selectOnChange}
-          placeholder={altSchema[0].title}
         />
         {this.renderSchema()}
       </fieldset>

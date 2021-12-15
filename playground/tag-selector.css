@@ -1,0 +1,37 @@
+.tag-selector {
+  display: flex;
+}
+
+.tag-selector .__title {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.tag-selector .__title.--tag {
+  border: none;
+  align-items: start;
+  cursor: default;
+}
+
+.tag-selector .__tags-wrapper {
+  display: inline-flex;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.tag-selector .__tags-wrapper .--tag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 5px;
+  margin-top: 5px;
+  padding: 4px 8px;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.tag-selector .__tags-wrapper .--tag.--active {
+  background: black;
+  color: white;
+}
