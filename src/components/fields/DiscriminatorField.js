@@ -1,6 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { getDefaultFormState, isObject, checkDiscriminator } from "../../utils";
+import {
+  getDefaultFormState,
+  isObject,
+  checkDiscriminator,
+  prefixClass
+} from "../../utils";
 
 class DiscriminatorField extends React.Component {
   state;
@@ -129,9 +134,11 @@ class DiscriminatorField extends React.Component {
 
     return (
       <fieldset
-        className={`rjsf-${this.props.isEven ? "even" : "odd"} rjsf-depth_${
-          this.props.depth
-        }`}
+        className={prefixClass(
+          `${this.props.isEven ? "even" : "odd"} depth_${
+            this.props.depth
+          } discriminator-field`
+        )}
       >
         <_SelectWidget
           schema={schema}
