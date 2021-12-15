@@ -1,6 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { getDefaultFormState, isObject, checkDiscriminator } from "../../utils";
+import {
+  getDefaultFormState,
+  isObject,
+  checkDiscriminator,
+  prefixClass
+} from "../../utils";
 
 class DiscriminatorField extends React.Component {
   state;
@@ -77,6 +82,7 @@ class DiscriminatorField extends React.Component {
         registry={registry}
         disabled={disabled}
         schemaIndex={this.state.selectedSchema.index}
+        depth={this.props.depth + 1}
       />
     ) : (
       <p>schema or formdata not available</p>
@@ -173,7 +179,13 @@ class DiscriminatorField extends React.Component {
     }, []);
 
     return (
-      <div>
+      <fieldset
+        className={prefixClass(
+          `${this.props.isEven ? "even" : "odd"} depth_${
+            this.props.depth
+          } discriminator-field`
+        )}
+      >
         <_SelectWidget
           schema={schema}
           id={altSchema[0].title}
@@ -187,7 +199,7 @@ class DiscriminatorField extends React.Component {
           placeholder={altSchema[0].title}
         />
         {this.renderSchema()}
-      </div>
+      </fieldset>
     );
   }
 }
