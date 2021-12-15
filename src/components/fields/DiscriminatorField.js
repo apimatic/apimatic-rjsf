@@ -15,6 +15,40 @@ class DiscriminatorField extends React.Component {
     };
   }
 
+  onDiscriminatorChange = value => {
+    const { onChange, formData } = this.props;
+
+    let onInnerChange = (value, options, schemaIndex) => {
+      let newFormData;
+      if (
+        this.state.selectedSchema.schema &&
+        this.state.selectedSchema.schema.hasOwnProperty("oneOf" || "anyOf")
+      ) {
+        if (schemaIndex) {
+          newFormData = {
+            ...formData,
+            $$__case: schemaIndex,
+            value: value
+          };
+        } else {
+          newFormData = {
+            ...formData,
+            value: value
+          };
+        }
+      } else {
+        newFormData = value;
+      }
+      onChange(
+        newFormData,
+        { validate: false },
+        this.state.selectedSchema.index
+      );
+    };
+
+    return onInnerChange;
+  };
+
   renderSchema = () => {
     const {
       disabled,
@@ -23,7 +57,6 @@ class DiscriminatorField extends React.Component {
       idPrefix,
       idSchema,
       onBlur,
-      onChange,
       onFocus,
       registry,
       uiSchema
@@ -38,7 +71,7 @@ class DiscriminatorField extends React.Component {
         idSchema={idSchema}
         idPrefix={idPrefix}
         formData={formData.value}
-        onChange={onChange}
+        onChange={this.onDiscriminatorChange()}
         onBlur={onBlur}
         onFocus={onFocus}
         registry={registry}
@@ -78,6 +111,19 @@ class DiscriminatorField extends React.Component {
       defaultFormState = getDefaultFormState(
         e.schema,
         [],
+        definitions,
+        e.index
+      );
+    } else if (e.schema && e.schema.hasOwnProperty("oneOf" || "anyOf")) {
+      defaultFormState = getDefaultFormState(
+        e.schema,
+        {
+          ...formData,
+          value: {
+            $$__case: 0,
+            value: undefined
+          }
+        },
         definitions,
         e.index
       );

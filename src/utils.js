@@ -329,14 +329,39 @@ function computeDefaults(
       computeDefaults(itemSchema, undefined, definitions)
     );
   } else if ("oneOf" in schema) {
-    schema = schema.oneOf[0];
+    if (schema.oneOf[schemaIndex].hasOwnProperty("oneOf" || "anyOf")) {
+      defaults = {
+        $$__case: schemaIndex,
+        value: computeDefaults(
+          schema.oneOf[schemaIndex],
+          undefined,
+          definitions,
+          schemaIndex
+        )
+      };
+    } else {
+      schema = schema.oneOf[schemaIndex];
+    }
+
+    // schema = schema.oneOf[schemaIndex];
   } else if ("anyOf" in schema) {
-    schema = schema.anyOf[0];
+    schema = schema.anyOf[schemaIndex];
   }
   // Not defaults defined for this node, fallback to generic typed ones.
   if (typeof defaults === "undefined") {
     defaults = schema.default;
   }
+
+  // if (isObject(schema) && schema.hasOwnProperty("oneOf" || "anyOf")) {
+  //   defaults = {
+  //     $$__case: 0,
+  //     value:  computeDefaults(
+  //       schema,
+  //      undefined,
+  //       definitions,
+  //     )
+  //   };
+  // }
 
   switch (schema.type) {
     // We need to recur for object schema inner default values.
@@ -433,7 +458,8 @@ export function getDefaultFormState(
   }
   if (isObject(formData)) {
     // Override schema defaults with form data.
-    return mergeDefaultsWithFormData(defaults, formData);
+    let a = mergeDefaultsWithFormData(defaults, formData);
+    return a;
   }
   return formData || defaults;
 }
