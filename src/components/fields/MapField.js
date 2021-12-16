@@ -81,7 +81,7 @@ function DefaultMapItem(props) {
         <IconBtn
           tabIndex="-1"
           onClick={() => props.toggleCollapse(props.key)}
-          className={pfx("btn toggle-button")}
+          className={pfx(`btn toggle-button ${props.header ? "anyof" : ""}`)}
         >
           {props.collapse ? (
             <ChevronIcon width={14} rotate={-90} />
@@ -157,7 +157,7 @@ function DefaultNormalMapFieldTemplate(props) {
         <IconBtn
           tabIndex="-1"
           onClick={props.toggleGroupCollapse}
-          className={pfx("btn toggle-button")}
+          className={pfx(`btn toggle-button ${props.header ? "anyof" : ""}`)}
         >
           {props.collapse ? (
             <ChevronIcon width={14} rotate={-90} />

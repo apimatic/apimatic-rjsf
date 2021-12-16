@@ -268,6 +268,7 @@ function SchemaFieldRender(props) {
     "field",
     `field-${type}`,
     errors && errors.length > 0 ? "field-error has-error has-danger" : "",
+    schema.oneOf || schema.anyOf ? "discriminator-container" : "",
     uiSchema.classNames
   ]
     .join(" ")
