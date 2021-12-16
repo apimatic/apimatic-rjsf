@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 const areEqualObjs = (obj1, obj2) => {
   if (obj1 && obj2) {
@@ -8,34 +8,34 @@ const areEqualObjs = (obj1, obj2) => {
   return false;
 };
 
-const TagSelector = props => {
-  const { title, options, onChange } = props;
-  const [selectedItem, setSelectedItem] = useState(options[0]);
+class TagSelector extends React.Component {
+  render() {
+    const { title, options, onChange, value = options[0] } = this.props;
 
-  const onClick = option => {
-    return () => {
-      setSelectedItem(option);
-      onChange && onChange(option.value);
+    const onClick = option => {
+      return () => {
+        onChange && onChange(option.value);
+      };
     };
-  };
 
-  return (
-    <div className="tag-selector">
-      <span className="__title --tag">{title}</span>
-      <div className="__tags-wrapper">
-        {options.map(option => (
-          <span
-            className={`--tag ${
-              areEqualObjs(option, selectedItem) ? "--active" : ""
-            }`}
-            onClick={onClick(option)}
-          >
-            {option.label}
-          </span>
-        ))}
+    return (
+      <div className="tag-selector">
+        <span className="__title --tag">{title}</span>
+        <div className="__tags-wrapper">
+          {options.map(option => (
+            <span
+              className={`--tag ${
+                areEqualObjs(option.value, value) ? "--active" : ""
+              }`}
+              onClick={onClick(option)}
+            >
+              {option.label}
+            </span>
+          ))}
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default TagSelector;

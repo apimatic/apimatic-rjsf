@@ -21,7 +21,7 @@ class DiscriminatorField extends React.Component {
     };
   }
 
-  renderSchema = () => {
+  renderSchema = header => {
     const {
       disabled,
       errorSchema,
@@ -51,6 +51,7 @@ class DiscriminatorField extends React.Component {
         disabled={disabled}
         schemaIndex={this.state.selectedSchema.index}
         depth={this.props.depth + 1}
+        header={header}
       />
     ) : (
       <p>schema or formdata not available</p>
@@ -118,6 +119,7 @@ class DiscriminatorField extends React.Component {
 
   render() {
     const { schema } = this.props;
+    const { selectedSchema } = this.state;
     const altSchema = schema.oneOf || schema.anyOf;
 
     const selectOptions = altSchema.reduce((optionList, schema, index) => {
@@ -132,6 +134,15 @@ class DiscriminatorField extends React.Component {
       return optionList;
     }, []);
 
+    const header = (
+      <TagSelector
+        value={selectedSchema}
+        title="anyof"
+        options={selectOptions}
+        onChange={this.selectOnChange}
+      />
+    );
+
     return (
       <fieldset
         className={prefixClass(
@@ -140,12 +151,10 @@ class DiscriminatorField extends React.Component {
           } discriminator-field`
         )}
       >
-        <TagSelector
-          title="anyof"
-          options={selectOptions}
-          onChange={this.selectOnChange}
-        />
-        {this.renderSchema()}
+        {selectedSchema.schema.type !== "array" &&
+          selectedSchema.schema.type !== "object" &&
+          header}
+        {this.renderSchema(header)}
       </fieldset>
     );
   }

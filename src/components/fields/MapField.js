@@ -140,16 +140,18 @@ function DefaultNormalMapFieldTemplate(props) {
           className={pfx("header-left hand")}
           onClick={props.toggleGroupCollapse}
         >
-          <MapFieldTitle
-            key={`map-field-title-${props.idSchema.$id}`}
-            TitleField={props.TitleField}
-            idSchema={props.idSchema}
-            title={props.title}
-            required={props.required}
-            nullify={props.nullify}
-            onNullifyChange={props.onNullifyChange}
-            disabled={props.disabled}
-          />
+          {props.header || (
+            <MapFieldTitle
+              key={`map-field-title-${props.idSchema.$id}`}
+              TitleField={props.TitleField}
+              idSchema={props.idSchema}
+              title={props.title}
+              required={props.required}
+              nullify={props.nullify}
+              onNullifyChange={props.onNullifyChange}
+              disabled={props.disabled}
+            />
+          )}
         </div>
 
         <IconBtn
@@ -559,7 +561,8 @@ class MapField extends Component {
       depth: depth,
       isEven: isEven,
       toggleGroupCollapse: this.toggleGroupCollapse,
-      collapse: this.state.collapse
+      collapse: this.state.collapse,
+      header: this.props.header
     };
 
     return <DefaultNormalMapFieldTemplate {...mapProps} />;
