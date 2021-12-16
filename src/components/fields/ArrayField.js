@@ -161,16 +161,18 @@ function DefaultArrayItem(props) {
 function DefaultFixedArrayFieldTemplate(props) {
   return (
     <fieldset className={pfx(props.className)}>
-      <ArrayFieldTitle
-        key={`array-field-title-${props.idSchema.$id}`}
-        TitleField={props.TitleField}
-        idSchema={props.idSchema}
-        title={props.uiSchema["ui:title"] || props.title}
-        required={props.required}
-        nullify={props.nullify}
-        onNullifyChange={props.onNullifyChange}
-        disabled={props.disabled}
-      />
+      {props.header || (
+        <ArrayFieldTitle
+          key={`array-field-title-${props.idSchema.$id}`}
+          TitleField={props.TitleField}
+          idSchema={props.idSchema}
+          title={props.uiSchema["ui:title"] || props.title}
+          required={props.required}
+          nullify={props.nullify}
+          onNullifyChange={props.onNullifyChange}
+          disabled={props.disabled}
+        />
+      )}
 
       {(props.uiSchema["ui:description"] || props.schema.description) && (
         <div
@@ -211,18 +213,23 @@ function DefaultNormalArrayFieldTemplate(props) {
   return (
     <fieldset className={pfx(props.className)}>
       <div className={pfx("object-header")}>
-        <div className={pfx("header-left hand")} onClick={props.toggleCollapse}>
-          <ArrayFieldTitle
-            key={`array-field-title-${props.idSchema.$id}`}
-            TitleField={props.TitleField}
-            idSchema={props.idSchema}
-            title={title}
-            required={props.required}
-            nullify={props.nullify}
-            onNullifyChange={props.onNullifyChange}
-            disabled={props.disabled}
-            // onClick={props.toggleCollapse}
-          />
+        <div
+          className={pfx("header-left hand")}
+          onClick={props.header ? undefined : props.toggleCollapse}
+        >
+          {props.header || (
+            <ArrayFieldTitle
+              key={`array-field-title-${props.idSchema.$id}`}
+              TitleField={props.TitleField}
+              idSchema={props.idSchema}
+              title={title}
+              required={props.required}
+              nullify={props.nullify}
+              onNullifyChange={props.onNullifyChange}
+              disabled={props.disabled}
+              // onClick={props.toggleCollapse}
+            />
+          )}
           {title && props.itemsSchema && props.itemsSchema.required && (
             <div className={pfx("element-required")}>
               <span>Required</span>
@@ -533,6 +540,7 @@ class ArrayField extends Component {
       };
     });
   }
+
   renderNormalArray() {
     const {
       schema,
@@ -551,7 +559,6 @@ class ArrayField extends Component {
       onFocus,
       schemaIndex
     } = this.props;
-    console.log("renderNormalArray" + schemaIndex);
     const { ArrayFieldTemplate, definitions, fields } = registry;
     const { TitleField, DescriptionField } = fields;
     const itemsSchema = retrieveSchema(schema.items, definitions);
@@ -613,7 +620,8 @@ class ArrayField extends Component {
       formContext,
       formData,
       onNullifyChange: this.onNullifyChange,
-      nullify: formData && formData.length > 0
+      nullify: formData && formData.length > 0,
+      header: this.props.header
     };
 
     // Check if a custom render function was passed in
@@ -791,7 +799,8 @@ class ArrayField extends Component {
       title,
       TitleField,
       onNullifyChange: this.onNullifyChange,
-      nullify: formData && formData.length > 0
+      nullify: formData && formData.length > 0,
+      header: this.props.header
     };
 
     // Check if a custom template template was passed in

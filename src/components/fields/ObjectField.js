@@ -315,7 +315,7 @@ class ObjectField extends Component {
       if (schemaIndex !== undefined) {
         newFormData = {
           ...this.props.formData,
-          [name]:  {
+          [name]: {
             ...this.props.formData[name],
             $$__case: schemaIndex,
             value
@@ -336,7 +336,6 @@ class ObjectField extends Component {
             [name]: value
           };
         }
-        
       }
 
       this.props.onChange(newFormData, options);
@@ -438,7 +437,8 @@ class ObjectField extends Component {
       depth,
       isEven,
       expandAllLevel,
-      expandAll
+      expandAll,
+      header: this.props.header
     };
 
     if (schema.properties && Object.keys(schema.properties).length > 0) {
