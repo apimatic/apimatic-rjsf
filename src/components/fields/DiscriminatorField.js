@@ -23,7 +23,7 @@ class DiscriminatorField extends React.Component {
   onDiscriminatorChange = value => {
     const { onChange, formData } = this.props;
 
-    let onInnerChange = (value, options, schemaIndex) => {
+    return (value, options, schemaIndex) => {
       let newFormData;
       if (
         this.state.selectedSchema.schema &&
@@ -42,16 +42,22 @@ class DiscriminatorField extends React.Component {
           };
         }
       } else {
-        newFormData = value;
+        if (checkDiscriminator(value)) {
+          newFormData = {
+            ...formData,
+            value
+          };
+        } else {
+          newFormData = value;
+        }
       }
+
       onChange(
         newFormData,
         { validate: false },
         this.state.selectedSchema.index
       );
     };
-
-    return onInnerChange;
   };
 
   renderSchema = () => {
