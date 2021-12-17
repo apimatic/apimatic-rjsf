@@ -445,27 +445,28 @@ class ArrayField extends Component {
 
   onChangeForIndex = index => {
     return (value, options, schemaIndex) => {
-      const { formData, onChange, schema } = this.props;
+      const { formData, onChange } = this.props;
       const newFormData = formData.map((item, i) => {
         // We need to treat undefined items as nulls to have validation.
         // See https://github.com/tdegrunt/jsonschema/issues/206
         const jsonValue = typeof value === "undefined" ? null : value;
-        if (
-          schema &&
-          schema.items &&
-          schema.items.hasOwnProperty("oneOf" || "anyOf")
-        ) {
-          return index === i
-            ? {
-                ...item,
-                $$__case:
-                  schemaIndex !== undefined ? schemaIndex : item.$$__case,
-                value: jsonValue
-              }
-            : item;
-        } else {
-          return index === i ? jsonValue : item;
-        }
+        // if (
+        //   schema &&
+        //   schema.items &&
+        //   schema.items.hasOwnProperty("oneOf" || "anyOf")
+        // ) {
+        //   return index === i
+        //     ? {
+        //         ...item,
+        //         $$__case:
+        //           schemaIndex !== undefined ? schemaIndex : item.$$__case,
+        //         value: jsonValue
+        //       }
+        //     : item;
+        // } else {
+        //   return index === i ? jsonValue : item;
+        // }
+        return index === i ? jsonValue : item;
       });
 
       onChange(newFormData, { validate: false });

@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import {
   getDefaultFormState,
-  isObject,
   checkDiscriminator,
   prefixClass
 } from "../../utils";
@@ -21,41 +20,53 @@ class DiscriminatorField extends React.Component {
     };
   }
 
-  onDiscriminatorChange = value => {
+  onDiscriminatorChange = () => {
     const { onChange, formData } = this.props;
 
     return (value, options, schemaIndex) => {
       let newFormData;
-      if (
-        this.state.selectedSchema.schema &&
-        this.state.selectedSchema.schema.hasOwnProperty("oneOf" || "anyOf")
-      ) {
-        if (schemaIndex) {
-          newFormData = {
-            ...formData,
-            $$__case: schemaIndex,
-            value: value
-          };
-        } else {
-          newFormData = {
-            ...formData,
-            value: value
-          };
-        }
+      // if (
+      //   this.state.selectedSchema.schema &&
+      //   this.state.selectedSchema.schema.hasOwnProperty("oneOf" || "anyOf")
+      // ) {
+      //   if (schemaIndex) {
+      //     newFormData = {
+      //       ...formData,
+      //       $$__case: schemaIndex,
+      //       value: value
+      //     };
+      //   } else {
+      //     newFormData = {
+      //       ...formData,
+      //       value: value
+      //     };
+      //   }
+      // } else {
+      //   if (checkDiscriminator(value)) {
+      //     newFormData = {
+      //       ...formData,
+      //       value
+      //     };
+      //   } else {
+      //     newFormData = value;
+      //   }
+      // }
+
+      if (checkDiscriminator(formData)) {
+        newFormData = {
+          ...formData,
+          $$__case: this.state.selectedSchema.index,
+          value
+        };
       } else {
-        if (checkDiscriminator(value)) {
-          newFormData = {
-            ...formData,
-            value
-          };
-        } else {
-          newFormData = value;
-        }
+        newFormData = value;
       }
 
       onChange(
         newFormData,
-        { validate: false },
+        {
+          validate: false
+        },
         this.state.selectedSchema.index
       );
     };
@@ -93,7 +104,7 @@ class DiscriminatorField extends React.Component {
         header={header}
       />
     ) : (
-      <p>schema or formdata not available</p>
+      <p> schema or formdata not available </p>
     );
   };
 
@@ -162,11 +173,13 @@ class DiscriminatorField extends React.Component {
       }
     }
 
-    if (isObject(defaultFormState) && checkDiscriminator(defaultFormState)) {
-      onChange(defaultFormState.value, { validate: true }, e.index);
-    } else {
-      onChange(defaultFormState, { validate: true }, e.index);
-    }
+    onChange(
+      defaultFormState,
+      {
+        validate: true
+      },
+      e.index
+    );
   };
 
   render() {
@@ -203,10 +216,7 @@ class DiscriminatorField extends React.Component {
           } discriminator-field`
         )}
       >
-        {selectedSchema.schema.type !== "array" &&
-          selectedSchema.schema.type !== "object" &&
-          header}
-        {this.renderSchema(header)}
+        {header} {this.renderSchema(header)}{" "}
       </fieldset>
     );
   }

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import MapField from "./MapField";
-import { prefixClass as pfx, checkDiscriminator } from "../../utils";
+import { prefixClass as pfx } from "../../utils";
 import { toErrorList } from "../../validate";
 import CodeMirror from "react-codemirror2";
 import DataType from "../fields/DataType";
@@ -312,33 +312,37 @@ class ObjectField extends Component {
   onPropertyChange = name => {
     return (value, options, schemaIndex) => {
       let newFormData = {};
-      if (schemaIndex !== undefined) {
-        newFormData = {
-          ...this.props.formData,
-          [name]: {
-            ...this.props.formData[name],
-            $$__case: schemaIndex,
-            value
-          }
-        };
-      } else {
-        if (checkDiscriminator(this.props.formData[name])) {
-          newFormData = {
-            ...this.props.formData,
-            [name]: {
-              ...this.props.formData[name],
-              value
-            }
-          };
-        } else {
-          newFormData = {
-            ...this.props.formData,
-            [name]: value
-          };
-        }
-      }
+      // if (schemaIndex !== undefined) {
+      //   newFormData = {
+      //     ...this.props.formData,
+      //     [name]:  {
+      //       ...this.props.formData[name],
+      //       $$__case: schemaIndex,
+      //       value
+      //     }
+      //   };
+      // } else {
+      //   if (checkDiscriminator(this.props.formData[name])) {
+      //     newFormData = {
+      //       ...this.props.formData,
+      //       [name]: {
+      //         ...this.props.formData[name],
+      //         value
+      //       }
+      //     };
+      //   } else {
+      //     newFormData = {
+      //       ...this.props.formData,
+      //       [name]: value
+      //     };
+      //   }
 
-      this.props.onChange(newFormData, options);
+      // }
+      newFormData = {
+        ...this.props.formData,
+        [name]: value
+      };
+      this.props.onChange(newFormData, options, schemaIndex);
     };
   };
 

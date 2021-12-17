@@ -306,31 +306,33 @@ class MapField extends Component {
 
   onValueChange(i) {
     return (value, options, schemaIndex) => {
-      const { schema } = this.props;
-      let itemSchema = schema.additionalProperties;
+      // const { schema } = this.props;
+      // let itemSchema = schema.additionalProperties;
       let newHash = this.state.hash.slice();
 
-      if (itemSchema && itemSchema.hasOwnProperty("oneOf" || "anyOf")) {
-        if (schemaIndex !== undefined) {
-          newHash[i] = {
-            k: this.state.hash[i].k,
-            v: {
-              $$__case: schemaIndex,
-              value
-            }
-          };
-        } else {
-          newHash[i] = {
-            k: this.state.hash[i].k,
-            v: {
-              ...this.state.hash[i].v,
-              value
-            }
-          };
-        }
-      } else {
-        newHash[i] = { k: this.state.hash[i].k, v: value };
-      }
+      // if (itemSchema && itemSchema.hasOwnProperty("oneOf" || "anyOf")) {
+      //   if (schemaIndex !== undefined) {
+      //     newHash[i] = {
+      //       k: this.state.hash[i].k,
+      //       v: {
+      //         $$__case: schemaIndex,
+      //         value
+      //       }
+      //     };
+      //   } else {
+      //     newHash[i] = {
+      //       k: this.state.hash[i].k,
+      //       v: {
+      //         ...this.state.hash[i].v,
+      //         value
+      //       }
+      //     };
+      //   }
+      // } else {
+      //   newHash[i] = { k: this.state.hash[i].k, v: value };
+      // }
+      newHash[i] = { k: this.state.hash[i].k, v: value };
+
       this.setState(
         {
           hash: newHash
@@ -425,25 +427,28 @@ class MapField extends Component {
     let itemSchema = schema.additionalProperties;
 
     let newHash = this.state.hash.slice();
-    if (itemSchema && itemSchema.hasOwnProperty("oneOf" || "anyOf")) {
-      newHash.push({
-        k: "key" + index,
-        v: getDefaultFormState(
-          itemSchema,
-          {
-            $$__case: 0,
-            value: undefined
-          },
-          definitions
-        )
-      });
-    } else {
-      newHash.push({
-        k: "key" + index,
-        v: getDefaultFormState(itemSchema, undefined, definitions)
-      });
-    }
-
+    // if (itemSchema && itemSchema.hasOwnProperty("oneOf" || "anyOf")) {
+    //   newHash.push({
+    //     k: "key" + index,
+    //     v: getDefaultFormState(
+    //       itemSchema,
+    //       {
+    //         $$__case: 0,
+    //         value: undefined
+    //       },
+    //       definitions
+    //     )
+    //   });
+    // } else {
+    //   newHash.push({
+    //     k: "key" + index,
+    //     v: getDefaultFormState(itemSchema, undefined, definitions)
+    //   });
+    // }
+    newHash.push({
+      k: "key" + index,
+      v: getDefaultFormState(itemSchema, undefined, definitions)
+    });
     this.setState(
       {
         hash: newHash
