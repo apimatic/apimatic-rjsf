@@ -16,7 +16,8 @@ class DiscriminatorField extends React.Component {
       selectedSchema: {
         index: 0,
         schema: altSchema[0]
-      }
+      },
+      collapse: false
     };
   }
 
@@ -86,25 +87,36 @@ class DiscriminatorField extends React.Component {
     } = this.props;
     const _SchemaField = registry.fields.SchemaField;
 
-    return this.state && formData ? (
-      <_SchemaField
-        schema={this.state.selectedSchema.schema}
-        uiSchema={uiSchema}
-        errorSchema={errorSchema}
-        idSchema={idSchema}
-        idPrefix={idPrefix}
-        formData={formData.value}
-        onChange={this.onDiscriminatorChange()}
-        onBlur={onBlur}
-        onFocus={onFocus}
-        registry={registry}
-        disabled={disabled}
-        schemaIndex={this.state.selectedSchema.index}
-        depth={this.props.depth + 1}
-        header={header}
-      />
-    ) : (
-      <p> schema or formdata not available </p>
+    return (
+      <fieldset
+        className={prefixClass(
+          `${this.props.isEven ? "odd" : "even"} depth_${this.props.depth +
+            1} discriminator-field-child`
+        )}
+      >
+        {" "}
+        {this.state && formData ? (
+          <_SchemaField
+            schema={this.state.selectedSchema.schema}
+            uiSchema={uiSchema}
+            errorSchema={errorSchema}
+            idSchema={idSchema}
+            idPrefix={idPrefix}
+            formData={formData.value}
+            onChange={this.onDiscriminatorChange()}
+            onBlur={onBlur}
+            onFocus={onFocus}
+            registry={registry}
+            disabled={disabled}
+            schemaIndex={this.state.selectedSchema.index}
+            depth={this.props.depth + 2}
+            isEven={this.props.depth % 2 === 0}
+            header={header}
+          />
+        ) : (
+          <p>schema or formdata not available</p>
+        )}
+      </fieldset>
     );
   };
 
@@ -211,7 +223,7 @@ class DiscriminatorField extends React.Component {
     return (
       <fieldset
         className={prefixClass(
-          `${this.props.isEven ? "even" : "odd"} depth_${
+          `field ${this.props.isEven ? "even" : "odd"} depth_${
             this.props.depth
           } discriminator-field`
         )}
