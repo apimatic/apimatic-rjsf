@@ -56,7 +56,7 @@ function ArrayFieldDescription({ DescriptionField, idSchema, description }) {
   return <DescriptionField id={id} description={description} />;
 }
 
-function IconBtn(props) {
+export function IconBtn(props) {
   const { type = "default", icon, className, ...otherProps } = props;
   return (
     <button
@@ -240,7 +240,7 @@ function DefaultNormalArrayFieldTemplate(props) {
         <IconBtn
           tabIndex="-1"
           onClick={props.toggleCollapse}
-          className={pfx("btn toggle-button")}
+          className={pfx("btn toggle-button anyof")}
         >
           {props.collapse ? (
             <ChevronIcon width={14} rotate={-90} />
