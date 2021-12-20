@@ -26,32 +26,6 @@ class DiscriminatorField extends React.Component {
 
     return (value, options, schemaIndex) => {
       let newFormData;
-      // if (
-      //   this.state.selectedSchema.schema &&
-      //   this.state.selectedSchema.schema.hasOwnProperty("oneOf" || "anyOf")
-      // ) {
-      //   if (schemaIndex) {
-      //     newFormData = {
-      //       ...formData,
-      //       $$__case: schemaIndex,
-      //       value: value
-      //     };
-      //   } else {
-      //     newFormData = {
-      //       ...formData,
-      //       value: value
-      //     };
-      //   }
-      // } else {
-      //   if (checkDiscriminator(value)) {
-      //     newFormData = {
-      //       ...formData,
-      //       value
-      //     };
-      //   } else {
-      //     newFormData = value;
-      //   }
-      // }
 
       if (checkDiscriminator(formData)) {
         newFormData = {
@@ -60,7 +34,10 @@ class DiscriminatorField extends React.Component {
           value
         };
       } else {
-        newFormData = value;
+        newFormData = {
+          ...formData,
+          value
+        };
       }
 
       onChange(
@@ -129,25 +106,22 @@ class DiscriminatorField extends React.Component {
 
     let defaultFormState;
     if (e.schema.type === "object") {
-      // Retain matching object keys
-      // for (let key in formData) {
-      //   if (defaultFormState.hasOwnProperty(key)) {
-      //     defaultFormState = {
-      //       ...defaultFormState,
-      //       [key]: formData[key]
-      //     };
-      //   }
-      // }
       defaultFormState = getDefaultFormState(
         e.schema,
-        {},
+        {
+          $$__case: e.index,
+          value: {}
+        },
         definitions,
         e.index
       );
     } else if (e.schema.type === "array") {
       defaultFormState = getDefaultFormState(
         e.schema,
-        [],
+        {
+          $$__case: e.index,
+          value: []
+        },
         definitions,
         e.index
       );
@@ -165,24 +139,15 @@ class DiscriminatorField extends React.Component {
         e.index
       );
     } else {
-      if (formData) {
-        defaultFormState = getDefaultFormState(
-          e.schema,
-          {
-            $$__case: e.index,
-            value: undefined
-          },
-          definitions,
-          e.index
-        );
-      } else {
-        defaultFormState = getDefaultFormState(
-          e.schema,
-          undefined,
-          definitions,
-          e.index
-        );
-      }
+      defaultFormState = getDefaultFormState(
+        e.schema,
+        {
+          $$__case: e.index,
+          value: undefined
+        },
+        definitions,
+        e.index
+      );
     }
 
     onChange(
@@ -228,7 +193,11 @@ class DiscriminatorField extends React.Component {
           } discriminator-field`
         )}
       >
-        {header} {this.renderSchema(header)}{" "}
+        {/* {selectedSchema.schema.type !== "array" &&
+          selectedSchema.schema.type !== "object" &&
+          header} */}
+        {header}
+        {this.renderSchema()}
       </fieldset>
     );
   }
