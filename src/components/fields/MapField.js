@@ -81,7 +81,7 @@ function DefaultMapItem(props) {
         <IconBtn
           tabIndex="-1"
           onClick={() => props.toggleCollapse(props.key)}
-          className={pfx(`btn toggle-button ${props.header ? "anyof" : ""}`)}
+          className={pfx(`btn toggle-button`)}
         >
           {props.collapse ? (
             <ChevronIcon width={14} rotate={-90} />
@@ -121,7 +121,7 @@ function DefaultMapItem(props) {
               )}
               style={{ flex: "1" }}
             >
-              {props.children}
+              {React.cloneElement(props.children, { fromMap: true })}
             </div>
           </div>
         </div>
@@ -140,24 +140,22 @@ function DefaultNormalMapFieldTemplate(props) {
           className={pfx("header-left hand")}
           onClick={props.toggleGroupCollapse}
         >
-          {props.header || (
-            <MapFieldTitle
-              key={`map-field-title-${props.idSchema.$id}`}
-              TitleField={props.TitleField}
-              idSchema={props.idSchema}
-              title={props.title}
-              required={props.required}
-              nullify={props.nullify}
-              onNullifyChange={props.onNullifyChange}
-              disabled={props.disabled}
-            />
-          )}
+          <MapFieldTitle
+            key={`map-field-title-${props.idSchema.$id}`}
+            TitleField={props.TitleField}
+            idSchema={props.idSchema}
+            title={props.title}
+            required={props.required}
+            nullify={props.nullify}
+            onNullifyChange={props.onNullifyChange}
+            disabled={props.disabled}
+          />
         </div>
 
         <IconBtn
           tabIndex="-1"
           onClick={props.toggleGroupCollapse}
-          className={pfx(`btn toggle-button ${props.header ? "anyof" : ""}`)}
+          className={pfx(`btn toggle-button ${props.title ? "" : "anyof"}`)}
         >
           {props.collapse ? (
             <ChevronIcon width={14} rotate={-90} />
@@ -566,8 +564,7 @@ class MapField extends Component {
       depth: depth,
       isEven: isEven,
       toggleGroupCollapse: this.toggleGroupCollapse,
-      collapse: this.state.collapse,
-      header: this.props.header
+      collapse: this.state.collapse
     };
 
     return <DefaultNormalMapFieldTemplate {...mapProps} />;

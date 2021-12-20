@@ -7,6 +7,10 @@ import {
 } from "../../utils";
 import TagSelector from "../widgets/TagSelector";
 
+function getEvenOddClass(depth) {
+  return depth % 2 === 0 ? "even" : "odd";
+}
+
 class DiscriminatorField extends React.Component {
   state;
   constructor(props) {
@@ -50,7 +54,7 @@ class DiscriminatorField extends React.Component {
     };
   };
 
-  renderSchema = header => {
+  renderSchema = (isObject, childDepth) => {
     const {
       disabled,
       errorSchema,
@@ -64,13 +68,19 @@ class DiscriminatorField extends React.Component {
     } = this.props;
     const _SchemaField = registry.fields.SchemaField;
 
+    const classes = isObject
+      ? prefixClass(
+          `${getEvenOddClass(
+            childDepth
+          )} depth_${childDepth} discriminator-field-child-object`
+        )
+      : prefixClass(
+          `${getEvenOddClass(
+            childDepth
+          )} depth_${childDepth} discriminator-field-child`
+        );
     return (
-      <fieldset
-        className={prefixClass(
-          `${this.props.isEven ? "odd" : "even"} depth_${this.props.depth +
-            1} discriminator-field-child`
-        )}
-      >
+      <fieldset className={classes}>
         {" "}
         {this.state && formData ? (
           <_SchemaField
@@ -86,9 +96,9 @@ class DiscriminatorField extends React.Component {
             registry={registry}
             disabled={disabled}
             schemaIndex={this.state.selectedSchema.index}
-            depth={this.props.depth + 2}
-            isEven={this.props.depth % 2 === 0}
-            header={header}
+            depth={childDepth}
+            isEven={childDepth % 2 === 0}
+            fromDiscriminator={true}
           />
         ) : (
           <p>schema or formdata not available</p>
@@ -160,7 +170,7 @@ class DiscriminatorField extends React.Component {
   };
 
   render() {
-    const { schema } = this.props;
+    const { schema, fromMap } = this.props;
     const { selectedSchema } = this.state;
     const altSchema = schema.oneOf || schema.anyOf;
 
@@ -175,29 +185,27 @@ class DiscriminatorField extends React.Component {
       });
       return optionList;
     }, []);
-
-    const header = (
-      <TagSelector
-        value={selectedSchema}
-        title="anyof"
-        options={selectOptions}
-        onChange={this.selectOnChange}
-      />
-    );
+    const isObject =
+      this.state.selectedSchema.schema.type === "array" ||
+      this.state.selectedSchema.schema.type === "object" ||
+      this.state.selectedSchema.schema.hasOwnProperty("oneOf") ||
+      this.state.selectedSchema.schema.hasOwnProperty("anyOf");
+    const depth = fromMap ? this.props.depth + 1 : this.props.depth;
+    const childDepth = depth + 1;
 
     return (
       <fieldset
         className={prefixClass(
-          `field ${this.props.isEven ? "even" : "odd"} depth_${
-            this.props.depth
-          } discriminator-field`
+          `field ${getEvenOddClass(depth)} depth_${depth} discriminator-field`
         )}
       >
-        {/* {selectedSchema.schema.type !== "array" &&
-          selectedSchema.schema.type !== "object" &&
-          header} */}
-        {header}
-        {this.renderSchema()}
+        <TagSelector
+          value={selectedSchema}
+          title="anyof"
+          options={selectOptions}
+          onChange={this.selectOnChange}
+        />
+        {this.renderSchema(isObject, childDepth)}
       </fieldset>
     );
   }
