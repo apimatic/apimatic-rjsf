@@ -161,19 +161,18 @@ function DefaultArrayItem(props) {
 function DefaultFixedArrayFieldTemplate(props) {
   return (
     <fieldset className={pfx(props.className)}>
-      {props.header || (
-        <ArrayFieldTitle
-          key={`array-field-title-${props.idSchema.$id}`}
-          TitleField={props.TitleField}
-          idSchema={props.idSchema}
-          title={props.uiSchema["ui:title"] || props.title}
-          required={props.required}
-          nullify={props.nullify}
-          onNullifyChange={props.onNullifyChange}
-          disabled={props.disabled}
-        />
-      )}
-
+      (
+      <ArrayFieldTitle
+        key={`array-field-title-${props.idSchema.$id}`}
+        TitleField={props.TitleField}
+        idSchema={props.idSchema}
+        title={props.uiSchema["ui:title"] || props.title}
+        required={props.required}
+        nullify={props.nullify}
+        onNullifyChange={props.onNullifyChange}
+        disabled={props.disabled}
+      />
+      )
       {(props.uiSchema["ui:description"] || props.schema.description) && (
         <div
           className={pfx("field-description")}
@@ -183,14 +182,12 @@ function DefaultFixedArrayFieldTemplate(props) {
             props.schema.description.replace(/<br>/gi, "\n")}
         </div>
       )}
-
       <div
         className={pfx("row array-item-list")}
         key={`array-item-list-${props.idSchema.$id}`}
       >
         {props.items && props.items.map(DefaultArrayItem)}
       </div>
-
       {props.canAdd && (
         <AddButton
           onClick={props.onAddClick}
@@ -213,23 +210,19 @@ function DefaultNormalArrayFieldTemplate(props) {
   return (
     <fieldset className={pfx(props.className)}>
       <div className={pfx("object-header")}>
-        <div
-          className={pfx("header-left hand")}
-          onClick={props.header ? undefined : props.toggleCollapse}
-        >
-          {props.header || (
-            <ArrayFieldTitle
-              key={`array-field-title-${props.idSchema.$id}`}
-              TitleField={props.TitleField}
-              idSchema={props.idSchema}
-              title={title}
-              required={props.required}
-              nullify={props.nullify}
-              onNullifyChange={props.onNullifyChange}
-              disabled={props.disabled}
-              // onClick={props.toggleCollapse}
-            />
-          )}
+        <div className={pfx("header-left hand")} onClick={props.toggleCollapse}>
+          <ArrayFieldTitle
+            key={`array-field-title-${props.idSchema.$id}`}
+            TitleField={props.TitleField}
+            idSchema={props.idSchema}
+            title={title}
+            required={props.required}
+            nullify={props.nullify}
+            onNullifyChange={props.onNullifyChange}
+            disabled={props.disabled}
+            // onClick={props.toggleCollapse}
+          />
+
           {title && props.itemsSchema && props.itemsSchema.required && (
             <div className={pfx("element-required")}>
               <span>Required</span>
@@ -240,7 +233,7 @@ function DefaultNormalArrayFieldTemplate(props) {
         <IconBtn
           tabIndex="-1"
           onClick={props.toggleCollapse}
-          className={pfx("btn toggle-button anyof")}
+          className={pfx(`btn toggle-button ${title ? "" : "anyof"}`)}
         >
           {props.collapse ? (
             <ChevronIcon width={14} rotate={-90} />
@@ -621,8 +614,7 @@ class ArrayField extends Component {
       formContext,
       formData,
       onNullifyChange: this.onNullifyChange,
-      nullify: formData && formData.length > 0,
-      header: this.props.header
+      nullify: formData && formData.length > 0
     };
 
     // Check if a custom render function was passed in
@@ -800,8 +792,7 @@ class ArrayField extends Component {
       title,
       TitleField,
       onNullifyChange: this.onNullifyChange,
-      nullify: formData && formData.length > 0,
-      header: this.props.header
+      nullify: formData && formData.length > 0
     };
 
     // Check if a custom template template was passed in

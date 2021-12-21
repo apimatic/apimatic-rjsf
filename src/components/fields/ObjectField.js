@@ -173,7 +173,7 @@ function DefaultObjectFieldTemplate(props) {
           <IconBtn
             tabIndex="-1"
             onClick={toggleCollapse}
-            className={pfx(`btn toggle-button ${props.header ? "anyof" : ""}`)}
+            className={pfx(`btn toggle-button`)}
           >
             {collapse ? (
               <ChevronIcon width={14} rotate={-90} />
@@ -441,8 +441,7 @@ class ObjectField extends Component {
       depth,
       isEven,
       expandAllLevel,
-      expandAll,
-      header: this.props.header
+      expandAll
     };
 
     if (schema.properties && Object.keys(schema.properties).length > 0) {
