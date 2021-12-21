@@ -98,7 +98,10 @@ class DiscriminatorField extends React.Component {
             schemaIndex={this.state.selectedSchema.index}
             depth={childDepth}
             isEven={childDepth % 2 === 0}
+            // Flag for detecting discriminator in child level
             fromDiscriminator={true}
+            // Title will set in boolean fields
+            anyOfTitle={this.props.schema.title || this.props.anyOfTitle}
           />
         ) : (
           <p>schema or formdata not available</p>

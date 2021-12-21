@@ -194,7 +194,8 @@ function SchemaFieldRender(props) {
     name,
     required,
     schemaIndex,
-    registry = getDefaultRegistry()
+    registry = getDefaultRegistry(),
+    anyOfTitle
   } = props;
   const {
     definitions,
@@ -208,10 +209,6 @@ function SchemaFieldRender(props) {
   const disabled = Boolean(props.disabled || uiSchema["ui:disabled"]);
   const readonly = Boolean(props.readonly || uiSchema["ui:readonly"]);
   const autofocus = Boolean(props.autofocus || uiSchema["ui:autofocus"]);
-
-  // console.log("schema field" + fields);
-
-  // console.log(formData);
 
   if (Object.keys(schema).length === 0) {
     // See #312: Ensure compatibility with old versions of React.
@@ -298,7 +295,8 @@ function SchemaFieldRender(props) {
     formContext,
     fields,
     schema,
-    uiSchema
+    uiSchema,
+    anyOfTitle
   };
 
   return <FieldTemplate {...fieldProps}>{field}</FieldTemplate>;

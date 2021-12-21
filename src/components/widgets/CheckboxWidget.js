@@ -15,12 +15,13 @@ function CheckboxWidget(props) {
     readonly,
     label,
     autofocus,
-    onChange
+    onChange,
+    anyOfTitle
   } = props;
 
   const dataType = schema.dataTypeDisplayText
     ? schema.dataTypeDisplayText
-    : schema.title;
+    : schema.type;
   return (
     <div>
       {label && (
@@ -62,7 +63,7 @@ function CheckboxWidget(props) {
             />
             <span />
           </label>
-          <div>{label}</div>
+          <div>{label || anyOfTitle}</div>
         </div>
       </div>
     </div>

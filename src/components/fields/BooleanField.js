@@ -20,7 +20,8 @@ function BooleanField(props) {
     disabled,
     readonly,
     autofocus,
-    onChange
+    onChange,
+    anyOfTitle
   } = props;
   const { title } = schema;
   const { widgets, formContext } = registry;
@@ -44,6 +45,7 @@ function BooleanField(props) {
       registry={registry}
       formContext={formContext}
       autofocus={autofocus}
+      anyOfTitle={anyOfTitle}
     />
   );
 }
