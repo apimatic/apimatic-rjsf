@@ -305,11 +305,16 @@ export function getWidget(schema, widget, registeredWidgets = {}) {
   throw new Error(`No widget "${widget}" for type "${type}"`);
 }
 
+// function getMultipleSchemaDepth(schema) {
+//   if (isMultiSelect(schema))
+// }
+
 function computeDefaults(
   schema,
   parentDefaults,
   definitions = {},
-  schemaIndex = 0
+  schemaIndex = 0,
+  isNestedDiscriminator
 ) {
   // Compute the defaults recursively: give highest priority to deepest nodes.
   let defaults = parentDefaults;
@@ -329,23 +334,62 @@ function computeDefaults(
       computeDefaults(itemSchema, undefined, definitions)
     );
   } else if ("oneOf" in schema) {
-    if (schema.oneOf[schemaIndex].hasOwnProperty("oneOf" || "anyOf")) {
-      defaults = {
-        $$__case: schemaIndex,
-        value: computeDefaults(
-          schema.oneOf[schemaIndex],
-          undefined,
-          definitions,
-          schemaIndex
-        )
-      };
-    } else {
-      schema = schema.oneOf[schemaIndex];
-    }
+    defaults = {
+      $$__case: schemaIndex,
+      value: computeDefaults(
+        schema.oneOf[schemaIndex],
+        undefined,
+        definitions,
+        schemaIndex,
+        true
+      )
+    };
+    // if (schema.oneOf[schemaIndex].hasOwnProperty("oneOf" || "anyOf")) {
+
+    // }
+
+    // else if (isNestedDiscriminator) {
+    //   defaults = {
+    //     $$__case: schemaIndex,
+    //     value: computeDefaults(
+    //       schema.oneOf[schemaIndex],
+    //       undefined,
+    //       definitions,
+    //       schemaIndex,
+    //       true
+    //     )
+    //   };
+    // }
+    // else {
+    //   // if (isNestedDiscriminator) {
+    //   //   defaults = {
+    //   //     $$__case: 5,
+    //   //     value: computeDefaults(
+    //   //       schema.oneOf[schemaIndex],
+    //   //       undefined,
+    //   //       definitions,
+    //   //       schemaIndex,
+    //   //       false
+    //   //     )
+    //   //   };
+    //   // } else {
+    //   //   schema = schema.oneOf[schemaIndex];
+    //   // }
+    //   schema = schema.oneOf[schemaIndex];
+    // }
 
     // schema = schema.oneOf[schemaIndex];
   } else if ("anyOf" in schema) {
-    schema = schema.anyOf[schemaIndex];
+    defaults = {
+      $$__case: schemaIndex,
+      value: computeDefaults(
+        schema.anyOf[schemaIndex],
+        undefined,
+        definitions,
+        schemaIndex,
+        true
+      )
+    };
   }
   // Not defaults defined for this node, fallback to generic typed ones.
   if (typeof defaults === "undefined") {
@@ -366,35 +410,39 @@ function computeDefaults(
   switch (schema.type) {
     // We need to recur for object schema inner default values.
     case "object": {
-      console.log("Object keys _ " + Object.keys(schema.properties || {}));
+      // console.log("Object keys _ " + Object.keys(schema.properties || {}));
       defaults = Object.keys(schema.properties || {}).reduce((acc, key) => {
         // Compute the defaults for this node, with the parent defaults we might
         // have from a previous run: defaults[key].
 
-        if (
-          isObject(schema.properties[key]) &&
-          schema.properties[key].hasOwnProperty("oneOf" || "anyOf")
-        ) {
-          const _defaultKey = (defaults || {})[key];
-          acc = {
-            ...acc,
-            [key]: {
-              $$__case: schemaIndex,
-              value: computeDefaults(
-                schema.properties[key],
-                (_defaultKey || {})[key],
-                definitions
-              )
-            }
-          };
-        } else {
-          acc[key] = computeDefaults(
-            schema.properties[key],
-            (defaults || {})[key],
-            definitions
-          );
-        }
-
+        // if (
+        //   isObject(schema.properties[key]) &&
+        //   (schema.properties[key].hasOwnProperty("oneOf" || "anyOf"))
+        // ) {
+        //   const _defaultKey = (defaults || {})[key];
+        //   acc = {
+        //     ...acc,
+        //     [key]: {
+        //       $$__case: schemaIndex,
+        //       value: computeDefaults(
+        //         schema.properties[key],
+        //         (_defaultKey || {})[key],
+        //         definitions
+        //       )
+        //     }
+        //   };
+        // } else {
+        //   acc[key] = computeDefaults(
+        //     schema.properties[key],
+        //     (defaults || {})[key],
+        //     definitions
+        //   );
+        // }
+        acc[key] = computeDefaults(
+          schema.properties[key],
+          (defaults || {})[key],
+          definitions
+        );
         return acc;
       }, {});
       break;
@@ -433,6 +481,7 @@ function computeDefaults(
       break;
     }
   }
+
   return defaults;
 }
 
@@ -1148,3 +1197,9 @@ export function checkDiscriminator(data) {
   }
   return false;
 }
+
+export const isMultipleSchema = schema =>
+  !!(
+    schema &&
+    (schema.hasOwnProperty("oneOf") || schema.hasOwnProperty("anyOf"))
+  );

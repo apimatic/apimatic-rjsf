@@ -4,9 +4,29 @@ import {
   getDefaultFormState,
   checkDiscriminator,
   prefixClass,
-  generateFormDataForMultipleSchema
+  isMultipleSchema
 } from "../../utils";
 import TagSelector from "../widgets/TagSelector";
+
+export function generateFormDataForMultipleSchema(schema, index) {
+  if (isMultipleSchema(schema)) {
+    const _schema = schema.oneOf ? schema.oneOf[index] : schema.anyOf[index];
+    return {
+      $$__case: index,
+      value: generateFormDataForMultipleSchema(_schema, 0)
+    };
+  }
+  return undefined;
+}
+
+function getMultipleLabel(schema) {
+  if (schema.hasOwnProperty("anyOf")) {
+    return "any of";
+  }
+  if (schema.hasOwnProperty("oneOf")) {
+    return "one of";
+  }
+}
 
 function getEvenOddClass(depth) {
   return depth % 2 === 0 ? "even" : "odd";
@@ -44,7 +64,6 @@ class DiscriminatorField extends React.Component {
           value
         };
       }
-
       onChange(
         newFormData,
         {
@@ -112,7 +131,8 @@ class DiscriminatorField extends React.Component {
   };
 
   selectOnChange = e => {
-    const { onChange, definitions, formData } = this.props;
+    const { onChange, options, definitions } = this.props;
+    console.log(options);
     this.setState({
       selectedSchema: e
     });
@@ -138,16 +158,42 @@ class DiscriminatorField extends React.Component {
         definitions,
         e.index
       );
-    } else if (e.schema && e.schema.hasOwnProperty("oneOf" || "anyOf")) {
+    } else if (e.schema && isMultipleSchema(e.schema)) {
+      let generatedMultipleSchema = generateFormDataForMultipleSchema(
+        e.schema,
+        0
+      );
+
       defaultFormState = getDefaultFormState(
         e.schema,
         {
-          ...formData,
-          value: generateFormDataForMultipleSchema(e.schema, e.index)
+          $$__case: e.index,
+          value: generatedMultipleSchema
         },
         definitions,
         e.index
       );
+      // if (formData && isObject(formData.value)) {
+      //   defaultFormState = getDefaultFormState(
+      //     e.schema,
+      //     {
+      //       ...formData,
+      //       $$__case: e.index
+      //     },
+      //     definitions,
+      //     e.index
+      //   );
+      // } else {
+      //   defaultFormState = getDefaultFormState(
+      //     e.schema,
+      //     {
+      //       $$__case: e.index,
+      //       value: generatedMultipleSchema
+      //     },
+      //     definitions,
+      //     e.index
+      //   );
+      // }
     } else {
       defaultFormState = getDefaultFormState(
         e.schema,
@@ -173,19 +219,11 @@ class DiscriminatorField extends React.Component {
     const { schema, fromMap } = this.props;
     const { selectedSchema } = this.state;
     const altSchema = schema.oneOf || schema.anyOf;
-    const getLabel = schema => {
-      if (schema.hasOwnProperty("anyOf")) {
-        return "any of";
-      }
-      if (schema.hasOwnProperty("oneOf")) {
-        return "one of";
-      }
-    };
 
     const selectOptions = altSchema.reduce((optionList, schema, index) => {
       const label = schema.title
         ? schema.title
-        : getLabel(schema) || schema.type;
+        : getMultipleLabel(schema) || schema.type;
       optionList.push({
         label,
         value: {
@@ -211,7 +249,7 @@ class DiscriminatorField extends React.Component {
       >
         <TagSelector
           value={selectedSchema}
-          title={getLabel(schema)}
+          title={getMultipleLabel(schema)}
           options={selectOptions}
           onChange={this.selectOnChange}
         />

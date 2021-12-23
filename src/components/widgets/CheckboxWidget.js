@@ -63,7 +63,7 @@ function CheckboxWidget(props) {
             />
             <span />
           </label>
-          <div>{label || anyOfTitle}</div>
+          <div className={pfx("checkbox-text")}>{label || anyOfTitle}</div>
         </div>
       </div>
     </div>
