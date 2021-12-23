@@ -173,9 +173,19 @@ class DiscriminatorField extends React.Component {
     const { schema, fromMap } = this.props;
     const { selectedSchema } = this.state;
     const altSchema = schema.oneOf || schema.anyOf;
+    const getLabel = schema => {
+      if (schema.hasOwnProperty("anyOf")) {
+        return "any of";
+      }
+      if (schema.hasOwnProperty("oneOf")) {
+        return "one of";
+      }
+    };
 
     const selectOptions = altSchema.reduce((optionList, schema, index) => {
-      const label = schema.title ? schema.title : `Option ${index + 1}`;
+      const label = schema.title
+        ? schema.title
+        : getLabel(schema) || schema.type;
       optionList.push({
         label,
         value: {
@@ -201,7 +211,7 @@ class DiscriminatorField extends React.Component {
       >
         <TagSelector
           value={selectedSchema}
-          title="anyof"
+          title={getLabel(schema)}
           options={selectOptions}
           onChange={this.selectOnChange}
         />
