@@ -111,8 +111,7 @@ class DiscriminatorField extends React.Component {
   };
 
   selectOnChange = e => {
-    const { onChange, options, definitions, formData } = this.props;
-    console.log(options);
+    const { onChange, definitions, formData } = this.props;
     this.setState({
       selectedSchema: e
     });
@@ -224,7 +223,7 @@ DiscriminatorField.defaultProps = {
 
 if (process.env.NODE_ENV !== "production") {
   DiscriminatorField.propTypes = {
-    options: PropTypes.arrayOf(PropTypes.object).isRequired,
+    options: PropTypes.arrayOf(PropTypes.object),
     baseType: PropTypes.string,
     uiSchema: PropTypes.object,
     idSchema: PropTypes.object,

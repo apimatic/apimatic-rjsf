@@ -1,3 +1,4 @@
+import propTypes from "prop-types";
 import React from "react";
 
 const areEqualObjs = (obj1, obj2) => {
@@ -24,6 +25,7 @@ class TagSelector extends React.Component {
         <div className="__tags-wrapper">
           {options.map(option => (
             <span
+              key={`option-item-${option.label}`}
               className={`--tag ${
                 areEqualObjs(option.value, value) ? "--active" : ""
               }`}
@@ -37,5 +39,17 @@ class TagSelector extends React.Component {
     );
   }
 }
+
+TagSelector.defaultProps = {
+  title: propTypes.string.isRequired,
+  options: propTypes.arrayOf(
+    propTypes.shape({
+      label: propTypes.any,
+      value: propTypes.any
+    })
+  ).isRequired,
+  onChange: propTypes.func,
+  value: propTypes.any
+};
 
 export default TagSelector;
