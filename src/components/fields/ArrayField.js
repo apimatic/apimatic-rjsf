@@ -15,7 +15,8 @@ import {
   retrieveSchema,
   toIdSchema,
   getDefaultRegistry,
-  prefixClass as pfx
+  prefixClass as pfx,
+  isMultipleSchema
 } from "../../utils";
 import { ArrowUpIcon, DeleteIcon, ArrowDownIcon, ChevronIcon } from "../Icons";
 
@@ -377,7 +378,7 @@ class ArrayField extends Component {
     if (isFixedItems(schema) && allowAdditionalItems(schema)) {
       itemSchema = schema.additionalItems;
     }
-    if (itemSchema && itemSchema.hasOwnProperty("oneOf" || "anyOf")) {
+    if (itemSchema && isMultipleSchema(itemSchema)) {
       this.props.onChange(
         [
           ...formData,

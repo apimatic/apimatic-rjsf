@@ -4,9 +4,20 @@ import {
   getDefaultFormState,
   checkDiscriminator,
   prefixClass,
-  generateFormDataForMultipleSchema
+  isMultipleSchema
 } from "../../utils";
 import TagSelector from "../widgets/TagSelector";
+
+export function generateFormDataForMultipleSchema(schema, index) {
+  if (isMultipleSchema(schema)) {
+    const _schema = schema.oneOf ? schema.oneOf[index] : schema.anyOf[index];
+    return {
+      $$__case: index,
+      value: generateFormDataForMultipleSchema(_schema, 0)
+    };
+  }
+  return undefined;
+}
 
 function getEvenOddClass(depth) {
   return depth % 2 === 0 ? "even" : "odd";
@@ -44,7 +55,6 @@ class DiscriminatorField extends React.Component {
           value
         };
       }
-
       onChange(
         newFormData,
         {
@@ -109,7 +119,7 @@ class DiscriminatorField extends React.Component {
   };
 
   selectOnChange = e => {
-    const { onChange, options, definitions, formData } = this.props;
+    const { onChange, options, definitions } = this.props;
     console.log(options);
     this.setState({
       selectedSchema: e
@@ -136,16 +146,42 @@ class DiscriminatorField extends React.Component {
         definitions,
         e.index
       );
-    } else if (e.schema && e.schema.hasOwnProperty("oneOf" || "anyOf")) {
+    } else if (e.schema && isMultipleSchema(e.schema)) {
+      let generatedMultipleSchema = generateFormDataForMultipleSchema(
+        e.schema,
+        0
+      );
+
       defaultFormState = getDefaultFormState(
         e.schema,
         {
-          ...formData,
-          value: generateFormDataForMultipleSchema(e.schema, e.index)
+          $$__case: e.index,
+          value: generatedMultipleSchema
         },
         definitions,
         e.index
       );
+      // if (formData && isObject(formData.value)) {
+      //   defaultFormState = getDefaultFormState(
+      //     e.schema,
+      //     {
+      //       ...formData,
+      //       $$__case: e.index
+      //     },
+      //     definitions,
+      //     e.index
+      //   );
+      // } else {
+      //   defaultFormState = getDefaultFormState(
+      //     e.schema,
+      //     {
+      //       $$__case: e.index,
+      //       value: generatedMultipleSchema
+      //     },
+      //     definitions,
+      //     e.index
+      //   );
+      // }
     } else {
       defaultFormState = getDefaultFormState(
         e.schema,
