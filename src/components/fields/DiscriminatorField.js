@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import {
   getDefaultFormState,
   checkDiscriminator,
-  prefixClass
+  prefixClass,
+  generateFormDataForMultipleSchema
 } from "../../utils";
 import TagSelector from "../widgets/TagSelector";
 
@@ -142,10 +143,7 @@ class DiscriminatorField extends React.Component {
         e.schema,
         {
           ...formData,
-          value: {
-            $$__case: 0,
-            value: undefined
-          }
+          value: generateFormDataForMultipleSchema(e.schema, e.index)
         },
         definitions,
         e.index
