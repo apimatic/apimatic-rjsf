@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { prefixClass } from "../../utils";
 
 const REQUIRED_FIELD_SYMBOL = "*";
 
@@ -14,9 +15,11 @@ function TitleField(props) {
     onClick
   } = props;
   const legend = required ? title + REQUIRED_FIELD_SYMBOL : title;
+  const isRequired = required || !onNullifyChange;
+
   return (
     <legend id={id}>
-      {required || !onNullifyChange ? null : (
+      {isRequired ? null : (
         <label onClick={ev => ev.stopPropagation()}>
           <input
             type="checkbox"
@@ -28,7 +31,12 @@ function TitleField(props) {
           <span />
         </label>
       )}
-      <div onClick={() => (onClick ? onClick() : null)}>{title}</div>
+      <div
+        className={isRequired ? undefined : prefixClass("checkbox-text")}
+        onClick={() => (onClick ? onClick() : null)}
+      >
+        {title}
+      </div>
     </legend>
   );
 }

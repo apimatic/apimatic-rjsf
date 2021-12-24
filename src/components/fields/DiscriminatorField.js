@@ -19,6 +19,15 @@ export function generateFormDataForMultipleSchema(schema, index) {
   return undefined;
 }
 
+function getMultipleLabel(schema) {
+  if (schema.hasOwnProperty("anyOf")) {
+    return "any of";
+  }
+  if (schema.hasOwnProperty("oneOf")) {
+    return "one of";
+  }
+}
+
 function getEvenOddClass(depth) {
   return depth % 2 === 0 ? "even" : "odd";
 }
@@ -109,7 +118,10 @@ class DiscriminatorField extends React.Component {
             schemaIndex={this.state.selectedSchema.index}
             depth={childDepth}
             isEven={childDepth % 2 === 0}
+            // Flag for detecting discriminator in child level
             fromDiscriminator={true}
+            // Title will set in boolean fields
+            anyOfTitle={this.props.schema.title || this.props.anyOfTitle}
           />
         ) : (
           <p>schema or formdata not available</p>
@@ -209,7 +221,9 @@ class DiscriminatorField extends React.Component {
     const altSchema = schema.oneOf || schema.anyOf;
 
     const selectOptions = altSchema.reduce((optionList, schema, index) => {
-      const label = schema.title ? schema.title : `Option ${index + 1}`;
+      const label = schema.title
+        ? schema.title
+        : getMultipleLabel(schema) || schema.type;
       optionList.push({
         label,
         value: {
@@ -235,7 +249,7 @@ class DiscriminatorField extends React.Component {
       >
         <TagSelector
           value={selectedSchema}
-          title="anyof"
+          title={getMultipleLabel(schema)}
           options={selectOptions}
           onChange={this.selectOnChange}
         />
@@ -255,7 +269,7 @@ DiscriminatorField.defaultProps = {
 
 if (process.env.NODE_ENV !== "production") {
   DiscriminatorField.propTypes = {
-    options: PropTypes.arrayOf(PropTypes.object).isRequired,
+    options: PropTypes.arrayOf(PropTypes.object),
     baseType: PropTypes.string,
     uiSchema: PropTypes.object,
     idSchema: PropTypes.object,
