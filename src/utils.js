@@ -83,27 +83,27 @@ export function flattenedFormData(formData) {
   let newFormData = formData;
 
   if (isObject(newFormData)) {
-    for (const key in newFormData) {
-      // if (checkDiscriminator(formData[key])) {
-      //   newFormData = {
-      //     ...newFormData,
-      //     [key]: flattenedFormData(newFormData[key].value)
-      //   };
-      // } else {
-      //   newFormData = {
-      //     ...newFormData,
-      //     [key]: flattenedFormData(newFormData[key])
-      //   };
-      // }
+    if (checkDiscriminator(newFormData)) {
+      newFormData = flattenedFormData(newFormData.value);
+    } else {
+      for (const key in newFormData) {
+        // if (checkDiscriminator(formData[key])) {
+        //   newFormData = {
+        //     ...newFormData,
+        //     [key]: flattenedFormData(newFormData[key].value)
+        //   };
+        // } else {
+        //   newFormData = {
+        //     ...newFormData,
+        //     [key]: flattenedFormData(newFormData[key])
+        //   };
+        // }
 
-      newFormData = {
-        ...newFormData,
-        [key]: flattenedFormData(
-          checkDiscriminator(formData[key])
-            ? newFormData[key].value
-            : newFormData[key]
-        )
-      };
+        newFormData = {
+          ...newFormData,
+          [key]: flattenedFormData(newFormData[key])
+        };
+      }
     }
   }
 
