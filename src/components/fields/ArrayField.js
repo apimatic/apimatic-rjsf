@@ -372,27 +372,7 @@ class ArrayField extends Component {
     if (isFixedItems(schema) && allowAdditionalItems(schema)) {
       itemSchema = schema.additionalItems;
     }
-    // if (itemSchema && isMultipleSchema(itemSchema)) {
-    //   this.props.onChange(
-    //     [
-    //       ...formData,
-    //       getDefaultFormState(
-    //         itemSchema,
-    //         {
-    //           $$__case: 0,
-    //           value: undefined
-    //         },
-    //         definitions
-    //       )
-    //     ],
-    //     { validate: false }
-    //   );
-    // } else {
-    //   this.props.onChange(
-    //     [...formData, getDefaultFormState(itemSchema, undefined, definitions)],
-    //     { validate: false }
-    //   );
-    // }
+
     this.props.onChange(
       [...formData, getDefaultFormState(itemSchema, undefined, definitions)],
       {
@@ -448,22 +428,6 @@ class ArrayField extends Component {
         // We need to treat undefined items as nulls to have validation.
         // See https://github.com/tdegrunt/jsonschema/issues/206
         const jsonValue = typeof value === "undefined" ? null : value;
-        // if (
-        //   schema &&
-        //   schema.items &&
-        //   schema.items.hasOwnProperty("oneOf" || "anyOf")
-        // ) {
-        //   return index === i
-        //     ? {
-        //         ...item,
-        //         $$__case:
-        //           schemaIndex !== undefined ? schemaIndex : item.$$__case,
-        //         value: jsonValue
-        //       }
-        //     : item;
-        // } else {
-        //   return index === i ? jsonValue : item;
-        // }
         return index === i ? jsonValue : item;
       });
 
