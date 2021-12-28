@@ -2,108 +2,19 @@ import React from "react";
 import "setimmediate";
 import validateFormData, { isValid } from "./validate";
 
-// const dummyFormData = {
-//   "args": {
-//     "hasDiscriminator": true,
-//     "value": [{
-//         "$$__case": 0,
-//         "value": "z"
-//       },
-//       {
-//         "$$__case": 0
-//       }
-//     ],
-//     "send_oneof_inner_mapOfArray": {
-//       "$$__case": 0,
-//       "value": {
-//         "key0": [
-//           "z"
-//         ]
-//       }
-//     },
-//     "session": {
-//       "$$__case": 0,
-//       "value": {
-//         "startsAt": "zxcxzxz"
-//       }
-//     },
-//     "Simple oneOf Fields": {
-//       "$$__case": 0
-//     },
-//     "send_oneof_inner_arrayOfMap_flag": {
-//       "$$__case": 0,
-//       "value": [{}]
-//     },
-//     "Simple oneOf Array": {
-//       "$$__case": 0,
-//       "value": [
-//         "s"
-//       ]
-//     },
-//     "Simple number array + boolean": {
-//       "$$__case": 0
-//     },
-//     "Simple boolean array + number": {
-//       "$$__case": 0,
-//       "value": [
-//         null
-//       ]
-//     },
-//     "Simple Object": {
-//       "$$__case": 0,
-//       "value": {
-//         "key0": "ddddd"
-//       }
-//     },
-//     "Simple Object + boolean": {
-//       "$$__case": 0,
-//       "value": {
-//         "key0": "sds"
-//       }
-//     },
-//     "Outer array": [{
-//         "$$__case": 1,
-//         "value": null
-//       },
-//       {
-//         "$$__case": 0,
-//         "value": "sss"
-//       }
-//     ],
-//     "oneof_outer_map": {
-//       "key1": {
-//         "$$__case": 0,
-//         "value": "s"
-//       }
-//     }
-//   }
-// };
-
 export function flattenedFormData(formData) {
   let newFormData = formData;
 
   if (isObject(newFormData)) {
-    for (const key in newFormData) {
-      // if (checkDiscriminator(formData[key])) {
-      //   newFormData = {
-      //     ...newFormData,
-      //     [key]: flattenedFormData(newFormData[key].value)
-      //   };
-      // } else {
-      //   newFormData = {
-      //     ...newFormData,
-      //     [key]: flattenedFormData(newFormData[key])
-      //   };
-      // }
-
-      newFormData = {
-        ...newFormData,
-        [key]: flattenedFormData(
-          checkDiscriminator(formData[key])
-            ? newFormData[key].value
-            : newFormData[key]
-        )
-      };
+    if (checkDiscriminator(newFormData)) {
+      newFormData = flattenedFormData(newFormData.value);
+    } else {
+      for (const key in newFormData) {
+        newFormData = {
+          ...newFormData,
+          [key]: flattenedFormData(newFormData[key])
+        };
+      }
     }
   }
 
@@ -123,81 +34,6 @@ export function flattenedFormData(formData) {
 
   return newFormData;
 }
-
-console.log(
-  flattenedFormData({
-    args: {
-      hasDiscriminator: true,
-      value: [
-        {
-          $$__case: 0,
-          value: "z"
-        },
-        {
-          $$__case: 0
-        }
-      ],
-      send_oneof_inner_mapOfArray: {
-        $$__case: 0,
-        value: {
-          key0: ["z"]
-        }
-      },
-      session: {
-        $$__case: 0,
-        value: {
-          startsAt: "zxcxzxz"
-        }
-      },
-      "Simple oneOf Fields": {
-        $$__case: 0
-      },
-      send_oneof_inner_arrayOfMap_flag: {
-        $$__case: 0,
-        value: [{}]
-      },
-      "Simple oneOf Array": {
-        $$__case: 0,
-        value: ["s"]
-      },
-      "Simple number array + boolean": {
-        $$__case: 0
-      },
-      "Simple boolean array + number": {
-        $$__case: 0,
-        value: [null]
-      },
-      "Simple Object": {
-        $$__case: 0,
-        value: {
-          key0: "ddddd"
-        }
-      },
-      "Simple Object + boolean": {
-        $$__case: 0,
-        value: {
-          key0: "sds"
-        }
-      },
-      "Outer array": [
-        {
-          $$__case: 1,
-          value: null
-        },
-        {
-          $$__case: 0,
-          value: "sss"
-        }
-      ],
-      oneof_outer_map: {
-        key1: {
-          $$__case: 0,
-          value: "s"
-        }
-      }
-    }
-  })
-);
 
 const widgetMap = {
   boolean: {
@@ -305,10 +141,6 @@ export function getWidget(schema, widget, registeredWidgets = {}) {
   throw new Error(`No widget "${widget}" for type "${type}"`);
 }
 
-// function getMultipleSchemaDepth(schema) {
-//   if (isMultiSelect(schema))
-// }
-
 function computeDefaults(
   schema,
   parentDefaults,
@@ -344,41 +176,6 @@ function computeDefaults(
         true
       )
     };
-    // if (schema.oneOf[schemaIndex].hasOwnProperty("oneOf" || "anyOf")) {
-
-    // }
-
-    // else if (isNestedDiscriminator) {
-    //   defaults = {
-    //     $$__case: schemaIndex,
-    //     value: computeDefaults(
-    //       schema.oneOf[schemaIndex],
-    //       undefined,
-    //       definitions,
-    //       schemaIndex,
-    //       true
-    //     )
-    //   };
-    // }
-    // else {
-    //   // if (isNestedDiscriminator) {
-    //   //   defaults = {
-    //   //     $$__case: 5,
-    //   //     value: computeDefaults(
-    //   //       schema.oneOf[schemaIndex],
-    //   //       undefined,
-    //   //       definitions,
-    //   //       schemaIndex,
-    //   //       false
-    //   //     )
-    //   //   };
-    //   // } else {
-    //   //   schema = schema.oneOf[schemaIndex];
-    //   // }
-    //   schema = schema.oneOf[schemaIndex];
-    // }
-
-    // schema = schema.oneOf[schemaIndex];
   } else if ("anyOf" in schema) {
     defaults = {
       $$__case: schemaIndex,
@@ -396,48 +193,10 @@ function computeDefaults(
     defaults = schema.default;
   }
 
-  // if (isObject(schema) && schema.hasOwnProperty("oneOf" || "anyOf")) {
-  //   defaults = {
-  //     $$__case: 0,
-  //     value:  computeDefaults(
-  //       schema,
-  //      undefined,
-  //       definitions,
-  //     )
-  //   };
-  // }
-
   switch (schema.type) {
     // We need to recur for object schema inner default values.
     case "object": {
-      // console.log("Object keys _ " + Object.keys(schema.properties || {}));
       defaults = Object.keys(schema.properties || {}).reduce((acc, key) => {
-        // Compute the defaults for this node, with the parent defaults we might
-        // have from a previous run: defaults[key].
-
-        // if (
-        //   isObject(schema.properties[key]) &&
-        //   (schema.properties[key].hasOwnProperty("oneOf" || "anyOf"))
-        // ) {
-        //   const _defaultKey = (defaults || {})[key];
-        //   acc = {
-        //     ...acc,
-        //     [key]: {
-        //       $$__case: schemaIndex,
-        //       value: computeDefaults(
-        //         schema.properties[key],
-        //         (_defaultKey || {})[key],
-        //         definitions
-        //       )
-        //     }
-        //   };
-        // } else {
-        //   acc[key] = computeDefaults(
-        //     schema.properties[key],
-        //     (defaults || {})[key],
-        //     definitions
-        //   );
-        // }
         acc[key] = computeDefaults(
           schema.properties[key],
           (defaults || {})[key],

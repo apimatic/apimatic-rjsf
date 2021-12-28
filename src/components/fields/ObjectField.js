@@ -312,32 +312,6 @@ class ObjectField extends Component {
   onPropertyChange = name => {
     return (value, options, schemaIndex) => {
       let newFormData = {};
-      // if (schemaIndex !== undefined) {
-      //   newFormData = {
-      //     ...this.props.formData,
-      //     [name]:  {
-      //       ...this.props.formData[name],
-      //       $$__case: schemaIndex,
-      //       value
-      //     }
-      //   };
-      // } else {
-      //   if (checkDiscriminator(this.props.formData[name])) {
-      //     newFormData = {
-      //       ...this.props.formData,
-      //       [name]: {
-      //         ...this.props.formData[name],
-      //         value
-      //       }
-      //     };
-      //   } else {
-      //     newFormData = {
-      //       ...this.props.formData,
-      //       [name]: value
-      //     };
-      //   }
-
-      // }
       newFormData = {
         ...this.props.formData,
         [name]: value

@@ -1,4 +1,8 @@
 {
   "prettier.trailingComma": "none",
-  "prettier.arrowParens": "avoid"
+  "prettier.arrowParens": "avoid",
+  "files.associations": {
+    "**/src/**/*.js": "javascriptreact",
+    "**/src/**/*.jsx": "javascriptreact"
+}
 }
