@@ -248,6 +248,7 @@ class DiscriminatorField extends React.Component {
         )}
       >
         <TagSelector
+          className={isObject ? "object-child" : ""}
           value={selectedSchema}
           title={getMultipleLabel(schema)}
           options={selectOptions}

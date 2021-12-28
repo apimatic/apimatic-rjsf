@@ -11,7 +11,13 @@ const areEqualObjs = (obj1, obj2) => {
 
 class TagSelector extends React.Component {
   render() {
-    const { title, options, onChange, value = options[0] } = this.props;
+    const {
+      title,
+      options,
+      onChange,
+      value = options[0],
+      className = ""
+    } = this.props;
 
     const onClick = option => {
       return () => {
@@ -20,7 +26,7 @@ class TagSelector extends React.Component {
     };
 
     return (
-      <div className="tag-selector">
+      <div className={`tag-selector ${className}`}>
         <span className="__title --tag">{title}</span>
         <div className="__tags-wrapper">
           {options.map(option => (
