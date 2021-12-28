@@ -19,12 +19,35 @@ export function generateFormDataForMultipleSchema(schema, index) {
   return undefined;
 }
 
+function getInitialFormData(schema, index) {
+  let initialFormData = {
+    $$__case: index,
+    value: undefined
+  };
+
+  if (schema.type === "object") {
+    initialFormData = {
+      ...initialFormData,
+      value: {}
+    };
+  } else if (schema.type === "array") {
+    initialFormData = {
+      value: []
+    };
+  } else if (schema && isMultipleSchema(schema)) {
+    initialFormData = {
+      value: generateFormDataForMultipleSchema(schema, 0)
+    };
+  }
+  return initialFormData;
+}
+
 function getMultipleLabel(schema) {
   if (schema.hasOwnProperty("anyOf")) {
-    return "any of";
+    return "Any Of";
   }
   if (schema.hasOwnProperty("oneOf")) {
-    return "one of";
+    return "One Of";
   }
 }
 
@@ -36,11 +59,14 @@ class DiscriminatorField extends React.Component {
   state;
   constructor(props) {
     super(props);
-    const altSchema = props.schema.oneOf || props.schema.anyOf;
+    const {
+      formData: { $$__case }
+    } = this.props;
+    const initialSchema = props.schema.oneOf || props.schema.anyOf;
     this.state = {
       selectedSchema: {
-        index: 0,
-        schema: altSchema[0]
+        index: $$__case,
+        schema: initialSchema[$$__case]
       },
       collapse: false
     };
@@ -130,100 +156,38 @@ class DiscriminatorField extends React.Component {
     );
   };
 
-  selectOnChange = e => {
-    const { onChange, options, definitions } = this.props;
-    console.log(options);
+  selectOnChange = value => {
+    const { onChange, definitions } = this.props;
     this.setState({
-      selectedSchema: e
+      selectedSchema: value
     });
 
-    let defaultFormState;
-    if (e.schema.type === "object") {
-      defaultFormState = getDefaultFormState(
-        e.schema,
-        {
-          $$__case: e.index,
-          value: {}
-        },
-        definitions,
-        e.index
-      );
-    } else if (e.schema.type === "array") {
-      defaultFormState = getDefaultFormState(
-        e.schema,
-        {
-          $$__case: e.index,
-          value: []
-        },
-        definitions,
-        e.index
-      );
-    } else if (e.schema && isMultipleSchema(e.schema)) {
-      let generatedMultipleSchema = generateFormDataForMultipleSchema(
-        e.schema,
-        0
-      );
-
-      defaultFormState = getDefaultFormState(
-        e.schema,
-        {
-          $$__case: e.index,
-          value: generatedMultipleSchema
-        },
-        definitions,
-        e.index
-      );
-      // if (formData && isObject(formData.value)) {
-      //   defaultFormState = getDefaultFormState(
-      //     e.schema,
-      //     {
-      //       ...formData,
-      //       $$__case: e.index
-      //     },
-      //     definitions,
-      //     e.index
-      //   );
-      // } else {
-      //   defaultFormState = getDefaultFormState(
-      //     e.schema,
-      //     {
-      //       $$__case: e.index,
-      //       value: generatedMultipleSchema
-      //     },
-      //     definitions,
-      //     e.index
-      //   );
-      // }
-    } else {
-      defaultFormState = getDefaultFormState(
-        e.schema,
-        {
-          $$__case: e.index,
-          value: undefined
-        },
-        definitions,
-        e.index
-      );
-    }
+    let defaultFormState = getDefaultFormState(
+      value.schema,
+      getInitialFormData(value.schema, value.index),
+      definitions,
+      value.index
+    );
 
     onChange(
       defaultFormState,
       {
         validate: true
       },
-      e.index
+      value.index
     );
   };
 
   render() {
     const { schema, fromMap } = this.props;
     const { selectedSchema } = this.state;
-    const altSchema = schema.oneOf || schema.anyOf;
+    const multipleSchema = schema.oneOf || schema.anyOf;
 
-    const selectOptions = altSchema.reduce((optionList, schema, index) => {
+    const selectOptions = multipleSchema.reduce((optionList, schema, index) => {
       const label = schema.title
         ? schema.title
         : getMultipleLabel(schema) || schema.type;
+
       optionList.push({
         label,
         value: {
@@ -233,6 +197,7 @@ class DiscriminatorField extends React.Component {
       });
       return optionList;
     }, []);
+
     const isObject =
       this.state.selectedSchema.schema.type === "array" ||
       this.state.selectedSchema.schema.type === "object" ||
