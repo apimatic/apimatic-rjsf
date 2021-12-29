@@ -198,11 +198,13 @@ class DiscriminatorField extends React.Component {
       return optionList;
     }, []);
 
+    const isOneOfOrAnyOf =
+      this.state.selectedSchema.schema.hasOwnProperty("oneOf") ||
+      this.state.selectedSchema.schema.hasOwnProperty("anyOf");
     const isObject =
       this.state.selectedSchema.schema.type === "array" ||
       this.state.selectedSchema.schema.type === "object" ||
-      this.state.selectedSchema.schema.hasOwnProperty("oneOf") ||
-      this.state.selectedSchema.schema.hasOwnProperty("anyOf");
+      isOneOfOrAnyOf;
     const depth = fromMap ? this.props.depth + 1 : this.props.depth;
     const childDepth = depth + 1;
 
@@ -213,7 +215,13 @@ class DiscriminatorField extends React.Component {
         )}
       >
         <TagSelector
-          className={isObject ? "object-child" : ""}
+          className={
+            isObject
+              ? isOneOfOrAnyOf
+                ? "anyof-child"
+                : "object-child"
+              : "object-child"
+          }
           value={selectedSchema}
           title={getMultipleLabel(schema)}
           options={selectOptions}
