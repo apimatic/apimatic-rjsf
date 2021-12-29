@@ -59,14 +59,13 @@ class DiscriminatorField extends React.Component {
   state;
   constructor(props) {
     super(props);
-    const {
-      formData: { $$__case }
-    } = this.props;
-    const initialSchema = props.schema.oneOf || props.schema.anyOf;
+    const { schema, formData } = this.props;
+    const initialSchema = schema.oneOf || schema.anyOf;
+    const initialSchemaIndex = formData ? formData.$$__case : 0;
     this.state = {
       selectedSchema: {
-        index: $$__case,
-        schema: initialSchema[$$__case]
+        index: initialSchemaIndex,
+        schema: initialSchema[initialSchemaIndex]
       },
       collapse: false
     };
