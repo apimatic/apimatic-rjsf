@@ -75,7 +75,7 @@ function IconBtn(props) {
 
 function renderViewJsonButton(props) {
   // let { formJsonError, errorSchema, toggleEditView, showEditView } = props;
-  let { formJsonError, errorSchema, toggleEditView } = props;
+  let { formJsonError, errorSchema, toggleEditView, collapse } = props;
   let disableViewJsonButton =
     formJsonError || Object.keys(errorSchema).length !== 0;
 
@@ -84,7 +84,10 @@ function renderViewJsonButton(props) {
       <JsonIcon />
     </IconBtn>
   ) : (
-    <IconBtn onClick={toggleEditView} className={pfx("btn json-button")}>
+    <IconBtn
+      onClick={toggleEditView}
+      className={pfx(`btn json-button ${!collapse ? "form-view" : ""}`)}
+    >
       <JsonIcon />
     </IconBtn>
   );
