@@ -32,10 +32,12 @@ function getInitialFormData(schema, index) {
     };
   } else if (schema.type === "array") {
     initialFormData = {
+      ...initialFormData,
       value: []
     };
   } else if (schema && isMultipleSchema(schema)) {
     initialFormData = {
+      ...initialFormData,
       value: generateFormDataForMultipleSchema(schema, 0)
     };
   }
