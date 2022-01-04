@@ -28,7 +28,7 @@ export default class Form extends Component {
     super(props);
 
     this.state = this.getStateFromProps(props);
-    this.state.expandAll = true;
+    this.state.expandAll = false;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -166,11 +166,15 @@ export default class Form extends Component {
     };
   }
 
-  toggleExpandAll = () => {
-    this.setState(previousState => ({
-      ...previousState,
-      expandAll: !previousState.expandAll
-    }));
+  // toggleExpandAll = () => {
+  //   this.setState(previousState => ({
+  //     ...previousState,
+  //     expandAll: !previousState.expandAll
+  //   }));
+  // };
+
+  toggleExpandAll = (value = true) => {
+    this.setState({ expandAll: value });
   };
 
   render() {
@@ -201,10 +205,13 @@ export default class Form extends Component {
       expandAll
     } = this.state;
     const registry = this.getRegistry();
+    const toggleExpandAll = this.toggleExpandAll;
     const _SchemaField = registry.fields.SchemaField;
 
     return (
-      <ContextProvider value={{ markdownRenderer, onRouteChange }}>
+      <ContextProvider
+        value={{ markdownRenderer, onRouteChange, toggleExpandAll }}
+      >
         <form
           className={className ? className : "rjsf"}
           id={id}
@@ -221,7 +228,10 @@ export default class Form extends Component {
           {this.renderErrors()}
           {uiSchema.expandAllLevel && (
             <div className={pfx("expand-all")}>
-              <button onClick={this.toggleExpandAll} type="button">
+              <button
+                onClick={() => this.toggleExpandAll(!expandAll)}
+                type="button"
+              >
                 {expandAll ? "- Collapse all" : "+ Expand all"}
               </button>
             </div>
