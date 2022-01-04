@@ -1,5 +1,6 @@
 import toPath from "lodash.topath";
 import Ajv from "ajv";
+
 const ajv = new Ajv({
   errorDataPath: "property",
   allErrors: true
@@ -15,6 +16,7 @@ ajv.addFormat(
 );
 
 import { isObject, mergeObjects } from "./utils";
+import { validateSchema } from "./validationUtils";
 
 function toErrorSchema(errors) {
   // Transforms a ajv validation errors list:
@@ -151,9 +153,10 @@ export default function validateFormData(
   formData,
   schema,
   customValidate,
-  transformErrors
+  transformErrors,
+  originalFormData
 ) {
-  ajv.validate(schema, formData);
+  validateSchema(schema, formData, originalFormData, ajv);
 
   let errors = transformAjvErrors(ajv.errors);
 

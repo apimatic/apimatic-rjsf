@@ -50,7 +50,7 @@ export default class Form extends Component {
       : getDefaultFormState(schema, props.formData, definitions);
     const newFormData = flattenedFormData(formData);
     const { errors, errorSchema } = mustValidate
-      ? this.validate(newFormData, schema)
+      ? this.validate(newFormData, schema, formData)
       : {
           errors: state.errors || [],
           errorSchema: state.errorSchema || {}
@@ -76,13 +76,14 @@ export default class Form extends Component {
     return shouldRender(this, nextProps, nextState);
   }
 
-  validate(formData, schema) {
+  validate(formData, schema, originalFormData) {
     const { validate, transformErrors } = this.props;
     return validateFormData(
       formData,
       schema || this.props.schema,
       validate,
-      transformErrors
+      transformErrors,
+      originalFormData
     );
   }
 
@@ -110,7 +111,11 @@ export default class Form extends Component {
     let state = { formData };
     let newFormData = flattenedFormData(formData);
     if (mustValidate) {
-      const { errors, errorSchema } = this.validate(newFormData);
+      const { errors, errorSchema } = this.validate(
+        newFormData,
+        undefined,
+        formData
+      );
       state = { ...state, errors, errorSchema };
     }
     setState(this, state, () => {
@@ -137,7 +142,11 @@ export default class Form extends Component {
 
     if (!this.props.noValidate) {
       const newFormData = flattenedFormData(this.state.formData);
-      const { errors, errorSchema } = this.validate(newFormData);
+      const { errors, errorSchema } = this.validate(
+        newFormData,
+        undefined,
+        this.state.formData
+      );
       if (Object.keys(errors).length > 0) {
         setState(this, { errors, errorSchema }, () => {
           if (this.props.onError) {
