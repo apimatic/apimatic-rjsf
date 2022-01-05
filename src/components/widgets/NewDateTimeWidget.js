@@ -47,6 +47,8 @@ function DateTimeWidget(props) {
 
   return (
     <DatePicker
+      showMonthDropdown
+      showYearDropdown
       todayButton="Today"
       className={pfx("form-control field-datepicker")}
       selected={fromDateString(value)}
