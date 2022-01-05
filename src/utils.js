@@ -168,6 +168,7 @@ function computeDefaults(
   } else if ("oneOf" in schema) {
     defaults = {
       $$__case: schemaIndex,
+      $$__case_of: "oneOf",
       value: computeDefaults(
         schema.oneOf[schemaIndex],
         undefined,
@@ -179,6 +180,7 @@ function computeDefaults(
   } else if ("anyOf" in schema) {
     defaults = {
       $$__case: schemaIndex,
+      $$__case_of: "anyOf",
       value: computeDefaults(
         schema.anyOf[schemaIndex],
         undefined,
