@@ -74,14 +74,7 @@ function IconBtn(props) {
 }
 
 function renderViewJsonButton(props) {
-  // let { formJsonError, errorSchema, toggleEditView, showEditView } = props;
-  let {
-    formJsonError,
-    errorSchema,
-    toggleEditView,
-    // collapse,
-    showEditView
-  } = props;
+  let { formJsonError, errorSchema, toggleEditView, showEditView } = props;
   let disableViewJsonButton =
     formJsonError || Object.keys(errorSchema).length !== 0;
 
