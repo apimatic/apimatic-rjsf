@@ -47,6 +47,7 @@ function DateTimeWidget(props) {
 
   return (
     <DatePicker
+      todayButton="Today"
       className={pfx("form-control field-datepicker")}
       selected={fromDateString(value)}
       onChange={value => onChange(toDateString(value, time))}
