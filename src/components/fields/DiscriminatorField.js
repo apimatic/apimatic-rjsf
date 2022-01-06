@@ -14,11 +14,18 @@ export function generateFormDataForMultipleSchema(schema, index, caseOf) {
     return {
       $$__case: index,
       $$__case_of: caseOf,
-      value: generateFormDataForMultipleSchema(_schema, 0)
+      value: generateFormDataForMultipleSchema(
+        _schema,
+        0,
+        getMultipleSchemaType(_schema)
+      )
     };
   }
   return undefined;
 }
+
+const getMultipleSchemaType = schema =>
+  schema && schema.hasOwnProperty("oneOf") ? "oneOf" : "anyOf";
 
 function getInitialFormData(schema, index, caseOf) {
   let initialFormData = {
@@ -40,7 +47,11 @@ function getInitialFormData(schema, index, caseOf) {
   } else if (schema && isMultipleSchema(schema)) {
     initialFormData = {
       ...initialFormData,
-      value: generateFormDataForMultipleSchema(schema, 0, caseOf)
+      value: generateFormDataForMultipleSchema(
+        schema,
+        0,
+        getMultipleSchemaType(schema)
+      )
     };
   }
   return initialFormData;
@@ -66,7 +77,7 @@ class DiscriminatorField extends React.Component {
     const { schema, formData } = this.props;
     const initialSchema = schema.oneOf || schema.anyOf;
     const initialSchemaIndex = formData ? formData.$$__case : 0;
-    const caseOf = schema ? Object.keys(schema)[0] : "oneOf";
+    const caseOf = getMultipleSchemaType(schema);
 
     this.state = {
       selectedSchema: {
