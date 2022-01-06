@@ -96,7 +96,7 @@ function deleteOneOfAnyOfProperties(type, node, parentSchema, property) {
         if (node.oneOf) {
           delete parentSchema["properties"][property].oneOf;
           delete node.oneOf;
-        } else {
+        } else if (node.anyOf) {
           delete parentSchema["properties"][property].oneOf;
           delete node.oneOf;
         }
@@ -105,22 +105,62 @@ function deleteOneOfAnyOfProperties(type, node, parentSchema, property) {
   }
 }
 
+function getOneAnyOfPath(path = "", obj) {
+  const result = path
+    ? `${path}/${obj.$$__case_of}/${obj.$$__case}`
+    : `${obj.$$__case_of}/${obj.$$__case}`;
+
+  return result;
+}
+
+function getNestedValue(data, path = getOneAnyOfPath("", data)) {
+  if (data && Array.isArray(data.value)) {
+    if (data.value.some(item => item.value)) {
+      return data.value.map(val => {
+        return getNestedValue(val, getOneAnyOfPath(path + "/items", val));
+      });
+    } else {
+      return path;
+    }
+  } else if (
+    data &&
+    typeof data.value === "object" &&
+    data.hasOwnProperty("value")
+  ) {
+    return getNestedValue(data.value, getOneAnyOfPath(path, data.value));
+  } else if (data && data.value === undefined) {
+    return path;
+  }
+}
+
 function getSelectedFormDataFieldPath(formDataFieldValue) {
   let fieldPath = "";
+  let isArr = false;
+  let arrVal;
 
   traverse(formDataFieldValue, {
     allKeys: true,
     cb(n) {
-      const val = n["$$__case"];
+      const index = n["$$__case"];
+      const val = n["value"];
       const type = n["$$__case_of"] || "oneOf";
-      if (val !== undefined) {
+
+      if (Array.isArray(val)) {
+        isArr = true;
+        arrVal = n;
+      }
+
+      if (index !== undefined && !isArr) {
         fieldPath += `/${type}`;
-        fieldPath += `/${val}`;
+        fieldPath += `/${index}`;
       }
     }
   });
 
-  return fieldPath;
+  return {
+    fieldPath,
+    fieldValue: arrVal && getNestedValue(arrVal)
+  };
 }
 
 function modifyArray({
@@ -134,7 +174,7 @@ function modifyArray({
   const items = [];
 
   for (let i = 0; i < formDataFieldValue.length; i++) {
-    const fieldPath = getSelectedFormDataFieldPath(formDataFieldValue[i]);
+    const { fieldPath } = getSelectedFormDataFieldPath(formDataFieldValue[i]);
     const fullPath = pointerToPath(jsonPointer + fieldPath, true);
     const childNode = lodashGet(rootSchema, fullPath);
 
@@ -158,13 +198,12 @@ function modifyObject({
   const additionalProperties = {};
 
   Object.entries(formDataFieldValue).forEach(([key, value]) => {
-    const fieldPath = getSelectedFormDataFieldPath(value);
+    const { fieldPath } = getSelectedFormDataFieldPath(value);
     const fullPath = pointerToPath(jsonPointer + fieldPath, true);
     const childNode = lodashGet(rootSchema, fullPath);
 
     additionalProperties[key] = childNode;
   });
-
   const pathFromParentToChild = getPathFromParentToChild(type, property);
 
   lodashSet(parentSchema, pathFromParentToChild, additionalProperties);
@@ -180,17 +219,40 @@ function modifyOther({
   parentSchema,
   formDataFieldValue
 }) {
-  const fieldPath = getSelectedFormDataFieldPath(formDataFieldValue);
-  const fullPath = pointerToPath(jsonPointer + fieldPath, true);
-  const childNode = lodashGet(rootSchema, fullPath);
+  const { fieldPath, fieldValue } = getSelectedFormDataFieldPath(
+    formDataFieldValue
+  );
   const pathFromParentToChild = getPathFromParentToChild(type, property);
+  const fullPath = pointerToPath(jsonPointer + fieldPath, true);
 
-  lodashSet(parentSchema, pathFromParentToChild, {
-    ...node,
-    ...childNode
-  });
+  if (fieldValue) {
+    const recursiveArray = arr => {
+      if (Array.isArray(arr)) {
+        return arr.map(arrItem => recursiveArray(arrItem));
+      } else if (typeof arr === "string") {
+        const itemPath = [...fullPath, ...arr.split("/")];
+        const leafNode = lodashGet(rootSchema, itemPath);
 
-  deleteOneOfAnyOfProperties(type, node, parentSchema, property);
+        return leafNode;
+      }
+    };
+
+    lodashSet(parentSchema, pathFromParentToChild, {
+      ...node,
+      type: "array",
+      items: recursiveArray(fieldValue)
+    });
+
+    deleteOneOfAnyOfProperties(type, node, parentSchema, property);
+  } else {
+    const childNode = lodashGet(rootSchema, fullPath);
+
+    lodashSet(parentSchema, pathFromParentToChild, {
+      ...node,
+      ...childNode
+    });
+    deleteOneOfAnyOfProperties(type, node, parentSchema, property);
+  }
 }
 
 export const cb = rawFormData => (...args) => {
