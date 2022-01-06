@@ -29,9 +29,9 @@ class TagSelector extends React.Component {
       <div className={`tag-selector ${className}`}>
         <span className="__title --tag">{title}</span>
         <div className="__tags-wrapper">
-          {options.map(option => (
+          {options.map((option, index) => (
             <span
-              key={`option-item-${option.label}`}
+              key={`option-item-${index}-${option.label}`}
               className={`--tag ${
                 areEqualObjs(option.value, value) ? "--active" : ""
               }`}

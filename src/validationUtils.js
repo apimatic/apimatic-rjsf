@@ -239,8 +239,7 @@ function modifyOther({
 
     lodashSet(parentSchema, pathFromParentToChild, {
       ...node,
-      type: "array",
-      items: recursiveArray(fieldValue)
+      ...recursiveArray(fieldValue)
     });
 
     deleteOneOfAnyOfProperties(type, node, parentSchema, property);

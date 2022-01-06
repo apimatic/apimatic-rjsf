@@ -72,14 +72,14 @@ function getEvenOddClass(depth) {
 
 class DiscriminatorField extends React.Component {
   state;
-  constructor(props) {
-    super(props);
-    const { schema, formData } = this.props;
+
+  static getDerivedStateFromProps(props) {
+    const { schema, formData } = props;
     const initialSchema = schema.oneOf || schema.anyOf;
     const initialSchemaIndex = formData ? formData.$$__case : 0;
     const caseOf = getMultipleSchemaType(schema);
 
-    this.state = {
+    return {
       selectedSchema: {
         index: initialSchemaIndex,
         schema: initialSchema[initialSchemaIndex]
