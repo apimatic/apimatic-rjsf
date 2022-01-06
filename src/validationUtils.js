@@ -115,7 +115,7 @@ function getOneAnyOfPath(path = "", obj) {
 
 function getNestedValue(data, path = getOneAnyOfPath("", data)) {
   if (data && Array.isArray(data.value)) {
-    if (data.value.some(item => item.value)) {
+    if (data.value.some(item => item && item.value)) {
       return data.value.map(val => {
         return getNestedValue(val, getOneAnyOfPath(path + "/items", val));
       });

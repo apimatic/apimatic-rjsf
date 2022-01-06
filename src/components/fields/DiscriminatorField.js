@@ -8,20 +8,22 @@ import {
 } from "../../utils";
 import TagSelector from "../widgets/TagSelector";
 
-export function generateFormDataForMultipleSchema(schema, index) {
+export function generateFormDataForMultipleSchema(schema, index, caseOf) {
   if (isMultipleSchema(schema)) {
     const _schema = schema.oneOf ? schema.oneOf[index] : schema.anyOf[index];
     return {
       $$__case: index,
+      $$__case_of: caseOf,
       value: generateFormDataForMultipleSchema(_schema, 0)
     };
   }
   return undefined;
 }
 
-function getInitialFormData(schema, index) {
+function getInitialFormData(schema, index, caseOf) {
   let initialFormData = {
     $$__case: index,
+    $$__case_of: caseOf,
     value: undefined
   };
 
@@ -38,7 +40,7 @@ function getInitialFormData(schema, index) {
   } else if (schema && isMultipleSchema(schema)) {
     initialFormData = {
       ...initialFormData,
-      value: generateFormDataForMultipleSchema(schema, 0)
+      value: generateFormDataForMultipleSchema(schema, 0, caseOf)
     };
   }
   return initialFormData;
@@ -64,12 +66,15 @@ class DiscriminatorField extends React.Component {
     const { schema, formData } = this.props;
     const initialSchema = schema.oneOf || schema.anyOf;
     const initialSchemaIndex = formData ? formData.$$__case : 0;
+    const caseOf = schema ? Object.keys(schema)[0] : "oneOf";
+
     this.state = {
       selectedSchema: {
         index: initialSchemaIndex,
         schema: initialSchema[initialSchemaIndex]
       },
-      collapse: false
+      collapse: false,
+      caseOf
     };
   }
 
@@ -165,7 +170,7 @@ class DiscriminatorField extends React.Component {
 
     let defaultFormState = getDefaultFormState(
       value.schema,
-      getInitialFormData(value.schema, value.index),
+      getInitialFormData(value.schema, value.index, this.state.caseOf),
       definitions,
       value.index
     );
