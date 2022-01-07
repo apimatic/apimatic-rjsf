@@ -156,6 +156,7 @@ function DefaultObjectFieldTemplate(props) {
               nullify={nullify}
               onNullifyChange={onNullifyChange}
               disabled={disabled}
+              fromDiscriminator={props.fromDiscriminator}
             />
           )}
 
@@ -349,7 +350,8 @@ class ObjectField extends Component {
     return (
       (this.props.formData === undefined ||
         Object.keys(this.props.formData).length === 0) &&
-      !this.props.required
+      !this.props.required &&
+      !this.props.fromDiscriminator
     );
   };
 
@@ -377,7 +379,8 @@ class ObjectField extends Component {
       depth,
       isEven,
       expandAllLevel,
-      expandAll
+      expandAll,
+      fromDiscriminator
     } = this.props;
 
     const { definitions, fields, formContext } = registry;
@@ -415,7 +418,8 @@ class ObjectField extends Component {
       depth,
       isEven,
       expandAllLevel,
-      expandAll
+      expandAll,
+      fromDiscriminator
     };
 
     if (schema.properties && Object.keys(schema.properties).length > 0) {
@@ -473,6 +477,7 @@ class ObjectField extends Component {
             nullify={templateProps.nullify}
             onNullifyChange={this.onNullifyChange}
             disabled={templateProps.disabled}
+            fromDiscriminator={templateProps.fromDiscriminator}
           />
         )}
 

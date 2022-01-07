@@ -19,7 +19,8 @@ function MapFieldTitle({
   required,
   onNullifyChange,
   nullify,
-  disabled
+  disabled,
+  fromDiscriminator
 }) {
   if (!title) {
     // See #312: Ensure compatibility with old versions of React.
@@ -34,6 +35,7 @@ function MapFieldTitle({
       nullify={nullify}
       onNullifyChange={onNullifyChange}
       disabled={disabled}
+      fromDiscriminator={fromDiscriminator}
     />
   );
 }
@@ -149,6 +151,7 @@ function DefaultNormalMapFieldTemplate(props) {
             nullify={props.nullify}
             onNullifyChange={props.onNullifyChange}
             disabled={props.disabled}
+            fromDiscriminator={props.fromDiscriminator}
           />
         </div>
 
@@ -417,7 +420,8 @@ class MapField extends Component {
       (this.props.formData === undefined ||
         (this.props.formData &&
           Object.keys(this.props.formData).length === 0)) &&
-      !this.props.required
+      !this.props.required &&
+      !this.props.fromDiscriminator
     );
   };
 
@@ -456,7 +460,8 @@ class MapField extends Component {
       onBlur,
       onFocus,
       depth,
-      isEven
+      isEven,
+      fromDiscriminator
     } = this.props;
     const title = schema.title || name;
     const { definitions, fields } = registry;
@@ -521,7 +526,8 @@ class MapField extends Component {
       depth: depth,
       isEven: isEven,
       toggleGroupCollapse: this.toggleGroupCollapse,
-      collapse: this.state.collapse
+      collapse: this.state.collapse,
+      fromDiscriminator
     };
 
     return <DefaultNormalMapFieldTemplate {...mapProps} />;
