@@ -27,7 +27,8 @@ function ArrayFieldTitle({
   onNullifyChange,
   nullify,
   disabled,
-  onClick
+  onClick,
+  fromDiscriminator = false
 }) {
   if (!title) {
     // See #312: Ensure compatibility with old versions of React.
@@ -43,6 +44,7 @@ function ArrayFieldTitle({
       onNullifyChange={onNullifyChange}
       disabled={disabled}
       onClick={onClick}
+      fromDiscriminator={fromDiscriminator}
     />
   );
 }
@@ -173,6 +175,7 @@ function DefaultFixedArrayFieldTemplate(props) {
         nullify={props.nullify}
         onNullifyChange={props.onNullifyChange}
         disabled={props.disabled}
+        fromDiscriminator={props.fromDiscriminator}
       />
       ){" "}
       {(props.uiSchema["ui:description"] || props.schema.description) && (
@@ -222,13 +225,9 @@ function DefaultNormalArrayFieldTemplate(props) {
             nullify={props.nullify}
             onNullifyChange={props.onNullifyChange}
             disabled={props.disabled}
+            fromDiscriminator={props.fromDiscriminator}
             // onClick={props.toggleCollapse}
           />
-          {title && props.itemsSchema && props.itemsSchema.required && (
-            <div className={pfx("element-required")}>
-              <span> Required </span>{" "}
-            </div>
-          )}{" "}
         </div>
         <IconBtn
           tabIndex="-1"
@@ -447,7 +446,8 @@ class ArrayField extends Component {
     return (
       (this.props.formData === undefined ||
         (this.props.formData && this.props.formData.length === 0)) &&
-      !this.props.required
+      !this.props.required &&
+      !this.props.fromDiscriminator
     );
   };
 
@@ -476,7 +476,6 @@ class ArrayField extends Component {
       idSchema,
       registry = getDefaultRegistry()
     } = this.props;
-    console.log("ArrayField" + this.props.schemaIndex);
     const { definitions } = registry;
     if (!schema.hasOwnProperty("items")) {
       return (
@@ -524,7 +523,8 @@ class ArrayField extends Component {
       formContext,
       onBlur,
       onFocus,
-      schemaIndex
+      schemaIndex,
+      fromDiscriminator
     } = this.props;
     const { ArrayFieldTemplate, definitions, fields } = registry;
     const { TitleField, DescriptionField } = fields;
@@ -587,7 +587,8 @@ class ArrayField extends Component {
       formContext,
       formData,
       onNullifyChange: this.onNullifyChange,
-      nullify: formData && formData.length > 0
+      nullify: formData && formData.length > 0,
+      fromDiscriminator
     };
 
     // Check if a custom render function was passed in

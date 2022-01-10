@@ -12,10 +12,11 @@ function TitleField(props) {
     nullify,
     onNullifyChange,
     disabled,
-    onClick
+    onClick,
+    fromDiscriminator = false
   } = props;
   const legend = required ? title + REQUIRED_FIELD_SYMBOL : title;
-  const isRequired = required || !onNullifyChange;
+  const isRequired = required || !onNullifyChange || fromDiscriminator;
 
   return (
     <legend id={id}>
