@@ -141,21 +141,21 @@ function computeDefaults(schema, parentDefaults, definitions = {}) {
       }, {});
 
     case "array":
-      // if (schema.minItems) {
-      if (!isMultiSelect(schema, definitions)) {
-        const defaultsLength = defaults ? defaults.length : 0;
-        if (schema.minItems > defaultsLength) {
-          const defaultEntries = defaults || [];
-          // populate the array with the defaults
-          const fillerEntries = new Array(
-            schema.minItems - defaultsLength
-          ).fill(
-            computeDefaults(schema.items, schema.items.defaults, definitions)
-          );
-          // then fill up the rest with either the item default or empty, up to minItems
+      if (schema.minItems) {
+        if (!isMultiSelect(schema, definitions)) {
+          const defaultsLength = defaults ? defaults.length : 0;
+          if (schema.minItems > defaultsLength) {
+            const defaultEntries = defaults || [];
+            // populate the array with the defaults
+            const fillerEntries = new Array(
+              schema.minItems - defaultsLength
+            ).fill(
+              computeDefaults(schema.items, schema.items.defaults, definitions)
+            );
+            // then fill up the rest with either the item default or empty, up to minItems
 
-          return defaultEntries.concat(fillerEntries);
-          // }
+            return defaultEntries.concat(fillerEntries);
+          }
         } else {
           return [];
         }
