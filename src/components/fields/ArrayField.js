@@ -463,12 +463,25 @@ class ArrayField extends Component {
       if (this.state.originalFormData) {
         this.props.onChange(this.state.originalFormData);
       } else {
+        const {
+          schema,
+          registry = getDefaultRegistry(),
+          formData
+        } = this.props;
+        const { definitions } = registry;
+
+        let itemSchema = schema.items;
+
+        if (isFixedItems(schema) && allowAdditionalItems(schema)) {
+          itemSchema = schema.additionalItems;
+        }
+
         this.props.onChange(
-          getDefaultFormState(
-            this.props.schema,
-            undefined,
-            this.props.registry.definitions
-          )
+          [
+            ...formData,
+            getDefaultFormState(itemSchema, undefined, definitions)
+          ],
+          { validate: false }
         );
       }
     } else {
