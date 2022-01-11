@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { prefixClass } from "../../utils";
 
 const REQUIRED_FIELD_SYMBOL = "*";
 
@@ -28,7 +29,12 @@ function TitleField(props) {
           <span />
         </label>
       )}
-      <div onClick={() => (onClick ? onClick() : null)}>{title}</div>
+      <div
+        onClick={() => (onClick ? onClick() : null)}
+        className={prefixClass("checkbox-text")}
+      >
+        {title}
+      </div>
     </legend>
   );
 }
