@@ -6,6 +6,7 @@ import { toErrorList } from "../../validate";
 import CodeMirror from "react-codemirror2";
 import DataType from "../fields/DataType";
 import "codemirror/mode/javascript/javascript";
+import { ContextConsumer } from "../context";
 
 // import "codemirror/lib/codemirror.css";
 // import "./../../../playground/style.css";
@@ -122,7 +123,8 @@ function DefaultObjectFieldTemplate(props) {
     onNullifyChange,
     disabled,
     collapse,
-    toggleCollapse
+    toggleCollapse,
+    toggleExpandAll
   } = props;
 
   let canEditJson =
@@ -146,7 +148,16 @@ function DefaultObjectFieldTemplate(props) {
       id={`${props.idSchema.$id}__object`}
     >
       <div className={pfx("object-header")}>
-        <div className={pfx("header-left hand")} onClick={toggleCollapse}>
+        {/* <div className={pfx("header-left hand")} onClick={toggleCollapse}> */}
+        <div
+          className={pfx("header-left hand")}
+          onClick={() => {
+            toggleCollapse();
+            if (canCollapse) {
+              toggleExpandAll(collapse);
+            }
+          }}
+        >
           {(props.uiSchema["ui:title"] ||
             props.title ||
             props.schema.title) && (
@@ -174,7 +185,13 @@ function DefaultObjectFieldTemplate(props) {
         {canCollapse && (
           <IconBtn
             tabIndex="-1"
-            onClick={toggleCollapse}
+            // onClick={toggleCollapse}
+            onClick={() => {
+              toggleCollapse();
+              if (canCollapse) {
+                toggleExpandAll(collapse);
+              }
+            }}
             className={pfx("btn toggle-button")}
           >
             {collapse ? (
@@ -417,7 +434,14 @@ class ObjectField extends Component {
     };
 
     if (schema.properties && Object.keys(schema.properties).length > 0) {
-      return this.renderObject(templateProps);
+      // return this.renderObject(templateProps);
+      return (
+        <ContextConsumer>
+          {({ toggleExpandAll }) =>
+            this.renderObject({ ...templateProps, toggleExpandAll })
+          }
+        </ContextConsumer>
+      );
     } else if (schema.additionalProperties) {
       return this.renderMap(templateProps);
     } else {
@@ -536,7 +560,7 @@ class ObjectField extends Component {
   }
 
   renderObject(templateProps) {
-    const { name, SchemaField } = templateProps;
+    const { name, SchemaField, toggleExpandAll } = templateProps;
     let orderedProperties;
 
     try {
@@ -563,6 +587,7 @@ class ObjectField extends Component {
     const newProps = {
       ...templateProps,
       showEditView: this.state.showEditView,
+      toggleExpandAll: toggleExpandAll,
       collapse: this.state.collapse,
       toggleCollapse: this.toggleCollapse,
       isEven: this.state.isEven,
