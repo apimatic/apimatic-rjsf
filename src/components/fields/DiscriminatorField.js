@@ -75,6 +75,17 @@ class DiscriminatorField extends React.Component {
 
   static getDerivedStateFromProps(props) {
     const { schema, formData } = props;
+
+    /**
+     * Fixes {@link https://github.com/apimatic/apimatic-dx-portal/issues/426}
+     * When both anyOf and oneOf exists then pick oneOf as currently there is
+     * limited support in docgen side
+     * 🙌🙌🙌
+     */
+    if (schema.oneOf && schema.anyOf) {
+      delete schema.anyOf;
+    }
+
     const initialSchema = schema.oneOf || schema.anyOf;
     const initialSchemaIndex = formData ? formData.$$__case : 0;
     const caseOf = getMultipleSchemaType(schema);
