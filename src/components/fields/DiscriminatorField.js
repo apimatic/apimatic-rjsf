@@ -21,39 +21,30 @@ export function generateFormDataForMultipleSchema(schema, index, caseOf) {
       )
     };
   }
-  return undefined;
+  return computeInitialValue(schema);
 }
 
 const getMultipleSchemaType = schema =>
   schema && schema.hasOwnProperty("oneOf") ? "oneOf" : "anyOf";
 
+function computeInitialValue(schema) {
+  if (schema.type === "object") {
+    return {};
+  } else if (schema.type === "array") {
+    return [];
+  } else if (schema && isMultipleSchema(schema)) {
+    return generateFormDataForMultipleSchema(schema, 0);
+  } else {
+    return undefined;
+  }
+}
+
 function getInitialFormData(schema, index, caseOf) {
   let initialFormData = {
     $$__case: index,
     $$__case_of: caseOf,
-    value: undefined
+    value: computeInitialValue(schema)
   };
-
-  if (schema.type === "object") {
-    initialFormData = {
-      ...initialFormData,
-      value: {}
-    };
-  } else if (schema.type === "array") {
-    initialFormData = {
-      ...initialFormData,
-      value: []
-    };
-  } else if (schema && isMultipleSchema(schema)) {
-    initialFormData = {
-      ...initialFormData,
-      value: generateFormDataForMultipleSchema(
-        schema,
-        0,
-        getMultipleSchemaType(schema)
-      )
-    };
-  }
   return initialFormData;
 }
 
