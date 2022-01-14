@@ -32,22 +32,13 @@ function getValue(event, multiple) {
   }
 }
 
-function getDefaultValue(value, multiple, options, disabledOptions) {
-  if (multiple) {
-    let filter = options.filter(o => {
-      if (disabledOptions) {
-        return (
-          disabledOptions.indexOf(o.value) === -1 &&
-          value.indexOf(o.value) !== -1
-        );
-      } else {
-        return value.indexOf(o.value) !== -1;
-      }
-    });
-
-    return filter;
-  } else {
-    return value;
+function makeSelectedValue(value = "", options) {
+  if (Array.isArray(value)) {
+    return options.filter(
+      option => value.includes(option.value) && !option.disabled
+    );
+  } else if (typeof value === "string" || "number") {
+    return options.find(option => value === option.value && !option.disabled);
   }
 }
 
@@ -68,7 +59,6 @@ function SelectWidget(props) {
     placeholder
   } = props;
   const { enumOptions, enumDisabled } = options;
-  const emptyValue = multiple ? [] : "";
   let newOptions = enumOptions.map(o => {
     let a = {
       ...o,
@@ -76,19 +66,16 @@ function SelectWidget(props) {
     };
     return a;
   });
+  const selected = makeSelectedValue(value, newOptions) || "";
 
   return (
     <Select
       id={id}
+      value={selected}
       className={pfx("form-control")}
       classNamePrefix="react-select"
       isMulti={multiple}
       options={newOptions}
-      defaultValue={
-        value
-          ? getDefaultValue(value, multiple, enumOptions, enumDisabled)
-          : emptyValue
-      }
       closeMenuOnSelect={!multiple}
       isDisabled={disabled || readonly}
       required={required}
@@ -101,7 +88,7 @@ function SelectWidget(props) {
         const newValue = getValue(event, multiple);
         onChange(processValue(schema, newValue));
       }}
-      isOptionDisabled={newOptions => newOptions.disabled}
+      isOptionDisabled={option => option.disabled}
     />
   );
 }

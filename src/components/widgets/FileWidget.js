@@ -65,8 +65,9 @@ function extractFileInfo(dataURLs) {
 }
 
 class FileWidget extends Component {
-  defaultProps = {
-    multiple: false
+  static defaultProps = {
+    multiple: false,
+    autofocus: false
   };
 
   constructor(props) {
@@ -119,10 +120,6 @@ class FileWidget extends Component {
     );
   }
 }
-
-FileWidget.defaultProps = {
-  autofocus: false
-};
 
 /* istanbul ignore else */
 if (process.env.NODE_ENV !== "production") {
