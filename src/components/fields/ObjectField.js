@@ -191,7 +191,7 @@ function DefaultObjectFieldTemplate(props) {
         </div>
 
         {canEditJson &&
-          renderViewJsonButton(...props, toggleExpandAll, collapse)}
+          renderViewJsonButton({ ...props, toggleExpandAll, collapse })}
 
         {canCollapse && (
           <IconBtn
