@@ -191,8 +191,15 @@ function DefaultFixedArrayFieldTemplate(props) {
         className={pfx("row array-item-list")}
         key={`array-item-list-${props.idSchema.$id}`}
       >
-        {props.items && props.items.map(DefaultArrayItem)}{" "}
-      </div>{" "}
+        {props.items &&
+          props.items.map((item, index) => (
+            <DefaultArrayItem
+              key={`outer-array-item-${index}`}
+              {...item}
+              index={index}
+            />
+          ))}
+      </div>
       {props.canAdd && (
         <AddButton
           onClick={props.onAddClick}
@@ -271,7 +278,14 @@ function DefaultNormalArrayFieldTemplate(props) {
             className={pfx("row array-item-list")}
             key={`array-item-list-${props.idSchema.$id}`}
           >
-            {props.items && props.items.map(p => DefaultArrayItem(p))}{" "}
+            {props.items &&
+              props.items.map((item, index) => (
+                <DefaultArrayItem
+                  key={`inner-array-item-${index}`}
+                  {...item}
+                  index={index}
+                />
+              ))}
           </div>
           {props.canAdd && (
             <AddButton

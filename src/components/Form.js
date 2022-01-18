@@ -202,7 +202,8 @@ export default class Form extends Component {
       acceptcharset,
       noHtml5Validate,
       disableFormJsonEdit,
-      markdownRenderer
+      markdownRenderer,
+      onRouteChange
     } = this.props;
 
     const {
@@ -217,7 +218,7 @@ export default class Form extends Component {
     const _SchemaField = registry.fields.SchemaField;
 
     return (
-      <ContextProvider value={markdownRenderer}>
+      <ContextProvider value={{ markdownRenderer, onRouteChange }}>
         <form
           className={className ? className : "rjsf"}
           id={id}
@@ -307,6 +308,7 @@ if (process.env.NODE_ENV !== "production") {
     formContext: PropTypes.object,
     dontAssignDefaults: PropTypes.bool,
     disableFormJsonEdit: PropTypes.bool,
-    markdownRenderer: PropTypes.func
+    markdownRenderer: PropTypes.func,
+    onRouteChange: PropTypes.func
   };
 }
