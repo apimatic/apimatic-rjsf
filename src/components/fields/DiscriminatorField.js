@@ -119,7 +119,7 @@ class DiscriminatorField extends React.Component {
     };
   };
 
-  renderSchema = (isObject, childDepth) => {
+  renderSchema = depth => {
     const {
       disabled,
       errorSchema,
@@ -132,45 +132,61 @@ class DiscriminatorField extends React.Component {
       uiSchema
     } = this.props;
     const _SchemaField = registry.fields.SchemaField;
+    const { selectedSchema } = this.state;
 
-    const classes = isObject
-      ? prefixClass(
-          `${getEvenOddClass(
-            childDepth
-          )} depth_${childDepth} discriminator-field-child-object`
-        )
-      : prefixClass(
-          `${getEvenOddClass(
-            childDepth
-          )} depth_${childDepth} discriminator-field-child`
-        );
+    const childIsMap =
+      selectedSchema.schema &&
+      selectedSchema.schema.type === "object" &&
+      selectedSchema.schema.hasOwnProperty("additionalProperties") &&
+      selectedSchema.schema.additionalProperties.type !== "object";
+    const childIsArray =
+      selectedSchema.schema &&
+      selectedSchema.schema.type === "array" &&
+      selectedSchema.schema.hasOwnProperty("items") &&
+      selectedSchema.schema.items.type !== "object";
+    const childIsNestedMultipleSchema = isMultipleSchema(selectedSchema.schema);
+    const isDiscriminatorChild = !(
+      childIsArray ||
+      childIsMap ||
+      childIsNestedMultipleSchema
+    );
+
+    const discriminatorChildFieldsetDepth = depth + 1;
+    const childDepth = isDiscriminatorChild ? depth + 2 : depth + 1;
+    const discriminatorClassName = isDiscriminatorChild
+      ? `discriminator-field-child ${getEvenOddClass(
+          discriminatorChildFieldsetDepth
+        )} depth_${discriminatorChildFieldsetDepth}`
+      : "discriminator-field-child-empty";
+
     return (
-      <fieldset className={classes}>
-        {" "}
-        {this.state && formData ? (
-          <_SchemaField
-            schema={this.state.selectedSchema.schema}
-            uiSchema={uiSchema}
-            errorSchema={errorSchema}
-            idSchema={idSchema}
-            idPrefix={idPrefix}
-            formData={formData.value}
-            onChange={this.onDiscriminatorChange()}
-            onBlur={onBlur}
-            onFocus={onFocus}
-            registry={registry}
-            disabled={disabled}
-            schemaIndex={this.state.selectedSchema.index}
-            depth={childDepth}
-            isEven={childDepth % 2 === 0}
-            // Flag for detecting discriminator in child level
-            fromDiscriminator={true}
-            // Title will set in boolean fields
-            anyOfTitle={this.props.schema.title || this.props.anyOfTitle}
-          />
-        ) : (
-          <p>schema or formdata not available</p>
-        )}
+      <fieldset className={prefixClass(`field  ${discriminatorClassName}`)}>
+        <React.Fragment>
+          {this.state && formData ? (
+            <_SchemaField
+              schema={this.state.selectedSchema.schema}
+              uiSchema={uiSchema}
+              errorSchema={errorSchema}
+              idSchema={idSchema}
+              idPrefix={idPrefix}
+              formData={formData.value}
+              onChange={this.onDiscriminatorChange()}
+              onBlur={onBlur}
+              onFocus={onFocus}
+              registry={registry}
+              disabled={disabled}
+              schemaIndex={this.state.selectedSchema.index}
+              depth={childDepth}
+              isEven={childDepth % 2 === 0}
+              // Flag for detecting discriminator in child level
+              fromDiscriminator={true}
+              // Title will set in boolean fields
+              anyOfTitle={this.props.schema.title || this.props.anyOfTitle}
+            />
+          ) : (
+            <p>schema or formdata not available</p>
+          )}
+        </React.Fragment>
       </fieldset>
     );
   };
@@ -218,14 +234,13 @@ class DiscriminatorField extends React.Component {
     }, []);
 
     const isOneOfOrAnyOf =
-      this.state.selectedSchema.schema.hasOwnProperty("oneOf") ||
-      this.state.selectedSchema.schema.hasOwnProperty("anyOf");
+      selectedSchema.schema.hasOwnProperty("oneOf") ||
+      selectedSchema.schema.hasOwnProperty("anyOf");
     const isObject =
-      this.state.selectedSchema.schema.type === "array" ||
-      this.state.selectedSchema.schema.type === "object" ||
+      selectedSchema.schema.type === "array" ||
+      selectedSchema.schema.type === "object" ||
       isOneOfOrAnyOf;
     const depth = fromMap ? this.props.depth + 1 : this.props.depth;
-    const childDepth = depth + 1;
 
     return (
       <fieldset
@@ -246,7 +261,7 @@ class DiscriminatorField extends React.Component {
           options={selectOptions}
           onChange={this.selectOnChange}
         />
-        {this.renderSchema(isObject, childDepth)}
+        {this.renderSchema(depth)}
       </fieldset>
     );
   }
