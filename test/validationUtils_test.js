@@ -1,7 +1,12 @@
 import { expect } from "chai";
 import Ajv from "ajv";
 
-import { getType, TYPE_ENUM, validateSchema } from "../src/validationUtils";
+import {
+  getOneAnyOfPath,
+  getType,
+  TYPE_ENUM,
+  validateSchema
+} from "../src/validationUtils";
 
 const ajv = new Ajv({
   errorDataPath: "property",
@@ -224,5 +229,23 @@ describe("file: validationUtils_test.js", () => {
     });
   });
 
-  describe("function: ", () => {});
+  describe("function: getOneAnyOfPath", () => {
+    it("empty path with object case", () => {
+      const path = getOneAnyOfPath("", {
+        $$__case: 0,
+        $$__case_of: "oneOf"
+      });
+
+      expect(path).equals("oneOf/0");
+    });
+
+    it("existing path with object case", () => {
+      const path = getOneAnyOfPath("property", {
+        $$__case: 0,
+        $$__case_of: "oneOf"
+      });
+
+      expect(path).equals("property/oneOf/0");
+    });
+  });
 });
