@@ -2,11 +2,24 @@ import { expect } from "chai";
 import Ajv from "ajv";
 
 import {
+  getNestedValue,
   getOneAnyOfPath,
+  getSelectedFormDataFieldPath,
   getType,
   TYPE_ENUM,
   validateSchema
 } from "../src/validationUtils";
+
+import {
+  // schema,
+  // originalFormData,
+  GET_NESTED_VALUE_DATA,
+  GET_NESTED_VALUE_VARIABLES,
+  GET_SELECTED_FORM_DATA_FIELD_PATH_DATA,
+  GET_SELECTED_FORM_DATA_FIELD_PATH_VARIABLES,
+  ONEOF_NONSCALAR_ENDPOINTS_VARIABLES,
+  ONEOF_NONSCALAR_ENDPOINTS_DATA
+} from "./validation_mock";
 
 const ajv = new Ajv({
   errorDataPath: "property",
@@ -22,108 +35,32 @@ ajv.addFormat(
   /^(#?([0-9A-Fa-f]{3}){1,2}\b|aqua|black|blue|fuchsia|gray|green|lime|maroon|navy|olive|orange|purple|red|silver|teal|white|yellow|(rgb\(\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*,\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*,\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*\))|(rgb\(\s*(\d?\d%|100%)+\s*,\s*(\d?\d%|100%)+\s*,\s*(\d?\d%|100%)+\s*\)))$/
 );
 
-const schema = {
-  title: "Endpoint Arguments",
-  type: "object",
-  additionalProperties: false,
-  properties: {
-    args: {
-      id: "endpoint_7C26ABBCDB1F9",
-      title: "endpoint_7C26ABBCDB1F9",
-      type: "object",
-      properties: {
-        isPrimitiveType: {
-          type: "boolean"
-        },
-        isAtEndpointLevel: {
-          type: "boolean"
-        },
-        hasDiscriminator: {
-          type: "boolean"
-        },
-        session: {
-          description: "Course session",
-          example: {
-            startsAt: "startsAtDummy",
-            endsAt: "endsAtDummy",
-            offerDinner: true
-          },
-          oneOf: [
-            {
-              id: "Morning",
-              title: "Morning",
-              description: "Course morning session",
-              type: "object",
-              properties: {
-                startsAt: {
-                  description: "Session start time",
-                  type: "string"
-                },
-                endsAt: {
-                  description: "Session end time",
-                  type: "string"
-                },
-                offerTeaBreak: {
-                  description: "Offer tea break during session",
-                  type: "boolean"
-                }
-              },
-              required: ["startsAt", "endsAt", "offerTeaBreak"]
-            },
-            {
-              id: "Evening",
-              title: "Evening",
-              description: "Course evening session",
-              type: "object",
-              properties: {
-                startsAt: {
-                  description: "Session start time",
-                  type: "string"
-                },
-                endsAt: {
-                  description: "Session end time",
-                  type: "string"
-                },
-                offerDinner: {
-                  description: "Offer dinner during session",
-                  type: "boolean"
-                }
-              },
-              required: ["startsAt", "endsAt", "offerDinner"]
-            }
-          ]
-        }
-      },
-      required: [
-        "isPrimitiveType",
-        "isAtEndpointLevel",
-        "hasDiscriminator",
-        "session"
-      ]
-    }
-  },
-  required: ["args"]
-};
-
-const originalFormData = {
-  args: {
-    isPrimitiveType: false,
-    isAtEndpointLevel: false,
-    hasDiscriminator: false,
-    session: {
-      $$__case: 1,
-      $$__case_of: "oneOf",
-      value: {
-        startsAt: "startsAtDummy",
-        endsAt: "endsAtDummy",
-        offerDinner: true
-      }
-    }
+export function getErrorObjects(errors) {
+  if (errors) {
+    return errors.reduce((prev, err) => {
+      const dataPathArr = err.dataPath.split(".");
+      prev = { ...prev, [dataPathArr[dataPathArr.length - 1]]: err };
+      return prev;
+    }, {});
   }
-};
+
+  return {};
+}
 
 describe("file: validationUtils_test.js", () => {
   describe("function: validateSchema", () => {
+    const {
+      SEND_MULTILEVEL_ONEOF,
+      SEND_ONEOF_OUTER_ARRAY,
+      SEND_ONEOF_SIMPLE,
+      SEND_ONEOF_INNER_MAP,
+      SEND_ONEOF_CONTAINER_OF_ANYOF,
+      SEND_ONEOF_INNER_ARRAY,
+      SEND_ONEOF_INNER_MIXED_ARRAYS,
+      SEND_ONEOF_INNER_MIXED_MAP,
+      SEND_ONEOF_OUTER_MAP
+    } = ONEOF_NONSCALAR_ENDPOINTS_VARIABLES;
+
     it("initial render", () => {
       const response = validateSchema({}, {}, {}, ajv);
       expect(response).equal(undefined);
@@ -144,57 +81,129 @@ describe("file: validationUtils_test.js", () => {
       expect(response).equal(undefined);
     });
 
-    it("send oneof simple: with undefined", () => {
-      const formData = {
-        args: {
-          isPrimitiveType: false,
-          isAtEndpointLevel: false,
-          hasDiscriminator: false,
-          session: {
-            startsAt: undefined,
-            endsAt: undefined,
-            offerDinner: undefined
-          }
-        }
-      };
+    it(SEND_MULTILEVEL_ONEOF, () => {
+      const {
+        formData,
+        schema,
+        originalFormData
+      } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_MULTILEVEL_ONEOF];
       validateSchema(schema, formData, originalFormData, ajv);
-      const errors = ajv.errors;
-      const startsAtErr = errors.find(err => err.dataPath.includes("startsAt"));
-      const endAtErr = errors.find(err => err.dataPath.includes("endsAt"));
-      const offerDinnerErr = errors.find(err =>
-        err.dataPath.includes("offerDinner")
-      );
+      const { startsAt, endsAt } = getErrorObjects(ajv.errors);
 
-      expect(startsAtErr.keyword).equals("required");
-      expect(endAtErr.keyword).equals("required");
-      expect(offerDinnerErr.keyword).equals("required");
+      expect(startsAt.keyword).equals("required");
+      expect(endsAt.keyword).equals("required");
     });
 
-    it("send oneof simple: with wrong types", () => {
-      const formData = {
-        args: {
-          isPrimitiveType: false,
-          isAtEndpointLevel: false,
-          hasDiscriminator: false,
-          session: {
-            startsAt: 321,
-            endsAt: 123,
-            offerDinner: "Yes"
-          }
-        }
-      };
-
+    it(SEND_ONEOF_OUTER_ARRAY, () => {
+      const {
+        formData,
+        schema,
+        originalFormData
+      } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_OUTER_ARRAY];
       validateSchema(schema, formData, originalFormData, ajv);
-      const errors = ajv.errors;
-      const startsAtErr = errors.find(err => err.dataPath.includes("startsAt"));
-      const endAtErr = errors.find(err => err.dataPath.includes("endsAt"));
-      const offerDinnerErr = errors.find(err =>
-        err.dataPath.includes("offerDinner")
-      );
+      const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
 
-      expect(startsAtErr.message).equals("should be string");
-      expect(endAtErr.message).equals("should be string");
-      expect(offerDinnerErr.message).equals("should be boolean");
+      expect(startsAt.keyword).equals("required");
+      expect(endsAt.keyword).equals("required");
+      expect(offerTeaBreak.keyword).equals("required");
+    });
+
+    it(SEND_ONEOF_SIMPLE, () => {
+      const {
+        formData,
+        schema,
+        originalFormData
+      } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_SIMPLE];
+      validateSchema(schema, formData, originalFormData, ajv);
+      const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
+
+      expect(startsAt.keyword).equals("required");
+      expect(endsAt.keyword).equals("required");
+      expect(offerTeaBreak.keyword).equals("required");
+    });
+
+    it(SEND_ONEOF_INNER_MAP, () => {
+      const {
+        formData,
+        schema,
+        originalFormData
+      } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_MAP];
+      validateSchema(schema, formData, originalFormData, ajv);
+      const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
+
+      expect(startsAt.keyword).equals("required");
+      expect(endsAt.keyword).equals("required");
+      expect(offerTeaBreak.keyword).equals("required");
+    });
+
+    it(SEND_ONEOF_INNER_MIXED_ARRAYS, () => {
+      const {
+        formData,
+        schema,
+        originalFormData
+      } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_MIXED_ARRAYS];
+      validateSchema(schema, formData, originalFormData, ajv);
+      const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
+
+      expect(startsAt.keyword).equals("required");
+      expect(endsAt.keyword).equals("required");
+      expect(offerTeaBreak.keyword).equals("required");
+    });
+
+    it(SEND_ONEOF_OUTER_MAP, () => {
+      const {
+        formData,
+        schema,
+        originalFormData
+      } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_OUTER_MAP];
+      validateSchema(schema, formData, originalFormData, ajv);
+      const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
+
+      expect(startsAt.keyword).equals("required");
+      expect(endsAt.keyword).equals("required");
+      expect(offerTeaBreak.keyword).equals("required");
+    });
+
+    it(SEND_ONEOF_INNER_ARRAY, () => {
+      const {
+        formData,
+        schema,
+        originalFormData
+      } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_ARRAY];
+      validateSchema(schema, formData, originalFormData, ajv);
+      const { startsAt, endsAt, offerDinner } = getErrorObjects(ajv.errors);
+
+      expect(startsAt.keyword).equals("required");
+      expect(endsAt.keyword).equals("required");
+      expect(offerDinner.keyword).equals("required");
+    });
+
+    it(SEND_ONEOF_INNER_MIXED_MAP, () => {
+      const {
+        formData,
+        schema,
+        originalFormData
+      } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_MIXED_MAP];
+      validateSchema(schema, formData, originalFormData, ajv);
+      const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
+
+      expect(startsAt.keyword).equals("required");
+      expect(endsAt.keyword).equals("required");
+      expect(offerTeaBreak.keyword).equals("required");
+    });
+
+    it(SEND_ONEOF_CONTAINER_OF_ANYOF, () => {
+      const {
+        formData,
+        schema,
+        originalFormData
+      } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_CONTAINER_OF_ANYOF];
+      validateSchema(schema, formData, originalFormData, ajv);
+      const { startsAt, endsAt, offerLunch } = getErrorObjects(ajv.errors);
+
+      expect(startsAt.keyword).equals("required");
+      expect(endsAt.keyword).equals("required");
+      expect(offerLunch.keyword).equals("required");
     });
   });
 
@@ -246,6 +255,79 @@ describe("file: validationUtils_test.js", () => {
       });
 
       expect(path).equals("property/oneOf/0");
+    });
+  });
+
+  describe("function: getNestedValue", () => {
+    const {
+      INITIAL_RENDER,
+      NESTED_DATA,
+      NESTED_3D_DATA
+    } = GET_NESTED_VALUE_VARIABLES;
+
+    it(INITIAL_RENDER, () => {
+      const data = GET_NESTED_VALUE_DATA[INITIAL_RENDER];
+      const result = getNestedValue(data, "");
+      expect(result).equals("");
+    });
+
+    it(NESTED_DATA, () => {
+      const data = GET_NESTED_VALUE_DATA[NESTED_DATA];
+      const result = getNestedValue(data);
+      expect(result).deep.equals([
+        "oneOf/0/items/oneOf/0/oneOf/0/anyOf/0",
+        "oneOf/0/items/oneOf/1/oneOf/0/anyOf/1"
+      ]);
+    });
+
+    it(NESTED_3D_DATA, () => {
+      const data = GET_NESTED_VALUE_DATA[NESTED_3D_DATA];
+      const result = getNestedValue(data);
+      expect(result).deep.equals([
+        [
+          "oneOf/0/items/oneOf/0/oneOf/0/anyOf/0/items/oneOf/0/oneOf/0/anyOf/0",
+          "oneOf/0/items/oneOf/0/oneOf/0/anyOf/0/items/oneOf/1/oneOf/0/anyOf/1"
+        ],
+        "oneOf/0/items/oneOf/1/oneOf/0/anyOf/1"
+      ]);
+    });
+  });
+
+  describe("function: getSelectedFormDataFieldPath", () => {
+    const {
+      INITIAL_RENDER,
+      WITH_DATA,
+      WITH_3D_DATA
+    } = GET_SELECTED_FORM_DATA_FIELD_PATH_VARIABLES;
+
+    it(INITIAL_RENDER, () => {
+      const data = GET_SELECTED_FORM_DATA_FIELD_PATH_DATA[INITIAL_RENDER];
+      const { fieldPath, fieldValue } = getSelectedFormDataFieldPath(data);
+
+      expect(fieldPath).equals("");
+      expect(fieldValue).equals(undefined);
+    });
+
+    it(WITH_DATA, () => {
+      const data = GET_SELECTED_FORM_DATA_FIELD_PATH_DATA[WITH_DATA];
+      const { fieldPath, fieldValue } = getSelectedFormDataFieldPath(data);
+
+      expect(fieldPath).equals("/oneOf/0/oneOf/0");
+      expect(fieldValue).equals("oneOf/1");
+    });
+
+    it(WITH_3D_DATA, () => {
+      const data = GET_SELECTED_FORM_DATA_FIELD_PATH_DATA[WITH_3D_DATA];
+      const { fieldPath, fieldValue } = getSelectedFormDataFieldPath(data);
+
+      expect(fieldPath).equals("");
+      expect(fieldValue).deep.equals([
+        [
+          "oneOf/0/items/oneOf/0/oneOf/0/anyOf/0/items/oneOf/0/oneOf/0/anyOf/0",
+          "oneOf/0/items/oneOf/0/oneOf/0/anyOf/0/items/oneOf/1/oneOf/0/anyOf/1"
+        ],
+        "oneOf/0/items/oneOf/1/oneOf/0/anyOf/1"
+      ]);
     });
   });
 });

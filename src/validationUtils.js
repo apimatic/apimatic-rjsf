@@ -167,7 +167,7 @@ export function getSelectedFormDataFieldPath(formDataFieldValue) {
   };
 }
 
-export function modifyArray({
+function modifyArray({
   type,
   property,
   rootSchema,
@@ -190,7 +190,7 @@ export function modifyArray({
   lodashSet(parentSchema, pathFromParentToChild, items);
 }
 
-export function modifyObject({
+function modifyObject({
   node,
   type,
   property,
@@ -214,7 +214,7 @@ export function modifyObject({
   deleteOneOfAnyOfProperties(type, node, parentSchema, property);
 }
 
-export function modifyOther({
+function modifyOther({
   node,
   type,
   property,
