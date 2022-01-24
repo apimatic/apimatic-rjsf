@@ -322,6 +322,6 @@ export function validateSchema(schema, formData, originalFormData, ajv) {
 
     ajv.validate(clonedSchema, formData);
   } catch (ex) {
-    // console.log("Exception in validation", ex);
+    console.log("Exception in validation", ex);
   }
 }

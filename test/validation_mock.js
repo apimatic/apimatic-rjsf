@@ -254,18 +254,15 @@ export const GET_SELECTED_FORM_DATA_FIELD_PATH_DATA = {
 // function validateSchema
 // => Oneof-non-scalar-endpoints
 export const ONEOF_NONSCALAR_ENDPOINTS_VARIABLES = {
-  SEND_MULTILEVEL_ONEOF: "Oneof-non-scalar-endpoints Send Multi Level Oneof",
-  SEND_ONEOF_OUTER_ARRAY: "Oneof-non-scalar-endpoints Send Oneof Outer Array",
-  SEND_ONEOF_SIMPLE: "Oneof-non-scalar-endpoints Send Oneof Simple",
-  SEND_ONEOF_INNER_MAP: "Oneof-non-scalar-endpoints Send Oneof Inner Map",
-  SEND_ONEOF_INNER_MIXED_ARRAYS:
-    "Oneof-non-scalar-endpoints Send Oneof Inner Mixed Arrays",
-  SEND_ONEOF_OUTER_MAP: "Oneof-non-scalar-endpoints Send Oneof Outer Map",
-  SEND_ONEOF_INNER_ARRAY: "Oneof-non-scalar-endpoints Send Oneof Inner Array",
-  SEND_ONEOF_INNER_MIXED_MAP:
-    "Oneof-non-scalar-endpoints Send Oneof Inner Mixed Map",
-  SEND_ONEOF_CONTAINER_OF_ANYOF:
-    "Oneof-non-scalar-endpoints Send Oneof Conatiner of Anyof"
+  SEND_MULTILEVEL_ONEOF: "Send Multi Level Oneof",
+  SEND_ONEOF_OUTER_ARRAY: "Send Oneof Outer Array",
+  SEND_ONEOF_SIMPLE: "Send Oneof Simple",
+  SEND_ONEOF_INNER_MAP: "Send Oneof Inner Map",
+  SEND_ONEOF_INNER_MIXED_ARRAYS: "Send Oneof Inner Mixed Arrays",
+  SEND_ONEOF_OUTER_MAP: "Send Oneof Outer Map",
+  SEND_ONEOF_INNER_ARRAY: "Send Oneof Inner Array",
+  SEND_ONEOF_INNER_MIXED_MAP: "Send Oneof Inner Mixed Map",
+  SEND_ONEOF_CONTAINER_OF_ANYOF: "Send Oneof Conatiner of Anyof"
 };
 
 export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
@@ -1468,6 +1465,780 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
             $$__case: 1,
             $$__case_of: "anyOf",
             value: {}
+          }
+        }
+      }
+    }
+  }
+};
+
+// => Oneof-scaler-endpoints
+export const ONEOF_SCALAR_ENDPOINTS_VARIABLES = {
+  SEND_ONEOF_INNER_ARRAY: "Scalar endpoints Send Oneof Inner Array",
+  SEND_ONEOF_INNER_MAP: "Scalar endpoints Send Oneof Inner Map",
+  SEND_ONEOF_OUTER_MAP: "Scalar endpoints Send Oneof Outer Map",
+  SEND_ONEOF_SIMPLE: "Scalar endpoints Send Oneof Simple",
+  SEND_MULTILEVEL_ONEOF: "Scalar endpoints Send Multi Level Oneof",
+  SEND_ONEOF_OUTER_ARRAY: "Scalar endpoints Send Oneof Outer Array",
+  SEND_ONEOF_INNER_MIXED_ARRAYS:
+    "Scalar endpoints Send Oneof Inner Mixed Arrays",
+  SEND_ONEOF_INNER_MIXED_MAP: "Scalar endpoints Send Oneof Inner Mixed Map",
+  SEND_ONEOF_CONTAINER_OF_ANYOF:
+    "Scalar endpoints Send Oneof Conatiner of Anyof"
+};
+
+export const ONEOF_SCALAR_ENDPOINTS_DATA = {
+  [ONEOF_SCALAR_ENDPOINTS_VARIABLES.SEND_ONEOF_INNER_ARRAY]: {
+    schema: {
+      title: "Endpoint Arguments",
+      type: "object",
+      additionalProperties: false,
+      properties: {
+        args: {
+          id: "endpoint_7C26ABBCDB1F9",
+          title: "endpoint_7C26ABBCDB1F9",
+          type: "object",
+          properties: {
+            isPrimitiveType: {
+              type: "boolean",
+              dataTypeDisplayText: "boolean",
+              paramType: "Query",
+              title: "isPrimitiveType"
+            },
+            isAtEndpointLevel: {
+              type: "boolean",
+              dataTypeDisplayText: "boolean",
+              paramType: "Query",
+              title: "isAtEndpointLevel"
+            },
+            hasDiscriminator: {
+              type: "boolean",
+              dataTypeDisplayText: "boolean",
+              paramType: "Query",
+              title: "hasDiscriminator"
+            },
+            scalarValue: {
+              example: [true, false],
+              oneOf: [
+                {
+                  type: "array",
+                  items: {
+                    type: "number"
+                  }
+                },
+                {
+                  type: "array",
+                  items: {
+                    type: "boolean"
+                  }
+                }
+              ],
+              dataTypeDisplayText: "OneOfScalarValue",
+              paramType: "Body",
+              title: "scalarValue"
+            }
+          },
+          required: [
+            "isPrimitiveType",
+            "isAtEndpointLevel",
+            "hasDiscriminator",
+            "scalarValue"
+          ]
+        }
+      },
+      required: ["args"]
+    },
+    formData: {
+      args: {
+        isPrimitiveType: false,
+        isAtEndpointLevel: false,
+        hasDiscriminator: false,
+        scalarValue: [null]
+      }
+    },
+    originalFormData: {
+      args: {
+        isPrimitiveType: false,
+        isAtEndpointLevel: false,
+        hasDiscriminator: false,
+        scalarValue: {
+          $$__case: 0,
+          $$__case_of: "oneOf",
+          value: [null]
+        }
+      }
+    }
+  },
+  [ONEOF_SCALAR_ENDPOINTS_VARIABLES.SEND_ONEOF_INNER_MAP]: {
+    schema: {
+      title: "Endpoint Arguments",
+      type: "object",
+      additionalProperties: false,
+      properties: {
+        args: {
+          id: "endpoint_7C26ABBCDB1F9",
+          title: "endpoint_7C26ABBCDB1F9",
+          type: "object",
+          properties: {
+            isPrimitiveType: {
+              type: "boolean",
+              dataTypeDisplayText: "boolean",
+              paramType: "Query",
+              title: "isPrimitiveType"
+            },
+            isAtEndpointLevel: {
+              type: "boolean",
+              dataTypeDisplayText: "boolean",
+              paramType: "Query",
+              title: "isAtEndpointLevel"
+            },
+            hasDiscriminator: {
+              type: "boolean",
+              dataTypeDisplayText: "boolean",
+              paramType: "Query",
+              title: "hasDiscriminator"
+            },
+            scalarValue: {
+              example: {
+                key1: false,
+                key2: false
+              },
+              oneOf: [
+                {
+                  type: "object",
+                  additionalProperties: {
+                    type: "number"
+                  }
+                },
+                {
+                  type: "object",
+                  additionalProperties: {
+                    type: "boolean"
+                  }
+                }
+              ],
+              dataTypeDisplayText: "OneOfScalarValue1",
+              paramType: "Body",
+              title: "scalarValue"
+            }
+          },
+          required: [
+            "isPrimitiveType",
+            "isAtEndpointLevel",
+            "hasDiscriminator",
+            "scalarValue"
+          ]
+        }
+      },
+      required: ["args"]
+    },
+    formData: {
+      args: {
+        isPrimitiveType: false,
+        isAtEndpointLevel: false,
+        hasDiscriminator: false,
+        scalarValue: {
+          key0: "a"
+        }
+      }
+    },
+    originalFormData: {
+      args: {
+        isPrimitiveType: false,
+        isAtEndpointLevel: false,
+        hasDiscriminator: false,
+        scalarValue: {
+          $$__case: 0,
+          $$__case_of: "oneOf",
+          value: {
+            key0: "a"
+          }
+        }
+      }
+    }
+  },
+  [ONEOF_SCALAR_ENDPOINTS_VARIABLES.SEND_ONEOF_OUTER_MAP]: {
+    schema: {
+      title: "Endpoint Arguments",
+      type: "object",
+      additionalProperties: false,
+      properties: {
+        args: {
+          id: "endpoint_7C26ABBCDB1F9",
+          title: "endpoint_7C26ABBCDB1F9",
+          type: "object",
+          properties: {
+            isPrimitiveType: {
+              type: "boolean",
+              dataTypeDisplayText: "boolean",
+              paramType: "Query",
+              title: "isPrimitiveType"
+            },
+            isAtEndpointLevel: {
+              type: "boolean",
+              dataTypeDisplayText: "boolean",
+              paramType: "Query",
+              title: "isAtEndpointLevel"
+            },
+            hasDiscriminator: {
+              type: "boolean",
+              dataTypeDisplayText: "boolean",
+              paramType: "Query",
+              title: "hasDiscriminator"
+            },
+            scalarValue: {
+              example: {
+                key1: false,
+                key2: 10.2
+              },
+              type: "object",
+              additionalProperties: {
+                oneOf: [
+                  {
+                    type: "number"
+                  },
+                  {
+                    type: "boolean"
+                  }
+                ]
+              },
+              dataTypeDisplayText: "Map<String, OneOfScalarValue2>",
+              paramType: "Body",
+              title: "scalarValue"
+            }
+          },
+          required: [
+            "isPrimitiveType",
+            "isAtEndpointLevel",
+            "hasDiscriminator",
+            "scalarValue"
+          ]
+        }
+      },
+      required: ["args"]
+    },
+    formData: {
+      args: {
+        isPrimitiveType: false,
+        isAtEndpointLevel: false,
+        hasDiscriminator: false,
+        scalarValue: {
+          key1: "a",
+          key2: 10.2,
+          key0: "a"
+        }
+      }
+    },
+    originalFormData: {
+      args: {
+        isPrimitiveType: false,
+        isAtEndpointLevel: false,
+        hasDiscriminator: false,
+        scalarValue: {
+          key1: {
+            $$__case: 0,
+            $$__case_of: "oneOf",
+            value: "a"
+          },
+          key2: {
+            $$__case: 0,
+            $$__case_of: "oneOf",
+            value: 10.2
+          },
+          key0: {
+            $$__case: 0,
+            $$__case_of: "oneOf",
+            value: "a"
+          }
+        }
+      }
+    }
+  },
+  [ONEOF_SCALAR_ENDPOINTS_VARIABLES.SEND_ONEOF_SIMPLE]: {
+    schema: {
+      title: "Endpoint Arguments",
+      type: "object",
+      additionalProperties: false,
+      properties: {
+        args: {
+          id: "endpoint_7C26ABBCDB1F9",
+          title: "endpoint_7C26ABBCDB1F9",
+          type: "object",
+          properties: {
+            isPrimitiveType: {
+              type: "boolean",
+              dataTypeDisplayText: "boolean",
+              paramType: "Query",
+              title: "isPrimitiveType"
+            },
+            isAtEndpointLevel: {
+              type: "boolean",
+              dataTypeDisplayText: "boolean",
+              paramType: "Query",
+              title: "isAtEndpointLevel"
+            },
+            hasDiscriminator: {
+              type: "boolean",
+              dataTypeDisplayText: "boolean",
+              paramType: "Query",
+              title: "hasDiscriminator"
+            },
+            scalarValue: {
+              example: true,
+              oneOf: [
+                {
+                  type: "number"
+                },
+                {
+                  type: "boolean"
+                }
+              ],
+              dataTypeDisplayText: "OneOfScalarValue2",
+              paramType: "Body",
+              title: "scalarValue"
+            }
+          },
+          required: [
+            "isPrimitiveType",
+            "isAtEndpointLevel",
+            "hasDiscriminator",
+            "scalarValue"
+          ]
+        }
+      },
+      required: ["args"]
+    },
+    formData: {
+      args: {
+        isPrimitiveType: false,
+        isAtEndpointLevel: false,
+        hasDiscriminator: false
+      }
+    },
+    originalFormData: {
+      args: {
+        isPrimitiveType: false,
+        isAtEndpointLevel: false,
+        hasDiscriminator: false,
+        scalarValue: {
+          $$__case: 0,
+          $$__case_of: "oneOf"
+        }
+      }
+    }
+  },
+  [ONEOF_SCALAR_ENDPOINTS_VARIABLES.SEND_MULTILEVEL_ONEOF]: {
+    schema: {
+      title: "Endpoint Arguments",
+      type: "object",
+      additionalProperties: false,
+      properties: {
+        args: {
+          id: "endpoint_7C26ABBCDB1F9",
+          title: "endpoint_7C26ABBCDB1F9",
+          type: "object",
+          properties: {
+            isPrimitiveType: {
+              type: "boolean",
+              dataTypeDisplayText: "boolean",
+              paramType: "Query",
+              title: "isPrimitiveType"
+            },
+            isAtEndpointLevel: {
+              type: "boolean",
+              dataTypeDisplayText: "boolean",
+              paramType: "Query",
+              title: "isAtEndpointLevel"
+            },
+            hasDiscriminator: {
+              type: "boolean",
+              dataTypeDisplayText: "boolean",
+              paramType: "Query",
+              title: "hasDiscriminator"
+            },
+            scalarValue: {
+              example: [true, false],
+              oneOf: [
+                {
+                  oneOf: [
+                    {
+                      oneOf: [
+                        {
+                          type: "array",
+                          items: {
+                            type: "number"
+                          }
+                        },
+                        {
+                          type: "array",
+                          items: {
+                            type: "boolean"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      type: "boolean"
+                    }
+                  ]
+                },
+                {
+                  type: "number"
+                }
+              ],
+              dataTypeDisplayText: "OneOfScalarValue3",
+              paramType: "Body",
+              title: "scalarValue"
+            }
+          },
+          required: [
+            "isPrimitiveType",
+            "isAtEndpointLevel",
+            "hasDiscriminator",
+            "scalarValue"
+          ]
+        }
+      },
+      required: ["args"]
+    },
+    formData: {
+      args: {
+        isPrimitiveType: false,
+        isAtEndpointLevel: false,
+        hasDiscriminator: false,
+        scalarValue: [null]
+      }
+    },
+    originalFormData: {
+      args: {
+        isPrimitiveType: false,
+        isAtEndpointLevel: false,
+        hasDiscriminator: false,
+        scalarValue: {
+          $$__case: 0,
+          value: {
+            $$__case: 0,
+            value: {
+              $$__case: 0,
+              $$__case_of: "oneOf",
+              value: []
+            }
+          }
+        }
+      }
+    }
+  },
+  [ONEOF_SCALAR_ENDPOINTS_VARIABLES.SEND_ONEOF_OUTER_ARRAY]: {
+    schema: {
+      title: "Endpoint Arguments",
+      type: "object",
+      additionalProperties: false,
+      properties: {
+        args: {
+          id: "endpoint_7C26ABBCDB1F9",
+          title: "endpoint_7C26ABBCDB1F9",
+          type: "object",
+          properties: {
+            isPrimitiveType: {
+              type: "boolean",
+              dataTypeDisplayText: "boolean",
+              paramType: "Query",
+              title: "isPrimitiveType"
+            },
+            isAtEndpointLevel: {
+              type: "boolean",
+              dataTypeDisplayText: "boolean",
+              paramType: "Query",
+              title: "isAtEndpointLevel"
+            },
+            hasDiscriminator: {
+              type: "boolean",
+              dataTypeDisplayText: "boolean",
+              paramType: "Query",
+              title: "hasDiscriminator"
+            },
+            scalarValue: {
+              type: "array",
+              items: {
+                oneOf: [
+                  {
+                    type: "number"
+                  },
+                  {
+                    type: "boolean"
+                  }
+                ],
+                dataTypeDisplayText: "OneOfScalarValue2"
+              },
+              dataTypeDisplayText: "List<OneOfScalarValue2>",
+              paramType: "Body",
+              title: "scalarValue"
+            }
+          },
+          required: [
+            "isPrimitiveType",
+            "isAtEndpointLevel",
+            "hasDiscriminator",
+            "scalarValue"
+          ]
+        }
+      },
+      required: ["args"]
+    },
+    formData: {
+      args: {
+        isPrimitiveType: false,
+        isAtEndpointLevel: false,
+        hasDiscriminator: false,
+        scalarValue: [null]
+      }
+    },
+    originalFormData: {
+      args: {
+        isPrimitiveType: false,
+        isAtEndpointLevel: false,
+        hasDiscriminator: false,
+        scalarValue: [
+          {
+            $$__case: 0,
+            $$__case_of: "oneOf"
+          }
+        ]
+      }
+    }
+  },
+  [ONEOF_SCALAR_ENDPOINTS_VARIABLES.SEND_ONEOF_INNER_MIXED_ARRAYS]: {
+    schema: {
+      title: "Endpoint Arguments",
+      type: "object",
+      additionalProperties: false,
+      properties: {
+        args: {
+          id: "endpoint_7C26ABBCDB1F9",
+          title: "endpoint_7C26ABBCDB1F9",
+          type: "object",
+          properties: {
+            isPrimitiveType: {
+              type: "boolean",
+              dataTypeDisplayText: "boolean",
+              paramType: "Query",
+              title: "isPrimitiveType"
+            },
+            isAtEndpointLevel: {
+              type: "boolean",
+              dataTypeDisplayText: "boolean",
+              paramType: "Query",
+              title: "isAtEndpointLevel"
+            },
+            hasDiscriminator: {
+              type: "boolean",
+              dataTypeDisplayText: "boolean",
+              paramType: "Query",
+              title: "hasDiscriminator"
+            },
+            scalarValue: {
+              oneOf: [
+                {
+                  type: "array",
+                  items: {
+                    type: "number"
+                  }
+                },
+                {
+                  type: "boolean"
+                }
+              ],
+              dataTypeDisplayText: "OneOfScalarValue5",
+              paramType: "Body",
+              title: "scalarValue"
+            }
+          },
+          required: [
+            "isPrimitiveType",
+            "isAtEndpointLevel",
+            "hasDiscriminator",
+            "scalarValue"
+          ]
+        }
+      },
+      required: ["args"]
+    },
+    formData: {
+      args: {
+        isPrimitiveType: false,
+        isAtEndpointLevel: false,
+        hasDiscriminator: false,
+        scalarValue: [null]
+      }
+    },
+    originalFormData: {
+      args: {
+        isPrimitiveType: false,
+        isAtEndpointLevel: false,
+        hasDiscriminator: false,
+        scalarValue: {
+          $$__case: 0,
+          $$__case_of: "oneOf",
+          value: [null]
+        }
+      }
+    }
+  },
+  [ONEOF_SCALAR_ENDPOINTS_VARIABLES.SEND_ONEOF_INNER_MIXED_MAP]: {
+    schema: {
+      title: "Endpoint Arguments",
+      type: "object",
+      additionalProperties: false,
+      properties: {
+        args: {
+          id: "endpoint_7C26ABBCDB1F9",
+          title: "endpoint_7C26ABBCDB1F9",
+          type: "object",
+          properties: {
+            isPrimitiveType: {
+              type: "boolean",
+              dataTypeDisplayText: "boolean",
+              paramType: "Query",
+              title: "isPrimitiveType"
+            },
+            isAtEndpointLevel: {
+              type: "boolean",
+              dataTypeDisplayText: "boolean",
+              paramType: "Query",
+              title: "isAtEndpointLevel"
+            },
+            hasDiscriminator: {
+              type: "boolean",
+              dataTypeDisplayText: "boolean",
+              paramType: "Query",
+              title: "hasDiscriminator"
+            },
+            scalarValue: {
+              oneOf: [
+                {
+                  type: "object",
+                  additionalProperties: {
+                    type: "number"
+                  }
+                },
+                {
+                  type: "boolean"
+                }
+              ],
+              dataTypeDisplayText: "OneOfScalarValue6",
+              paramType: "Body",
+              title: "scalarValue"
+            }
+          },
+          required: [
+            "isPrimitiveType",
+            "isAtEndpointLevel",
+            "hasDiscriminator",
+            "scalarValue"
+          ]
+        }
+      },
+      required: ["args"]
+    },
+    formData: {
+      args: {
+        isPrimitiveType: false,
+        isAtEndpointLevel: false,
+        hasDiscriminator: false,
+        scalarValue: {}
+      }
+    },
+    originalFormData: {
+      args: {
+        isPrimitiveType: false,
+        isAtEndpointLevel: false,
+        hasDiscriminator: false,
+        scalarValue: {
+          $$__case: 0,
+          $$__case_of: "oneOf",
+          value: {}
+        }
+      }
+    }
+  },
+  [ONEOF_SCALAR_ENDPOINTS_VARIABLES.SEND_ONEOF_CONTAINER_OF_ANYOF]: {
+    schema: {
+      title: "Endpoint Arguments",
+      type: "object",
+      additionalProperties: false,
+      properties: {
+        args: {
+          id: "endpoint_7C26ABBCDB1F9",
+          title: "endpoint_7C26ABBCDB1F9",
+          type: "object",
+          properties: {
+            isPrimitiveType: {
+              type: "boolean",
+              dataTypeDisplayText: "boolean",
+              paramType: "Query",
+              title: "isPrimitiveType"
+            },
+            isAtEndpointLevel: {
+              type: "boolean",
+              dataTypeDisplayText: "boolean",
+              paramType: "Query",
+              title: "isAtEndpointLevel"
+            },
+            hasDiscriminator: {
+              type: "boolean",
+              dataTypeDisplayText: "boolean",
+              paramType: "Query",
+              title: "hasDiscriminator"
+            },
+            scalarValue: {
+              oneOf: [
+                {
+                  type: "number"
+                },
+                {
+                  anyOf: [
+                    {
+                      type: "boolean"
+                    },
+                    {
+                      type: "integer"
+                    }
+                  ]
+                }
+              ],
+              dataTypeDisplayText: "OneOfScalarValue7",
+              paramType: "Body",
+              title: "scalarValue"
+            }
+          },
+          required: [
+            "isPrimitiveType",
+            "isAtEndpointLevel",
+            "hasDiscriminator",
+            "scalarValue"
+          ]
+        }
+      },
+      required: ["args"]
+    },
+    formData: {
+      args: {
+        isPrimitiveType: false,
+        isAtEndpointLevel: false,
+        hasDiscriminator: false
+      }
+    },
+    originalFormData: {
+      args: {
+        isPrimitiveType: false,
+        isAtEndpointLevel: false,
+        hasDiscriminator: false,
+        scalarValue: {
+          $$__case: 1,
+          $$__case_of: "oneOf",
+          value: {
+            $$__case: 1,
+            $$__case_of: "anyOf"
           }
         }
       }

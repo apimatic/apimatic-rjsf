@@ -18,7 +18,9 @@ import {
   GET_SELECTED_FORM_DATA_FIELD_PATH_DATA,
   GET_SELECTED_FORM_DATA_FIELD_PATH_VARIABLES,
   ONEOF_NONSCALAR_ENDPOINTS_VARIABLES,
-  ONEOF_NONSCALAR_ENDPOINTS_DATA
+  ONEOF_NONSCALAR_ENDPOINTS_DATA,
+  ONEOF_SCALAR_ENDPOINTS_VARIABLES,
+  ONEOF_SCALAR_ENDPOINTS_DATA
 } from "./validation_mock";
 
 const ajv = new Ajv({
@@ -49,18 +51,6 @@ export function getErrorObjects(errors) {
 
 describe("file: validationUtils_test.js", () => {
   describe("function: validateSchema", () => {
-    const {
-      SEND_MULTILEVEL_ONEOF,
-      SEND_ONEOF_OUTER_ARRAY,
-      SEND_ONEOF_SIMPLE,
-      SEND_ONEOF_INNER_MAP,
-      SEND_ONEOF_CONTAINER_OF_ANYOF,
-      SEND_ONEOF_INNER_ARRAY,
-      SEND_ONEOF_INNER_MIXED_ARRAYS,
-      SEND_ONEOF_INNER_MIXED_MAP,
-      SEND_ONEOF_OUTER_MAP
-    } = ONEOF_NONSCALAR_ENDPOINTS_VARIABLES;
-
     it("initial render", () => {
       const response = validateSchema({}, {}, {}, ajv);
       expect(response).equal(undefined);
@@ -81,129 +71,263 @@ describe("file: validationUtils_test.js", () => {
       expect(response).equal(undefined);
     });
 
-    it(SEND_MULTILEVEL_ONEOF, () => {
+    describe("OneOf non scalar endpoints", () => {
       const {
-        formData,
-        schema,
-        originalFormData
-      } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_MULTILEVEL_ONEOF];
-      validateSchema(schema, formData, originalFormData, ajv);
-      const { startsAt, endsAt } = getErrorObjects(ajv.errors);
+        SEND_MULTILEVEL_ONEOF,
+        SEND_ONEOF_OUTER_ARRAY,
+        SEND_ONEOF_SIMPLE,
+        SEND_ONEOF_INNER_MAP,
+        SEND_ONEOF_CONTAINER_OF_ANYOF,
+        SEND_ONEOF_INNER_ARRAY,
+        SEND_ONEOF_INNER_MIXED_ARRAYS,
+        SEND_ONEOF_INNER_MIXED_MAP,
+        SEND_ONEOF_OUTER_MAP
+      } = ONEOF_NONSCALAR_ENDPOINTS_VARIABLES;
 
-      expect(startsAt.keyword).equals("required");
-      expect(endsAt.keyword).equals("required");
+      it(SEND_MULTILEVEL_ONEOF, () => {
+        const {
+          formData,
+          schema,
+          originalFormData
+        } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_MULTILEVEL_ONEOF];
+        validateSchema(schema, formData, originalFormData, ajv);
+        const { startsAt, endsAt } = getErrorObjects(ajv.errors);
+
+        expect(startsAt.keyword).equals("required");
+        expect(endsAt.keyword).equals("required");
+      });
+
+      it(SEND_ONEOF_OUTER_ARRAY, () => {
+        const {
+          formData,
+          schema,
+          originalFormData
+        } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_OUTER_ARRAY];
+        validateSchema(schema, formData, originalFormData, ajv);
+        const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
+
+        expect(startsAt.keyword).equals("required");
+        expect(endsAt.keyword).equals("required");
+        expect(offerTeaBreak.keyword).equals("required");
+      });
+
+      it(SEND_ONEOF_SIMPLE, () => {
+        const {
+          formData,
+          schema,
+          originalFormData
+        } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_SIMPLE];
+        validateSchema(schema, formData, originalFormData, ajv);
+        const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
+
+        expect(startsAt.keyword).equals("required");
+        expect(endsAt.keyword).equals("required");
+        expect(offerTeaBreak.keyword).equals("required");
+      });
+
+      it(SEND_ONEOF_INNER_MAP, () => {
+        const {
+          formData,
+          schema,
+          originalFormData
+        } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_MAP];
+        validateSchema(schema, formData, originalFormData, ajv);
+        const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
+
+        expect(startsAt.keyword).equals("required");
+        expect(endsAt.keyword).equals("required");
+        expect(offerTeaBreak.keyword).equals("required");
+      });
+
+      it(SEND_ONEOF_INNER_MIXED_ARRAYS, () => {
+        const {
+          formData,
+          schema,
+          originalFormData
+        } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_MIXED_ARRAYS];
+        validateSchema(schema, formData, originalFormData, ajv);
+        const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
+
+        expect(startsAt.keyword).equals("required");
+        expect(endsAt.keyword).equals("required");
+        expect(offerTeaBreak.keyword).equals("required");
+      });
+
+      it(SEND_ONEOF_OUTER_MAP, () => {
+        const {
+          formData,
+          schema,
+          originalFormData
+        } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_OUTER_MAP];
+        validateSchema(schema, formData, originalFormData, ajv);
+        const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
+
+        expect(startsAt.keyword).equals("required");
+        expect(endsAt.keyword).equals("required");
+        expect(offerTeaBreak.keyword).equals("required");
+      });
+
+      it(SEND_ONEOF_INNER_ARRAY, () => {
+        const {
+          formData,
+          schema,
+          originalFormData
+        } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_ARRAY];
+        validateSchema(schema, formData, originalFormData, ajv);
+        const { startsAt, endsAt, offerDinner } = getErrorObjects(ajv.errors);
+
+        expect(startsAt.keyword).equals("required");
+        expect(endsAt.keyword).equals("required");
+        expect(offerDinner.keyword).equals("required");
+      });
+
+      it(SEND_ONEOF_INNER_MIXED_MAP, () => {
+        const {
+          formData,
+          schema,
+          originalFormData
+        } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_MIXED_MAP];
+        validateSchema(schema, formData, originalFormData, ajv);
+        const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
+
+        expect(startsAt.keyword).equals("required");
+        expect(endsAt.keyword).equals("required");
+        expect(offerTeaBreak.keyword).equals("required");
+      });
+
+      it(SEND_ONEOF_CONTAINER_OF_ANYOF, () => {
+        const {
+          formData,
+          schema,
+          originalFormData
+        } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_CONTAINER_OF_ANYOF];
+        validateSchema(schema, formData, originalFormData, ajv);
+        const { startsAt, endsAt, offerLunch } = getErrorObjects(ajv.errors);
+
+        expect(startsAt.keyword).equals("required");
+        expect(endsAt.keyword).equals("required");
+        expect(offerLunch.keyword).equals("required");
+      });
     });
 
-    it(SEND_ONEOF_OUTER_ARRAY, () => {
+    describe("OneOf scalar endpoints", () => {
       const {
-        formData,
-        schema,
-        originalFormData
-      } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_OUTER_ARRAY];
-      validateSchema(schema, formData, originalFormData, ajv);
-      const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
+        SEND_MULTILEVEL_ONEOF,
+        SEND_ONEOF_OUTER_ARRAY,
+        SEND_ONEOF_SIMPLE,
+        SEND_ONEOF_INNER_MAP,
+        SEND_ONEOF_CONTAINER_OF_ANYOF,
+        SEND_ONEOF_INNER_ARRAY,
+        SEND_ONEOF_INNER_MIXED_ARRAYS,
+        SEND_ONEOF_INNER_MIXED_MAP,
+        SEND_ONEOF_OUTER_MAP
+      } = ONEOF_SCALAR_ENDPOINTS_VARIABLES;
 
-      expect(startsAt.keyword).equals("required");
-      expect(endsAt.keyword).equals("required");
-      expect(offerTeaBreak.keyword).equals("required");
-    });
+      it(SEND_MULTILEVEL_ONEOF, () => {
+        const {
+          formData,
+          schema,
+          originalFormData
+        } = ONEOF_SCALAR_ENDPOINTS_DATA[SEND_MULTILEVEL_ONEOF];
+        validateSchema(schema, formData, originalFormData, ajv);
+        const errors = getErrorObjects(ajv.errors);
 
-    it(SEND_ONEOF_SIMPLE, () => {
-      const {
-        formData,
-        schema,
-        originalFormData
-      } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_SIMPLE];
-      validateSchema(schema, formData, originalFormData, ajv);
-      const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
+        expect(errors["scalarValue[0]"].keyword).equals("type");
+      });
 
-      expect(startsAt.keyword).equals("required");
-      expect(endsAt.keyword).equals("required");
-      expect(offerTeaBreak.keyword).equals("required");
-    });
+      it(SEND_ONEOF_OUTER_ARRAY, () => {
+        const {
+          formData,
+          schema,
+          originalFormData
+        } = ONEOF_SCALAR_ENDPOINTS_DATA[SEND_ONEOF_OUTER_ARRAY];
+        validateSchema(schema, formData, originalFormData, ajv);
+        const errors = getErrorObjects(ajv.errors);
 
-    it(SEND_ONEOF_INNER_MAP, () => {
-      const {
-        formData,
-        schema,
-        originalFormData
-      } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_MAP];
-      validateSchema(schema, formData, originalFormData, ajv);
-      const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
+        expect(errors["scalarValue[0]"].keyword).equals("type");
+      });
 
-      expect(startsAt.keyword).equals("required");
-      expect(endsAt.keyword).equals("required");
-      expect(offerTeaBreak.keyword).equals("required");
-    });
+      it(SEND_ONEOF_SIMPLE, () => {
+        const {
+          formData,
+          schema,
+          originalFormData
+        } = ONEOF_SCALAR_ENDPOINTS_DATA[SEND_ONEOF_SIMPLE];
+        validateSchema(schema, formData, originalFormData, ajv);
+        const errors = getErrorObjects(ajv.errors);
 
-    it(SEND_ONEOF_INNER_MIXED_ARRAYS, () => {
-      const {
-        formData,
-        schema,
-        originalFormData
-      } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_MIXED_ARRAYS];
-      validateSchema(schema, formData, originalFormData, ajv);
-      const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
+        expect(errors["scalarValue"].keyword).equals("required");
+      });
 
-      expect(startsAt.keyword).equals("required");
-      expect(endsAt.keyword).equals("required");
-      expect(offerTeaBreak.keyword).equals("required");
-    });
+      it(SEND_ONEOF_INNER_MAP, () => {
+        const {
+          formData,
+          schema,
+          originalFormData
+        } = ONEOF_SCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_MAP];
+        validateSchema(schema, formData, originalFormData, ajv);
+        const errors = getErrorObjects(ajv.errors);
+        expect(errors["scalarValue['key0']"].keyword).equals("type");
+      });
 
-    it(SEND_ONEOF_OUTER_MAP, () => {
-      const {
-        formData,
-        schema,
-        originalFormData
-      } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_OUTER_MAP];
-      validateSchema(schema, formData, originalFormData, ajv);
-      const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
+      it(SEND_ONEOF_INNER_MIXED_ARRAYS, () => {
+        const {
+          formData,
+          schema,
+          originalFormData
+        } = ONEOF_SCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_MIXED_ARRAYS];
+        validateSchema(schema, formData, originalFormData, ajv);
+        const errors = getErrorObjects(ajv.errors);
+        expect(errors["scalarValue[0]"].keyword).equals("type");
+      });
 
-      expect(startsAt.keyword).equals("required");
-      expect(endsAt.keyword).equals("required");
-      expect(offerTeaBreak.keyword).equals("required");
-    });
+      it(SEND_ONEOF_OUTER_MAP, () => {
+        const {
+          formData,
+          schema,
+          originalFormData
+        } = ONEOF_SCALAR_ENDPOINTS_DATA[SEND_ONEOF_OUTER_MAP];
+        validateSchema(schema, formData, originalFormData, ajv);
+        const { key1 } = getErrorObjects(ajv.errors);
 
-    it(SEND_ONEOF_INNER_ARRAY, () => {
-      const {
-        formData,
-        schema,
-        originalFormData
-      } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_ARRAY];
-      validateSchema(schema, formData, originalFormData, ajv);
-      const { startsAt, endsAt, offerDinner } = getErrorObjects(ajv.errors);
+        expect(key1.keyword).equals("type");
+      });
 
-      expect(startsAt.keyword).equals("required");
-      expect(endsAt.keyword).equals("required");
-      expect(offerDinner.keyword).equals("required");
-    });
+      it(SEND_ONEOF_INNER_ARRAY, () => {
+        const {
+          formData,
+          schema,
+          originalFormData
+        } = ONEOF_SCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_ARRAY];
+        validateSchema(schema, formData, originalFormData, ajv);
+        const errors = getErrorObjects(ajv.errors);
 
-    it(SEND_ONEOF_INNER_MIXED_MAP, () => {
-      const {
-        formData,
-        schema,
-        originalFormData
-      } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_MIXED_MAP];
-      validateSchema(schema, formData, originalFormData, ajv);
-      const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
+        expect(errors["scalarValue[0]"].keyword).equals("type");
+      });
 
-      expect(startsAt.keyword).equals("required");
-      expect(endsAt.keyword).equals("required");
-      expect(offerTeaBreak.keyword).equals("required");
-    });
+      it(SEND_ONEOF_INNER_MIXED_MAP, () => {
+        const {
+          formData,
+          schema,
+          originalFormData
+        } = ONEOF_SCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_MIXED_MAP];
+        validateSchema(schema, formData, originalFormData, ajv);
+        const errors = getErrorObjects(ajv.errors);
 
-    it(SEND_ONEOF_CONTAINER_OF_ANYOF, () => {
-      const {
-        formData,
-        schema,
-        originalFormData
-      } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_CONTAINER_OF_ANYOF];
-      validateSchema(schema, formData, originalFormData, ajv);
-      const { startsAt, endsAt, offerLunch } = getErrorObjects(ajv.errors);
+        expect(errors).deep.equals({});
+      });
 
-      expect(startsAt.keyword).equals("required");
-      expect(endsAt.keyword).equals("required");
-      expect(offerLunch.keyword).equals("required");
+      it(SEND_ONEOF_CONTAINER_OF_ANYOF, () => {
+        const {
+          formData,
+          schema,
+          originalFormData
+        } = ONEOF_SCALAR_ENDPOINTS_DATA[SEND_ONEOF_CONTAINER_OF_ANYOF];
+        validateSchema(schema, formData, originalFormData, ajv);
+        const { scalarValue } = getErrorObjects(ajv.errors);
+
+        expect(scalarValue.keyword).equals("required");
+      });
     });
   });
 
