@@ -17,6 +17,7 @@ import { ContextProvider } from "./context";
 export default class Form extends Component {
   static defaultProps = {
     uiSchema: {},
+    validateOneOf: true,
     noValidate: false,
     liveValidate: false,
     safeRenderCompletion: false,
@@ -68,7 +69,8 @@ export default class Form extends Component {
       formData,
       edit,
       errors,
-      errorSchema
+      errorSchema,
+      validateOneOf: state.validateOneOf
     };
   }
 
@@ -78,12 +80,16 @@ export default class Form extends Component {
 
   validate(formData, schema, originalFormData) {
     const { validate, transformErrors } = this.props;
+    const { validateOneOf } = this.state || {};
+
     return validateFormData(
       formData,
       schema || this.props.schema,
       validate,
       transformErrors,
-      originalFormData
+      originalFormData,
+      validateOneOf,
+      this.setValidateOneOf
     );
   }
 
@@ -187,6 +193,13 @@ export default class Form extends Component {
     }));
   };
 
+  setValidateOneOf = validateOneOf => {
+    this.setState(st => ({
+      ...st,
+      validateOneOf
+    }));
+  };
+
   render() {
     const {
       children,
@@ -218,7 +231,12 @@ export default class Form extends Component {
     const _SchemaField = registry.fields.SchemaField;
 
     return (
-      <ContextProvider value={{ markdownRenderer, onRouteChange }}>
+      <ContextProvider
+        value={{
+          markdownRenderer,
+          onRouteChange
+        }}
+      >
         <form
           className={className ? className : "rjsf"}
           id={id}

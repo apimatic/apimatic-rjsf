@@ -258,7 +258,7 @@ function modifyOther({
   }
 }
 
-export const cb = rawFormData => (...args) => {
+export const cb = (rawFormData, checkForOneOrAnyOf = () => {}) => (...args) => {
   const [
     node,
     jsonPointer,
@@ -308,18 +308,34 @@ export const cb = rawFormData => (...args) => {
         formDataFieldValue
       });
     }
+
+    checkForOneOrAnyOf(true);
   }
 };
 
-export function validateSchema(schema, formData, originalFormData, ajv) {
+export function validateSchema(
+  schema,
+  formData,
+  originalFormData,
+  ajv,
+  validateOneOf,
+  setValidateOneOf
+) {
   try {
+    let isOneOrAnyOf = false;
     const clonedSchema = lodashCloneDeep(schema);
+    const checkForOneOrAnyOf = () => {
+      isOneOrAnyOf = true;
+    };
 
-    traverse(clonedSchema, {
-      allKeys: true,
-      cb: cb(originalFormData)
-    });
+    if (validateOneOf || validateOneOf === undefined) {
+      traverse(clonedSchema, {
+        allKeys: true,
+        cb: cb(originalFormData, checkForOneOrAnyOf)
+      });
+    }
 
+    setValidateOneOf(isOneOrAnyOf);
     ajv.validate(clonedSchema, formData);
   } catch (ex) {
     console.log("Exception in validation", ex);
