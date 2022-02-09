@@ -830,63 +830,57 @@ module.exports = {
           //     }
           //   ]
           // }
-          multiLevelSchema: {
-            oneOf: [
-              {
-                oneOf: [
-                  {
-                    oneOf: [
-                      {
-                        type: "array",
-                        items: {
-                          oneOf: [
-                            {
-                              oneOf: [
-                                {
-                                  oneOf: [
-                                    {
-                                      type: "array",
-                                      items: {
-                                        type: "number"
-                                      }
-                                    },
-                                    {
-                                      type: "array",
-                                      items: {
-                                        type: "boolean"
-                                      }
-                                    }
-                                  ]
-                                },
-                                {
-                                  type: "boolean"
-                                }
-                              ]
-                            },
-                            {
-                              type: "number"
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        type: "array",
-                        items: {
-                          type: "boolean"
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    type: "boolean"
-                  }
-                ]
-              },
-              {
-                type: "number"
-              }
-            ]
-          },
+          // multiLevelSchema: {
+          //   oneOf: [{
+          //       oneOf: [{
+          //           oneOf: [{
+          //               type: "array",
+          //               items: {
+          //                 oneOf: [{
+          //                     oneOf: [{
+          //                         oneOf: [{
+          //                             type: "array",
+          //                             items: {
+          //                               type: "number"
+          //                             }
+          //                           },
+          //                           {
+          //                             type: "array",
+          //                             items: {
+          //                               type: "boolean"
+          //                             }
+          //                           }
+          //                         ]
+          //                       },
+          //                       {
+          //                         type: "boolean"
+          //                       }
+          //                     ]
+          //                   },
+          //                   {
+          //                     type: "number"
+          //                   }
+          //                 ]
+          //               }
+          //             },
+          //             {
+          //               type: "array",
+          //               items: {
+          //                 type: "boolean"
+          //               }
+          //             }
+          //           ]
+          //         },
+          //         {
+          //           type: "boolean"
+          //         }
+          //       ]
+          //     },
+          //     {
+          //       type: "number"
+          //     }
+          //   ]
+          // },
           // send_oneof_inner_mapOfArray: {
           //   oneOf: [{
           //       type: "object",
@@ -1081,18 +1075,90 @@ module.exports = {
           //     ]
           //   }
           // },
-          oneof_outer_map: {
-            type: "object",
-            additionalProperties: {
-              oneOf: [
-                {
-                  type: "number"
+          // oneof_outer_map: {
+          //   type: "object",
+          //   additionalProperties: {
+          //     oneOf: [
+          //       {
+          //         type: "number"
+          //       },
+          //       {
+          //         type: "boolean"
+          //       }
+          //     ]
+          //   }
+          // }
+          session: {
+            description: "Course session",
+            example: {
+              startsAt: "startsAtDummy",
+              endsAt: "endsAtDummy",
+              offerDinner: true
+            },
+            oneOf: [
+              {
+                id: "Morning",
+                title: "Morning",
+                description: "Course morning session",
+                type: "object",
+                properties: {
+                  startsAt: {
+                    description: "Session start time",
+                    type: "string"
+                  },
+                  endsAt: {
+                    description: "Session end time",
+                    type: "string"
+                  },
+                  offerTeaBreak: {
+                    description: "Offer tea break during session",
+                    type: "boolean"
+                  }
                 },
-                {
-                  type: "boolean"
-                }
-              ]
-            }
+                required: ["startsAt", "endsAt", "offerTeaBreak"]
+              },
+              {
+                id: "Evening",
+                title: "Evening",
+                description: "Course evening session",
+                type: "object",
+                properties: {
+                  startsAt: {
+                    description: "Session start time",
+                    type: "string"
+                  },
+                  endsAt: {
+                    description: "Session end time",
+                    type: "string"
+                  },
+                  offerDinner: {
+                    description: "Offer dinner during session",
+                    type: "boolean"
+                  }
+                },
+                required: ["startsAt", "endsAt", "offerDinner"]
+              }
+            ],
+            dataTypeDisplayText: "SendOneofSimpleSession",
+            dataTypeLink: "/java/models/containers/send-oneof-simple-session",
+            paramType: "Body",
+            title: "session",
+            typeCombinatorTypes: [
+              {
+                DataType: "Morning",
+                LinkTo: "$m/Morning",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "Evening",
+                LinkTo: "$m/Evening",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              }
+            ]
           }
         },
         required: [
