@@ -538,7 +538,8 @@ class ArrayField extends Component {
       onBlur,
       onFocus,
       schemaIndex,
-      fromDiscriminator
+      fromDiscriminator,
+      typeCombinatorTypes
     } = this.props;
     const { ArrayFieldTemplate, definitions, fields } = registry;
     const { TitleField, DescriptionField } = fields;
@@ -579,7 +580,8 @@ class ArrayField extends Component {
           autofocus: autofocus && index === 0,
           onBlur,
           onFocus,
-          schemaIndex
+          schemaIndex,
+          typeCombinatorTypes
         });
       }),
       className: `field field-array field-array-of-${itemsSchema.type} ${
@@ -706,7 +708,8 @@ class ArrayField extends Component {
       autofocus,
       registry = getDefaultRegistry(),
       onBlur,
-      onFocus
+      onFocus,
+      typeCombinatorTypes
     } = this.props;
     const title =
       schema.title === undefined
@@ -772,7 +775,8 @@ class ArrayField extends Component {
           itemErrorSchema,
           autofocus: autofocus && index === 0,
           onBlur,
-          onFocus
+          onFocus,
+          typeCombinatorTypes
         });
       }),
       onAddClick: this.onAddClick,
@@ -806,7 +810,8 @@ class ArrayField extends Component {
       autofocus,
       onBlur,
       onFocus,
-      schemaIndex
+      schemaIndex,
+      typeCombinatorTypes
     } = props;
     const {
       disabled,
@@ -848,6 +853,7 @@ class ArrayField extends Component {
           disabled={this.props.disabled}
           readonly={this.props.readonly}
           autofocus={autofocus}
+          typeCombinatorTypes={typeCombinatorTypes}
         />
       ),
       className: "array-item",
