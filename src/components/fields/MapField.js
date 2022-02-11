@@ -461,7 +461,8 @@ class MapField extends Component {
       onFocus,
       depth,
       isEven,
-      fromDiscriminator
+      fromDiscriminator,
+      typeCombinatorTypes
     } = this.props;
     const title = schema.title || name;
     const { definitions, fields } = registry;
@@ -502,7 +503,8 @@ class MapField extends Component {
           onFocus,
           depth,
           isEven,
-          collapse
+          collapse,
+          typeCombinatorTypes
         });
       }),
       className: `field field-array field-array-of-${addPropsSchema.type}  ${
@@ -547,7 +549,8 @@ class MapField extends Component {
       onBlur,
       onFocus,
       depth,
-      isEven
+      isEven,
+      typeCombinatorTypes
     } = props;
     const { disabled, readonly, uiSchema, registry } = this.props;
     const {
@@ -588,6 +591,7 @@ class MapField extends Component {
           autofocus={autofocus}
           depth={depth + 1}
           isEven={isEven}
+          typeCombinatorTypes={typeCombinatorTypes}
         />
       ),
       className: "map-item",

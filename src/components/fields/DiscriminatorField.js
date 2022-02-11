@@ -132,7 +132,8 @@ class DiscriminatorField extends React.Component {
       onBlur,
       onFocus,
       registry,
-      uiSchema
+      uiSchema,
+      typeCombinatorTypes
     } = this.props;
     const _SchemaField = registry.fields.SchemaField;
     const { selectedSchema } = this.state;
@@ -162,12 +163,21 @@ class DiscriminatorField extends React.Component {
         )} depth_${discriminatorChildFieldsetDepth}`
       : "discriminator-field-child-empty";
 
+    let typeCombinatorSubTypes;
+    if (typeCombinatorTypes) {
+      const selectedSchemaTypeCombinator =
+        typeCombinatorTypes[selectedSchema.index];
+      typeCombinatorSubTypes = selectedSchemaTypeCombinator.ContainsSubTypes
+        ? selectedSchemaTypeCombinator.SubTypes
+        : null;
+    }
+
     return (
       <fieldset className={prefixClass(`field  ${discriminatorClassName}`)}>
         <React.Fragment>
           {this.state && formData ? (
             <_SchemaField
-              schema={this.state.selectedSchema.schema}
+              schema={selectedSchema.schema}
               uiSchema={uiSchema}
               errorSchema={errorSchema}
               idSchema={idSchema}
@@ -178,13 +188,14 @@ class DiscriminatorField extends React.Component {
               onFocus={onFocus}
               registry={registry}
               disabled={disabled}
-              schemaIndex={this.state.selectedSchema.index}
+              schemaIndex={selectedSchema.index}
               depth={childDepth}
               isEven={childDepth % 2 === 0}
               // Flag for detecting discriminator in child level
               fromDiscriminator={true}
               // Title will set in boolean fields
               anyOfTitle={this.props.schema.title || this.props.anyOfTitle}
+              typeCombinatorTypes={typeCombinatorSubTypes}
             />
           ) : (
             <p>schema or formdata not available</p>
@@ -217,14 +228,14 @@ class DiscriminatorField extends React.Component {
   };
 
   render() {
-    const { schema, fromMap } = this.props;
+    const { schema, fromMap, typeCombinatorTypes } = this.props;
     const { selectedSchema } = this.state;
     const multipleSchema = schema.oneOf || schema.anyOf;
 
     const selectOptions = multipleSchema.reduce((optionList, schema, index) => {
-      const label = schema.title
-        ? schema.title
-        : getMultipleLabel(schema) || schema.type;
+      let type = typeCombinatorTypes && typeCombinatorTypes[index].DataType;
+
+      const label = type ? type : getMultipleLabel(schema) || schema.type;
 
       optionList.push({
         label,

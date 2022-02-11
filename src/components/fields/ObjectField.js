@@ -380,7 +380,8 @@ class ObjectField extends Component {
       isEven,
       expandAllLevel,
       expandAll,
-      fromDiscriminator
+      fromDiscriminator,
+      typeCombinatorTypes
     } = this.props;
 
     const { definitions, fields, formContext } = registry;
@@ -419,7 +420,8 @@ class ObjectField extends Component {
       isEven,
       expandAllLevel,
       expandAll,
-      fromDiscriminator
+      fromDiscriminator,
+      typeCombinatorTypes
     };
 
     if (schema.properties && Object.keys(schema.properties).length > 0) {
@@ -543,7 +545,7 @@ class ObjectField extends Component {
   }
 
   renderObject(templateProps) {
-    const { name, SchemaField } = templateProps;
+    const { name, SchemaField, typeCombinatorTypes } = templateProps;
     let orderedProperties;
 
     try {
@@ -602,6 +604,7 @@ class ObjectField extends Component {
               disabled={templateProps.disabled || this.shouldDisable()}
               readonly={templateProps.readonly}
               disableFormJsonEdit={templateProps.disableFormJsonEdit}
+              typeCombinatorTypes={typeCombinatorTypes}
             />
           ),
           name,

@@ -195,7 +195,8 @@ function SchemaFieldRender(props) {
     required,
     schemaIndex,
     registry = getDefaultRegistry(),
-    anyOfTitle
+    anyOfTitle,
+    typeCombinatorTypes
   } = props;
   const {
     definitions,
@@ -209,6 +210,8 @@ function SchemaFieldRender(props) {
   const disabled = Boolean(props.disabled || uiSchema["ui:disabled"]);
   const readonly = Boolean(props.readonly || uiSchema["ui:readonly"]);
   const autofocus = Boolean(props.autofocus || uiSchema["ui:autofocus"]);
+  const _typeCombinatorTypes =
+    typeCombinatorTypes || schema.typeCombinatorTypes || null;
 
   if (Object.keys(schema).length === 0) {
     // See #312: Ensure compatibility with old versions of React.
@@ -246,6 +249,7 @@ function SchemaFieldRender(props) {
       errorSchema={fieldErrorSchema}
       formContext={formContext}
       schemaIndex={schemaIndex}
+      typeCombinatorTypes={_typeCombinatorTypes}
     />
   );
 
