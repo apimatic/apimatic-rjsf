@@ -52,22 +52,22 @@ export function getErrorObjects(errors) {
 describe("file: validationUtils_test.js", () => {
   describe("function: validateSchema", () => {
     it("initial render", () => {
-      const response = validateSchema({}, {}, {}, ajv);
+      const response = validateSchema({}, {}, {}, ajv, true, () => {});
       expect(response).equal(undefined);
     });
 
     it("invalid schema", () => {
-      const response = validateSchema(undefined, {}, {}, ajv);
+      const response = validateSchema(undefined, {}, {}, ajv, true, () => {});
       expect(response).equal(undefined);
     });
 
     it("invalid form data", () => {
-      const response = validateSchema({}, undefined, {}, ajv);
+      const response = validateSchema({}, undefined, {}, ajv, true, () => {});
       expect(response).equal(undefined);
     });
 
     it("invalid original form data", () => {
-      const response = validateSchema({}, {}, undefined, ajv);
+      const response = validateSchema({}, {}, undefined, ajv, true, () => {});
       expect(response).equal(undefined);
     });
 
@@ -90,7 +90,7 @@ describe("file: validationUtils_test.js", () => {
           schema,
           originalFormData
         } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_MULTILEVEL_ONEOF];
-        validateSchema(schema, formData, originalFormData, ajv);
+        validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const { startsAt, endsAt } = getErrorObjects(ajv.errors);
 
         expect(startsAt.keyword).equals("required");
@@ -103,7 +103,7 @@ describe("file: validationUtils_test.js", () => {
           schema,
           originalFormData
         } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_OUTER_ARRAY];
-        validateSchema(schema, formData, originalFormData, ajv);
+        validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
 
         expect(startsAt.keyword).equals("required");
@@ -117,7 +117,7 @@ describe("file: validationUtils_test.js", () => {
           schema,
           originalFormData
         } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_SIMPLE];
-        validateSchema(schema, formData, originalFormData, ajv);
+        validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
 
         expect(startsAt.keyword).equals("required");
@@ -131,7 +131,7 @@ describe("file: validationUtils_test.js", () => {
           schema,
           originalFormData
         } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_MAP];
-        validateSchema(schema, formData, originalFormData, ajv);
+        validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
 
         expect(startsAt.keyword).equals("required");
@@ -145,7 +145,7 @@ describe("file: validationUtils_test.js", () => {
           schema,
           originalFormData
         } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_MIXED_ARRAYS];
-        validateSchema(schema, formData, originalFormData, ajv);
+        validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
 
         expect(startsAt.keyword).equals("required");
@@ -159,7 +159,7 @@ describe("file: validationUtils_test.js", () => {
           schema,
           originalFormData
         } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_OUTER_MAP];
-        validateSchema(schema, formData, originalFormData, ajv);
+        validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
 
         expect(startsAt.keyword).equals("required");
@@ -173,7 +173,7 @@ describe("file: validationUtils_test.js", () => {
           schema,
           originalFormData
         } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_ARRAY];
-        validateSchema(schema, formData, originalFormData, ajv);
+        validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const { startsAt, endsAt, offerDinner } = getErrorObjects(ajv.errors);
 
         expect(startsAt.keyword).equals("required");
@@ -187,7 +187,7 @@ describe("file: validationUtils_test.js", () => {
           schema,
           originalFormData
         } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_MIXED_MAP];
-        validateSchema(schema, formData, originalFormData, ajv);
+        validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
 
         expect(startsAt.keyword).equals("required");
@@ -201,7 +201,7 @@ describe("file: validationUtils_test.js", () => {
           schema,
           originalFormData
         } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_CONTAINER_OF_ANYOF];
-        validateSchema(schema, formData, originalFormData, ajv);
+        validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const { startsAt, endsAt, offerLunch } = getErrorObjects(ajv.errors);
 
         expect(startsAt.keyword).equals("required");
@@ -229,7 +229,7 @@ describe("file: validationUtils_test.js", () => {
           schema,
           originalFormData
         } = ONEOF_SCALAR_ENDPOINTS_DATA[SEND_MULTILEVEL_ONEOF];
-        validateSchema(schema, formData, originalFormData, ajv);
+        validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const errors = getErrorObjects(ajv.errors);
 
         expect(errors["scalarValue[0]"].keyword).equals("type");
@@ -241,7 +241,7 @@ describe("file: validationUtils_test.js", () => {
           schema,
           originalFormData
         } = ONEOF_SCALAR_ENDPOINTS_DATA[SEND_ONEOF_OUTER_ARRAY];
-        validateSchema(schema, formData, originalFormData, ajv);
+        validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const errors = getErrorObjects(ajv.errors);
 
         expect(errors["scalarValue[0]"].keyword).equals("type");
@@ -253,7 +253,7 @@ describe("file: validationUtils_test.js", () => {
           schema,
           originalFormData
         } = ONEOF_SCALAR_ENDPOINTS_DATA[SEND_ONEOF_SIMPLE];
-        validateSchema(schema, formData, originalFormData, ajv);
+        validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const errors = getErrorObjects(ajv.errors);
 
         expect(errors["scalarValue"].keyword).equals("required");
@@ -265,7 +265,7 @@ describe("file: validationUtils_test.js", () => {
           schema,
           originalFormData
         } = ONEOF_SCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_MAP];
-        validateSchema(schema, formData, originalFormData, ajv);
+        validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const errors = getErrorObjects(ajv.errors);
         expect(errors["scalarValue['key0']"].keyword).equals("type");
       });
@@ -276,7 +276,7 @@ describe("file: validationUtils_test.js", () => {
           schema,
           originalFormData
         } = ONEOF_SCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_MIXED_ARRAYS];
-        validateSchema(schema, formData, originalFormData, ajv);
+        validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const errors = getErrorObjects(ajv.errors);
         expect(errors["scalarValue[0]"].keyword).equals("type");
       });
@@ -287,7 +287,7 @@ describe("file: validationUtils_test.js", () => {
           schema,
           originalFormData
         } = ONEOF_SCALAR_ENDPOINTS_DATA[SEND_ONEOF_OUTER_MAP];
-        validateSchema(schema, formData, originalFormData, ajv);
+        validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const { key1 } = getErrorObjects(ajv.errors);
 
         expect(key1.keyword).equals("type");
@@ -299,7 +299,7 @@ describe("file: validationUtils_test.js", () => {
           schema,
           originalFormData
         } = ONEOF_SCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_ARRAY];
-        validateSchema(schema, formData, originalFormData, ajv);
+        validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const errors = getErrorObjects(ajv.errors);
 
         expect(errors["scalarValue[0]"].keyword).equals("type");
@@ -311,7 +311,7 @@ describe("file: validationUtils_test.js", () => {
           schema,
           originalFormData
         } = ONEOF_SCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_MIXED_MAP];
-        validateSchema(schema, formData, originalFormData, ajv);
+        validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const errors = getErrorObjects(ajv.errors);
 
         expect(errors).deep.equals({});
@@ -323,7 +323,7 @@ describe("file: validationUtils_test.js", () => {
           schema,
           originalFormData
         } = ONEOF_SCALAR_ENDPOINTS_DATA[SEND_ONEOF_CONTAINER_OF_ANYOF];
-        validateSchema(schema, formData, originalFormData, ajv);
+        validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const { scalarValue } = getErrorObjects(ajv.errors);
 
         expect(scalarValue.keyword).equals("required");
