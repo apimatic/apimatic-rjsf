@@ -1035,6 +1035,148 @@ module.exports = {
           //     }
           //   ]
           // },
+          param10: {
+            description: "",
+            example: [true, 2],
+            type: "array",
+            items: {
+              oneOf: [
+                {
+                  "x-is-dynamic": true,
+                  example: "2",
+                  oneOf: [
+                    {
+                      example: "hello",
+                      type: "string"
+                    },
+                    {
+                      example: 3,
+                      type: "integer"
+                    }
+                  ]
+                },
+                {
+                  example: true,
+                  type: "boolean"
+                },
+                {
+                  "x-is-dynamic": true,
+                  example: {
+                    name: "puppy",
+                    fangs: "yes",
+                    pet_type: "Dog"
+                  },
+                  oneOf: [
+                    {
+                      id: "Cat",
+                      title: "Cat",
+                      example: {
+                        name: "hosico",
+                        color: "yellow",
+                        pet_type: "Cat"
+                      },
+                      type: "object",
+                      properties: {
+                        name: {
+                          type: "string"
+                        },
+                        color: {
+                          type: "string"
+                        },
+                        pet_type: {
+                          type: "string"
+                        }
+                      },
+                      required: ["name", "color"]
+                    },
+                    {
+                      id: "Dog",
+                      example: {
+                        name: "puppy",
+                        fangs: "yes",
+                        pet_type: "Dog"
+                      },
+                      type: "object",
+                      properties: {
+                        name: {
+                          type: "string"
+                        },
+                        fangs: {
+                          type: "string"
+                        },
+                        pet_type: {
+                          type: "string"
+                        }
+                      },
+                      required: ["name", "fangs"]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+          // "Outer Array": {
+          //   "description": "Course session",
+          //   "example": [{
+          //     "startsAt": "startsAtDummy",
+          //     "endsAt": "endsAtDummy",
+          //     "offerDinner": true
+          //   }],
+          //   "type": "array",
+          //   "items": {
+          //     "oneOf": [{
+          //         "id": "Morning",
+          //         "title": "Morning",
+          //         "description": "Course morning session",
+          //         "type": "object",
+          //         "properties": {
+          //           "startsAt": {
+          //             "description": "Session start time",
+          //             "type": "string"
+          //           },
+          //           "endsAt": {
+          //             "description": "Session end time",
+          //             "type": "string"
+          //           },
+          //           "offerTeaBreak": {
+          //             "description": "Offer tea break during session",
+          //             "type": "boolean"
+          //           }
+          //         },
+          //         "required": [
+          //           "startsAt",
+          //           "endsAt",
+          //           "offerTeaBreak"
+          //         ]
+          //       },
+          //       {
+          //         "id": "Evening",
+          //         "title": "Evening",
+          //         "description": "Course evening session",
+          //         "type": "object",
+          //         "properties": {
+          //           "startsAt": {
+          //             "description": "Session start time",
+          //             "type": "string"
+          //           },
+          //           "endsAt": {
+          //             "description": "Session end time",
+          //             "type": "string"
+          //           },
+          //           "offerDinner": {
+          //             "description": "Offer dinner during session",
+          //             "type": "boolean"
+          //           }
+          //         },
+          //         "required": [
+          //           "startsAt",
+          //           "endsAt",
+          //           "offerDinner"
+          //         ]
+          //       }
+          //     ]
+          //   }
+          // }
           // "Simple Object": {
           //   oneOf: [{
           //       type: "object",
@@ -1062,19 +1204,7 @@ module.exports = {
           //     }
           //   ]
           // },
-          // "Outer array": {
-          //   description: "",
-          //   type: "array",
-          //   items: {
-          //     oneOf: [{
-          //         type: "number"
-          //       },
-          //       {
-          //         type: "boolean"
-          //       }
-          //     ]
-          //   }
-          // },
+
           // oneof_outer_map: {
           //   type: "object",
           //   additionalProperties: {
@@ -1088,85 +1218,109 @@ module.exports = {
           //     ]
           //   }
           // }
-          session: {
-            description: "Course session",
-            example: {
-              startsAt: "startsAtDummy",
-              endsAt: "endsAtDummy",
-              offerDinner: true
-            },
-            oneOf: [
-              {
-                id: "Morning",
-                title: "Morning",
-                description: "Course morning session",
-                type: "object",
-                properties: {
-                  startsAt: {
-                    description: "Session start time",
-                    type: "string"
-                  },
-                  endsAt: {
-                    description: "Session end time",
-                    type: "string"
-                  },
-                  offerTeaBreak: {
-                    description: "Offer tea break during session",
-                    type: "boolean"
-                  }
-                },
-                required: ["startsAt", "endsAt", "offerTeaBreak"]
-              },
-              {
-                id: "Evening",
-                title: "Evening",
-                description: "Course evening session",
-                type: "object",
-                properties: {
-                  startsAt: {
-                    description: "Session start time",
-                    type: "string"
-                  },
-                  endsAt: {
-                    description: "Session end time",
-                    type: "string"
-                  },
-                  offerDinner: {
-                    description: "Offer dinner during session",
-                    type: "boolean"
-                  }
-                },
-                required: ["startsAt", "endsAt", "offerDinner"]
-              }
-            ],
-            dataTypeDisplayText: "SendOneofSimpleSession",
-            dataTypeLink: "/java/models/containers/send-oneof-simple-session",
-            paramType: "Body",
-            title: "session",
-            typeCombinatorTypes: [
-              {
-                DataType: "Morning",
-                LinkTo: "$m/Morning",
-                ContainsSubTypes: false,
-                SubTypes: null,
-                Type: "typecombinatortype"
-              },
-              {
-                DataType: "Evening",
-                LinkTo: "$m/Evening",
-                ContainsSubTypes: false,
-                SubTypes: null,
-                Type: "typecombinatortype"
-              }
-            ]
-          }
+          // session: {
+          //   description: "Course session",
+          //   example: {
+          //     startsAt: "startsAtDummy",
+          //     endsAt: "endsAtDummy",
+          //     offerDinner: true
+          //   },
+          //   oneOf: [
+          //     {
+          //       id: "Morning",
+          //       title: "Morning",
+          //       description: "Course morning session",
+          //       type: "object",
+          //       properties: {
+          //         startsAt: {
+          //           description: "Session start time",
+          //           type: "string"
+          //         },
+          //         endsAt: {
+          //           description: "Session end time",
+          //           type: "string"
+          //         },
+          //         offerTeaBreak: {
+          //           description: "Offer tea break during session",
+          //           type: "boolean"
+          //         }
+          //       },
+          //       required: ["startsAt", "endsAt", "offerTeaBreak"]
+          //     },
+          //     {
+          //       id: "Evening",
+          //       title: "Evening",
+          //       description: "Course evening session",
+          //       type: "object",
+          //       properties: {
+          //         startsAt: {
+          //           description: "Session start time",
+          //           type: "string"
+          //         },
+          //         endsAt: {
+          //           description: "Session end time",
+          //           type: "string"
+          //         },
+          //         offerDinner: {
+          //           description: "Offer dinner during session",
+          //           type: "boolean"
+          //         }
+          //       },
+          //       required: ["startsAt", "endsAt", "offerDinner"]
+          //     }
+          //   ],
+          //   dataTypeDisplayText: "SendOneofSimpleSession",
+          //   dataTypeLink: "/java/models/containers/send-oneof-simple-session",
+          //   paramType: "Body",
+          //   title: "session",
+          //   typeCombinatorTypes: [
+          //     {
+          //       DataType: "Morning",
+          //       LinkTo: "$m/Morning",
+          //       ContainsSubTypes: false,
+          //       SubTypes: null,
+          //       Type: "typecombinatortype"
+          //     },
+          //     {
+          //       DataType: "Evening",
+          //       LinkTo: "$m/Evening",
+          //       ContainsSubTypes: false,
+          //       SubTypes: null,
+          //       Type: "typecombinatortype"
+          //     }
+          //   ]
+          // },
+          // "Outer array": {
+          //   description: "",
+          //   type: "array",
+          //   items: {
+          //     oneOf: [{
+          //         type: "number"
+          //       },
+          //       {
+          //         type: "boolean"
+          //       }
+          //     ]
+          //   }
+          // },
+          // "param10": {
+          //   "description": "",
+          //   "example": [
+          //     true,
+          //     2
+          //   ],
+          //   "type": "array",
+          //   "items": {
+          //     "oneOf": [{
+          //         "example": true,
+          //         "type": "boolean"
+          //       },
+
+          //     ]
+          //   }
+          // },
         },
-        required: [
-          "isPrimitiveType",
-          "isAtEndpointLevel",
-          "hasDiscriminator",
-          "innerMapCase"
-        ]
+        required: []
       }
     },
     required: ["args"]

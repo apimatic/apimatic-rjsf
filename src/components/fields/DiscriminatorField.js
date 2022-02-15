@@ -212,7 +212,7 @@ class DiscriminatorField extends React.Component {
       value.schema,
       getInitialFormData(value.schema, value.index, this.state.caseOf),
       definitions,
-      value.index
+      0
     );
 
     onChange(
