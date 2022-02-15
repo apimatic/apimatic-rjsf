@@ -21,11 +21,7 @@ export function flattenedFormData(formData) {
   if (Array.isArray(newFormData)) {
     newFormData = newFormData.map(item => {
       if (item && isObject(item)) {
-        if (checkDiscriminator(item)) {
-          return item.value;
-        } else {
-          return flattenedFormData(item);
-        }
+        return flattenedFormData(item);
       } else {
         return item;
       }

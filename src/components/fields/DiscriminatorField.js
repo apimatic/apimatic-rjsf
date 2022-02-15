@@ -33,7 +33,11 @@ function computeInitialValue(schema) {
   } else if (schema.type === "array") {
     return [];
   } else if (schema && isMultipleSchema(schema)) {
-    return generateFormDataForMultipleSchema(schema, 0);
+    return generateFormDataForMultipleSchema(
+      schema,
+      0,
+      getMultipleSchemaType(schema)
+    );
   } else {
     return undefined;
   }

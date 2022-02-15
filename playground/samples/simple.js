@@ -1035,16 +1035,16 @@ module.exports = {
           //     }
           //   ]
           // },
-          param10: {
+          param11: {
             description: "",
             example: [true, 2],
             type: "array",
             items: {
-              oneOf: [
+              anyOf: [
                 {
                   "x-is-dynamic": true,
                   example: "2",
-                  oneOf: [
+                  anyOf: [
                     {
                       example: "hello",
                       type: "string"
@@ -1060,13 +1060,12 @@ module.exports = {
                   type: "boolean"
                 },
                 {
-                  "x-is-dynamic": true,
                   example: {
                     name: "puppy",
                     fangs: "yes",
                     pet_type: "Dog"
                   },
-                  oneOf: [
+                  anyOf: [
                     {
                       id: "Cat",
                       title: "Cat",
@@ -1371,5 +1370,39 @@ module.exports = {
   //   ]
   // },
 
-  formData: {}
+  formData: {
+    additionalQueryParams: null,
+    additionalFieldParams: null,
+    args: {
+      param11: [
+        {
+          $$__case: 0,
+          $$__case_of: "anyOf",
+          value: {
+            $$__case: 0,
+            $$__case_of: "anyOf",
+            value: "String8"
+          }
+        },
+        {
+          $$__case: 0,
+          $$__case_of: "anyOf",
+          value: {
+            $$__case: 0,
+            $$__case_of: "anyOf",
+            value: "String9"
+          }
+        },
+        {
+          $$__case: 0,
+          $$__case_of: "anyOf",
+          value: {
+            $$__case: 0,
+            $$__case_of: "anyOf",
+            value: "String0"
+          }
+        }
+      ]
+    }
+  }
 };
