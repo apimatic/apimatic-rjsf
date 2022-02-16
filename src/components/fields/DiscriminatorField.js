@@ -66,9 +66,12 @@ function getEvenOddClass(depth) {
 }
 
 class DiscriminatorField extends React.Component {
+  state;
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      collapse: false
+    };
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -97,7 +100,6 @@ class DiscriminatorField extends React.Component {
         index: initialSchemaIndex,
         schema: initialSchema[initialSchemaIndex]
       },
-      collapse: false,
       caseOf
     };
     return newState;
