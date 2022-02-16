@@ -33,7 +33,11 @@ function computeInitialValue(schema) {
   } else if (schema.type === "array") {
     return [];
   } else if (schema && isMultipleSchema(schema)) {
-    return generateFormDataForMultipleSchema(schema, 0);
+    return generateFormDataForMultipleSchema(
+      schema,
+      0,
+      getMultipleSchemaType(schema)
+    );
   } else {
     return undefined;
   }
@@ -62,12 +66,15 @@ function getEvenOddClass(depth) {
 }
 
 class DiscriminatorField extends React.Component {
+  state;
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      collapse: false
+    };
   }
 
-  static getDerivedStateFromProps(props) {
+  static getDerivedStateFromProps(props, state) {
     const { schema, formData } = props;
 
     /**
@@ -85,11 +92,11 @@ class DiscriminatorField extends React.Component {
     const caseOf = getMultipleSchemaType(schema);
 
     return {
+      ...state,
       selectedSchema: {
         index: initialSchemaIndex,
         schema: initialSchema[initialSchemaIndex]
       },
-      collapse: false,
       caseOf
     };
   }
@@ -215,7 +222,7 @@ class DiscriminatorField extends React.Component {
       value.schema,
       getInitialFormData(value.schema, value.index, this.state.caseOf),
       definitions,
-      value.index
+      0
     );
 
     onChange(
