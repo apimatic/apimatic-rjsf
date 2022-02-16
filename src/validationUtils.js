@@ -101,8 +101,8 @@ export function deleteOneOfAnyOfProperties(type, node, parentSchema, property) {
           delete parentSchema["properties"][property].oneOf;
           delete node.oneOf;
         } else if (node.anyOf) {
-          delete parentSchema["properties"][property].oneOf;
-          delete node.oneOf;
+          delete parentSchema["properties"][property].anyOf;
+          delete node.anyOf;
         }
       }
       return;

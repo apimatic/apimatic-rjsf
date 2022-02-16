@@ -33,7 +33,11 @@ function computeInitialValue(schema) {
   } else if (schema.type === "array") {
     return [];
   } else if (schema && isMultipleSchema(schema)) {
-    return generateFormDataForMultipleSchema(schema, 0);
+    return generateFormDataForMultipleSchema(
+      schema,
+      0,
+      getMultipleSchemaType(schema)
+    );
   } else {
     return undefined;
   }
@@ -67,7 +71,7 @@ class DiscriminatorField extends React.Component {
     this.state = {};
   }
 
-  static getDerivedStateFromProps(props) {
+  static getDerivedStateFromProps(props, state) {
     const { schema, formData } = props;
 
     /**
@@ -82,9 +86,13 @@ class DiscriminatorField extends React.Component {
 
     const initialSchema = schema.oneOf || schema.anyOf;
     const initialSchemaIndex = formData ? formData.$$__case : 0;
+    const data = formData || {};
     const caseOf = getMultipleSchemaType(schema);
-
-    return {
+    const newState = {
+      formState: {
+        ...state.formState,
+        [data.$$__case]: formData
+      },
       selectedSchema: {
         index: initialSchemaIndex,
         schema: initialSchema[initialSchemaIndex]
@@ -92,10 +100,12 @@ class DiscriminatorField extends React.Component {
       collapse: false,
       caseOf
     };
+    return newState;
   }
 
   onDiscriminatorChange = () => {
     const { onChange, formData } = this.props;
+    const { selectedSchema } = this.state;
 
     return (value, options, schemaIndex) => {
       let newFormData;
@@ -103,7 +113,7 @@ class DiscriminatorField extends React.Component {
       if (checkDiscriminator(formData)) {
         newFormData = {
           ...formData,
-          $$__case: this.state.selectedSchema.index,
+          $$__case: selectedSchema.index,
           value
         };
       } else {
@@ -112,6 +122,16 @@ class DiscriminatorField extends React.Component {
           value
         };
       }
+
+      this.setState(st => {
+        return {
+          ...st,
+          formState: {
+            ...st.formState,
+            [selectedSchema.index]: newFormData
+          }
+        };
+      });
       onChange(
         newFormData,
         {
@@ -126,7 +146,6 @@ class DiscriminatorField extends React.Component {
     const {
       disabled,
       errorSchema,
-      formData,
       idPrefix,
       idSchema,
       onBlur,
@@ -136,7 +155,7 @@ class DiscriminatorField extends React.Component {
       typeCombinatorTypes
     } = this.props;
     const _SchemaField = registry.fields.SchemaField;
-    const { selectedSchema } = this.state;
+    const { selectedSchema, formState } = this.state;
 
     const childIsMap =
       selectedSchema.schema &&
@@ -175,14 +194,14 @@ class DiscriminatorField extends React.Component {
     return (
       <fieldset className={prefixClass(`field  ${discriminatorClassName}`)}>
         <React.Fragment>
-          {this.state && formData ? (
+          {this.state && formState[selectedSchema.index] ? (
             <_SchemaField
               schema={selectedSchema.schema}
               uiSchema={uiSchema}
               errorSchema={errorSchema}
               idSchema={idSchema}
               idPrefix={idPrefix}
-              formData={formData.value}
+              formData={formState[selectedSchema.index].value}
               onChange={this.onDiscriminatorChange()}
               onBlur={onBlur}
               onFocus={onFocus}
@@ -207,6 +226,7 @@ class DiscriminatorField extends React.Component {
 
   selectOnChange = value => {
     const { onChange, definitions } = this.props;
+    const { formState } = this.state;
     this.setState({
       selectedSchema: value
     });
@@ -215,11 +235,21 @@ class DiscriminatorField extends React.Component {
       value.schema,
       getInitialFormData(value.schema, value.index, this.state.caseOf),
       definitions,
-      value.index
+      0
     );
 
+    if (!formState[value.index]) {
+      this.setState(st => ({
+        ...st,
+        formState: {
+          ...st.formState,
+          [value.index]: defaultFormState
+        }
+      }));
+    }
+
     onChange(
-      defaultFormState,
+      formState[value.index] || defaultFormState,
       {
         validate: true
       },

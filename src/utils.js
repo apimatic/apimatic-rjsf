@@ -2,17 +2,17 @@ import React from "react";
 import "setimmediate";
 import validateFormData, { isValid } from "./validate";
 
-export function flattenedFormData(formData) {
+export function unwrapFormData(formData) {
   let newFormData = formData;
 
   if (isObject(newFormData)) {
     if (checkDiscriminator(newFormData)) {
-      newFormData = flattenedFormData(newFormData.value);
+      newFormData = unwrapFormData(newFormData.value);
     } else {
       for (const key in newFormData) {
         newFormData = {
           ...newFormData,
-          [key]: flattenedFormData(newFormData[key])
+          [key]: unwrapFormData(newFormData[key])
         };
       }
     }
@@ -21,11 +21,7 @@ export function flattenedFormData(formData) {
   if (Array.isArray(newFormData)) {
     newFormData = newFormData.map(item => {
       if (item && isObject(item)) {
-        if (checkDiscriminator(item)) {
-          return item.value;
-        } else {
-          return flattenedFormData(item);
-        }
+        return unwrapFormData(item);
       } else {
         return item;
       }

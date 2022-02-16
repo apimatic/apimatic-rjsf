@@ -8,7 +8,7 @@ import {
   toIdSchema,
   setState,
   getDefaultRegistry,
-  flattenedFormData,
+  unwrapFormData,
   prefixClass as pfx
 } from "../utils";
 import validateFormData from "../validate";
@@ -49,7 +49,7 @@ export default class Form extends Component {
     const formData = props.dontAssignDefaults
       ? props.formData
       : getDefaultFormState(schema, props.formData, definitions);
-    const newFormData = flattenedFormData(formData);
+    const newFormData = unwrapFormData(formData);
     const { errors, errorSchema } = mustValidate
       ? this.validate(newFormData, schema, formData)
       : {
@@ -115,7 +115,7 @@ export default class Form extends Component {
     const mustValidate =
       !this.props.noValidate && (this.props.liveValidate || options.validate);
     let state = { formData };
-    let newFormData = flattenedFormData(formData);
+    let newFormData = unwrapFormData(formData);
     if (mustValidate) {
       const { errors, errorSchema } = this.validate(
         newFormData,
@@ -147,7 +147,7 @@ export default class Form extends Component {
     event.preventDefault();
 
     if (!this.props.noValidate) {
-      const newFormData = flattenedFormData(this.state.formData);
+      const newFormData = unwrapFormData(this.state.formData);
       const { errors, errorSchema } = this.validate(
         newFormData,
         undefined,

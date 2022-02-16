@@ -596,577 +596,144 @@ module.exports = {
         title: "endpoint_7C26ABBCDB1F9",
         type: "object",
         properties: {
-          // isPrimitiveType: {
-          //   type: "boolean"
-          // },
-          // isAtEndpointLevel: {
-          //   type: "boolean"
-          // },
-          // hasDiscriminator: {
-          //   type: "boolean"
-          // },
-          // value: {
-          //   oneOf: [{
-          //       type: "number"
-          //     },
-          //     {
-          //       type: "boolean"
-          //     }
-          //   ]
-          // },
-          // "value1": {
-          //   "description": "",
-          //   "type": "array",
-          //   "items": {
-          //     "oneOf": [
-          //       {
-          //         "type": "number"
-          //       },
-          //       {
-          //         "type": "boolean"
-          //       }
-          //     ]
-          //   }
-          // },
-          // Array: {
-          //   type: "array",
-          //   items: {
-          //     type: "number"
-          //   }
-          // },
-          // multiLevelOneOf: {
-          //   id: "MultiLevelOneOf",
-          //   title: "MultiLevelOneOf",
-          //   description: "This class contains multi level oneOf case.",
-          //   type: "object",
-          //   properties: {
-          //     scalarValue: {
-          //       oneOf: [{
-          //           oneOf: [
-          //             // {
-          //             //   type: "array",
-          //             //   items: {
-          //             //     type: "boolean"
-          //             //   }
-          //             // },
-          //             {
-          //               type: "number"
-          //             },
-          //             {
-          //               type: "boolean"
-          //             }
-          //           ]
-          //         },
-          //         {
-          //           type: "number"
-          //         }
-          //       ]
-          //     }
-          //   },
-          //   required: ["scalarValue"]
-          // },
-          // "multiLevelOneOfNonScalar": {
-          //   "title": "Endpoint Arguments",
-          //   "type": "object",
-          //   "additionalProperties": false,
-          //   "properties": {
-          //     "args": {
-          //       "id": "endpoint_7C26ABBCDB1F9",
-          //       "title": "endpoint_7C26ABBCDB1F9",
-          //       "type": "object",
-          //       "properties": {
-          //         "isPrimitiveType": {
-          //           "type": "boolean"
-          //         },
-          //         "isAtEndpointLevel": {
-          //           "type": "boolean"
-          //         },
-          //         "hasDiscriminator": {
-          //           "type": "boolean"
-          //         },
-          //         "session": {
-          //           "oneOf": [{
-          //               "oneOf": [{
-          //                   "oneOf": [{
-          //                       "oneOf": [{
-          //                           "id": "Evening",
-          //                           "title": "Evening",
-          //                           "description": "Course evening session",
-          //                           "type": "object",
-          //                           "properties": {
-          //                             "startsAt": {
-          //                               "description": "Session start time",
-          //                               "type": "string"
-          //                             },
-          //                             "endsAt": {
-          //                               "description": "Session end time",
-          //                               "type": "string"
-          //                             },
-          //                             "offerDinner": {
-          //                               "description": "Offer dinner during session",
-          //                               "type": "boolean"
-          //                             }
-          //                           },
-          //                           "required": [
-          //                             "startsAt",
-          //                             "endsAt",
-          //                             "offerDinner"
-          //                           ]
-          //                         },
-          //                         {
-          //                           "type": "boolean"
-          //                         }
-          //                       ]
-          //                     },
-          //                     {
-          //                       "id": "Noon",
-          //                       "title": "Noon",
-          //                       "description": "Course noon session",
-          //                       "type": "object",
-          //                       "properties": {
-          //                         "startsAt": {
-          //                           "description": "Session start time",
-          //                           "type": "string"
-          //                         },
-          //                         "endsAt": {
-          //                           "description": "Session end time",
-          //                           "type": "string"
-          //                         },
-          //                         "offerLunch": {
-          //                           "description": "Offer lunch during session",
-          //                           "type": "boolean"
-          //                         }
-          //                       },
-          //                       "required": [
-          //                         "startsAt",
-          //                         "endsAt",
-          //                         "offerLunch"
-          //                       ]
-          //                     }
-          //                   ]
-          //                 },
-          //                 {
-          //                   "type": "array",
-          //                   "items": {
-          //                     "id": "Evening",
-          //                     "title": "Evening",
-          //                     "description": "Course evening session",
-          //                     "type": "object",
-          //                     "properties": {
-          //                       "startsAt": {
-          //                         "description": "Session start time",
-          //                         "type": "string"
-          //                       },
-          //                       "endsAt": {
-          //                         "description": "Session end time",
-          //                         "type": "string"
-          //                       },
-          //                       "offerDinner": {
-          //                         "description": "Offer dinner during session",
-          //                         "type": "boolean"
-          //                       }
-          //                     },
-          //                     "required": [
-          //                       "startsAt",
-          //                       "endsAt",
-          //                       "offerDinner"
-          //                     ]
-          //                   }
-          //                 }
-          //               ]
-          //             },
-          //             {
-          //               "id": "Morning",
-          //               "title": "Morning",
-          //               "description": "Course morning session",
-          //               "type": "object",
-          //               "properties": {
-          //                 "startsAt": {
-          //                   "description": "Session start time",
-          //                   "type": "string"
-          //                 },
-          //                 "endsAt": {
-          //                   "description": "Session end time",
-          //                   "type": "string"
-          //                 },
-          //                 "offerTeaBreak": {
-          //                   "description": "Offer tea break during session",
-          //                   "type": "boolean"
-          //                 }
-          //               },
-          //               "required": [
-          //                 "startsAt",
-          //                 "endsAt",
-          //                 "offerTeaBreak"
-          //               ]
-          //             }
-          //           ]
-          //         }
-          //       },
-          //       "required": [
-          //         "isPrimitiveType",
-          //         "isAtEndpointLevel",
-          //         "hasDiscriminator",
-          //         "session"
-          //       ]
-          //     }
-          //   },
-          //   "required": [
-          //     "args"
-          //   ]
-          // }
-          // "scalarValue": {
-          //   "oneOf": [{
-          //       "type": "number"
-          //     },
-          //     {
-          //       "anyOf": [{
-          //           "type": "boolean"
-          //         },
-          //         {
-          //           "type": "integer",
-          //         }
-          //       ]
-          //     }
-          //   ]
-          // }
-          // multiLevelSchema: {
-          //   oneOf: [{
-          //       oneOf: [{
-          //           oneOf: [{
-          //               type: "array",
-          //               items: {
-          //                 oneOf: [{
-          //                     oneOf: [{
-          //                         oneOf: [{
-          //                             type: "array",
-          //                             items: {
-          //                               type: "number"
-          //                             }
-          //                           },
-          //                           {
-          //                             type: "array",
-          //                             items: {
-          //                               type: "boolean"
-          //                             }
-          //                           }
-          //                         ]
-          //                       },
-          //                       {
-          //                         type: "boolean"
-          //                       }
-          //                     ]
-          //                   },
-          //                   {
-          //                     type: "number"
-          //                   }
-          //                 ]
-          //               }
-          //             },
-          //             {
-          //               type: "array",
-          //               items: {
-          //                 type: "boolean"
-          //               }
-          //             }
-          //           ]
-          //         },
-          //         {
-          //           type: "boolean"
-          //         }
-          //       ]
-          //     },
-          //     {
-          //       type: "number"
-          //     }
-          //   ]
-          // },
-          // send_oneof_inner_mapOfArray: {
-          //   oneOf: [{
-          //       type: "object",
-          //       additionalProperties: {
-          //         type: "array",
-          //         items: {
-          //           type: "number"
-          //         }
-          //       }
-          //     },
-          //     {
-          //       type: "object",
-          //       additionalProperties: {
-          //         type: "array",
-          //         items: {
-          //           type: "boolean"
-          //         }
-          //       }
-          //     }
-          //   ]
-          // },
-          // session: {
-          //   description: "Course session",
-          //   oneOf: [{
-          //       id: "Morning",
-          //       title: "Morning",
-          //       description: "Course morning session",
-          //       type: "object",
-          //       properties: {
-          //         startsAt: {
-          //           description: "Session start time",
-          //           type: "string"
-          //         },
-          //         endsAt: {
-          //           description: "Session end time",
-          //           type: "string"
-          //         },
-          //         offerTeaBreak: {
-          //           description: "Offer tea break during session",
-          //           type: "boolean"
-          //         }
-          //       },
-          //       required: ["startsAt", "endsAt", "offerTeaBreak"]
-          //     },
-          //     {
-          //       id: "Evening",
-          //       title: "Evening",
-          //       description: "Course evening session",
-          //       type: "object",
-          //       properties: {
-          //         startsAt: {
-          //           description: "Session start time",
-          //           type: "string"
-          //         },
-          //         endsAt: {
-          //           description: "Session end time",
-          //           type: "string"
-          //         },
-          //         offerDinner: {
-          //           description: "Offer dinner during session",
-          //           type: "boolean"
-          //         }
-          //       },
-          //       required: ["startsAt", "endsAt", "offerDinner", "offerTeaBreak"]
-          //     }
-          //   ]
-          // },
-          // "Simple oneOf Fields": {
-          //   oneOf: [{
-          //       type: "number"
-          //     },
-          //     {
-          //       type: "boolean"
-          //     }
-          //   ]
-          // },
-          // send_oneof_inner_arrayOfMap_flag: {
-          //   oneOf: [{
-          //       type: "array",
-          //       items: {
-          //         type: "object",
-          //         additionalProperties: {
-          //           id: "Evening",
-          //           title: "Evening",
-          //           description: "Course evening session",
-          //           type: "object",
-          //           properties: {
-          //             startsAt: {
-          //               description: "Session start time",
-          //               type: "string"
-          //             },
-          //             endsAt: {
-          //               description: "Session end time",
-          //               type: "string"
-          //             },
-          //             offerDinner: {
-          //               description: "Offer dinner during session",
-          //               type: "boolean"
-          //             }
-          //           },
-          //           required: ["startsAt", "endsAt", "offerDinner", "offerTeaBreak"]
-          //         }
-          //       }
-          //     },
-          //     {
-          //       type: "array",
-          //       items: {
-          //         type: "object",
-          //         additionalProperties: {
-          //           type: "boolean"
-          //         }
-          //       }
-          //     }
-          //   ]
-          // },
-          // "Simple oneOf Array": {
-          //   oneOf: [{
-          //       type: "array",
-          //       items: {
-          //         type: "number"
-          //       }
-          //     },
-          //     {
-          //       type: "array",
-          //       items: {
-          //         type: "boolean"
-          //       }
-          //     }
-          //   ]
-          // },
-          // "Simple number array + boolean": {
-          //   oneOf: [{
-          //       type: "array",
-          //       items: {
-          //         type: "number"
-          //       }
-          //     },
-          //     {
-          //       type: "boolean"
-          //     }
-          //   ]
-          // },
-          // "Simple boolean array + number": {
-          //   oneOf: [{
-          //       type: "array",
-          //       items: {
-          //         type: "number"
-          //       }
-          //     },
-          //     {
-          //       type: "boolean"
-          //     }
-          //   ]
-          // },
-          // "Simple Object": {
-          //   oneOf: [{
-          //       type: "object",
-          //       additionalProperties: {
-          //         type: "number"
-          //       }
-          //     },
-          //     {
-          //       type: "object",
-          //       additionalProperties: {
-          //         type: "boolean"
-          //       }
-          //     }
-          //   ]
-          // },
-          // "Simple Object + boolean": {
-          //   oneOf: [{
-          //       type: "object",
-          //       additionalProperties: {
-          //         type: "number"
-          //       }
-          //     },
-          //     {
-          //       type: "boolean"
-          //     }
-          //   ]
-          // },
-          // "Outer array": {
-          //   description: "",
-          //   type: "array",
-          //   items: {
-          //     oneOf: [{
-          //         type: "number"
-          //       },
-          //       {
-          //         type: "boolean"
-          //       }
-          //     ]
-          //   }
-          // },
-          // oneof_outer_map: {
-          //   type: "object",
-          //   additionalProperties: {
-          //     oneOf: [
-          //       {
-          //         type: "number"
-          //       },
-          //       {
-          //         type: "boolean"
-          //       }
-          //     ]
-          //   }
-          // }
-          session: {
-            description: "Course session",
-            example: {
-              startsAt: "startsAtDummy",
-              endsAt: "endsAtDummy",
-              offerDinner: true
+          param11: {
+            example: [true, 2],
+            type: "array",
+            items: {
+              anyOf: [
+                {
+                  "x-is-dynamic": true,
+                  example: "2",
+                  anyOf: [
+                    {
+                      example: "hello",
+                      type: "string"
+                    },
+                    {
+                      example: 3,
+                      type: "integer"
+                    }
+                  ]
+                },
+                {
+                  example: true,
+                  type: "boolean"
+                },
+                {
+                  example: {
+                    name: "puppy",
+                    fangs: "yes",
+                    pet_type: "Dog"
+                  },
+                  anyOf: [
+                    {
+                      id: "Cat",
+                      title: "Cat",
+                      example: {
+                        name: "hosico",
+                        color: "yellow",
+                        pet_type: "Cat"
+                      },
+                      type: "object",
+                      properties: {
+                        name: {
+                          type: "string"
+                        },
+                        color: {
+                          type: "string"
+                        },
+                        pet_type: {
+                          type: "string"
+                        }
+                      },
+                      required: ["name", "color"]
+                    },
+                    {
+                      id: "Dog",
+                      example: {
+                        name: "puppy",
+                        fangs: "yes",
+                        pet_type: "Dog"
+                      },
+                      type: "object",
+                      properties: {
+                        name: {
+                          type: "string"
+                        },
+                        fangs: {
+                          type: "string"
+                        },
+                        pet_type: {
+                          type: "string"
+                        }
+                      },
+                      required: ["name", "fangs"]
+                    }
+                  ]
+                }
+              ],
+              dataTypeDisplayText: "Param 11",
+              dataTypeLink: "/java/models/structures/param-11"
             },
-            oneOf: [
-              {
-                id: "Morning",
-                title: "Morning",
-                description: "Course morning session",
-                type: "object",
-                properties: {
-                  startsAt: {
-                    description: "Session start time",
-                    type: "string"
-                  },
-                  endsAt: {
-                    description: "Session end time",
-                    type: "string"
-                  },
-                  offerTeaBreak: {
-                    description: "Offer tea break during session",
-                    type: "boolean"
-                  }
-                },
-                required: ["startsAt", "endsAt", "offerTeaBreak"]
-              },
-              {
-                id: "Evening",
-                title: "Evening",
-                description: "Course evening session",
-                type: "object",
-                properties: {
-                  startsAt: {
-                    description: "Session start time",
-                    type: "string"
-                  },
-                  endsAt: {
-                    description: "Session end time",
-                    type: "string"
-                  },
-                  offerDinner: {
-                    description: "Offer dinner during session",
-                    type: "boolean"
-                  }
-                },
-                required: ["startsAt", "endsAt", "offerDinner"]
-              }
-            ],
-            dataTypeDisplayText: "SendOneofSimpleSession",
-            dataTypeLink: "/java/models/containers/send-oneof-simple-session",
-            paramType: "Body",
-            title: "session",
+            dataTypeDisplayText: "List<ItemsGETParametersQueryParam11>",
+            dataTypeLink: "/java/models/structures/param-11",
+            paramType: "Query",
+            title: "param11",
             typeCombinatorTypes: [
               {
-                DataType: "Morning",
-                LinkTo: "$m/Morning",
+                DataType: "AnyOf",
+                LinkTo: null,
+                ContainsSubTypes: true,
+                SubTypes: [
+                  {
+                    DataType: "String",
+                    LinkTo: null,
+                    ContainsSubTypes: false,
+                    SubTypes: null,
+                    Type: "typecombinatortype"
+                  },
+                  {
+                    DataType: "int",
+                    LinkTo: null,
+                    ContainsSubTypes: false,
+                    SubTypes: null,
+                    Type: "typecombinatortype"
+                  }
+                ],
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "boolean",
+                LinkTo: null,
                 ContainsSubTypes: false,
                 SubTypes: null,
                 Type: "typecombinatortype"
               },
               {
-                DataType: "Evening",
-                LinkTo: "$m/Evening",
-                ContainsSubTypes: false,
-                SubTypes: null,
+                DataType: "AnyOf",
+                LinkTo: null,
+                ContainsSubTypes: true,
+                SubTypes: [
+                  {
+                    DataType: "Cat",
+                    LinkTo: "$m/Cat",
+                    ContainsSubTypes: false,
+                    SubTypes: null,
+                    Type: "typecombinatortype"
+                  },
+                  {
+                    DataType: "Dog",
+                    LinkTo: "$m/Dog",
+                    ContainsSubTypes: false,
+                    SubTypes: null,
+                    Type: "typecombinatortype"
+                  }
+                ],
                 Type: "typecombinatortype"
               }
             ]
           }
-        },
-        required: [
-          "isPrimitiveType",
-          "isAtEndpointLevel",
-          "hasDiscriminator",
-          "innerMapCase"
-        ]
+        }
       }
     },
     required: ["args"]
@@ -1217,5 +784,19 @@ module.exports = {
   //   ]
   // },
 
-  formData: {}
+  formData: {
+    args: {
+      param11: [
+        {
+          $$__case: 0,
+          $$__case_of: "anyOf",
+          value: {
+            $$__case: 0,
+            $$__case_of: "anyOf",
+            value: "string"
+          }
+        }
+      ]
+    }
+  }
 };
