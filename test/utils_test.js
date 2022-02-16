@@ -15,7 +15,7 @@ import {
   retrieveSchema,
   shouldRender,
   toDateString,
-  toIdSchema,
+  toIdSchema
 } from "../src/utils";
 
 describe("utils", () => {
@@ -25,7 +25,7 @@ describe("utils", () => {
         expect(
           getDefaultFormState({
             type: "string",
-            default: "foo",
+            default: "foo"
           })
         ).to.eql("foo");
       });
@@ -39,9 +39,9 @@ describe("utils", () => {
             properties: {
               string: {
                 type: "string",
-                default: "foo",
-              },
-            },
+                default: "foo"
+              }
+            }
           })
         ).to.eql({ string: "foo" });
       });
@@ -49,7 +49,7 @@ describe("utils", () => {
       it("should default to empty object if no properties are defined", () => {
         expect(
           getDefaultFormState({
-            type: "object",
+            type: "object"
           })
         ).to.eql({});
       });
@@ -64,11 +64,11 @@ describe("utils", () => {
                 properties: {
                   string: {
                     type: "string",
-                    default: "foo",
-                  },
-                },
-              },
-            },
+                    default: "foo"
+                  }
+                }
+              }
+            }
           })
         ).to.eql({ object: { string: "foo" } });
       });
@@ -82,10 +82,10 @@ describe("utils", () => {
                 type: "array",
                 default: ["foo", "bar"],
                 items: {
-                  type: "string",
-                },
-              },
-            },
+                  type: "string"
+                }
+              }
+            }
           })
         ).to.eql({ array: ["foo", "bar"] });
       });
@@ -102,12 +102,12 @@ describe("utils", () => {
                     type: "array",
                     default: ["foo", "bar"],
                     items: {
-                      type: "string",
-                    },
-                  },
-                },
-              },
-            },
+                      type: "string"
+                    }
+                  }
+                }
+              }
+            }
           })
         ).to.eql({ object: { array: ["foo", "bar"] } });
       });
@@ -123,19 +123,19 @@ describe("utils", () => {
                   type: "array",
                   default: ["foo", "bar"],
                   items: {
-                    type: "string",
-                  },
+                    type: "string"
+                  }
                 },
                 bool: {
                   type: "boolean",
-                  default: true,
-                },
-              },
-            },
-          },
+                  default: true
+                }
+              }
+            }
+          }
         };
         expect(getDefaultFormState(schema, {})).eql({
-          object: { array: ["foo", "bar"], bool: true },
+          object: { array: ["foo", "bar"], bool: true }
         });
       });
 
@@ -152,23 +152,23 @@ describe("utils", () => {
                   default: {
                     // No level2 default for leaf1
                     leaf2: 2,
-                    leaf3: 2,
+                    leaf3: 2
                   },
                   properties: {
                     leaf1: { type: "number" }, // No level2 default for leaf1
                     leaf2: { type: "number" }, // No level3 default for leaf2
                     leaf3: { type: "number", default: 3 },
-                    leaf4: { type: "number" }, // Defined in formData.
-                  },
-                },
-              },
-            },
-          },
+                    leaf4: { type: "number" } // Defined in formData.
+                  }
+                }
+              }
+            }
+          }
         };
         expect(
           getDefaultFormState(schema, { level1: { level2: { leaf4: 4 } } })
         ).eql({
-          level1: { level2: { leaf1: 1, leaf2: 2, leaf3: 3, leaf4: 4 } },
+          level1: { level2: { leaf1: 1, leaf2: 2, leaf3: 3, leaf4: 4 } }
         });
       });
 
@@ -179,9 +179,9 @@ describe("utils", () => {
             level1: {
               type: "array",
               default: [1, 2, 3],
-              items: { type: "number" },
-            },
-          },
+              items: { type: "number" }
+            }
+          }
         };
         expect(getDefaultFormState(schema, {})).eql({ level1: [1, 2, 3] });
       });
@@ -193,9 +193,9 @@ describe("utils", () => {
           properties: {
             level1: {
               type: "array",
-              items: { type: "number" },
-            },
-          },
+              items: { type: "number" }
+            }
+          }
         };
         expect(getDefaultFormState(schema, {})).eql({ level1: [1, 2, 3] });
       });
@@ -209,17 +209,17 @@ describe("utils", () => {
               items: [
                 {
                   type: "string",
-                  default: "foo",
+                  default: "foo"
                 },
                 {
-                  type: "number",
-                },
-              ],
-            },
-          },
+                  type: "number"
+                }
+              ]
+            }
+          }
         };
         expect(getDefaultFormState(schema, {})).eql({
-          array: ["foo", undefined],
+          array: ["foo", undefined]
         });
       });
 
@@ -229,16 +229,16 @@ describe("utils", () => {
             testdef: {
               type: "object",
               properties: {
-                foo: { type: "number" },
-              },
-            },
+                foo: { type: "number" }
+              }
+            }
           },
           $ref: "#/definitions/testdef",
-          default: { foo: 42 },
+          default: { foo: 42 }
         };
 
         expect(getDefaultFormState(schema, undefined, schema.definitions)).eql({
-          foo: 42,
+          foo: 42
         });
       });
     });
@@ -340,7 +340,7 @@ describe("utils", () => {
         it("should be false if oneOf/anyOf schemas are not all constants", () => {
           const schema = {
             items: { oneOf: [constantSchema, notConstantSchema] },
-            uniqueItems: true,
+            uniqueItems: true
           };
           expect(isMultiSelect(schema)).to.be.false;
         });
@@ -348,7 +348,7 @@ describe("utils", () => {
         it("should be true if oneOf/anyOf schemas are all constants", () => {
           const schema = {
             items: { oneOf: [constantSchema, constantSchema] },
-            uniqueItems: true,
+            uniqueItems: true
           };
           expect(isMultiSelect(schema)).to.be.true;
         });
@@ -357,7 +357,7 @@ describe("utils", () => {
       it("should retrieve reference schema definitions", () => {
         const schema = {
           items: { $ref: "#/definitions/FooItem" },
-          uniqueItems: true,
+          uniqueItems: true
         };
         const definitions = { FooItem: { type: "string", enum: ["foo"] } };
         expect(isMultiSelect(schema, definitions)).to.be.true;
@@ -405,18 +405,18 @@ describe("utils", () => {
         b: {
           c: 3,
           d: [1, 2, 3],
-          e: { f: { g: 1 } },
+          e: { f: { g: 1 } }
         },
-        c: 2,
+        c: 2
       };
       const obj2 = {
         a: 1,
         b: {
           d: [3, 2, 1],
           e: { f: { h: 2 } },
-          g: 1,
+          g: 1
         },
-        c: 3,
+        c: 3
       };
       const expected = {
         a: 1,
@@ -424,9 +424,9 @@ describe("utils", () => {
           c: 3,
           d: [3, 2, 1],
           e: { f: { g: 1, h: 2 } },
-          g: 1,
+          g: 1
         },
-        c: 3,
+        c: 3
       };
       expect(mergeObjects(obj1, obj2)).eql(expected);
     });
@@ -463,9 +463,9 @@ describe("utils", () => {
         properties: {
           street_address: { type: "string" },
           city: { type: "string" },
-          state: { type: "string" },
+          state: { type: "string" }
         },
-        required: ["street_address", "city", "state"],
+        required: ["street_address", "city", "state"]
       };
       const definitions = { address };
 
@@ -483,17 +483,17 @@ describe("utils", () => {
     it("should priorize local definitions over foreign ones", () => {
       const schema = {
         $ref: "#/definitions/address",
-        title: "foo",
+        title: "foo"
       };
       const address = {
         type: "string",
-        title: "bar",
+        title: "bar"
       };
       const definitions = { address };
 
       expect(retrieveSchema(schema, definitions)).eql({
         ...address,
-        title: "foo",
+        title: "foo"
       });
     });
 
@@ -504,12 +504,12 @@ describe("utils", () => {
             type: "object",
             properties: {
               a: { type: "string" },
-              b: { type: "integer" },
+              b: { type: "integer" }
             },
             required: ["a"],
             dependencies: {
-              a: ["b"],
-            },
+              a: ["b"]
+            }
           };
           const definitions = {};
           const formData = {};
@@ -517,9 +517,9 @@ describe("utils", () => {
             type: "object",
             properties: {
               a: { type: "string" },
-              b: { type: "integer" },
+              b: { type: "integer" }
             },
-            required: ["a"],
+            required: ["a"]
           });
         });
       });
@@ -531,11 +531,11 @@ describe("utils", () => {
               type: "object",
               properties: {
                 a: { type: "string" },
-                b: { type: "integer" },
+                b: { type: "integer" }
               },
               dependencies: {
-                a: ["b"],
-              },
+                a: ["b"]
+              }
             };
             const definitions = {};
             const formData = { a: "1" };
@@ -543,9 +543,9 @@ describe("utils", () => {
               type: "object",
               properties: {
                 a: { type: "string" },
-                b: { type: "integer" },
+                b: { type: "integer" }
               },
-              required: ["b"],
+              required: ["b"]
             });
           });
         });
@@ -556,12 +556,12 @@ describe("utils", () => {
               type: "object",
               properties: {
                 a: { type: "string" },
-                b: { type: "integer" },
+                b: { type: "integer" }
               },
               required: ["a"],
               dependencies: {
-                a: ["b"],
-              },
+                a: ["b"]
+              }
             };
             const definitions = {};
             const formData = { a: "1" };
@@ -569,9 +569,9 @@ describe("utils", () => {
               type: "object",
               properties: {
                 a: { type: "string" },
-                b: { type: "integer" },
+                b: { type: "integer" }
               },
-              required: ["a", "b"],
+              required: ["a", "b"]
             });
           });
         });
@@ -585,23 +585,23 @@ describe("utils", () => {
             const schema = {
               type: "object",
               properties: {
-                a: { type: "string" },
+                a: { type: "string" }
               },
               dependencies: {
                 a: {
                   properties: {
-                    b: { type: "integer" },
-                  },
-                },
-              },
+                    b: { type: "integer" }
+                  }
+                }
+              }
             };
             const definitions = {};
             const formData = {};
             expect(retrieveSchema(schema, definitions, formData)).eql({
               type: "object",
               properties: {
-                a: { type: "string" },
-              },
+                a: { type: "string" }
+              }
             });
           });
         });
@@ -611,15 +611,15 @@ describe("utils", () => {
             const schema = {
               type: "object",
               properties: {
-                a: { type: "string" },
+                a: { type: "string" }
               },
               dependencies: {
                 a: {
                   properties: {
-                    b: { type: "integer" },
-                  },
-                },
-              },
+                    b: { type: "integer" }
+                  }
+                }
+              }
             };
             const definitions = {};
             const formData = { a: "1" };
@@ -627,8 +627,8 @@ describe("utils", () => {
               type: "object",
               properties: {
                 a: { type: "string" },
-                b: { type: "integer" },
-              },
+                b: { type: "integer" }
+              }
             });
           });
         });
@@ -638,28 +638,28 @@ describe("utils", () => {
             const schema = {
               type: "object",
               properties: {
-                a: { type: "string" },
+                a: { type: "string" }
               },
               dependencies: {
                 a: {
-                  $ref: "#/definitions/needsB",
-                },
-              },
+                  $ref: "#/definitions/needsB"
+                }
+              }
             };
             const definitions = {
               needsB: {
                 properties: {
-                  b: { type: "integer" },
-                },
-              },
+                  b: { type: "integer" }
+                }
+              }
             };
             const formData = { a: "1" };
             expect(retrieveSchema(schema, definitions, formData)).eql({
               type: "object",
               properties: {
                 a: { type: "string" },
-                b: { type: "integer" },
-              },
+                b: { type: "integer" }
+              }
             });
           });
         });
@@ -671,7 +671,7 @@ describe("utils", () => {
             const schema = {
               type: "object",
               properties: {
-                a: { type: "string" },
+                a: { type: "string" }
               },
               dependencies: {
                 a: {
@@ -679,26 +679,26 @@ describe("utils", () => {
                     {
                       properties: {
                         a: { enum: ["int"] },
-                        b: { type: "integer" },
-                      },
+                        b: { type: "integer" }
+                      }
                     },
                     {
                       properties: {
                         a: { enum: ["bool"] },
-                        b: { type: "boolean" },
-                      },
-                    },
-                  ],
-                },
-              },
+                        b: { type: "boolean" }
+                      }
+                    }
+                  ]
+                }
+              }
             };
             const definitions = {};
             const formData = {};
             expect(retrieveSchema(schema, definitions, formData)).eql({
               type: "object",
               properties: {
-                a: { type: "string" },
-              },
+                a: { type: "string" }
+              }
             });
           });
         });
@@ -708,7 +708,7 @@ describe("utils", () => {
             const schema = {
               type: "object",
               properties: {
-                a: { type: "string", enum: ["int", "bool"] },
+                a: { type: "string", enum: ["int", "bool"] }
               },
               dependencies: {
                 a: {
@@ -716,18 +716,18 @@ describe("utils", () => {
                     {
                       properties: {
                         a: { enum: ["int"] },
-                        b: { type: "integer" },
-                      },
+                        b: { type: "integer" }
+                      }
                     },
                     {
                       properties: {
                         a: { enum: ["bool"] },
-                        b: { type: "boolean" },
-                      },
-                    },
-                  ],
-                },
-              },
+                        b: { type: "boolean" }
+                      }
+                    }
+                  ]
+                }
+              }
             };
             const definitions = {};
             const formData = { a: "int" };
@@ -735,8 +735,8 @@ describe("utils", () => {
               type: "object",
               properties: {
                 a: { type: "string", enum: ["int", "bool"] },
-                b: { type: "integer" },
-              },
+                b: { type: "integer" }
+              }
             });
           });
 
@@ -744,7 +744,7 @@ describe("utils", () => {
             const schema = {
               type: "object",
               properties: {
-                a: { type: "string", enum: ["int", "bool"] },
+                a: { type: "string", enum: ["int", "bool"] }
               },
               dependencies: {
                 a: {
@@ -752,18 +752,18 @@ describe("utils", () => {
                     {
                       properties: {
                         a: { enum: ["int"] },
-                        b: { type: "integer" },
-                      },
+                        b: { type: "integer" }
+                      }
                     },
                     {
                       properties: {
                         a: { enum: ["bool"] },
-                        b: { type: "boolean" },
-                      },
-                    },
-                  ],
-                },
-              },
+                        b: { type: "boolean" }
+                      }
+                    }
+                  ]
+                }
+              }
             };
             const definitions = {};
             const formData = { a: "bool" };
@@ -771,8 +771,8 @@ describe("utils", () => {
               type: "object",
               properties: {
                 a: { type: "string", enum: ["int", "bool"] },
-                b: { type: "boolean" },
-              },
+                b: { type: "boolean" }
+              }
             });
           });
         });
@@ -782,13 +782,13 @@ describe("utils", () => {
             const schema = {
               type: "object",
               properties: {
-                a: { type: "string", enum: ["int", "bool"] },
+                a: { type: "string", enum: ["int", "bool"] }
               },
               dependencies: {
                 a: {
-                  $ref: "#/definitions/typedInput",
-                },
-              },
+                  $ref: "#/definitions/typedInput"
+                }
+              }
             };
             const definitions = {
               typedInput: {
@@ -796,25 +796,25 @@ describe("utils", () => {
                   {
                     properties: {
                       a: { enum: ["int"] },
-                      b: { type: "integer" },
-                    },
+                      b: { type: "integer" }
+                    }
                   },
                   {
                     properties: {
                       a: { enum: ["bool"] },
-                      b: { type: "boolean" },
-                    },
-                  },
-                ],
-              },
+                      b: { type: "boolean" }
+                    }
+                  }
+                ]
+              }
             };
             const formData = { a: "bool" };
             expect(retrieveSchema(schema, definitions, formData)).eql({
               type: "object",
               properties: {
                 a: { type: "string", enum: ["int", "bool"] },
-                b: { type: "boolean" },
-              },
+                b: { type: "boolean" }
+              }
             });
           });
         });
@@ -853,7 +853,7 @@ describe("utils", () => {
     describe("nested levels comparison checks", () => {
       const initial = {
         props: { myProp: { mySubProp: 1 } },
-        state: { myState: { mySubState: 1 } },
+        state: { myState: { mySubState: 1 } }
       };
 
       it("should detect equivalent props and state", () => {
@@ -892,7 +892,7 @@ describe("utils", () => {
           shouldRender(
             {
               props: { myProp: { mySubProp: fn } },
-              state: { myState: { mySubState: fn } },
+              state: { myState: { mySubState: fn } }
             },
             { myProp: { mySubProp: fn } },
             { myState: { mySubState: fn } }
@@ -916,18 +916,18 @@ describe("utils", () => {
           level1: {
             type: "object",
             properties: {
-              level2: { type: "string" },
-            },
-          },
-        },
+              level2: { type: "string" }
+            }
+          }
+        }
       };
 
       expect(toIdSchema(schema)).eql({
         $id: "root",
         level1: {
           $id: "root_level1",
-          level2: { $id: "root_level1_level2" },
-        },
+          level2: { $id: "root_level1_level2" }
+        }
       });
     });
 
@@ -939,17 +939,17 @@ describe("utils", () => {
             type: "object",
             properties: {
               level1a2a: { type: "string" },
-              level1a2b: { type: "string" },
-            },
+              level1a2b: { type: "string" }
+            }
           },
           level1b: {
             type: "object",
             properties: {
               level1b2a: { type: "string" },
-              level1b2b: { type: "string" },
-            },
-          },
-        },
+              level1b2b: { type: "string" }
+            }
+          }
+        }
       };
 
       expect(toIdSchema(schema)).eql({
@@ -957,13 +957,13 @@ describe("utils", () => {
         level1a: {
           $id: "root_level1a",
           level1a2a: { $id: "root_level1a_level1a2a" },
-          level1a2b: { $id: "root_level1a_level1a2b" },
+          level1a2b: { $id: "root_level1a_level1a2b" }
         },
         level1b: {
           $id: "root_level1b",
           level1b2a: { $id: "root_level1b_level1b2a" },
-          level1b2b: { $id: "root_level1b_level1b2b" },
-        },
+          level1b2b: { $id: "root_level1b_level1b2b" }
+        }
       });
     });
 
@@ -975,19 +975,19 @@ describe("utils", () => {
             type: "object",
             properties: {
               id: {
-                type: "string",
-              },
+                type: "string"
+              }
             },
-            required: ["id"],
-          },
-        },
+            required: ["id"]
+          }
+        }
       };
       expect(toIdSchema(schema)).eql({
         $id: "root",
         metadata: {
           $id: "root_metadata",
-          id: { $id: "root_metadata_id" },
-        },
+          id: { $id: "root_metadata_id" }
+        }
       });
     });
 
@@ -997,14 +997,14 @@ describe("utils", () => {
         items: {
           type: "object",
           properties: {
-            foo: { type: "string" },
-          },
-        },
+            foo: { type: "string" }
+          }
+        }
       };
 
       expect(toIdSchema(schema)).eql({
         $id: "root",
-        foo: { $id: "root_foo" },
+        foo: { $id: "root_foo" }
       });
     });
 
@@ -1015,17 +1015,17 @@ describe("utils", () => {
             type: "object",
             properties: {
               foo: { type: "string" },
-              bar: { type: "string" },
-            },
-          },
+              bar: { type: "string" }
+            }
+          }
         },
-        $ref: "#/definitions/testdef",
+        $ref: "#/definitions/testdef"
       };
 
       expect(toIdSchema(schema, undefined, schema.definitions)).eql({
         $id: "root",
         foo: { $id: "root_foo" },
-        bar: { $id: "root_bar" },
+        bar: { $id: "root_bar" }
       });
     });
   });
@@ -1042,7 +1042,7 @@ describe("utils", () => {
         day: -1,
         hour: -1,
         minute: -1,
-        second: -1,
+        second: -1
       });
     });
 
@@ -1053,7 +1053,7 @@ describe("utils", () => {
         day: -1,
         hour: 0,
         minute: 0,
-        second: 0,
+        second: 0
       });
     });
 
@@ -1064,7 +1064,7 @@ describe("utils", () => {
         day: 5,
         hour: 14,
         minute: 1,
-        second: 30,
+        second: 30
       });
     });
 
@@ -1075,7 +1075,7 @@ describe("utils", () => {
         day: 5,
         hour: 0,
         minute: 0,
-        second: 0,
+        second: 0
       });
     });
   });
@@ -1089,7 +1089,7 @@ describe("utils", () => {
           day: 5,
           hour: 14,
           minute: 1,
-          second: 30,
+          second: 30
         })
       ).eql("2016-04-05T14:01:30.000Z");
     });
@@ -1100,7 +1100,7 @@ describe("utils", () => {
           {
             year: 2016,
             month: 4,
-            day: 5,
+            day: 5
           },
           false
         )
@@ -1160,7 +1160,12 @@ describe("utils", () => {
     // worthless to reproduce all the tests existing for it; so we focus on the
     // behavioral differences we introduced.
     it("should assume functions are always equivalent", () => {
-      expect(deepEquals(() => {}, () => {})).eql(true);
+      expect(
+        deepEquals(
+          () => {},
+          () => {}
+        )
+      ).eql(true);
       expect(deepEquals({ foo() {} }, { foo() {} })).eql(true);
       expect(deepEquals({ foo: { bar() {} } }, { foo: { bar() {} } })).eql(
         true

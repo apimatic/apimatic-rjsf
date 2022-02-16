@@ -3,7 +3,7 @@ import lodashGet from "lodash.get";
 import lodashSet from "lodash.setwith";
 import lodashCloneDeep from "lodash.clonedeep";
 
-const TYPE_ENUM = {
+export const TYPE_ENUM = {
   ARRAY: 0,
   OBJECT: 1,
   OTHER: 2
@@ -15,7 +15,7 @@ const TYPE_ENUM = {
  * @param includesProperties additional "properties" from json-schema
  * @returns convert pointer path to lodash object path
  */
-function pointerToPath(pointer, includesProperties = false) {
+export function pointerToPath(pointer, includesProperties = false) {
   const pathArr = pointer.split("/");
   const path = [];
 
@@ -36,7 +36,11 @@ function pointerToPath(pointer, includesProperties = false) {
  * @param parentNode
  * @returns type of the node
  */
-function getType(parentNode) {
+export function getType(parentNode) {
+  if (!parentNode) {
+    return TYPE_ENUM.OTHER;
+  }
+
   if (parentNode.type === "array") {
     return TYPE_ENUM.ARRAY;
   }
@@ -54,7 +58,7 @@ function getType(parentNode) {
  * @param jsonPointer node/current pointer with forward slashes
  * @returns convert pointer path to lodash object path based on node type
  */
-function getPath(type, parentJsonPointer, jsonPointer) {
+export function getPath(type, parentJsonPointer, jsonPointer) {
   switch (type) {
     case TYPE_ENUM.ARRAY:
       return pointerToPath(parentJsonPointer);
@@ -65,7 +69,7 @@ function getPath(type, parentJsonPointer, jsonPointer) {
   }
 }
 
-function getPathFromParentToChild(type, property) {
+export function getPathFromParentToChild(type, property) {
   switch (type) {
     case TYPE_ENUM.ARRAY:
       return ["items"];
@@ -84,7 +88,7 @@ function getPathFromParentToChild(type, property) {
  * @param property
  * @returns
  */
-function deleteOneOfAnyOfProperties(type, node, parentSchema, property) {
+export function deleteOneOfAnyOfProperties(type, node, parentSchema, property) {
   switch (type) {
     case TYPE_ENUM.ARRAY:
       return;
@@ -105,7 +109,7 @@ function deleteOneOfAnyOfProperties(type, node, parentSchema, property) {
   }
 }
 
-function getOneAnyOfPath(path = "", obj) {
+export function getOneAnyOfPath(path = "", obj) {
   const result = path
     ? `${path}/${obj.$$__case_of}/${obj.$$__case}`
     : `${obj.$$__case_of}/${obj.$$__case}`;
@@ -113,7 +117,7 @@ function getOneAnyOfPath(path = "", obj) {
   return result;
 }
 
-function getNestedValue(data, path = getOneAnyOfPath("", data)) {
+export function getNestedValue(data, path = getOneAnyOfPath("", data)) {
   if (data && Array.isArray(data.value)) {
     if (data.value.some(item => item && item.value)) {
       return data.value.map(val => {
@@ -133,7 +137,7 @@ function getNestedValue(data, path = getOneAnyOfPath("", data)) {
   }
 }
 
-function getSelectedFormDataFieldPath(formDataFieldValue) {
+export function getSelectedFormDataFieldPath(formDataFieldValue) {
   let fieldPath = "";
   let isArr = false;
   let arrVal;
@@ -254,7 +258,7 @@ function modifyOther({
   }
 }
 
-export const cb = rawFormData => (...args) => {
+export const cb = (rawFormData, checkForOneOrAnyOf = () => {}) => (...args) => {
   const [
     node,
     jsonPointer,
@@ -304,16 +308,36 @@ export const cb = rawFormData => (...args) => {
         formDataFieldValue
       });
     }
+
+    checkForOneOrAnyOf(true);
   }
 };
 
-export function validateSchema(schema, formData, originalFormData, ajv) {
-  const clonedSchema = lodashCloneDeep(schema);
+export function validateSchema(
+  schema,
+  formData,
+  originalFormData,
+  ajv,
+  validateOneOf,
+  setValidateOneOf
+) {
+  try {
+    let isOneOrAnyOf = false;
+    const clonedSchema = lodashCloneDeep(schema);
+    const checkForOneOrAnyOf = () => {
+      isOneOrAnyOf = true;
+    };
 
-  traverse(clonedSchema, {
-    allKeys: true,
-    cb: cb(originalFormData)
-  });
+    if (validateOneOf || validateOneOf === undefined) {
+      traverse(clonedSchema, {
+        allKeys: true,
+        cb: cb(originalFormData, checkForOneOrAnyOf)
+      });
+    }
 
-  ajv.validate(clonedSchema, formData);
+    setValidateOneOf(isOneOrAnyOf);
+    ajv.validate(clonedSchema, formData);
+  } catch (ex) {
+    console.log("Exception in validation", ex);
+  }
 }

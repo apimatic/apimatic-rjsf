@@ -154,9 +154,18 @@ export default function validateFormData(
   schema,
   customValidate,
   transformErrors,
-  originalFormData
+  originalFormData,
+  validateOneOf,
+  setValidateOneOf
 ) {
-  validateSchema(schema, formData, originalFormData, ajv);
+  validateSchema(
+    schema,
+    formData,
+    originalFormData,
+    ajv,
+    validateOneOf,
+    setValidateOneOf
+  );
 
   let errors = transformAjvErrors(ajv.errors);
 

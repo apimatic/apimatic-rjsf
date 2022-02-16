@@ -74,7 +74,7 @@ class DiscriminatorField extends React.Component {
     };
   }
 
-  static getDerivedStateFromProps(props) {
+  static getDerivedStateFromProps(props, state) {
     const { schema, formData } = props;
 
     /**
@@ -92,11 +92,11 @@ class DiscriminatorField extends React.Component {
     const caseOf = getMultipleSchemaType(schema);
 
     return {
+      ...state,
       selectedSchema: {
         index: initialSchemaIndex,
         schema: initialSchema[initialSchemaIndex]
       },
-      collapse: false,
       caseOf
     };
   }

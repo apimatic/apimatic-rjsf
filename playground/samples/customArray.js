@@ -12,7 +12,8 @@ function ArrayFieldTemplate(props) {
                 onClick={element.onReorderClick(
                   element.index,
                   element.index + 1
-                )}>
+                )}
+              >
                 Down
               </button>
             )}
@@ -21,7 +22,8 @@ function ArrayFieldTemplate(props) {
                 onClick={element.onReorderClick(
                   element.index,
                   element.index - 1
-                )}>
+                )}
+              >
                 Up
               </button>
             )}
@@ -50,9 +52,9 @@ module.exports = {
     title: "Custom array of strings",
     type: "array",
     items: {
-      type: "string",
-    },
+      type: "string"
+    }
   },
   formData: ["react", "jsonschema", "form"],
-  ArrayFieldTemplate,
+  ArrayFieldTemplate
 };
