@@ -596,144 +596,40 @@ module.exports = {
         title: "endpoint_7C26ABBCDB1F9",
         type: "object",
         properties: {
-          param11: {
-            example: [true, 2],
-            type: "array",
-            items: {
-              anyOf: [
-                {
-                  "x-is-dynamic": true,
-                  example: "2",
-                  anyOf: [
-                    {
-                      example: "hello",
-                      type: "string"
-                    },
-                    {
-                      example: 3,
-                      type: "integer"
-                    }
-                  ]
-                },
-                {
-                  example: true,
-                  type: "boolean"
-                },
-                {
-                  example: {
-                    name: "puppy",
-                    fangs: "yes",
-                    pet_type: "Dog"
-                  },
-                  anyOf: [
-                    {
-                      id: "Cat",
-                      title: "Cat",
-                      example: {
-                        name: "hosico",
-                        color: "yellow",
-                        pet_type: "Cat"
-                      },
-                      type: "object",
-                      properties: {
-                        name: {
-                          type: "string"
-                        },
-                        color: {
-                          type: "string"
-                        },
-                        pet_type: {
-                          type: "string"
-                        }
-                      },
-                      required: ["name", "color"]
-                    },
-                    {
-                      id: "Dog",
-                      example: {
-                        name: "puppy",
-                        fangs: "yes",
-                        pet_type: "Dog"
-                      },
-                      type: "object",
-                      properties: {
-                        name: {
-                          type: "string"
-                        },
-                        fangs: {
-                          type: "string"
-                        },
-                        pet_type: {
-                          type: "string"
-                        }
-                      },
-                      required: ["name", "fangs"]
-                    }
-                  ]
-                }
-              ],
-              dataTypeDisplayText: "Param 11",
-              dataTypeLink: "/java/models/structures/param-11"
+          simpleCase: {
+            id: "SimpleCase",
+            title: "simpleCase",
+            example: {
+              scalarValue: true
             },
-            dataTypeDisplayText: "List<ItemsGETParametersQueryParam11>",
-            dataTypeLink: "/java/models/structures/param-11",
-            paramType: "Query",
-            title: "param11",
-            typeCombinatorTypes: [
-              {
-                DataType: "AnyOf",
-                LinkTo: null,
-                ContainsSubTypes: true,
-                SubTypes: [
+            type: "object",
+            properties: {
+              scalarValue: {
+                oneOf: [
                   {
-                    DataType: "String",
-                    LinkTo: null,
-                    ContainsSubTypes: false,
-                    SubTypes: null,
-                    Type: "typecombinatortype"
+                    type: "number"
                   },
                   {
-                    DataType: "int",
-                    LinkTo: null,
-                    ContainsSubTypes: false,
-                    SubTypes: null,
-                    Type: "typecombinatortype"
+                    type: "boolean"
                   }
                 ],
-                Type: "typecombinatortype"
-              },
-              {
-                DataType: "boolean",
-                LinkTo: null,
-                ContainsSubTypes: false,
-                SubTypes: null,
-                Type: "typecombinatortype"
-              },
-              {
-                DataType: "AnyOf",
-                LinkTo: null,
-                ContainsSubTypes: true,
-                SubTypes: [
-                  {
-                    DataType: "Cat",
-                    LinkTo: "$m/Cat",
-                    ContainsSubTypes: false,
-                    SubTypes: null,
-                    Type: "typecombinatortype"
-                  },
-                  {
-                    DataType: "Dog",
-                    LinkTo: "$m/Dog",
-                    ContainsSubTypes: false,
-                    SubTypes: null,
-                    Type: "typecombinatortype"
-                  }
-                ],
-                Type: "typecombinatortype"
+                dataTypeDisplayText: "OneOfScalarValue",
+                paramType: null,
+                title: "ScalarValue"
               }
-            ]
+            },
+            required: ["scalarValue"],
+            dataTypeDisplayText: "SimpleCase",
+            dataTypeLink: "/java/models/structures/simple-case",
+            paramType: "Body"
           }
-        }
+        },
+        required: [
+          "isPrimitiveType",
+          "isAtEndpointLevel",
+          "hasDiscriminator",
+          "simpleCase"
+        ]
       }
     },
     required: ["args"]
@@ -786,17 +682,12 @@ module.exports = {
 
   formData: {
     args: {
-      param11: [
-        {
-          $$__case: 0,
-          $$__case_of: "anyOf",
-          value: {
-            $$__case: 0,
-            $$__case_of: "anyOf",
-            value: "string"
-          }
+      simpleCase: {
+        scalarValue: {
+          $$__case: 1,
+          value: true
         }
-      ]
+      }
     }
   }
 };

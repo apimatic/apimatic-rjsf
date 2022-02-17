@@ -7,6 +7,7 @@ import {
   isMultipleSchema
 } from "../../utils";
 import TagSelector from "../widgets/TagSelector";
+import { getOneAnyOfPath } from "../../validationUtils";
 
 export function generateFormDataForMultipleSchema(schema, index, caseOf) {
   if (isMultipleSchema(schema)) {
@@ -75,7 +76,7 @@ class DiscriminatorField extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    const { schema, formData } = props;
+    const { schema, formData, parentPath } = props;
 
     /**
      * Fixes {@link https://github.com/apimatic/apimatic-dx-portal/issues/426}
@@ -92,10 +93,12 @@ class DiscriminatorField extends React.Component {
     const data = formData || {};
     const caseOf = getMultipleSchemaType(schema);
     const newState = {
-      formState: {
-        ...state.formState,
-        [data.$$__case]: formData
-      },
+      formState: formData
+        ? {
+            ...state.formState,
+            [getOneAnyOfPath(parentPath, data)]: formData
+          }
+        : {},
       selectedSchema: {
         index: initialSchemaIndex,
         schema: initialSchema[initialSchemaIndex]
@@ -106,7 +109,7 @@ class DiscriminatorField extends React.Component {
   }
 
   onDiscriminatorChange = () => {
-    const { onChange, formData } = this.props;
+    const { onChange, formData, parentPath } = this.props;
     const { selectedSchema } = this.state;
 
     return (value, options, schemaIndex) => {
@@ -130,7 +133,7 @@ class DiscriminatorField extends React.Component {
           ...st,
           formState: {
             ...st.formState,
-            [selectedSchema.index]: newFormData
+            [getOneAnyOfPath(parentPath, newFormData)]: newFormData
           }
         };
       });
@@ -154,10 +157,12 @@ class DiscriminatorField extends React.Component {
       onFocus,
       registry,
       uiSchema,
-      typeCombinatorTypes
+      typeCombinatorTypes,
+      parentPath,
+      formData
     } = this.props;
     const _SchemaField = registry.fields.SchemaField;
-    const { selectedSchema, formState } = this.state;
+    const { selectedSchema } = this.state;
 
     const childIsMap =
       selectedSchema.schema &&
@@ -196,14 +201,14 @@ class DiscriminatorField extends React.Component {
     return (
       <fieldset className={prefixClass(`field  ${discriminatorClassName}`)}>
         <React.Fragment>
-          {this.state && formState[selectedSchema.index] ? (
+          {this.state && formData ? (
             <_SchemaField
               schema={selectedSchema.schema}
               uiSchema={uiSchema}
               errorSchema={errorSchema}
               idSchema={idSchema}
               idPrefix={idPrefix}
-              formData={formState[selectedSchema.index].value}
+              formData={formData.value}
               onChange={this.onDiscriminatorChange()}
               onBlur={onBlur}
               onFocus={onFocus}
@@ -217,6 +222,7 @@ class DiscriminatorField extends React.Component {
               // Title will set in boolean fields
               anyOfTitle={this.props.schema.title || this.props.anyOfTitle}
               typeCombinatorTypes={typeCombinatorSubTypes}
+              parentPath={getOneAnyOfPath(parentPath, formData)}
             />
           ) : (
             <p>schema or formdata not available</p>
@@ -227,7 +233,7 @@ class DiscriminatorField extends React.Component {
   };
 
   selectOnChange = value => {
-    const { onChange, definitions } = this.props;
+    const { onChange, definitions, parentPath } = this.props;
     const { formState } = this.state;
     this.setState({
       selectedSchema: value
@@ -239,19 +245,20 @@ class DiscriminatorField extends React.Component {
       definitions,
       0
     );
+    const path = getOneAnyOfPath(parentPath, defaultFormState);
 
-    if (!formState[value.index]) {
+    if (!formState[path]) {
       this.setState(st => ({
         ...st,
         formState: {
           ...st.formState,
-          [value.index]: defaultFormState
+          [path]: defaultFormState
         }
       }));
     }
 
     onChange(
-      formState[value.index] || defaultFormState,
+      formState[path] || defaultFormState,
       {
         validate: true
       },
