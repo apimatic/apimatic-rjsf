@@ -9,6 +9,17 @@ export const TYPE_ENUM = {
   OTHER: 2
 };
 
+function recursiveArray(arr, fullPath, rootSchema) {
+  if (Array.isArray(arr)) {
+    return arr.map(arrItem => recursiveArray(arrItem, fullPath, rootSchema));
+  } else if (typeof arr === "string") {
+    const itemPath = [...fullPath, ...arr.split("/")];
+    const leafNode = lodashGet(rootSchema, itemPath);
+
+    return leafNode;
+  }
+}
+
 /**
  *
  * @param pointer get path of the node with forward slashes
@@ -176,16 +187,27 @@ function modifyArray({
   formDataFieldValue
 }) {
   const items = [];
+  const pathFromParentToChild = getPathFromParentToChild(type, property);
 
   for (let i = 0; i < formDataFieldValue.length; i++) {
-    const { fieldPath } = getSelectedFormDataFieldPath(formDataFieldValue[i]);
+    const { fieldPath, fieldValue } = getSelectedFormDataFieldPath(
+      formDataFieldValue[i]
+    );
     const fullPath = pointerToPath(jsonPointer + fieldPath, true);
     const childNode = lodashGet(rootSchema, fullPath);
 
-    items.push(childNode);
-  }
+    if (fieldValue) {
+      lodashSet(
+        parentSchema,
+        pathFromParentToChild,
+        recursiveArray(fieldValue, fullPath, rootSchema)
+      );
 
-  const pathFromParentToChild = getPathFromParentToChild(type, property);
+      items.push(parentSchema.items);
+    } else {
+      items.push(childNode);
+    }
+  }
 
   lodashSet(parentSchema, pathFromParentToChild, items);
 }
@@ -230,20 +252,9 @@ function modifyOther({
   const fullPath = pointerToPath(jsonPointer + fieldPath, true);
 
   if (fieldValue) {
-    const recursiveArray = arr => {
-      if (Array.isArray(arr)) {
-        return arr.map(arrItem => recursiveArray(arrItem));
-      } else if (typeof arr === "string") {
-        const itemPath = [...fullPath, ...arr.split("/")];
-        const leafNode = lodashGet(rootSchema, itemPath);
-
-        return leafNode;
-      }
-    };
-
     lodashSet(parentSchema, pathFromParentToChild, {
       ...node,
-      ...recursiveArray(fieldValue)
+      ...recursiveArray(fieldValue, fullPath, rootSchema)
     });
 
     deleteOneOfAnyOfProperties(type, node, parentSchema, property);
