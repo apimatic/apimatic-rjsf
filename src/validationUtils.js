@@ -197,13 +197,7 @@ function modifyArray({
     const childNode = lodashGet(rootSchema, fullPath);
 
     if (fieldValue) {
-      lodashSet(
-        parentSchema,
-        pathFromParentToChild,
-        recursiveArray(fieldValue, fullPath, rootSchema)
-      );
-
-      items.push(parentSchema.items);
+      items[i] = recursiveArray(fieldValue, fullPath, rootSchema);
     } else {
       items.push(childNode);
     }
