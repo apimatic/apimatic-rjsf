@@ -234,7 +234,13 @@ class DiscriminatorField extends React.Component {
 
   selectOnChange = value => {
     const { onChange, definitions, parentPath } = this.props;
-    const { formState } = this.state;
+    const { formState, selectedSchema } = this.state;
+
+    // Don't do anything on same item click
+    if (selectedSchema.index === value.index) {
+      return;
+    }
+
     this.setState({
       selectedSchema: value
     });

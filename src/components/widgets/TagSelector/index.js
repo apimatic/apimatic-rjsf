@@ -1,6 +1,8 @@
 import propTypes from "prop-types";
 import React from "react";
-import { deepEquals } from "../../../utils";
+import Select from "react-select";
+
+import { deepEquals, prefixClass } from "../../../utils";
 
 class TagSelector extends React.Component {
   render() {
@@ -21,7 +23,7 @@ class TagSelector extends React.Component {
     return (
       <div className={`tag-selector ${className}`}>
         <span className="__title --tag">{title}</span>
-        <div className="__tags-wrapper">
+        <div className="__tags-wrapper --variant-tag">
           {options.map((option, index) => (
             <span
               key={`option-item-${index}-${option.label}`}
@@ -33,6 +35,15 @@ class TagSelector extends React.Component {
               {option.label}
             </span>
           ))}
+        </div>
+        <div className="__tags-wrapper --variant-select">
+          <Select
+            className={`${prefixClass("form-control")}`}
+            classNamePrefix="react-select"
+            value={options[value.index]}
+            options={options}
+            onChange={({ value }) => onChange(value)}
+          />
         </div>
       </div>
     );
