@@ -967,3 +967,19 @@ export const isMultipleSchema = schema =>
     schema &&
     (schema.hasOwnProperty("oneOf") || schema.hasOwnProperty("anyOf"))
   );
+
+export function classNames(classObj) {
+  if (typeof classObj !== "object") {
+    return;
+  }
+
+  let className = "";
+
+  Object.entries(classObj).forEach(([key, value]) => {
+    if (value) {
+      className += ` ${key}`;
+    }
+  });
+
+  return className;
+}

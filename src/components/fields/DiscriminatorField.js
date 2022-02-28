@@ -1,13 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
+
 import {
   getDefaultFormState,
   checkDiscriminator,
   prefixClass,
-  isMultipleSchema
+  isMultipleSchema,
+  classNames
 } from "../../utils";
 import TagSelector from "../widgets/TagSelector";
 import { getOneAnyOfPath } from "../../validationUtils";
+
+const CHAR_THRESHOLD = 120;
 
 export function generateFormDataForMultipleSchema(schema, index, caseOf) {
   if (isMultipleSchema(schema)) {
@@ -277,20 +281,23 @@ class DiscriminatorField extends React.Component {
     const { selectedSchema } = this.state;
     const multipleSchema = schema.oneOf || schema.anyOf;
 
-    const selectOptions = multipleSchema.reduce((optionList, schema, index) => {
-      let type = typeCombinatorTypes && typeCombinatorTypes[index].DataType;
+    const { selectOptions, charCounts } = multipleSchema.reduce(
+      ({ selectOptions, charCounts }, schema, index) => {
+        const type = typeCombinatorTypes && typeCombinatorTypes[index].DataType;
+        const label = type ? type : getMultipleLabel(schema) || schema.type;
 
-      const label = type ? type : getMultipleLabel(schema) || schema.type;
+        selectOptions.push({
+          label,
+          value: {
+            index: index,
+            schema: schema
+          }
+        });
 
-      optionList.push({
-        label,
-        value: {
-          index: index,
-          schema: schema
-        }
-      });
-      return optionList;
-    }, []);
+        return { selectOptions, charCounts: charCounts + label.length };
+      },
+      { selectOptions: [], charCounts: 0 }
+    );
 
     const isOneOfOrAnyOf =
       selectedSchema.schema.hasOwnProperty("oneOf") ||
@@ -300,6 +307,11 @@ class DiscriminatorField extends React.Component {
       selectedSchema.schema.type === "object" ||
       isOneOfOrAnyOf;
     const depth = fromMap ? this.props.depth + 1 : this.props.depth;
+    const tagSelectorClassName = classNames({
+      "anyof-child": isObject && isOneOfOrAnyOf,
+      "object-child": !isObject || (isObject && !isOneOfOrAnyOf),
+      "select-container": charCounts > CHAR_THRESHOLD
+    });
 
     return (
       <fieldset
@@ -308,13 +320,7 @@ class DiscriminatorField extends React.Component {
         )}
       >
         <TagSelector
-          className={
-            isObject
-              ? isOneOfOrAnyOf
-                ? "anyof-child"
-                : "object-child"
-              : "object-child"
-          }
+          className={tagSelectorClassName}
           value={selectedSchema}
           title={getMultipleLabel(schema)}
           options={selectOptions}
