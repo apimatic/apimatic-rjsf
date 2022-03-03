@@ -10,6 +10,7 @@ import {
 } from "../../utils";
 import TagSelector from "../widgets/TagSelector";
 import { getOneAnyOfPath } from "../../validationUtils";
+import { DefaultTemplate } from "./SchemaField";
 
 const CHAR_THRESHOLD = 120;
 
@@ -75,12 +76,13 @@ class DiscriminatorField extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      collapse: false
+      collapse: false,
+      checked: false
     };
   }
 
   static getDerivedStateFromProps(props, state) {
-    const { schema, formData, parentPath } = props;
+    const { schema, formData, parentPath, required } = props;
 
     /**
      * Fixes {@link https://github.com/apimatic/apimatic-dx-portal/issues/426}
@@ -107,8 +109,10 @@ class DiscriminatorField extends React.Component {
         index: initialSchemaIndex,
         schema: initialSchema[initialSchemaIndex]
       },
-      caseOf
+      caseOf,
+      optional: !required
     };
+
     return newState;
   }
 
@@ -276,9 +280,40 @@ class DiscriminatorField extends React.Component {
     );
   };
 
+  toggleCheckbox = () => {
+    const { formData, schema, definitions, onChange } = this.props;
+
+    this.setState(st => {
+      const { checked } = st;
+      const updatedChecked = !checked;
+
+      const initialSchema = schema.oneOf || schema.anyOf;
+      const initialSchemaIndex = formData ? formData.$$__case : 0;
+      const defaultFormState = getDefaultFormState(
+        initialSchema[initialSchemaIndex],
+        getInitialFormData(
+          initialSchema[initialSchemaIndex],
+          initialSchemaIndex,
+          this.state.caseOf
+        ),
+        definitions,
+        0
+      );
+
+      onChange(
+        updatedChecked ? defaultFormState : null,
+        {
+          validate: true
+        },
+        initialSchemaIndex
+      );
+      return { ...st, checked: updatedChecked };
+    });
+  };
+
   render() {
-    const { schema, fromMap, typeCombinatorTypes } = this.props;
-    const { selectedSchema } = this.state;
+    const { schema, fromMap, typeCombinatorTypes, fieldProps } = this.props;
+    const { selectedSchema, checked, optional } = this.state;
     const multipleSchema = schema.oneOf || schema.anyOf;
 
     const { selectOptions, charCounts } = multipleSchema.reduce(
@@ -314,20 +349,30 @@ class DiscriminatorField extends React.Component {
     });
 
     return (
-      <fieldset
-        className={prefixClass(
-          `field ${getEvenOddClass(depth)} depth_${depth} discriminator-field`
-        )}
+      <DefaultTemplate
+        {...fieldProps}
+        nullify={checked}
+        onNullifyChange={this.toggleCheckbox}
       >
-        <TagSelector
-          className={tagSelectorClassName}
-          value={selectedSchema}
-          title={getMultipleLabel(schema)}
-          options={selectOptions}
-          onChange={this.selectOnChange}
-        />
-        {this.renderSchema(depth)}
-      </fieldset>
+        {!optional || (optional && checked) ? (
+          <fieldset
+            className={prefixClass(
+              `field ${getEvenOddClass(
+                depth
+              )} depth_${depth} discriminator-field`
+            )}
+          >
+            <TagSelector
+              className={tagSelectorClassName}
+              value={selectedSchema}
+              title={getMultipleLabel(schema)}
+              options={selectOptions}
+              onChange={this.selectOnChange}
+            />
+            {this.renderSchema(depth)}
+          </fieldset>
+        ) : null}
+      </DefaultTemplate>
     );
   }
 }

@@ -691,3 +691,175 @@ module.exports = {
     }
   }
 };
+
+module.exports = {
+  schema: {
+    title: "Endpoint Arguments",
+    type: "object",
+    additionalProperties: false,
+    properties: {
+      args: {
+        id: "endpoint_7C26ABBCDB1F9",
+        title: "endpoint_7C26ABBCDB1F9",
+        type: "object",
+        properties: {
+          body: {
+            id: "AlertChannels_Jira_Update_Schema",
+            title: "AlertChannels_Jira_Update_Schema",
+            type: "object",
+            properties: {
+              name: {
+                type: "string",
+                minLength: 1,
+                pattern: "(?!^ +$)^.+$"
+              },
+              type: {
+                title: "Type7",
+                example: "Jira",
+                "x-enum-elements": [
+                  {
+                    name: "Jira",
+                    description: ""
+                  }
+                ],
+                type: "string",
+                enum: ["Jira"]
+              },
+              enabled: {
+                type: "number",
+                minimum: 0,
+                maximum: 1
+              },
+              data: {
+                oneOf: [
+                  {
+                    id: "JIRA_CLOUD2",
+                    title: "JIRA_CLOUD2",
+                    type: "object",
+                    properties: {
+                      jiraType: {
+                        title: "Jira Type",
+                        example: "JIRA_CLOUD",
+                        "x-enum-elements": [
+                          {
+                            name: "JIRA_CLOUD",
+                            description: ""
+                          }
+                        ],
+                        type: "string",
+                        enum: ["JIRA_CLOUD"]
+                      },
+                      issueGrouping: {
+                        title: "Group Issues by",
+                        example: "Events",
+                        "x-enum-elements": [
+                          {
+                            name: "Events",
+                            description: ""
+                          },
+                          {
+                            name: "Resources",
+                            description: ""
+                          }
+                        ],
+                        type: "string",
+                        enum: ["Events", "Resources"]
+                      },
+                      jiraUrl: {
+                        type: "string",
+                        pattern: "[a-zA-Z0-9]\\.(atlassian\\.net|jira\\.com)$"
+                      },
+                      projectId: {
+                        type: "string"
+                      },
+                      issueType: {
+                        type: "string"
+                      },
+                      username: {
+                        type: "string"
+                      },
+                      apiToken: {
+                        type: "string"
+                      },
+                      customTemplateFile: {
+                        type: "string",
+                        format: "data-url"
+                      }
+                    }
+                  },
+                  {
+                    id: "JIRA_SERVER2",
+                    title: "JIRA_SERVER2",
+                    type: "object",
+                    properties: {
+                      jiraType: {
+                        title: "Jira Type1",
+                        example: "JIRA_SERVER",
+                        "x-enum-elements": [
+                          {
+                            name: "JIRA_SERVER",
+                            description: ""
+                          }
+                        ],
+                        type: "string",
+                        enum: ["JIRA_SERVER"]
+                      },
+                      issueGrouping: {
+                        title: "Group Issues by",
+                        example: "Events",
+                        "x-enum-elements": [
+                          {
+                            name: "Events",
+                            description: ""
+                          },
+                          {
+                            name: "Resources",
+                            description: ""
+                          }
+                        ],
+                        type: "string",
+                        enum: ["Events", "Resources"]
+                      },
+                      jiraUrl: {
+                        type: "string",
+                        pattern: "[A-Za-z0-9\\/\\-&?_.=:]+"
+                      },
+                      projectId: {
+                        type: "string"
+                      },
+                      issueType: {
+                        type: "string"
+                      },
+                      username: {
+                        type: "string"
+                      },
+                      password: {
+                        type: "string"
+                      },
+                      customTemplateFile: {
+                        type: "string",
+                        format: "data-url"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        required: ["Authorization", "intgGuid", "body"]
+      }
+    },
+    required: ["args"]
+  },
+  formData: {
+    args: {
+      Authorization: "Authorization8",
+      intgGuid: "intgGuid8",
+      body: {
+        $$__case: 0,
+        $$__case_of: "oneOf"
+      }
+    }
+  }
+};

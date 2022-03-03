@@ -983,3 +983,7 @@ export function classNames(classObj) {
 
   return className;
 }
+
+export function isOneOfSchema(schema = {}) {
+  return schema.oneOf || schema.anyOf;
+}

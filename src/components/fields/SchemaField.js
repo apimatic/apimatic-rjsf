@@ -9,7 +9,9 @@ import {
   getUiOptions,
   isFilesArray,
   deepEquals,
-  prefixClass as pfx
+  prefixClass as pfx,
+  isOneOfSchema,
+  prefixClass
 } from "../../utils";
 import UnsupportedField from "./UnsupportedField";
 
@@ -101,7 +103,7 @@ function ErrorList(props) {
   );
 }
 
-function DefaultTemplate(props) {
+export function DefaultTemplate(props) {
   const {
     id,
     classNames,
@@ -112,7 +114,9 @@ function DefaultTemplate(props) {
     description,
     hidden,
     required,
-    displayLabel
+    displayLabel,
+    nullify,
+    onNullifyChange
   } = props;
   if (hidden) {
     return children;
@@ -126,7 +130,23 @@ function DefaultTemplate(props) {
     <div className={pfx(classNames)}>
       {displayLabel && (
         <div className={pfx("field-header")}>
-          <Label label={label} required={required} id={id} />
+          {onNullifyChange && !required ? (
+            <legend>
+              <label onClick={ev => ev.stopPropagation()}>
+                <input
+                  type="checkbox"
+                  checked={nullify}
+                  className={nullify ? "checked" : "unchecked"}
+                  onChange={onNullifyChange}
+                />
+                <span />
+              </label>
+              <div className={prefixClass("checkbox-text")}>{label}</div>
+            </legend>
+          ) : (
+            <Label label={label} required={required} id={id} />
+          )}
+
           {required && (
             <div className={pfx("element-required")}>
               <span>Required</span>
@@ -237,22 +257,6 @@ function SchemaFieldRender(props) {
 
   const { __errors, ...fieldErrorSchema } = errorSchema;
 
-  // See #439: uiSchema: Don't pass consumed class names to child components
-  const field = (
-    <FieldComponent
-      {...props}
-      schema={schema}
-      uiSchema={{ ...uiSchema, classNames: undefined }}
-      disabled={disabled}
-      readonly={readonly}
-      autofocus={autofocus}
-      errorSchema={fieldErrorSchema}
-      formContext={formContext}
-      schemaIndex={schemaIndex}
-      typeCombinatorTypes={_typeCombinatorTypes}
-    />
-  );
-
   const { type } = schema;
   const id = idSchema.$id;
   const label =
@@ -303,7 +307,28 @@ function SchemaFieldRender(props) {
     anyOfTitle
   };
 
-  return <FieldTemplate {...fieldProps}>{field}</FieldTemplate>;
+  // See #439: uiSchema: Don't pass consumed class names to child components
+  const field = (
+    <FieldComponent
+      {...props}
+      schema={schema}
+      uiSchema={{ ...uiSchema, classNames: undefined }}
+      disabled={disabled}
+      readonly={readonly}
+      autofocus={autofocus}
+      errorSchema={fieldErrorSchema}
+      formContext={formContext}
+      schemaIndex={schemaIndex}
+      typeCombinatorTypes={_typeCombinatorTypes}
+      fieldProps={fieldProps}
+    />
+  );
+
+  return isOneOfSchema(schema) ? (
+    field
+  ) : (
+    <FieldTemplate {...fieldProps}>{field}</FieldTemplate>
+  );
 }
 
 class SchemaField extends React.Component {
