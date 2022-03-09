@@ -9,6 +9,21 @@ export const TYPE_ENUM = {
   OTHER: 2
 };
 
+function getOneOfParamValue(rawFormData, path) {
+  let value = rawFormData;
+
+  for (let i = 0; i < path.length; i++) {
+    const currentValue = value[path[i]];
+    if (currentValue) {
+      value = currentValue;
+    } else if (value.$$__case) {
+      value = value.value[path[i]];
+    }
+  }
+
+  return value;
+}
+
 function recursiveArray(arr, fullPath, rootSchema) {
   if (Array.isArray(arr)) {
     return arr.map(arrItem => recursiveArray(arrItem, fullPath, rootSchema));
@@ -152,6 +167,7 @@ export function getSelectedFormDataFieldPath(formDataFieldValue) {
   let fieldPath = "";
   let isArr = false;
   let arrVal;
+  let breakable;
 
   traverse(formDataFieldValue, {
     allKeys: true,
@@ -160,12 +176,16 @@ export function getSelectedFormDataFieldPath(formDataFieldValue) {
       const val = n["value"];
       const type = n["$$__case_of"] || "oneOf";
 
+      if (!index && !val) {
+        breakable = true;
+      }
+
       if (Array.isArray(val)) {
         isArr = true;
         arrVal = n;
       }
 
-      if (index !== undefined && !isArr) {
+      if (index !== undefined && !isArr && !breakable) {
         fieldPath += `/${type}`;
         fieldPath += `/${index}`;
       }
@@ -237,7 +257,8 @@ function modifyOther({
   rootSchema,
   jsonPointer,
   parentSchema,
-  formDataFieldValue
+  formDataFieldValue,
+  originalFormData
 }) {
   const { fieldPath, fieldValue } = getSelectedFormDataFieldPath(
     formDataFieldValue
@@ -254,12 +275,14 @@ function modifyOther({
     deleteOneOfAnyOfProperties(type, node, parentSchema, property);
   } else {
     const childNode = lodashGet(rootSchema, fullPath);
-
     lodashSet(parentSchema, pathFromParentToChild, {
       ...node,
       ...childNode
     });
+
     deleteOneOfAnyOfProperties(type, node, parentSchema, property);
+
+    traverse(rootSchema, {}, cb(originalFormData));
   }
 }
 
@@ -277,7 +300,11 @@ export const cb = (rawFormData, checkForOneOrAnyOf = () => {}) => (...args) => {
   if (node.oneOf || node.anyOf) {
     const type = getType(parentSchema);
     const formDataFieldPath = getPath(type, parentJsonPointer, jsonPointer);
-    const formDataFieldValue = lodashGet(rawFormData, formDataFieldPath);
+    const formDataFieldValue = lodashGet(
+      rawFormData,
+      formDataFieldPath,
+      getOneOfParamValue(rawFormData, formDataFieldPath)
+    );
 
     if (type === TYPE_ENUM.ARRAY) {
       modifyArray({
@@ -310,7 +337,8 @@ export const cb = (rawFormData, checkForOneOrAnyOf = () => {}) => (...args) => {
         rootSchema,
         jsonPointer,
         parentSchema,
-        formDataFieldValue
+        formDataFieldValue,
+        originalFormData: rawFormData
       });
     }
 

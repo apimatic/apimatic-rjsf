@@ -335,14 +335,16 @@ export function mergeDefaultsWithFormData(defaults, formData) {
     if (!Array.isArray(defaults)) {
       defaults = [];
     }
+
     return formData.map((value, idx) => {
       if (defaults[idx]) {
         return mergeDefaultsWithFormData(defaults[idx], value);
       }
       return value;
     });
-  } else if (isObject(formData)) {
-    const acc = Object.assign({}, defaults); // Prevent mutation of source object.
+  } else if (isObject(formData) && formData.$$__case === undefined) {
+    const acc = Object.assign({}, defaults);
+
     return Object.keys(formData).reduce((acc, key) => {
       acc[key] = mergeDefaultsWithFormData(
         defaults ? defaults[key] : {},
@@ -354,6 +356,7 @@ export function mergeDefaultsWithFormData(defaults, formData) {
     return formData;
   }
 }
+
 export function asNumber(value) {
   if (value === "") {
     return undefined;
