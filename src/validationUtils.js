@@ -145,12 +145,12 @@ export function getOneAnyOfPath(path = "", obj) {
 
 export function getNestedValue(data, path = getOneAnyOfPath("", data)) {
   if (data && Array.isArray(data.value)) {
-    if (data.value.some(item => item && item.value)) {
+    if (data.value.some(item => item && item.$$__case)) {
       return data.value.map(val => {
         return getNestedValue(val, getOneAnyOfPath(path + "/items", val));
       });
     } else {
-      return path;
+      return path.includes("undefined") ? undefined : path;
     }
   } else if (
     data &&
