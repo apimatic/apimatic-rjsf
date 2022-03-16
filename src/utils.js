@@ -642,14 +642,7 @@ function withExactlyOneSubschema(
           [dependencyKey]: conditionPropertySchema
         }
       };
-      const { errors } = validateFormData(
-        formData,
-        conditionSchema,
-        undefined,
-        undefined,
-        undefined,
-        true
-      );
+      const { errors } = validateFormData(formData, conditionSchema);
       return errors.length === 0;
     }
   });

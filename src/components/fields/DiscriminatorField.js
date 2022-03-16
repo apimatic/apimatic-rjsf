@@ -82,7 +82,7 @@ class DiscriminatorField extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    const { schema, formData, parentPath, required } = props;
+    const { schema, formData, parentPath, required, fromDiscriminator } = props;
 
     /**
      * Fixes {@link https://github.com/apimatic/apimatic-dx-portal/issues/426}
@@ -110,7 +110,7 @@ class DiscriminatorField extends React.Component {
         schema: initialSchema[initialSchemaIndex]
       },
       caseOf,
-      optional: !required
+      optional: fromDiscriminator ? false : !required
     };
 
     return newState;
@@ -347,7 +347,13 @@ class DiscriminatorField extends React.Component {
   };
 
   render() {
-    const { schema, fromMap, typeCombinatorTypes, fieldProps } = this.props;
+    const {
+      schema,
+      fromMap,
+      typeCombinatorTypes,
+      fieldProps,
+      fromDiscriminator
+    } = this.props;
     const { selectedSchema, checked, optional } = this.state;
     const multipleSchema = schema.oneOf || schema.anyOf;
 
@@ -387,7 +393,9 @@ class DiscriminatorField extends React.Component {
       <DefaultTemplate
         {...fieldProps}
         nullify={checked}
+        required={!optional}
         onNullifyChange={this.toggleCheckbox}
+        fromDiscriminator={fromDiscriminator}
       >
         {!optional || (optional && checked) ? (
           <fieldset

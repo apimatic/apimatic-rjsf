@@ -116,7 +116,8 @@ export function DefaultTemplate(props) {
     required,
     displayLabel,
     nullify,
-    onNullifyChange
+    onNullifyChange,
+    fromDiscriminator
   } = props;
   if (hidden) {
     return children;
@@ -147,7 +148,7 @@ export function DefaultTemplate(props) {
             <Label label={label} required={required} id={id} />
           )}
 
-          {required && (
+          {!fromDiscriminator && required && (
             <div className={pfx("element-required")}>
               <span>Required</span>
             </div>
@@ -171,7 +172,7 @@ export function DefaultTemplate(props) {
 
       {displayLabel && description ? description : null}
       {children}
-      {errors}
+      {(nullify || required) && errors}
       {help}
     </div>
   );
