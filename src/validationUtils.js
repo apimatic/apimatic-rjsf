@@ -55,7 +55,7 @@ function validate(errors, formData) {
         // Further filteration of the relatedErrors based on case selection
         // Case number is added at the end to pick only selected errors
         const selectedErrors = relatedErrors.filter(error => {
-          const path = `${basePath}/${index}`;
+          const path = `${basePath}/${index}/`;
 
           if (error.schemaPath.indexOf(path) !== -1) {
             return true;
@@ -72,9 +72,10 @@ function validate(errors, formData) {
 }
 
 export function validateSchema(schema, formData, originalFormData, ajv) {
-  ajv.validate(schema, formData);
+  const compiled = ajv.compile(schema);
+  compiled(formData);
 
-  if (originalFormData && ajv.errors) {
-    ajv.errors = validate(ajv.errors, originalFormData);
+  if (originalFormData && compiled.errors) {
+    ajv.errors = validate(compiled.errors, originalFormData);
   }
 }

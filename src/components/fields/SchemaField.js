@@ -172,7 +172,7 @@ export function DefaultTemplate(props) {
 
       {displayLabel && description ? description : null}
       {children}
-      {(nullify || required) && errors}
+      {onNullifyChange && !nullify ? null : errors}
       {help}
     </div>
   );
