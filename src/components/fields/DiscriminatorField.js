@@ -311,41 +311,6 @@ class DiscriminatorField extends React.Component {
     });
   };
 
-  componentDidMount = () => {
-    const { onChange, definitions, parentPath } = this.props;
-    const { formState, selectedSchema } = this.state;
-
-    let defaultFormState = getDefaultFormState(
-      selectedSchema.schema,
-      getInitialFormData(
-        selectedSchema.schema,
-        selectedSchema.index,
-        this.state.caseOf
-      ),
-      definitions,
-      0
-    );
-    const path = getOneAnyOfPath(parentPath, defaultFormState);
-
-    if (!formState[path]) {
-      this.setState(st => ({
-        ...st,
-        formState: {
-          ...st.formState,
-          [path]: defaultFormState
-        }
-      }));
-    }
-
-    onChange(
-      formState[path] || defaultFormState,
-      {
-        validate: true
-      },
-      selectedSchema.index
-    );
-  };
-
   render() {
     const {
       schema,
