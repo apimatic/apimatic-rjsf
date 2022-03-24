@@ -1766,1116 +1766,507 @@ module.exports = {
         title: "endpoint_7C26ABBCDB1F9",
         type: "object",
         properties: {
-          Authorization: {
-            description: "Bearer AccessToken",
-            type: "string",
-            dataTypeDisplayText: "String",
-            paramType: "Header",
-            title: "authorization",
-            typeCombinatorTypes: null
-          },
-          intgGuid: {
-            description: "Alert Channel intgGuid",
+          instructionId: {
+            description: "instruction id in HaitiPaytest",
+            example: "TRX2",
             type: "string",
             dataTypeDisplayText: "String",
             paramType: "Template",
-            title: "intgGuid",
+            title: "instructionId",
             typeCombinatorTypes: null
           },
           body: {
-            description:
-              'Only specify the parameter(s)  that you want to update, for example, `{ "enabled" : 0 }`.',
-            oneOf: [
-              {
-                id: "AlertChannels_AwsS3_Update_Schema",
-                title: "AlertChannels_AwsS3_Update_Schema",
+            id: "RefuseCreditTransferRequest",
+            title: "body",
+            type: "object",
+            properties: {
+              reason: {
+                id: "Error",
+                title: "Reason",
                 type: "object",
                 properties: {
-                  name: {
+                  code: {
+                    description: "error code",
+                    example: "ERR1234",
                     type: "string",
-                    minLength: 1,
-                    pattern: "(?!^ +$)^.+$"
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Code",
+                    typeCombinatorTypes: null
                   },
-                  type: {
-                    title: "Type",
-                    example: "AwsS3",
-                    "x-enum-elements": [
-                      {
-                        name: "AwsS3",
-                        description: ""
-                      }
-                    ],
+                  message: {
+                    description:
+                      "This is a functional error message that can be displayed to the end user",
+                    example: "Dear user, sorry but something went wrong",
                     type: "string",
-                    enum: ["AwsS3"]
-                  },
-                  enabled: {
-                    type: "number",
-                    minimum: 0,
-                    maximum: 1
-                  },
-                  data: {
-                    id: "Data17",
-                    title: "Data17",
-                    type: "object",
-                    properties: {
-                      s3CrossAccountCredentials: {
-                        id: "S3CrossAccountCredentials3",
-                        title: "S3CrossAccountCredentials3",
-                        type: "object",
-                        properties: {
-                          externalId: {
-                            type: "string",
-                            minLength: 1
-                          },
-                          roleArn: {
-                            type: "string",
-                            pattern:
-                              "^arn:aws(-[a-zA-Z]+)?:iam:([a-zA-Z0-9-_]+)?:([0-9]{12}):([a-zA-Z0-9_-]+)([/:][a-zA-Z0-9_-]+)*$"
-                          },
-                          bucketArn: {
-                            type: "string",
-                            pattern:
-                              "^arn:aws(-[a-zA-Z]+)?:s3:([a-zA-Z0-9-_]+)?:([0-9]{12})?:([a-zA-Z0-9_-]+)([/:][a-zA-Z0-9_-]+)*$"
-                          }
-                        }
-                      }
-                    }
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Message",
+                    typeCombinatorTypes: null
                   }
-                }
+                },
+                required: ["code", "message"],
+                dataTypeDisplayText: "Error",
+                dataTypeLink: "/java/models/structures/error",
+                paramType: null,
+                typeCombinatorTypes: null
               },
-              {
-                id: "AlertChannels_CiscoSparkWebhook_Update_Schema",
-                title: "AlertChannels_CiscoSparkWebhook_Update_Schema",
+              receiverId: {
+                description:
+                  "Instruction id in the issuer/receiver system (depending on the name of the param)",
+                example: "TRX2",
+                type: "string",
+                dataTypeDisplayText: "String",
+                paramType: null,
+                title: "ReceiverId",
+                typeCombinatorTypes: null
+              },
+              additional: {
+                id: "Additional1",
+                title: "Additional",
                 type: "object",
                 properties: {
-                  name: {
-                    type: "string",
-                    minLength: 1,
-                    pattern: "(?!^ +$)^.+$"
-                  },
-                  type: {
-                    title: "Type1",
-                    example: "CiscoSparkWebhook",
+                  requestedBy: {
+                    title: "RequestedBy",
+                    description: "Who initiated",
+                    example: "USER",
                     "x-enum-elements": [
                       {
-                        name: "CiscoSparkWebhook",
+                        name: "USER",
+                        description: ""
+                      },
+                      {
+                        name: "SYSTEM",
                         description: ""
                       }
                     ],
                     type: "string",
-                    enum: ["CiscoSparkWebhook"]
+                    enum: ["USER", "SYSTEM"],
+                    dataTypeDisplayText: "RequestedByEnum",
+                    dataTypeLink: "/java/models/enumerations/requested-by",
+                    paramType: null,
+                    typeCombinatorTypes: null
                   },
-                  enabled: {
-                    type: "number",
-                    minimum: 0,
-                    maximum: 1
-                  },
-                  data: {
-                    id: "Data20",
-                    title: "Data20",
-                    type: "object",
-                    properties: {
-                      webhook: {
-                        type: "string",
-                        pattern:
-                          "^https://(api.ciscospark|webexapis).com/v1/webhooks/incoming([/][a-zA-Z0-9#-_]+)+$"
+                  scheme: {
+                    title: "Scheme",
+                    description: "SEPA Scheme used (sent by SepaGateway)",
+                    example: "SCT",
+                    "x-enum-elements": [
+                      {
+                        name: "SCT",
+                        description: ""
+                      },
+                      {
+                        name: "SCT_INST",
+                        description: ""
                       }
-                    }
+                    ],
+                    type: "string",
+                    enum: ["SCT", "SCT_INST"],
+                    dataTypeDisplayText: "SchemeEnum",
+                    dataTypeLink: "/java/models/enumerations/scheme",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  },
+                  category: {
+                    description: "category (sent by HaitiPaytest)",
+                    type: "string",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Category",
+                    typeCombinatorTypes: null
+                  },
+                  messageId: {
+                    description: "message id (sent by SepaGateway)",
+                    type: "string",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "MessageId",
+                    typeCombinatorTypes: null
+                  },
+                  originatorRef: {
+                    description: "originator ref (sent by HaitiPaytest)",
+                    type: "string",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "OriginatorRef",
+                    typeCombinatorTypes: null
+                  },
+                  purpose: {
+                    description:
+                      "purpose (sent by HaitiPaytest)<br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `4`",
+                    type: "string",
+                    minLength: 1,
+                    maxLength: 4,
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Purpose",
+                    typeCombinatorTypes: null
+                  },
+                  remittanceInfo: {
+                    description: "remittance info (sent by HaitiPaytest)",
+                    type: "string",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "RemittanceInfo",
+                    typeCombinatorTypes: null
+                  },
+                  clearingSystem: {
+                    title: "ClearingSystem",
+                    example: "CORE",
+                    "x-enum-elements": [
+                      {
+                        name: "CORE",
+                        description: ""
+                      },
+                      {
+                        name: "CORS",
+                        description: ""
+                      },
+                      {
+                        name: "STP2",
+                        description: ""
+                      }
+                    ],
+                    type: "string",
+                    enum: ["CORE", "CORS", "STP2"],
+                    dataTypeDisplayText: "ClearingSystemEnum",
+                    dataTypeLink: "/java/models/enumerations/clearing-system",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  },
+                  acquitted: {
+                    description:
+                      "true/false if the instruction has been acquitted/rejected by Steffi though acquittal/rejection file, else null if no acquittal/rejection has been done yet",
+                    type: "boolean",
+                    dataTypeDisplayText: "Boolean",
+                    paramType: null,
+                    title: "Acquitted",
+                    typeCombinatorTypes: null
+                  },
+                  someAttribute: {
+                    type: "string",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "SomeAttribute",
+                    typeCombinatorTypes: null
+                  },
+                  otherAttribute: {
+                    type: "string",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "OtherAttribute",
+                    typeCombinatorTypes: null
+                  },
+                  externalRef: {
+                    description: "external system reference",
+                    type: "string",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "ExternalRef",
+                    typeCombinatorTypes: null
                   }
-                }
+                },
+                required: ["requestedBy", "scheme"],
+                dataTypeDisplayText: "Additional1",
+                dataTypeLink: "/java/models/structures/additional-1",
+                paramType: null,
+                typeCombinatorTypes: null
               },
-              {
-                id: "AlertChannels_CloudwatchEb_Update_Schema",
-                title: "AlertChannels_CloudwatchEb_Update_Schema",
+              creditor: {
+                id: "InterbankingUser",
+                title: "Creditor",
                 type: "object",
                 properties: {
-                  name: {
+                  issuerId: {
+                    description:
+                      "User id in the system, can be an IBAN or other id depending on the system",
+                    example: "FR1420041010050500013M02606",
                     type: "string",
-                    minLength: 1,
-                    pattern: "(?!^ +$)^.+$"
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "IssuerId",
+                    typeCombinatorTypes: null
                   },
-                  type: {
-                    title: "Type2",
-                    example: "CloudwatchEb",
-                    "x-enum-elements": [
-                      {
-                        name: "CloudwatchEb",
-                        description: ""
-                      }
-                    ],
+                  receiverId: {
+                    description:
+                      "User id in the system, can be an IBAN or other id depending on the system",
+                    example: "FR1420041010050500013M02606",
                     type: "string",
-                    enum: ["CloudwatchEb"]
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "ReceiverId",
+                    typeCombinatorTypes: null
                   },
-                  enabled: {
-                    type: "number",
-                    minimum: 0,
-                    maximum: 1
-                  },
-                  data: {
-                    id: "Data23",
-                    title: "Data23",
-                    type: "object",
-                    properties: {
-                      issueGrouping: {
-                        title: "Group Issues by",
-                        example: "Events",
-                        "x-enum-elements": [
-                          {
-                            name: "Events",
-                            description: ""
-                          },
-                          {
-                            name: "Resources",
-                            description: ""
-                          }
-                        ],
-                        type: "string",
-                        enum: ["Events", "Resources"]
-                      },
-                      eventBusArn: {
-                        type: "string",
-                        pattern:
-                          "^arn:aws(-[a-zA-Z]+)?:events:([a-zA-Z0-9]{1}[a-zA-Z0-9-]+[a-zA-Z0-9]{1}):([0-9]{12}):([a-zA-Z0-9_-]+)([/:][a-zA-Z0-9_-]+)?$"
-                      }
-                    }
-                  }
-                }
-              },
-              {
-                id: "AlertChannels_Datadog_Update_Schema",
-                title: "AlertChannels_Datadog_Update_Schema",
-                type: "object",
-                properties: {
-                  name: {
-                    type: "string",
-                    minLength: 1,
-                    pattern: "(?!^ +$)^.+$"
-                  },
-                  type: {
-                    title: "Type3",
-                    example: "Datadog",
-                    "x-enum-elements": [
-                      {
-                        name: "Datadog",
-                        description: ""
-                      }
-                    ],
-                    type: "string",
-                    enum: ["Datadog"]
-                  },
-                  enabled: {
-                    type: "number",
-                    minimum: 0,
-                    maximum: 1
-                  },
-                  data: {
-                    id: "Data37",
-                    title: "Data37",
-                    type: "object",
-                    properties: {
-                      datadogType: {
-                        title: "Datadog Service",
-                        example: "Logs Detail",
-                        "x-enum-elements": [
-                          {
-                            name: "Enum_Logs Detail",
-                            description: ""
-                          },
-                          {
-                            name: "Enum_Logs Summary",
-                            description: ""
-                          },
-                          {
-                            name: "Enum_Events Summary",
-                            description: ""
-                          }
-                        ],
-                        type: "string",
-                        enum: ["Logs Detail", "Logs Summary", "Events Summary"]
-                      },
-                      datadogSite: {
-                        title: "Datadog Site",
-                        example: "com",
-                        "x-enum-elements": [
-                          {
-                            name: "com",
-                            description: ""
-                          },
-                          {
-                            name: "eu",
-                            description: ""
-                          }
-                        ],
-                        type: "string",
-                        enum: ["com", "eu"]
-                      },
-                      apiKey: {
-                        type: "string",
-                        minLength: 1
-                      }
-                    }
-                  }
-                }
-              },
-              {
-                id: "AlertChannels_EmailUser_Update_Schema",
-                title: "AlertChannels_EmailUser_Update_Schema",
-                type: "object",
-                properties: {
-                  name: {
-                    type: "string",
-                    minLength: 1,
-                    pattern: "(?!^ +$)^.+$"
-                  },
-                  type: {
-                    title: "Type4",
-                    example: "EmailUser",
-                    "x-enum-elements": [
-                      {
-                        name: "EmailUser",
-                        description: ""
-                      }
-                    ],
-                    type: "string",
-                    enum: ["EmailUser"]
-                  },
-                  enabled: {
-                    type: "number",
-                    minimum: 0,
-                    maximum: 1
-                  },
-                  data: {
-                    id: "Data39",
-                    title: "Data39",
-                    type: "object",
-                    properties: {
-                      channelProps: {
-                        id: "ChannelProps3",
-                        title: "ChannelProps3",
-                        type: "object",
-                        properties: {
-                          recipients: {
-                            description: "a list of email addresses",
-                            type: "array",
-                            items: {
-                              type: "object"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              {
-                id: "AlertChannels_GcpPubsub_Update_Schema",
-                title: "AlertChannels_GcpPubsub_Update_Schema",
-                type: "object",
-                properties: {
-                  name: {
-                    type: "string",
-                    minLength: 1,
-                    pattern: "(?!^ +$)^.+$"
-                  },
-                  type: {
-                    title: "Type5",
-                    example: "GcpPubsub",
-                    "x-enum-elements": [
-                      {
-                        name: "GcpPubsub",
-                        description: ""
-                      }
-                    ],
-                    type: "string",
-                    enum: ["GcpPubsub"]
-                  },
-                  enabled: {
-                    type: "number",
-                    minimum: 0,
-                    maximum: 1
-                  },
-                  data: {
-                    id: "Data41",
-                    title: "Data41",
-                    type: "object",
-                    properties: {
-                      issueGrouping: {
-                        title: "Group Issues by",
-                        example: "Events",
-                        "x-enum-elements": [
-                          {
-                            name: "Events",
-                            description: ""
-                          },
-                          {
-                            name: "Resources",
-                            description: ""
-                          }
-                        ],
-                        type: "string",
-                        enum: ["Events", "Resources"]
-                      },
-                      credentials: {
-                        id: "Credentials3",
-                        title: "Credentials3",
-                        type: "object",
-                        properties: {
-                          clientId: {
-                            type: "string",
-                            minLength: 1
-                          },
-                          privateKeyId: {
-                            type: "string",
-                            minLength: 1
-                          },
-                          clientEmail: {
-                            type: "string",
-                            minLength: 1,
-                            pattern:
-                              "^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$"
-                          },
-                          privateKey: {
-                            type: "string",
-                            minLength: 1
-                          }
-                        }
-                      },
-                      projectId: {
-                        type: "string"
-                      },
-                      topicId: {
-                        type: "string"
-                      }
-                    }
-                  }
-                }
-              },
-              {
-                id: "AlertChannels_IbmQradar_Update_Schema",
-                title: "AlertChannels_IbmQradar_Update_Schema",
-                type: "object",
-                properties: {
-                  name: {
-                    type: "string",
-                    minLength: 1,
-                    pattern: "(?!^ +$)^.+$"
-                  },
-                  type: {
-                    title: "Type6",
-                    example: "IbmQradar",
-                    "x-enum-elements": [
-                      {
-                        name: "IbmQradar",
-                        description: ""
-                      }
-                    ],
-                    type: "string",
-                    enum: ["IbmQradar"]
-                  },
-                  enabled: {
-                    type: "number",
-                    minimum: 0,
-                    maximum: 1
-                  },
-                  data: {
-                    id: "Data43",
-                    title: "Data43",
-                    type: "object",
-                    properties: {
-                      qradarCommType: {
-                        title: "Communication Type",
-                        example: "HTTPS",
-                        "x-enum-elements": [
-                          {
-                            name: "HTTPS",
-                            description: ""
-                          },
-                          {
-                            name: "Enum_HTTPS Self Signed Cert",
-                            description: ""
-                          }
-                        ],
-                        type: "string",
-                        enum: ["HTTPS", "HTTPS Self Signed Cert"]
-                      },
-                      qradarHostUrl: {
-                        type: "string",
-                        minLength: 1,
-                        pattern: ".+[a-zA-Z0-9]$"
-                      },
-                      qradarHostPort: {
-                        type: "number",
-                        minimum: 0,
-                        maximum: 65535
-                      }
-                    }
-                  }
-                }
-              },
-              {
-                id: "AlertChannels_Jira_Update_Schema",
-                title: "AlertChannels_Jira_Update_Schema",
-                type: "object",
-                properties: {
-                  name: {
-                    type: "string",
-                    minLength: 1,
-                    pattern: "(?!^ +$)^.+$"
-                  },
-                  type: {
-                    title: "Type7",
-                    example: "Jira",
-                    "x-enum-elements": [
-                      {
-                        name: "Jira",
-                        description: ""
-                      }
-                    ],
-                    type: "string",
-                    enum: ["Jira"]
-                  },
-                  enabled: {
-                    type: "number",
-                    minimum: 0,
-                    maximum: 1
-                  },
-                  data: {
+                  additional: {
                     oneOf: [
                       {
-                        id: "JIRA_CLOUD2",
-                        title: "JIRA_CLOUD2",
+                        id: "InterbankingUserAdditionalSepa",
+                        title: "InterbankingUserAdditionalSepa",
                         type: "object",
                         properties: {
-                          jiraType: {
-                            title: "Jira Type",
-                            example: "JIRA_CLOUD",
-                            "x-enum-elements": [
-                              {
-                                name: "JIRA_CLOUD",
-                                description: ""
-                              }
-                            ],
-                            type: "string",
-                            enum: ["JIRA_CLOUD"]
-                          },
-                          issueGrouping: {
-                            title: "Group Issues by",
-                            example: "Events",
-                            "x-enum-elements": [
-                              {
-                                name: "Events",
-                                description: ""
-                              },
-                              {
-                                name: "Resources",
-                                description: ""
-                              }
-                            ],
-                            type: "string",
-                            enum: ["Events", "Resources"]
-                          },
-                          jiraUrl: {
+                          BIC: {
+                            example: "PSSTFRPPXXX",
                             type: "string",
                             pattern:
-                              "[a-zA-Z0-9]\\.(atlassian\\.net|jira\\.com)$"
+                              "^[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}$"
                           },
-                          projectId: {
+                          fullName: {
+                            example: "John Doe",
                             type: "string"
                           },
-                          issueType: {
+                          country: {
+                            example: "FR",
                             type: "string"
                           },
-                          username: {
+                          address: {
+                            example: "88 rue du dôme",
                             type: "string"
                           },
-                          apiToken: {
+                          city: {
+                            example: "Boulogne-Billancourt",
                             type: "string"
                           },
-                          customTemplateFile: {
-                            type: "string",
-                            format: "data-url"
+                          zipcode: {
+                            example: "92100",
+                            type: "string"
+                          },
+                          region: {
+                            example: "Île de france",
+                            type: "string"
+                          },
+                          district: {
+                            example: "République",
+                            type: "string"
+                          },
+                          province: {
+                            type: "string"
+                          },
+                          code: {
+                            description: "originator or beneficiary code",
+                            type: "string"
+                          },
+                          ultimate: {
+                            id: "Ultimate",
+                            title: "Ultimate",
+                            type: "object",
+                            properties: {
+                              id: {
+                                type: "string",
+                                pattern:
+                                  "^[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}$"
+                              },
+                              name: {
+                                type: "string",
+                                maxLength: 140
+                              }
+                            }
                           }
-                        }
+                        },
+                        required: ["BIC", "fullName", "country"]
                       },
                       {
-                        id: "JIRA_SERVER2",
-                        title: "JIRA_SERVER2",
+                        id: "InterbankingUserAdditionalExample",
+                        title: "InterbankingUserAdditionalExample",
+                        description: "Some example of additional data",
                         type: "object",
                         properties: {
-                          jiraType: {
-                            title: "Jira Type1",
-                            example: "JIRA_SERVER",
-                            "x-enum-elements": [
-                              {
-                                name: "JIRA_SERVER",
-                                description: ""
-                              }
-                            ],
-                            type: "string",
-                            enum: ["JIRA_SERVER"]
-                          },
-                          issueGrouping: {
-                            title: "Group Issues by",
-                            example: "Events",
-                            "x-enum-elements": [
-                              {
-                                name: "Events",
-                                description: ""
-                              },
-                              {
-                                name: "Resources",
-                                description: ""
-                              }
-                            ],
-                            type: "string",
-                            enum: ["Events", "Resources"]
-                          },
-                          jiraUrl: {
-                            type: "string",
-                            pattern: "[A-Za-z0-9\\/\\-&?_.=:]+"
-                          },
-                          projectId: {
+                          someAttribute: {
                             type: "string"
                           },
-                          issueType: {
+                          otherAttribute: {
                             type: "string"
-                          },
-                          username: {
-                            type: "string"
-                          },
-                          password: {
-                            type: "string"
-                          },
-                          customTemplateFile: {
-                            type: "string",
-                            format: "data-url"
                           }
                         }
+                      }
+                    ],
+                    dataTypeDisplayText: "InterbankingUserAdditional",
+                    dataTypeLink:
+                      "/java/models/containers/interbanking-user-additional",
+                    paramType: null,
+                    title: "Additional",
+                    typeCombinatorTypes: [
+                      {
+                        DataType: "InterbankingUserAdditionalSepa",
+                        LinkTo: "$m/InterbankingUserAdditionalSepa",
+                        ContainsSubTypes: false,
+                        SubTypes: null,
+                        Type: "typecombinatortype"
+                      },
+                      {
+                        DataType: "InterbankingUserAdditionalExample",
+                        LinkTo: "$m/InterbankingUserAdditionalExample",
+                        ContainsSubTypes: false,
+                        SubTypes: null,
+                        Type: "typecombinatortype"
                       }
                     ]
                   }
-                }
+                },
+                required: ["issuerId"],
+                dataTypeDisplayText: "InterbankingUser",
+                dataTypeLink: "/java/models/structures/interbanking-user",
+                paramType: null,
+                typeCombinatorTypes: null
               },
-              {
-                id: "AlertChannels_MicrosoftTeams_Update_Schema",
-                title: "AlertChannels_MicrosoftTeams_Update_Schema",
+              debtor: {
+                id: "InterbankingUser",
+                title: "Debtor",
                 type: "object",
                 properties: {
-                  name: {
+                  issuerId: {
+                    description:
+                      "User id in the system, can be an IBAN or other id depending on the system",
+                    example: "FR1420041010050500013M02606",
                     type: "string",
-                    minLength: 1,
-                    pattern: "(?!^ +$)^.+$"
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "IssuerId",
+                    typeCombinatorTypes: null
                   },
-                  type: {
-                    title: "Type8",
-                    example: "MicrosoftTeams",
-                    "x-enum-elements": [
+                  receiverId: {
+                    description:
+                      "User id in the system, can be an IBAN or other id depending on the system",
+                    example: "FR1420041010050500013M02606",
+                    type: "string",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "ReceiverId",
+                    typeCombinatorTypes: null
+                  },
+                  additional: {
+                    oneOf: [
                       {
-                        name: "MicrosoftTeams",
-                        description: ""
-                      }
-                    ],
-                    type: "string",
-                    enum: ["MicrosoftTeams"]
-                  },
-                  enabled: {
-                    type: "number",
-                    minimum: 0,
-                    maximum: 1
-                  },
-                  data: {
-                    id: "Data45",
-                    title: "Data45",
-                    type: "object",
-                    properties: {
-                      teamsUrl: {
-                        type: "string",
-                        pattern:
-                          "^https://[a-zA-Z0-9-_\\.]*(outlook|webhook).office.com/webhook[a-zA-Z0-9#-_]*([/][a-zA-Z0-9#-_]+)+$"
-                      }
-                    }
-                  }
-                }
-              },
-              {
-                id: "AlertChannels_NewRelicInsights_Update_Schema",
-                title: "AlertChannels_NewRelicInsights_Update_Schema",
-                type: "object",
-                properties: {
-                  name: {
-                    type: "string",
-                    minLength: 1,
-                    pattern: "(?!^ +$)^.+$"
-                  },
-                  type: {
-                    title: "Type9",
-                    example: "NewRelicInsights",
-                    "x-enum-elements": [
-                      {
-                        name: "NewRelicInsights",
-                        description: ""
-                      }
-                    ],
-                    type: "string",
-                    enum: ["NewRelicInsights"]
-                  },
-                  enabled: {
-                    type: "number",
-                    minimum: 0,
-                    maximum: 1
-                  },
-                  data: {
-                    id: "Data47",
-                    title: "Data47",
-                    type: "object",
-                    properties: {
-                      insertKey: {
-                        type: "string",
-                        minLength: 1
-                      },
-                      accountId: {
-                        type: "number"
-                      }
-                    }
-                  }
-                }
-              },
-              {
-                id: "AlertChannels_PagerDutyApi_Update_Schema",
-                title: "AlertChannels_PagerDutyApi_Update_Schema",
-                type: "object",
-                properties: {
-                  name: {
-                    type: "string",
-                    minLength: 1,
-                    pattern: "(?!^ +$)^.+$"
-                  },
-                  type: {
-                    title: "Type10",
-                    example: "PagerDutyApi",
-                    "x-enum-elements": [
-                      {
-                        name: "PagerDutyApi",
-                        description: ""
-                      }
-                    ],
-                    type: "string",
-                    enum: ["PagerDutyApi"]
-                  },
-                  enabled: {
-                    type: "number",
-                    minimum: 0,
-                    maximum: 1
-                  },
-                  data: {
-                    id: "Data49",
-                    title: "Data49",
-                    type: "object",
-                    properties: {
-                      apiIntgKey: {
-                        type: "string",
-                        minLength: 1
-                      }
-                    }
-                  }
-                }
-              },
-              {
-                id: "AlertChannels_ServiceNowRest_Update_Schema",
-                title: "AlertChannels_ServiceNowRest_Update_Schema",
-                type: "object",
-                properties: {
-                  name: {
-                    type: "string",
-                    minLength: 1,
-                    pattern: "(?!^ +$)^.+$"
-                  },
-                  type: {
-                    title: "Type11",
-                    example: "ServiceNowRest",
-                    "x-enum-elements": [
-                      {
-                        name: "ServiceNowRest",
-                        description: ""
-                      }
-                    ],
-                    type: "string",
-                    enum: ["ServiceNowRest"]
-                  },
-                  enabled: {
-                    type: "number",
-                    minimum: 0,
-                    maximum: 1
-                  },
-                  data: {
-                    id: "Data55",
-                    title: "Data55",
-                    type: "object",
-                    properties: {
-                      issueGrouping: {
-                        title: "Group Issues by",
-                        example: "Events",
-                        "x-enum-elements": [
-                          {
-                            name: "Events",
-                            description: ""
-                          },
-                          {
-                            name: "Resources",
-                            description: ""
-                          }
-                        ],
-                        type: "string",
-                        enum: ["Events", "Resources"]
-                      },
-                      userName: {
-                        type: "string",
-                        minLength: 1
-                      },
-                      password: {
-                        type: "string",
-                        minLength: 1
-                      },
-                      instanceUrl: {
-                        type: "string",
-                        pattern:
-                          "^https://[A-Za-z0-9]+[.]{1}service-now[.]{1}com/?$"
-                      },
-                      customTemplateFile: {
-                        type: "string",
-                        format: "data-url"
-                      }
-                    }
-                  }
-                }
-              },
-              {
-                id: "AlertChannels_SlackChannel_Update_Schema",
-                title: "AlertChannels_SlackChannel_Update_Schema",
-                type: "object",
-                properties: {
-                  name: {
-                    type: "string",
-                    minLength: 1,
-                    pattern: "(?!^ +$)^.+$"
-                  },
-                  type: {
-                    title: "Type12",
-                    example: "SlackChannel",
-                    "x-enum-elements": [
-                      {
-                        name: "SlackChannel",
-                        description: ""
-                      }
-                    ],
-                    type: "string",
-                    enum: ["SlackChannel"]
-                  },
-                  enabled: {
-                    type: "number",
-                    minimum: 0,
-                    maximum: 1
-                  },
-                  data: {
-                    id: "Data56",
-                    title: "Data56",
-                    type: "object",
-                    properties: {
-                      slackUrl: {
-                        type: "string",
-                        pattern:
-                          "^https://hooks.slack.com([/][a-zA-Z0-9#-_]+)+$"
-                      }
-                    }
-                  }
-                }
-              },
-              {
-                id: "AlertChannels_SplunkHec_Update_Schema",
-                title: "AlertChannels_SplunkHec_Update_Schema",
-                type: "object",
-                properties: {
-                  name: {
-                    type: "string",
-                    minLength: 1,
-                    pattern: "(?!^ +$)^.+$"
-                  },
-                  type: {
-                    title: "Type13",
-                    example: "SplunkHec",
-                    "x-enum-elements": [
-                      {
-                        name: "SplunkHec",
-                        description: ""
-                      }
-                    ],
-                    type: "string",
-                    enum: ["SplunkHec"]
-                  },
-                  enabled: {
-                    type: "number",
-                    minimum: 0,
-                    maximum: 1
-                  },
-                  data: {
-                    id: "Data57",
-                    title: "Data57",
-                    type: "object",
-                    properties: {
-                      hecToken: {
-                        type: "string",
-                        minLength: 1
-                      },
-                      channel: {
-                        type: "string",
-                        minLength: 1
-                      },
-                      host: {
-                        type: "string",
-                        minLength: 1
-                      },
-                      port: {
-                        type: "number",
-                        minimum: 0,
-                        maximum: 65536
-                      },
-                      ssl: {
-                        type: "boolean"
-                      },
-                      eventData: {
-                        id: "Event Data3",
-                        title: "Event Data3",
+                        id: "InterbankingUserAdditionalSepa",
+                        title: "InterbankingUserAdditionalSepa",
                         type: "object",
                         properties: {
-                          index: {
+                          BIC: {
+                            example: "PSSTFRPPXXX",
                             type: "string",
-                            minLength: 1
+                            pattern:
+                              "^[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}$"
                           },
-                          source: {
-                            type: "string",
-                            minLength: 1
+                          fullName: {
+                            example: "John Doe",
+                            type: "string"
+                          },
+                          country: {
+                            example: "FR",
+                            type: "string"
+                          },
+                          address: {
+                            example: "88 rue du dôme",
+                            type: "string"
+                          },
+                          city: {
+                            example: "Boulogne-Billancourt",
+                            type: "string"
+                          },
+                          zipcode: {
+                            example: "92100",
+                            type: "string"
+                          },
+                          region: {
+                            example: "Île de france",
+                            type: "string"
+                          },
+                          district: {
+                            example: "République",
+                            type: "string"
+                          },
+                          province: {
+                            type: "string"
+                          },
+                          code: {
+                            description: "originator or beneficiary code",
+                            type: "string"
+                          },
+                          ultimate: {
+                            id: "Ultimate",
+                            title: "Ultimate",
+                            type: "object",
+                            properties: {
+                              id: {
+                                type: "string",
+                                pattern:
+                                  "^[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}$"
+                              },
+                              name: {
+                                type: "string",
+                                maxLength: 140
+                              }
+                            }
+                          }
+                        },
+                        required: ["BIC", "fullName", "country"]
+                      },
+                      {
+                        id: "InterbankingUserAdditionalExample",
+                        title: "InterbankingUserAdditionalExample",
+                        description: "Some example of additional data",
+                        type: "object",
+                        properties: {
+                          someAttribute: {
+                            type: "string"
+                          },
+                          otherAttribute: {
+                            type: "string"
                           }
                         }
                       }
-                    }
-                  }
-                }
-              },
-              {
-                id: "AlertChannels_VictorOps_Update_Schema",
-                title: "AlertChannels_VictorOps_Update_Schema",
-                type: "object",
-                properties: {
-                  name: {
-                    type: "string",
-                    minLength: 1,
-                    pattern: "(?!^ +$)^.+$"
-                  },
-                  type: {
-                    title: "Type14",
-                    example: "VictorOps",
-                    "x-enum-elements": [
-                      {
-                        name: "VictorOps",
-                        description: ""
-                      }
                     ],
-                    type: "string",
-                    enum: ["VictorOps"]
-                  },
-                  enabled: {
-                    type: "number",
-                    minimum: 0,
-                    maximum: 1
-                  },
-                  data: {
-                    id: "Data58",
-                    title: "Data58",
-                    type: "object",
-                    properties: {
-                      intgUrl: {
-                        type: "string",
-                        maxLength: 2083,
-                        pattern:
-                          "^https:\\/\\/alert.victorops.com\\/integrations\\/generic\\/([0-9]+)\\/alert\\/[a-zA-Z0-9-._~!$&'()*+%,;=:@]+\\/[a-zA-Z0-9-._~!$&'()*+%,;=:@]+$"
-                      }
-                    }
-                  }
-                }
-              },
-              {
-                id: "AlertChannels_Webhook_Update_Schema",
-                title: "AlertChannels_Webhook_Update_Schema",
-                type: "object",
-                properties: {
-                  name: {
-                    type: "string",
-                    minLength: 1,
-                    pattern: "(?!^ +$)^.+$"
-                  },
-                  type: {
-                    title: "Type15",
-                    example: "Webhook",
-                    "x-enum-elements": [
+                    dataTypeDisplayText: "InterbankingUserAdditional",
+                    dataTypeLink:
+                      "/java/models/containers/interbanking-user-additional",
+                    paramType: null,
+                    title: "Additional",
+                    typeCombinatorTypes: [
                       {
-                        name: "Webhook",
-                        description: ""
+                        DataType: "InterbankingUserAdditionalSepa",
+                        LinkTo: "$m/InterbankingUserAdditionalSepa",
+                        ContainsSubTypes: false,
+                        SubTypes: null,
+                        Type: "typecombinatortype"
+                      },
+                      {
+                        DataType: "InterbankingUserAdditionalExample",
+                        LinkTo: "$m/InterbankingUserAdditionalExample",
+                        ContainsSubTypes: false,
+                        SubTypes: null,
+                        Type: "typecombinatortype"
                       }
-                    ],
-                    type: "string",
-                    enum: ["Webhook"]
-                  },
-                  enabled: {
-                    type: "number",
-                    minimum: 0,
-                    maximum: 1
-                  },
-                  data: {
-                    id: "Data59",
-                    title: "Data59",
-                    type: "object",
-                    properties: {
-                      webhookUrl: {
-                        type: "string",
-                        pattern: "https:\\/\\/[A-Za-z0-9\\/\\-&?_.=:]+"
-                      }
-                    }
+                    ]
                   }
-                }
+                },
+                required: ["issuerId"],
+                dataTypeDisplayText: "InterbankingUser",
+                dataTypeLink: "/java/models/structures/interbanking-user",
+                paramType: null,
+                typeCombinatorTypes: null
+              },
+              settlementDate: {
+                description: "settlement date",
+                type: "string",
+                format: "date-time",
+                dataTypeDisplayText: "LocalDateTime",
+                paramType: null,
+                title: "SettlementDate",
+                typeCombinatorTypes: null
               }
-            ],
-            dataTypeDisplayText: "UpdateAlertChannelsBody",
-            dataTypeLink: "/java/models/containers/update-alert-channels-body",
+            },
+            required: ["reason"],
+            dataTypeDisplayText: "RefuseCreditTransferRequest",
+            dataTypeLink:
+              "/java/models/structures/refuse-credit-transfer-request",
             paramType: "Body",
-            title: "body",
-            typeCombinatorTypes: [
-              {
-                DataType: "AlertChannelsAwsS3UpdateSchema",
-                LinkTo: "$m/AlertChannels_AwsS3_Update_Schema",
-                ContainsSubTypes: false,
-                SubTypes: null,
-                Type: "typecombinatortype"
-              },
-              {
-                DataType: "AlertChannelsCiscoSparkWebhookUpdateSchema",
-                LinkTo: "$m/AlertChannels_CiscoSparkWebhook_Update_Schema",
-                ContainsSubTypes: false,
-                SubTypes: null,
-                Type: "typecombinatortype"
-              },
-              {
-                DataType: "AlertChannelsCloudwatchEbUpdateSchema",
-                LinkTo: "$m/AlertChannels_CloudwatchEb_Update_Schema",
-                ContainsSubTypes: false,
-                SubTypes: null,
-                Type: "typecombinatortype"
-              },
-              {
-                DataType: "AlertChannelsDatadogUpdateSchema",
-                LinkTo: "$m/AlertChannels_Datadog_Update_Schema",
-                ContainsSubTypes: false,
-                SubTypes: null,
-                Type: "typecombinatortype"
-              },
-              {
-                DataType: "AlertChannelsEmailUserUpdateSchema",
-                LinkTo: "$m/AlertChannels_EmailUser_Update_Schema",
-                ContainsSubTypes: false,
-                SubTypes: null,
-                Type: "typecombinatortype"
-              },
-              {
-                DataType: "AlertChannelsGcpPubsubUpdateSchema",
-                LinkTo: "$m/AlertChannels_GcpPubsub_Update_Schema",
-                ContainsSubTypes: false,
-                SubTypes: null,
-                Type: "typecombinatortype"
-              },
-              {
-                DataType: "AlertChannelsIbmQradarUpdateSchema",
-                LinkTo: "$m/AlertChannels_IbmQradar_Update_Schema",
-                ContainsSubTypes: false,
-                SubTypes: null,
-                Type: "typecombinatortype"
-              },
-              {
-                DataType: "AlertChannelsJiraUpdateSchema",
-                LinkTo: "$m/AlertChannels_Jira_Update_Schema",
-                ContainsSubTypes: false,
-                SubTypes: null,
-                Type: "typecombinatortype"
-              },
-              {
-                DataType: "AlertChannelsMicrosoftTeamsUpdateSchema",
-                LinkTo: "$m/AlertChannels_MicrosoftTeams_Update_Schema",
-                ContainsSubTypes: false,
-                SubTypes: null,
-                Type: "typecombinatortype"
-              },
-              {
-                DataType: "AlertChannelsNewRelicInsightsUpdateSchema",
-                LinkTo: "$m/AlertChannels_NewRelicInsights_Update_Schema",
-                ContainsSubTypes: false,
-                SubTypes: null,
-                Type: "typecombinatortype"
-              },
-              {
-                DataType: "AlertChannelsPagerDutyApiUpdateSchema",
-                LinkTo: "$m/AlertChannels_PagerDutyApi_Update_Schema",
-                ContainsSubTypes: false,
-                SubTypes: null,
-                Type: "typecombinatortype"
-              },
-              {
-                DataType: "AlertChannelsServiceNowRestUpdateSchema",
-                LinkTo: "$m/AlertChannels_ServiceNowRest_Update_Schema",
-                ContainsSubTypes: false,
-                SubTypes: null,
-                Type: "typecombinatortype"
-              },
-              {
-                DataType: "AlertChannelsSlackChannelUpdateSchema",
-                LinkTo: "$m/AlertChannels_SlackChannel_Update_Schema",
-                ContainsSubTypes: false,
-                SubTypes: null,
-                Type: "typecombinatortype"
-              },
-              {
-                DataType: "AlertChannelsSplunkHecUpdateSchema",
-                LinkTo: "$m/AlertChannels_SplunkHec_Update_Schema",
-                ContainsSubTypes: false,
-                SubTypes: null,
-                Type: "typecombinatortype"
-              },
-              {
-                DataType: "AlertChannelsVictorOpsUpdateSchema",
-                LinkTo: "$m/AlertChannels_VictorOps_Update_Schema",
-                ContainsSubTypes: false,
-                SubTypes: null,
-                Type: "typecombinatortype"
-              },
-              {
-                DataType: "AlertChannelsWebhookUpdateSchema",
-                LinkTo: "$m/AlertChannels_Webhook_Update_Schema",
-                ContainsSubTypes: false,
-                SubTypes: null,
-                Type: "typecombinatortype"
-              }
-            ]
+            typeCombinatorTypes: null
           }
         },
-        required: ["Authorization", "intgGuid", "body"]
+        required: ["instructionId", "body"]
       }
     },
     required: ["args"]
   },
-  formData: {
-    args: {
-      Authorization: "Authorization8",
-      intgGuid: "intgGuid8",
-      body: {
-        name: "1"
-      }
-    }
-  }
+  formData: {}
 };

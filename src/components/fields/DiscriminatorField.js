@@ -317,7 +317,8 @@ class DiscriminatorField extends React.Component {
       fromMap,
       typeCombinatorTypes,
       fieldProps,
-      fromDiscriminator
+      fromDiscriminator,
+      disabled
     } = this.props;
     const { selectedSchema, checked, optional } = this.state;
     const multipleSchema = schema.oneOf || schema.anyOf;
@@ -362,7 +363,7 @@ class DiscriminatorField extends React.Component {
         onNullifyChange={this.toggleCheckbox}
         fromDiscriminator={fromDiscriminator}
       >
-        {!optional || (optional && checked) ? (
+        {!optional || (optional && checked && !disabled) ? (
           <fieldset
             className={prefixClass(
               `field ${getEvenOddClass(

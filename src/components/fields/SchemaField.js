@@ -117,6 +117,7 @@ export function DefaultTemplate(props) {
     displayLabel,
     nullify,
     onNullifyChange,
+    disabled,
     fromDiscriminator
   } = props;
   if (hidden) {
@@ -139,6 +140,7 @@ export function DefaultTemplate(props) {
                   checked={nullify}
                   className={nullify ? "checked" : "unchecked"}
                   onChange={onNullifyChange}
+                  disabled={disabled}
                 />
                 <span />
               </label>
