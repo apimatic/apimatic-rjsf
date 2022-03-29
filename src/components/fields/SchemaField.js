@@ -138,7 +138,7 @@ export function DefaultTemplate(props) {
                 <input
                   type="checkbox"
                   checked={nullify}
-                  className={nullify ? "checked" : "unchecked"}
+                  className={!disabled && nullify ? "checked" : "unchecked"}
                   onChange={onNullifyChange}
                   disabled={disabled}
                 />
