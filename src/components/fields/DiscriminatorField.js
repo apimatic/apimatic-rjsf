@@ -240,12 +240,12 @@ class DiscriminatorField extends React.Component {
     );
   };
 
-  selectOnChange = value => {
+  selectOnChange = (value, initialRender) => {
     const { onChange, definitions, parentPath } = this.props;
     const { formState, selectedSchema } = this.state;
 
     // Don't do anything on same item click
-    if (selectedSchema.index === value.index) {
+    if (!initialRender && selectedSchema.index === value.index) {
       return;
     }
 
@@ -311,19 +311,20 @@ class DiscriminatorField extends React.Component {
     });
   };
 
-  render() {
-    const {
-      schema,
-      fromMap,
-      typeCombinatorTypes,
-      fieldProps,
-      fromDiscriminator,
-      disabled
-    } = this.props;
-    const { selectedSchema, checked, optional } = this.state;
+  componentDidUpdate = () => {
+    const { formData } = this.props;
+
+    if (!formData) {
+      const { selectOptions } = this.getSelectOptions();
+      this.selectOnChange(selectOptions[0].value, true);
+    }
+  };
+
+  getSelectOptions = () => {
+    const { schema, typeCombinatorTypes } = this.props;
     const multipleSchema = schema.oneOf || schema.anyOf;
 
-    const { selectOptions, charCounts } = multipleSchema.reduce(
+    return multipleSchema.reduce(
       ({ selectOptions, charCounts }, schema, index) => {
         const type = typeCombinatorTypes && typeCombinatorTypes[index].DataType;
         const label = type ? type : getMultipleLabel(schema) || schema.type;
@@ -340,6 +341,18 @@ class DiscriminatorField extends React.Component {
       },
       { selectOptions: [], charCounts: 0 }
     );
+  };
+
+  render() {
+    const {
+      schema,
+      fromMap,
+      fieldProps,
+      fromDiscriminator,
+      disabled
+    } = this.props;
+    const { selectedSchema, checked, optional } = this.state;
+    const { selectOptions, charCounts } = this.getSelectOptions();
 
     const isOneOfOrAnyOf =
       selectedSchema.schema.hasOwnProperty("oneOf") ||
