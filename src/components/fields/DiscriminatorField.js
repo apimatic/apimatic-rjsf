@@ -311,13 +311,21 @@ class DiscriminatorField extends React.Component {
     });
   };
 
-  componentDidUpdate = () => {
+  initializeFormData = () => {
     const { formData } = this.props;
 
     if (!formData) {
       const { selectOptions } = this.getSelectOptions();
       this.selectOnChange(selectOptions[0].value, true);
     }
+  };
+
+  componentDidUpdate = () => {
+    this.initializeFormData();
+  };
+
+  componentDidMount = () => {
+    this.initializeFormData();
   };
 
   getSelectOptions = () => {
