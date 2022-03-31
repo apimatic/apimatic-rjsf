@@ -1,3 +1,5 @@
+import traverse from "json-schema-traverse";
+
 export function getOneAnyOfPath(path = "", obj) {
   const result = path
     ? `${path}/${obj.$$__case_of}/${obj.$$__case}`
@@ -176,6 +178,22 @@ function validate(errors, formData) {
 }
 
 export function validateSchema(schema, formData, originalFormData, ajv) {
+  // if item of oneOf doesn't has required properties then manually add
+  // addtionalProperties in schema.
+  traverse(schema, {}, node => {
+    const { oneOf, anyOf } = node;
+
+    if (oneOf || anyOf) {
+      const oneOfArr = oneOf || anyOf;
+
+      oneOfArr.forEach(item => {
+        if ((item.properties || item.additionalProperties) && !item.required) {
+          item.additionalProperties = false;
+        }
+      });
+    }
+  });
+
   ajv.validate(schema, formData);
   if (originalFormData && ajv.errors) {
     ajv.errors = validate(ajv.errors, originalFormData);
