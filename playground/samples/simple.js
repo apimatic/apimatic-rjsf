@@ -1766,336 +1766,940 @@ module.exports = {
         title: "endpoint_7C26ABBCDB1F9",
         type: "object",
         properties: {
-          instructionId: {
-            description: "instruction id in HaitiPaytest",
-            example: "TRX2",
+          Authorization: {
+            description: "Bearer AccessToken",
             type: "string",
             dataTypeDisplayText: "String",
-            paramType: "Template",
-            title: "instructionId",
+            paramType: "Header",
+            title: "authorization",
             typeCombinatorTypes: null
           },
           body: {
-            id: "RefuseCreditTransferRequest",
-            title: "body",
-            type: "object",
-            properties: {
-              reason: {
-                id: "Error",
-                title: "Reason",
+            oneOf: [
+              {
+                id: "AlertChannels_AwsS3_Create_Schema",
+                title: "AlertChannels_AwsS3_Create_Schema",
                 type: "object",
                 properties: {
-                  code: {
-                    description: "error code",
-                    example: "ERR1234",
-                    type: "string",
-                    dataTypeDisplayText: "String",
-                    paramType: null,
-                    title: "Code",
-                    typeCombinatorTypes: null
-                  },
-                  message: {
-                    description:
-                      "This is a functional error message that can be displayed to the end user",
-                    example: "Dear user, sorry but something went wrong",
-                    type: "string",
-                    dataTypeDisplayText: "String",
-                    paramType: null,
-                    title: "Message",
-                    typeCombinatorTypes: null
-                  }
-                },
-                required: ["code", "message"],
-                dataTypeDisplayText: "Error",
-                dataTypeLink: "/java/models/structures/error",
-                paramType: null,
-                typeCombinatorTypes: null
-              },
-              receiverId: {
-                description:
-                  "Instruction id in the issuer/receiver system (depending on the name of the param)",
-                example: "TRX2",
-                type: "string",
-                dataTypeDisplayText: "String",
-                paramType: null,
-                title: "ReceiverId",
-                typeCombinatorTypes: null
-              },
-              additional: {
-                id: "Additional1",
-                title: "Additional",
-                type: "object",
-                properties: {
-                  requestedBy: {
-                    title: "RequestedBy",
-                    description: "Who initiated",
-                    example: "USER",
-                    "x-enum-elements": [
-                      {
-                        name: "USER",
-                        description: ""
-                      },
-                      {
-                        name: "SYSTEM",
-                        description: ""
-                      }
-                    ],
-                    type: "string",
-                    enum: ["USER", "SYSTEM"],
-                    dataTypeDisplayText: "RequestedByEnum",
-                    dataTypeLink: "/java/models/enumerations/requested-by",
-                    paramType: null,
-                    typeCombinatorTypes: null
-                  },
-                  scheme: {
-                    title: "Scheme",
-                    description: "SEPA Scheme used (sent by SepaGateway)",
-                    example: "SCT",
-                    "x-enum-elements": [
-                      {
-                        name: "SCT",
-                        description: ""
-                      },
-                      {
-                        name: "SCT_INST",
-                        description: ""
-                      }
-                    ],
-                    type: "string",
-                    enum: ["SCT", "SCT_INST"],
-                    dataTypeDisplayText: "SchemeEnum",
-                    dataTypeLink: "/java/models/enumerations/scheme",
-                    paramType: null,
-                    typeCombinatorTypes: null
-                  },
-                  category: {
-                    description: "category (sent by HaitiPaytest)",
-                    type: "string",
-                    dataTypeDisplayText: "String",
-                    paramType: null,
-                    title: "Category",
-                    typeCombinatorTypes: null
-                  },
-                  messageId: {
-                    description: "message id (sent by SepaGateway)",
-                    type: "string",
-                    dataTypeDisplayText: "String",
-                    paramType: null,
-                    title: "MessageId",
-                    typeCombinatorTypes: null
-                  },
-                  originatorRef: {
-                    description: "originator ref (sent by HaitiPaytest)",
-                    type: "string",
-                    dataTypeDisplayText: "String",
-                    paramType: null,
-                    title: "OriginatorRef",
-                    typeCombinatorTypes: null
-                  },
-                  purpose: {
-                    description:
-                      "purpose (sent by HaitiPaytest)<br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `4`",
+                  name: {
                     type: "string",
                     minLength: 1,
-                    maxLength: 4,
-                    dataTypeDisplayText: "String",
-                    paramType: null,
-                    title: "Purpose",
-                    typeCombinatorTypes: null
-                  },
-                  remittanceInfo: {
-                    description: "remittance info (sent by HaitiPaytest)",
-                    type: "string",
-                    dataTypeDisplayText: "String",
-                    paramType: null,
-                    title: "RemittanceInfo",
-                    typeCombinatorTypes: null
-                  },
-                  clearingSystem: {
-                    title: "ClearingSystem",
-                    example: "CORE",
-                    "x-enum-elements": [
-                      {
-                        name: "CORE",
-                        description: ""
-                      },
-                      {
-                        name: "CORS",
-                        description: ""
-                      },
-                      {
-                        name: "STP2",
-                        description: ""
-                      }
-                    ],
-                    type: "string",
-                    enum: ["CORE", "CORS", "STP2"],
-                    dataTypeDisplayText: "ClearingSystemEnum",
-                    dataTypeLink: "/java/models/enumerations/clearing-system",
-                    paramType: null,
-                    typeCombinatorTypes: null
-                  },
-                  acquitted: {
+                    pattern: "(?!^ +$)^.+$",
                     description:
-                      "true/false if the instruction has been acquitted/rejected by Steffi though acquittal/rejection file, else null if no acquittal/rejection has been done yet",
-                    type: "boolean",
-                    dataTypeDisplayText: "Boolean",
-                    paramType: null,
-                    title: "Acquitted",
-                    typeCombinatorTypes: null
-                  },
-                  someAttribute: {
-                    type: "string",
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
                     dataTypeDisplayText: "String",
                     paramType: null,
-                    title: "SomeAttribute",
+                    title: "Name",
                     typeCombinatorTypes: null
                   },
-                  otherAttribute: {
+                  type: {
+                    example: "AwsS3",
                     type: "string",
+                    enum: ["AwsS3"],
+                    description: '**Default**: `"AwsS3"`',
                     dataTypeDisplayText: "String",
                     paramType: null,
-                    title: "OtherAttribute",
+                    title: "Type",
                     typeCombinatorTypes: null
                   },
-                  externalRef: {
-                    description: "external system reference",
-                    type: "string",
-                    dataTypeDisplayText: "String",
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
                     paramType: null,
-                    title: "ExternalRef",
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      s3CrossAccountCredentials: {
+                        id: "S3CrossAccountCredentials",
+                        title: "S3CrossAccountCredentials",
+                        type: "object",
+                        properties: {
+                          externalId: {
+                            type: "string",
+                            minLength: 1,
+                            description:
+                              "**Constraints**: *Minimum Length*: `1`",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "ExternalId",
+                            typeCombinatorTypes: null
+                          },
+                          roleArn: {
+                            type: "string",
+                            pattern:
+                              "^arn:aws(-[a-zA-Z]+)?:iam:([a-zA-Z0-9-_]+)?:([0-9]{12}):([a-zA-Z0-9_-]+)([/:][a-zA-Z0-9_-]+)*$",
+                            description:
+                              "**Constraints**: *Pattern*: `^arn:aws(-[a-zA-Z]+)?:iam:([a-zA-Z0-9-_]+)?:([0-9]{12}):([a-zA-Z0-9_-]+)([/:][a-zA-Z0-9_-]+)*$`",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "RoleArn",
+                            typeCombinatorTypes: null
+                          },
+                          bucketArn: {
+                            type: "string",
+                            pattern:
+                              "^arn:aws(-[a-zA-Z]+)?:s3:([a-zA-Z0-9-_]+)?:([0-9]{12})?:([a-zA-Z0-9_-]+)([/:][a-zA-Z0-9_-]+)*$",
+                            description:
+                              "**Constraints**: *Pattern*: `^arn:aws(-[a-zA-Z]+)?:s3:([a-zA-Z0-9-_]+)?:([0-9]{12})?:([a-zA-Z0-9_-]+)([/:][a-zA-Z0-9_-]+)*$`",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "BucketArn",
+                            typeCombinatorTypes: null
+                          }
+                        },
+                        required: ["externalId", "roleArn", "bucketArn"],
+                        dataTypeDisplayText: "S3CrossAccountCredentials",
+                        dataTypeLink:
+                          "/java/models/structures/s3-cross-account-credentials",
+                        paramType: null,
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    required: ["s3CrossAccountCredentials"],
+                    dataTypeDisplayText: "Data",
+                    dataTypeLink: "/java/models/structures/data",
+                    paramType: null,
                     typeCombinatorTypes: null
                   }
                 },
-                required: ["requestedBy", "scheme"],
-                dataTypeDisplayText: "Additional1",
-                dataTypeLink: "/java/models/structures/additional-1",
-                paramType: null,
-                typeCombinatorTypes: null
+                required: ["name", "type", "enabled", "data"]
               },
-              creditor: {
-                id: "InterbankingUser",
-                title: "Creditor",
+              {
+                id: "AlertChannels_CiscoSparkWebhook_Create_Schema",
+                title: "AlertChannels_CiscoSparkWebhook_Create_Schema",
                 type: "object",
                 properties: {
-                  issuerId: {
-                    description:
-                      "User id in the system, can be an IBAN or other id depending on the system",
-                    example: "FR1420041010050500013M02606",
+                  name: {
                     type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
                     dataTypeDisplayText: "String",
                     paramType: null,
-                    title: "IssuerId",
+                    title: "Name",
                     typeCombinatorTypes: null
                   },
-                  receiverId: {
-                    description:
-                      "User id in the system, can be an IBAN or other id depending on the system",
-                    example: "FR1420041010050500013M02606",
+                  type: {
+                    example: "CiscoSparkWebhook",
                     type: "string",
+                    enum: ["CiscoSparkWebhook"],
+                    description: '**Default**: `"CiscoSparkWebhook"`',
                     dataTypeDisplayText: "String",
                     paramType: null,
-                    title: "ReceiverId",
+                    title: "Type",
                     typeCombinatorTypes: null
                   },
-                  additional: {
-                    oneOf: [
-                      {
-                        id: "InterbankingUserAdditionalSepa",
-                        title: "InterbankingUserAdditionalSepa",
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data1",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      webhook: {
+                        type: "string",
+                        pattern:
+                          "^https://(api.ciscospark|webexapis).com/v1/webhooks/incoming([/][a-zA-Z0-9#-_]+)+$",
+                        description:
+                          "**Constraints**: *Pattern*: `^https://(api.ciscospark|webexapis).com/v1/webhooks/incoming([/][a-zA-Z0-9#-_]+)+$`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "Webhook",
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    required: ["webhook"],
+                    dataTypeDisplayText: "Data1",
+                    dataTypeLink: "/java/models/structures/data-1",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_CloudwatchEb_Create_Schema",
+                title: "AlertChannels_CloudwatchEb_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "CloudwatchEb",
+                    type: "string",
+                    enum: ["CloudwatchEb"],
+                    description: '**Default**: `"CloudwatchEb"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data2",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      eventBusArn: {
+                        type: "string",
+                        pattern:
+                          "^arn:aws(-[a-zA-Z]+)?:events:([a-zA-Z0-9]{1}[a-zA-Z0-9-]+[a-zA-Z0-9]{1}):([0-9]{12}):([a-zA-Z0-9_-]+)([/:][a-zA-Z0-9_-]+)?$",
+                        description:
+                          "**Constraints**: *Pattern*: `^arn:aws(-[a-zA-Z]+)?:events:([a-zA-Z0-9]{1}[a-zA-Z0-9-]+[a-zA-Z0-9]{1}):([0-9]{12}):([a-zA-Z0-9_-]+)([/:][a-zA-Z0-9_-]+)?$`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "EventBusArn",
+                        typeCombinatorTypes: null
+                      },
+                      issueGrouping: {
+                        title: "IssueGrouping",
+                        example: "Events",
+                        "x-enum-elements": [
+                          {
+                            name: "Events",
+                            description: ""
+                          },
+                          {
+                            name: "Resources",
+                            description: ""
+                          }
+                        ],
+                        type: "string",
+                        enum: ["Events", "Resources"],
+                        description: "**Default**: `GroupIssuesByEnum.EVENTS`",
+                        dataTypeDisplayText: "GroupIssuesByEnum",
+                        dataTypeLink:
+                          "/java/models/enumerations/group-issues-by",
+                        paramType: null,
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    required: ["eventBusArn"],
+                    dataTypeDisplayText: "Data2",
+                    dataTypeLink: "/java/models/structures/data-2",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_Datadog_Create_Schema",
+                title: "AlertChannels_Datadog_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "Datadog",
+                    type: "string",
+                    enum: ["Datadog"],
+                    description: '**Default**: `"Datadog"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data3",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      datadogType: {
+                        title: "DatadogType",
+                        example: "Logs Detail",
+                        "x-enum-elements": [
+                          {
+                            name: "Enum_Logs Detail",
+                            description: ""
+                          },
+                          {
+                            name: "Enum_Logs Summary",
+                            description: ""
+                          },
+                          {
+                            name: "Enum_Events Summary",
+                            description: ""
+                          }
+                        ],
+                        type: "string",
+                        enum: ["Logs Detail", "Logs Summary", "Events Summary"],
+                        description:
+                          "**Default**: `DatadogServiceEnum.ENUM_LOGS_DETAIL`",
+                        dataTypeDisplayText: "DatadogServiceEnum",
+                        dataTypeLink:
+                          "/java/models/enumerations/datadog-service",
+                        paramType: null,
+                        typeCombinatorTypes: null
+                      },
+                      datadogSite: {
+                        title: "DatadogSite",
+                        example: "com",
+                        "x-enum-elements": [
+                          {
+                            name: "com",
+                            description: ""
+                          },
+                          {
+                            name: "eu",
+                            description: ""
+                          }
+                        ],
+                        type: "string",
+                        enum: ["com", "eu"],
+                        description: "**Default**: `DatadogSiteEnum.COM`",
+                        dataTypeDisplayText: "DatadogSiteEnum",
+                        dataTypeLink: "/java/models/enumerations/datadog-site",
+                        paramType: null,
+                        typeCombinatorTypes: null
+                      },
+                      apiKey: {
+                        type: "string",
+                        minLength: 1,
+                        description: "**Constraints**: *Minimum Length*: `1`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "ApiKey",
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    required: ["datadogType", "datadogSite", "apiKey"],
+                    dataTypeDisplayText: "Data3",
+                    dataTypeLink: "/java/models/structures/data-3",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_EmailUser_Create_Schema",
+                title: "AlertChannels_EmailUser_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "EmailUser",
+                    type: "string",
+                    enum: ["EmailUser"],
+                    description: '**Default**: `"EmailUser"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data25",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      channelProps: {
+                        id: "ChannelProps",
+                        title: "ChannelProps",
                         type: "object",
                         properties: {
-                          BIC: {
-                            example: "PSSTFRPPXXX",
-                            type: "string",
-                            pattern:
-                              "^[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}$"
-                          },
-                          fullName: {
-                            example: "John Doe",
-                            type: "string"
-                          },
-                          country: {
-                            example: "FR",
-                            type: "string"
-                          },
-                          address: {
-                            example: "88 rue du dôme",
-                            type: "string"
-                          },
-                          city: {
-                            example: "Boulogne-Billancourt",
-                            type: "string"
-                          },
-                          zipcode: {
-                            example: "92100",
-                            type: "string"
-                          },
-                          region: {
-                            example: "Île de france",
-                            type: "string"
-                          },
-                          district: {
-                            example: "République",
-                            type: "string"
-                          },
-                          province: {
-                            type: "string"
-                          },
-                          code: {
-                            description: "originator or beneficiary code",
-                            type: "string"
-                          },
-                          ultimate: {
-                            id: "Ultimate",
-                            title: "Ultimate",
-                            type: "object",
-                            properties: {
-                              id: {
-                                type: "string",
-                                pattern:
-                                  "^[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}$"
-                              },
-                              name: {
-                                type: "string",
-                                maxLength: 140
-                              }
-                            }
+                          recipients: {
+                            description: "a list of email addresses",
+                            type: "array",
+                            items: {
+                              type: "object",
+                              dataTypeDisplayText: "Object"
+                            },
+                            dataTypeDisplayText: "List<Object>",
+                            paramType: null,
+                            title: "Recipients",
+                            typeCombinatorTypes: null
                           }
                         },
-                        required: ["BIC", "fullName", "country"]
-                      },
-                      {
-                        id: "InterbankingUserAdditionalExample",
-                        title: "InterbankingUserAdditionalExample",
-                        description: "Some example of additional data",
+                        required: ["recipients"],
+                        dataTypeDisplayText: "ChannelProps",
+                        dataTypeLink: "/java/models/structures/channel-props",
+                        paramType: null,
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    dataTypeDisplayText: "Data25",
+                    dataTypeLink: "/java/models/structures/data-25",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_GcpPubsub_Create_Schema",
+                title: "AlertChannels_GcpPubsub_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "GcpPubsub",
+                    type: "string",
+                    enum: ["GcpPubsub"],
+                    description: '**Default**: `"GcpPubsub"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data5",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      credentials: {
+                        id: "Credentials",
+                        title: "Credentials",
                         type: "object",
                         properties: {
-                          someAttribute: {
-                            type: "string"
+                          clientId: {
+                            type: "string",
+                            minLength: 1,
+                            description:
+                              "**Constraints**: *Minimum Length*: `1`",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "ClientId",
+                            typeCombinatorTypes: null
                           },
-                          otherAttribute: {
-                            type: "string"
+                          privateKeyId: {
+                            type: "string",
+                            minLength: 1,
+                            description:
+                              "**Constraints**: *Minimum Length*: `1`",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "PrivateKeyId",
+                            typeCombinatorTypes: null
+                          },
+                          clientEmail: {
+                            type: "string",
+                            minLength: 1,
+                            pattern:
+                              "^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$",
+                            description:
+                              "**Constraints**: *Minimum Length*: `1`, *Pattern*: `^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$`",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "ClientEmail",
+                            typeCombinatorTypes: null
+                          },
+                          privateKey: {
+                            type: "string",
+                            minLength: 1,
+                            description:
+                              "**Constraints**: *Minimum Length*: `1`",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "PrivateKey",
+                            typeCombinatorTypes: null
                           }
-                        }
+                        },
+                        required: [
+                          "clientId",
+                          "privateKeyId",
+                          "clientEmail",
+                          "privateKey"
+                        ],
+                        dataTypeDisplayText: "Credentials",
+                        dataTypeLink: "/java/models/structures/credentials",
+                        paramType: null,
+                        typeCombinatorTypes: null
+                      },
+                      projectId: {
+                        type: "string",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "ProjectId",
+                        typeCombinatorTypes: null
+                      },
+                      topicId: {
+                        type: "string",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "TopicId",
+                        typeCombinatorTypes: null
+                      },
+                      issueGrouping: {
+                        title: "IssueGrouping",
+                        example: "Events",
+                        "x-enum-elements": [
+                          {
+                            name: "Events",
+                            description: ""
+                          },
+                          {
+                            name: "Resources",
+                            description: ""
+                          }
+                        ],
+                        type: "string",
+                        enum: ["Events", "Resources"],
+                        description: "**Default**: `GroupIssuesByEnum.EVENTS`",
+                        dataTypeDisplayText: "GroupIssuesByEnum",
+                        dataTypeLink:
+                          "/java/models/enumerations/group-issues-by",
+                        paramType: null,
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    required: ["credentials", "projectId", "topicId"],
+                    dataTypeDisplayText: "Data5",
+                    dataTypeLink: "/java/models/structures/data-5",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_IbmQradar_Create_Schema",
+                title: "AlertChannels_IbmQradar_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "IbmQradar",
+                    type: "string",
+                    enum: ["IbmQradar"],
+                    description: '**Default**: `"IbmQradar"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data6",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      qradarCommType: {
+                        title: "QradarCommType",
+                        example: "HTTPS",
+                        "x-enum-elements": [
+                          {
+                            name: "HTTPS",
+                            description: ""
+                          },
+                          {
+                            name: "Enum_HTTPS Self Signed Cert",
+                            description: ""
+                          }
+                        ],
+                        type: "string",
+                        enum: ["HTTPS", "HTTPS Self Signed Cert"],
+                        description:
+                          "**Default**: `CommunicationTypeEnum.HTTPS`",
+                        dataTypeDisplayText: "CommunicationTypeEnum",
+                        dataTypeLink:
+                          "/java/models/enumerations/communication-type",
+                        paramType: null,
+                        typeCombinatorTypes: null
+                      },
+                      qradarHostUrl: {
+                        type: "string",
+                        minLength: 1,
+                        pattern: ".+[a-zA-Z0-9]$",
+                        description:
+                          "**Constraints**: *Minimum Length*: `1`, *Pattern*: `.+[a-zA-Z0-9]$`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "QradarHostUrl",
+                        typeCombinatorTypes: null
+                      },
+                      qradarHostPort: {
+                        type: "number",
+                        minimum: 0,
+                        maximum: 65535,
+                        description: "**Constraints**: `>= 0`, `<= 65535`",
+                        dataTypeDisplayText: "Double",
+                        paramType: null,
+                        title: "QradarHostPort",
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    required: ["qradarCommType", "qradarHostUrl"],
+                    dataTypeDisplayText: "Data6",
+                    dataTypeLink: "/java/models/structures/data-6",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_Jira_Create_Schema",
+                title: "AlertChannels_Jira_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "Jira",
+                    type: "string",
+                    enum: ["Jira"],
+                    description: '**Default**: `"Jira"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    oneOf: [
+                      {
+                        id: "JIRA_CLOUD",
+                        title: "JIRA_CLOUD",
+                        type: "object",
+                        properties: {
+                          jiraUrl: {
+                            type: "string",
+                            pattern:
+                              "[a-zA-Z0-9]\\.(atlassian\\.net|jira\\.com)$",
+                            description:
+                              "**Constraints**: *Pattern*: `[a-zA-Z0-9]\\.(atlassian\\.net|jira\\.com)$`",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "JiraUrl",
+                            typeCombinatorTypes: null
+                          },
+                          projectId: {
+                            type: "string",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "ProjectId",
+                            typeCombinatorTypes: null
+                          },
+                          issueType: {
+                            type: "string",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "IssueType",
+                            typeCombinatorTypes: null
+                          },
+                          username: {
+                            type: "string",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "Username",
+                            typeCombinatorTypes: null
+                          },
+                          apiToken: {
+                            type: "string",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "ApiToken",
+                            typeCombinatorTypes: null
+                          },
+                          jiraType: {
+                            title: "JiraType",
+                            example: "JIRA_CLOUD",
+                            "x-enum-elements": [
+                              {
+                                name: "JIRA_CLOUD",
+                                description: ""
+                              }
+                            ],
+                            type: "string",
+                            enum: ["JIRA_CLOUD"],
+                            description:
+                              "**Default**: `JiraTypeEnum.JIRA_CLOUD`",
+                            dataTypeDisplayText: "JiraTypeEnum",
+                            dataTypeLink: "/java/models/enumerations/jira-type",
+                            paramType: null,
+                            typeCombinatorTypes: null
+                          },
+                          issueGrouping: {
+                            title: "IssueGrouping",
+                            example: "Events",
+                            "x-enum-elements": [
+                              {
+                                name: "Events",
+                                description: ""
+                              },
+                              {
+                                name: "Resources",
+                                description: ""
+                              }
+                            ],
+                            type: "string",
+                            enum: ["Events", "Resources"],
+                            description:
+                              "**Default**: `GroupIssuesByEnum.EVENTS`",
+                            dataTypeDisplayText: "GroupIssuesByEnum",
+                            dataTypeLink:
+                              "/java/models/enumerations/group-issues-by",
+                            paramType: null,
+                            typeCombinatorTypes: null
+                          },
+                          customTemplateFile: {
+                            type: "string",
+                            format: "data-url",
+                            dataTypeDisplayText: "InputStream",
+                            paramType: null,
+                            title: "CustomTemplateFile",
+                            typeCombinatorTypes: null
+                          }
+                        },
+                        required: [
+                          "jiraUrl",
+                          "projectId",
+                          "issueType",
+                          "username",
+                          "apiToken"
+                        ]
+                      },
+                      {
+                        id: "JIRA_SERVER",
+                        title: "JIRA_SERVER",
+                        type: "object",
+                        properties: {
+                          jiraUrl: {
+                            type: "string",
+                            pattern: "[A-Za-z0-9\\/\\-&?_.=:]+",
+                            description:
+                              "**Constraints**: *Pattern*: `[A-Za-z0-9\\/\\-&?_.=:]+`",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "JiraUrl",
+                            typeCombinatorTypes: null
+                          },
+                          projectId: {
+                            type: "string",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "ProjectId",
+                            typeCombinatorTypes: null
+                          },
+                          issueType: {
+                            type: "string",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "IssueType",
+                            typeCombinatorTypes: null
+                          },
+                          username: {
+                            type: "string",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "Username",
+                            typeCombinatorTypes: null
+                          },
+                          password: {
+                            type: "string",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "Password",
+                            typeCombinatorTypes: null
+                          },
+                          jiraType: {
+                            title: "JiraType",
+                            example: "JIRA_SERVER",
+                            "x-enum-elements": [
+                              {
+                                name: "JIRA_SERVER",
+                                description: ""
+                              }
+                            ],
+                            type: "string",
+                            enum: ["JIRA_SERVER"],
+                            description:
+                              "**Default**: `JiraType1Enum.JIRA_SERVER`",
+                            dataTypeDisplayText: "JiraType1Enum",
+                            dataTypeLink:
+                              "/java/models/enumerations/jira-type-1",
+                            paramType: null,
+                            typeCombinatorTypes: null
+                          },
+                          issueGrouping: {
+                            title: "IssueGrouping",
+                            example: "Events",
+                            "x-enum-elements": [
+                              {
+                                name: "Events",
+                                description: ""
+                              },
+                              {
+                                name: "Resources",
+                                description: ""
+                              }
+                            ],
+                            type: "string",
+                            enum: ["Events", "Resources"],
+                            description:
+                              "**Default**: `GroupIssuesByEnum.EVENTS`",
+                            dataTypeDisplayText: "GroupIssuesByEnum",
+                            dataTypeLink:
+                              "/java/models/enumerations/group-issues-by",
+                            paramType: null,
+                            typeCombinatorTypes: null
+                          },
+                          customTemplateFile: {
+                            type: "string",
+                            format: "data-url",
+                            dataTypeDisplayText: "InputStream",
+                            paramType: null,
+                            title: "CustomTemplateFile",
+                            typeCombinatorTypes: null
+                          }
+                        },
+                        required: [
+                          "jiraUrl",
+                          "projectId",
+                          "issueType",
+                          "username",
+                          "password"
+                        ]
                       }
                     ],
-                    dataTypeDisplayText: "InterbankingUserAdditional",
+                    dataTypeDisplayText: "AlertChannelsJiraCreateSchemaData",
                     dataTypeLink:
-                      "/java/models/containers/interbanking-user-additional",
+                      "/java/models/containers/alert-channels-jira-create-schema-data",
                     paramType: null,
-                    title: "Additional",
+                    title: "Data",
                     typeCombinatorTypes: [
                       {
-                        DataType: "InterbankingUserAdditionalSepa",
-                        LinkTo: "$m/InterbankingUserAdditionalSepa",
+                        DataType: "JIRACLOUD",
+                        LinkTo: "$m/JIRA_CLOUD",
                         ContainsSubTypes: false,
                         SubTypes: null,
                         Type: "typecombinatortype"
                       },
                       {
-                        DataType: "InterbankingUserAdditionalExample",
-                        LinkTo: "$m/InterbankingUserAdditionalExample",
+                        DataType: "JIRASERVER",
+                        LinkTo: "$m/JIRA_SERVER",
                         ContainsSubTypes: false,
                         SubTypes: null,
                         Type: "typecombinatortype"
@@ -2103,170 +2707,764 @@ module.exports = {
                     ]
                   }
                 },
-                required: ["issuerId"],
-                dataTypeDisplayText: "InterbankingUser",
-                dataTypeLink: "/java/models/structures/interbanking-user",
-                paramType: null,
-                typeCombinatorTypes: null
+                required: ["name", "type", "enabled", "data"]
               },
-              debtor: {
-                id: "InterbankingUser",
-                title: "Debtor",
+              {
+                id: "AlertChannels_MicrosoftTeams_Create_Schema",
+                title: "AlertChannels_MicrosoftTeams_Create_Schema",
                 type: "object",
                 properties: {
-                  issuerId: {
-                    description:
-                      "User id in the system, can be an IBAN or other id depending on the system",
-                    example: "FR1420041010050500013M02606",
+                  name: {
                     type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
                     dataTypeDisplayText: "String",
                     paramType: null,
-                    title: "IssuerId",
+                    title: "Name",
                     typeCombinatorTypes: null
                   },
-                  receiverId: {
-                    description:
-                      "User id in the system, can be an IBAN or other id depending on the system",
-                    example: "FR1420041010050500013M02606",
+                  type: {
+                    example: "MicrosoftTeams",
                     type: "string",
+                    enum: ["MicrosoftTeams"],
+                    description: '**Default**: `"MicrosoftTeams"`',
                     dataTypeDisplayText: "String",
                     paramType: null,
-                    title: "ReceiverId",
+                    title: "Type",
                     typeCombinatorTypes: null
                   },
-                  additional: {
-                    oneOf: [
-                      {
-                        id: "InterbankingUserAdditionalSepa",
-                        title: "InterbankingUserAdditionalSepa",
-                        type: "object",
-                        properties: {
-                          BIC: {
-                            example: "PSSTFRPPXXX",
-                            type: "string",
-                            pattern:
-                              "^[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}$"
-                          },
-                          fullName: {
-                            example: "John Doe",
-                            type: "string"
-                          },
-                          country: {
-                            example: "FR",
-                            type: "string"
-                          },
-                          address: {
-                            example: "88 rue du dôme",
-                            type: "string"
-                          },
-                          city: {
-                            example: "Boulogne-Billancourt",
-                            type: "string"
-                          },
-                          zipcode: {
-                            example: "92100",
-                            type: "string"
-                          },
-                          region: {
-                            example: "Île de france",
-                            type: "string"
-                          },
-                          district: {
-                            example: "République",
-                            type: "string"
-                          },
-                          province: {
-                            type: "string"
-                          },
-                          code: {
-                            description: "originator or beneficiary code",
-                            type: "string"
-                          },
-                          ultimate: {
-                            id: "Ultimate",
-                            title: "Ultimate",
-                            type: "object",
-                            properties: {
-                              id: {
-                                type: "string",
-                                pattern:
-                                  "^[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}$"
-                              },
-                              name: {
-                                type: "string",
-                                maxLength: 140
-                              }
-                            }
-                          }
-                        },
-                        required: ["BIC", "fullName", "country"]
-                      },
-                      {
-                        id: "InterbankingUserAdditionalExample",
-                        title: "InterbankingUserAdditionalExample",
-                        description: "Some example of additional data",
-                        type: "object",
-                        properties: {
-                          someAttribute: {
-                            type: "string"
-                          },
-                          otherAttribute: {
-                            type: "string"
-                          }
-                        }
-                      }
-                    ],
-                    dataTypeDisplayText: "InterbankingUserAdditional",
-                    dataTypeLink:
-                      "/java/models/containers/interbanking-user-additional",
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
                     paramType: null,
-                    title: "Additional",
-                    typeCombinatorTypes: [
-                      {
-                        DataType: "InterbankingUserAdditionalSepa",
-                        LinkTo: "$m/InterbankingUserAdditionalSepa",
-                        ContainsSubTypes: false,
-                        SubTypes: null,
-                        Type: "typecombinatortype"
-                      },
-                      {
-                        DataType: "InterbankingUserAdditionalExample",
-                        LinkTo: "$m/InterbankingUserAdditionalExample",
-                        ContainsSubTypes: false,
-                        SubTypes: null,
-                        Type: "typecombinatortype"
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data7",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      teamsUrl: {
+                        type: "string",
+                        pattern:
+                          "^https://[a-zA-Z0-9-_\\.]*(outlook|webhook).office.com/webhook[a-zA-Z0-9#-_]*([/][a-zA-Z0-9#-_]+)+$",
+                        description:
+                          "**Constraints**: *Pattern*: `^https://[a-zA-Z0-9-_\\.]*(outlook|webhook).office.com/webhook[a-zA-Z0-9#-_]*([/][a-zA-Z0-9#-_]+)+$`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "TeamsUrl",
+                        typeCombinatorTypes: null
                       }
-                    ]
+                    },
+                    required: ["teamsUrl"],
+                    dataTypeDisplayText: "Data7",
+                    dataTypeLink: "/java/models/structures/data-7",
+                    paramType: null,
+                    typeCombinatorTypes: null
                   }
                 },
-                required: ["issuerId"],
-                dataTypeDisplayText: "InterbankingUser",
-                dataTypeLink: "/java/models/structures/interbanking-user",
-                paramType: null,
-                typeCombinatorTypes: null
+                required: ["name", "type", "enabled", "data"]
               },
-              settlementDate: {
-                description: "settlement date",
-                type: "string",
-                format: "date-time",
-                dataTypeDisplayText: "LocalDateTime",
-                paramType: null,
-                title: "SettlementDate",
-                typeCombinatorTypes: null
+              {
+                id: "AlertChannels_NewRelicInsights_Create_Schema",
+                title: "AlertChannels_NewRelicInsights_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "NewRelicInsights",
+                    type: "string",
+                    enum: ["NewRelicInsights"],
+                    description: '**Default**: `"NewRelicInsights"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data8",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      insertKey: {
+                        type: "string",
+                        minLength: 1,
+                        description: "**Constraints**: *Minimum Length*: `1`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "InsertKey",
+                        typeCombinatorTypes: null
+                      },
+                      accountId: {
+                        type: "number",
+                        dataTypeDisplayText: "double",
+                        paramType: null,
+                        title: "AccountId",
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    required: ["insertKey", "accountId"],
+                    dataTypeDisplayText: "Data8",
+                    dataTypeLink: "/java/models/structures/data-8",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_PagerDutyApi_Create_Schema",
+                title: "AlertChannels_PagerDutyApi_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "PagerDutyApi",
+                    type: "string",
+                    enum: ["PagerDutyApi"],
+                    description: '**Default**: `"PagerDutyApi"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data9",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      apiIntgKey: {
+                        type: "string",
+                        minLength: 1,
+                        description: "**Constraints**: *Minimum Length*: `1`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "ApiIntgKey",
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    required: ["apiIntgKey"],
+                    dataTypeDisplayText: "Data9",
+                    dataTypeLink: "/java/models/structures/data-9",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_ServiceNowRest_Create_Schema",
+                title: "AlertChannels_ServiceNowRest_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "ServiceNowRest",
+                    type: "string",
+                    enum: ["ServiceNowRest"],
+                    description: '**Default**: `"ServiceNowRest"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data10",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      userName: {
+                        type: "string",
+                        minLength: 1,
+                        description: "**Constraints**: *Minimum Length*: `1`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "UserName",
+                        typeCombinatorTypes: null
+                      },
+                      password: {
+                        type: "string",
+                        minLength: 1,
+                        description: "**Constraints**: *Minimum Length*: `1`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "Password",
+                        typeCombinatorTypes: null
+                      },
+                      instanceUrl: {
+                        type: "string",
+                        pattern:
+                          "^https://[A-Za-z0-9]+[.]{1}service-now[.]{1}com/?$",
+                        description:
+                          "**Constraints**: *Pattern*: `^https://[A-Za-z0-9]+[.]{1}service-now[.]{1}com/?$`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "InstanceUrl",
+                        typeCombinatorTypes: null
+                      },
+                      issueGrouping: {
+                        title: "IssueGrouping",
+                        example: "Events",
+                        "x-enum-elements": [
+                          {
+                            name: "Events",
+                            description: ""
+                          },
+                          {
+                            name: "Resources",
+                            description: ""
+                          }
+                        ],
+                        type: "string",
+                        enum: ["Events", "Resources"],
+                        description: "**Default**: `GroupIssuesByEnum.EVENTS`",
+                        dataTypeDisplayText: "GroupIssuesByEnum",
+                        dataTypeLink:
+                          "/java/models/enumerations/group-issues-by",
+                        paramType: null,
+                        typeCombinatorTypes: null
+                      },
+                      customTemplateFile: {
+                        type: "string",
+                        format: "data-url",
+                        dataTypeDisplayText: "InputStream",
+                        paramType: null,
+                        title: "CustomTemplateFile",
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    required: ["userName", "password", "instanceUrl"],
+                    dataTypeDisplayText: "Data10",
+                    dataTypeLink: "/java/models/structures/data-10",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_SlackChannel_Create_Schema",
+                title: "AlertChannels_SlackChannel_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "SlackChannel",
+                    type: "string",
+                    enum: ["SlackChannel"],
+                    description: '**Default**: `"SlackChannel"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data11",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      slackUrl: {
+                        type: "string",
+                        pattern:
+                          "^https://hooks.slack.com([/][a-zA-Z0-9#-_]+)+$",
+                        description:
+                          "**Constraints**: *Pattern*: `^https://hooks.slack.com([/][a-zA-Z0-9#-_]+)+$`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "SlackUrl",
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    required: ["slackUrl"],
+                    dataTypeDisplayText: "Data11",
+                    dataTypeLink: "/java/models/structures/data-11",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_SplunkHec_Create_Schema",
+                title: "AlertChannels_SplunkHec_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "SplunkHec",
+                    type: "string",
+                    enum: ["SplunkHec"],
+                    description: '**Default**: `"SplunkHec"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data12",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      hecToken: {
+                        type: "string",
+                        minLength: 1,
+                        description: "**Constraints**: *Minimum Length*: `1`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "HecToken",
+                        typeCombinatorTypes: null
+                      },
+                      host: {
+                        type: "string",
+                        minLength: 1,
+                        description: "**Constraints**: *Minimum Length*: `1`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "Host",
+                        typeCombinatorTypes: null
+                      },
+                      port: {
+                        type: "number",
+                        minimum: 0,
+                        maximum: 65536,
+                        description: "**Constraints**: `>= 0`, `<= 65536`",
+                        dataTypeDisplayText: "double",
+                        paramType: null,
+                        title: "Port",
+                        typeCombinatorTypes: null
+                      },
+                      eventData: {
+                        id: "Event Data",
+                        title: "EventData",
+                        type: "object",
+                        properties: {
+                          index: {
+                            type: "string",
+                            minLength: 1,
+                            description:
+                              "**Constraints**: *Minimum Length*: `1`",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "Index",
+                            typeCombinatorTypes: null
+                          },
+                          source: {
+                            type: "string",
+                            minLength: 1,
+                            description:
+                              "**Constraints**: *Minimum Length*: `1`",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "Source",
+                            typeCombinatorTypes: null
+                          }
+                        },
+                        required: ["index", "source"],
+                        dataTypeDisplayText: "EventData",
+                        dataTypeLink: "/java/models/structures/event-data",
+                        paramType: null,
+                        typeCombinatorTypes: null
+                      },
+                      channel: {
+                        type: "string",
+                        minLength: 1,
+                        description: "**Constraints**: *Minimum Length*: `1`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "Channel",
+                        typeCombinatorTypes: null
+                      },
+                      ssl: {
+                        type: "boolean",
+                        dataTypeDisplayText: "Boolean",
+                        paramType: null,
+                        title: "Ssl",
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    required: ["hecToken", "host", "port", "eventData"],
+                    dataTypeDisplayText: "Data12",
+                    dataTypeLink: "/java/models/structures/data-12",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_VictorOps_Create_Schema",
+                title: "AlertChannels_VictorOps_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "VictorOps",
+                    type: "string",
+                    enum: ["VictorOps"],
+                    description: '**Default**: `"VictorOps"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data13",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      intgUrl: {
+                        type: "string",
+                        maxLength: 2083,
+                        pattern:
+                          "^https:\\/\\/alert.victorops.com\\/integrations\\/generic\\/([0-9]+)\\/alert\\/[a-zA-Z0-9-._~!$&'()*+%,;=:@]+\\/[a-zA-Z0-9-._~!$&'()*+%,;=:@]+$",
+                        description:
+                          "**Constraints**: *Maximum Length*: `2083`, *Pattern*: `^https:\\/\\/alert.victorops.com\\/integrations\\/generic\\/([0-9]+)\\/alert\\/[a-zA-Z0-9-._~!$&'()*+%,;=:@]+\\/[a-zA-Z0-9-._~!$&'()*+%,;=:@]+$`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "IntgUrl",
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    required: ["intgUrl"],
+                    dataTypeDisplayText: "Data13",
+                    dataTypeLink: "/java/models/structures/data-13",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_Webhook_Create_Schema",
+                title: "AlertChannels_Webhook_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "Webhook",
+                    type: "string",
+                    enum: ["Webhook"],
+                    description: '**Default**: `"Webhook"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data14",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      webhookUrl: {
+                        type: "string",
+                        pattern: "https:\\/\\/[A-Za-z0-9\\/\\-&?_.=:]+",
+                        description:
+                          "**Constraints**: *Pattern*: `https:\\/\\/[A-Za-z0-9\\/\\-&?_.=:]+`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "WebhookUrl",
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    required: ["webhookUrl"],
+                    dataTypeDisplayText: "Data14",
+                    dataTypeLink: "/java/models/structures/data-14",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
               }
-            },
-            required: ["reason"],
-            dataTypeDisplayText: "RefuseCreditTransferRequest",
-            dataTypeLink:
-              "/java/models/structures/refuse-credit-transfer-request",
+            ],
+            dataTypeDisplayText: "CreateAlertChannelsBody",
+            dataTypeLink: "/java/models/containers/create-alert-channels-body",
             paramType: "Body",
-            typeCombinatorTypes: null
+            title: "body",
+            typeCombinatorTypes: [
+              {
+                DataType: "AlertChannelsAwsS3CreateSchema",
+                LinkTo: "$m/AlertChannels_AwsS3_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsCiscoSparkWebhookCreateSchema",
+                LinkTo: "$m/AlertChannels_CiscoSparkWebhook_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsCloudwatchEbCreateSchema",
+                LinkTo: "$m/AlertChannels_CloudwatchEb_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsDatadogCreateSchema",
+                LinkTo: "$m/AlertChannels_Datadog_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsEmailUserCreateSchema",
+                LinkTo: "$m/AlertChannels_EmailUser_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsGcpPubsubCreateSchema",
+                LinkTo: "$m/AlertChannels_GcpPubsub_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsIbmQradarCreateSchema",
+                LinkTo: "$m/AlertChannels_IbmQradar_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsJiraCreateSchema",
+                LinkTo: "$m/AlertChannels_Jira_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsMicrosoftTeamsCreateSchema",
+                LinkTo: "$m/AlertChannels_MicrosoftTeams_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsNewRelicInsightsCreateSchema",
+                LinkTo: "$m/AlertChannels_NewRelicInsights_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsPagerDutyApiCreateSchema",
+                LinkTo: "$m/AlertChannels_PagerDutyApi_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsServiceNowRestCreateSchema",
+                LinkTo: "$m/AlertChannels_ServiceNowRest_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsSlackChannelCreateSchema",
+                LinkTo: "$m/AlertChannels_SlackChannel_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsSplunkHecCreateSchema",
+                LinkTo: "$m/AlertChannels_SplunkHec_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsVictorOpsCreateSchema",
+                LinkTo: "$m/AlertChannels_VictorOps_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsWebhookCreateSchema",
+                LinkTo: "$m/AlertChannels_Webhook_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              }
+            ]
           }
         },
-        required: ["instructionId", "body"]
+        required: ["Authorization", "body"]
       }
     },
     required: ["args"]
   },
-  formData: {}
+  formData: {
+    args: {
+      Authorization: "Authorization8",
+      body: {
+        $$__case: 0,
+        $$__case_of: "oneOf",
+        value: {
+          name: "name8s",
+          enabled: 47.16,
+          data: {
+            s3CrossAccountCredentials: {
+              externalId: "externalId8",
+              roleArn: "roleArn6",
+              bucketArn: "bucketArn0"
+            }
+          }
+        }
+      }
+    }
+  }
 };

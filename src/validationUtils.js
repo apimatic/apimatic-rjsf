@@ -1,4 +1,5 @@
 import traverse from "json-schema-traverse";
+import deepClone from "lodash.clonedeep";
 
 export function getOneAnyOfPath(path = "", obj) {
   const result = path
@@ -178,23 +179,26 @@ function validate(errors, formData) {
 }
 
 export function validateSchema(schema, formData, originalFormData, ajv) {
+  const clonedSchema = deepClone(schema);
+
   // if item of oneOf doesn't has required properties then manually add
   // addtionalProperties in schema.
-  traverse(schema, {}, node => {
+  traverse(clonedSchema, {}, node => {
     const { oneOf, anyOf } = node;
 
     if (oneOf || anyOf) {
       const oneOfArr = oneOf || anyOf;
 
       oneOfArr.forEach(item => {
-        if ((item.properties || item.additionalProperties) && !item.required) {
+        if (item.properties && !item.additionalProperties && !item.required) {
           item.additionalProperties = false;
         }
       });
     }
   });
 
-  ajv.validate(schema, formData);
+  ajv.validate(clonedSchema, formData);
+
   if (originalFormData && ajv.errors) {
     ajv.errors = validate(ajv.errors, originalFormData);
   }
