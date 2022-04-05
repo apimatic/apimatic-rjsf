@@ -318,9 +318,9 @@ class DiscriminatorField extends React.Component {
   };
 
   initializeFormData = () => {
-    const { formData } = this.props;
+    const { formData, disabled } = this.props;
 
-    if (!formData) {
+    if (!formData && !disabled) {
       const { selectOptions } = this.getSelectOptions();
       this.selectOnChange(selectOptions[0].value, true);
     }
