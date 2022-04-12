@@ -6,7 +6,8 @@ import {
   checkDiscriminator,
   prefixClass,
   isMultipleSchema,
-  classNames
+  classNames,
+  isOneOfSchema
 } from "../../utils";
 import TagSelector from "../widgets/TagSelector";
 import { getOneAnyOfPath } from "../../validationUtils";
@@ -217,7 +218,9 @@ class DiscriminatorField extends React.Component {
               schema={selectedSchema.schema}
               uiSchema={{
                 ...uiSchema,
-                "ui:title": uiTitle
+                "ui:title": isOneOfSchema(selectedSchema.schema)
+                  ? undefined
+                  : uiTitle
               }}
               errorSchema={errorSchema}
               idSchema={idSchema}
