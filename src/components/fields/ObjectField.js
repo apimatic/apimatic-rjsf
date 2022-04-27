@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import MapField from "./MapField";
-import { prefixClass as pfx } from "../../utils";
+import { getOneOfAnyOfTitle, prefixClass as pfx } from "../../utils";
 import { toErrorList } from "../../validate";
 import CodeMirror from "react-codemirror2";
 import DataType from "../fields/DataType";
@@ -137,7 +137,7 @@ function DefaultObjectFieldTemplate(props) {
     !props.uiSchema.disableFieldJsonEdit;
 
   const dataType = props.schema.dataTypeDisplayText;
-
+  const markdown = props.schema.dataTypeMarkdown;
   const title = props.uiSchema["ui:title"] || props.schema.title || props.title;
 
   return (
@@ -190,6 +190,8 @@ function DefaultObjectFieldTemplate(props) {
           title={dataType}
           link={props.schema.dataTypeLink}
           type="object-type"
+          markdownTitle={getOneOfAnyOfTitle(props.schema)}
+          markdown={markdown}
         />
 
         {props.schema.paramType && (
@@ -463,6 +465,7 @@ class ObjectField extends Component {
     const { TitleField, DescriptionField } = templateProps;
 
     const dataType = templateProps.schema.dataTypeDisplayText;
+    const markdown = templateProps.schema.dataTypeMarkdown;
 
     const title =
       templateProps.uiSchema["ui:title"] ||
@@ -488,6 +491,8 @@ class ObjectField extends Component {
             title={dataType}
             link={templateProps.schema.dataTypeLink}
             type="object-type"
+            markdownTitle={getOneOfAnyOfTitle(templateProps.schema)}
+            markdown={markdown}
           />
 
           {templateProps.schema.paramType && (

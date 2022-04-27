@@ -990,3 +990,9 @@ export function pipe(...func) {
       return currentFunc(cache);
     }, data);
 }
+
+export function getOneOfAnyOfTitle(schema) {
+  if (isOneOfSchema(schema)) {
+    return schema.oneOf ? "OneOf" : "AnyOf";
+  }
+}

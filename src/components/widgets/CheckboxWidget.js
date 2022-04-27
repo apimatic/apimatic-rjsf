@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import DescriptionField from "../fields/DescriptionField.js";
-import { prefixClass as pfx } from "../../utils";
+import { getOneOfAnyOfTitle, prefixClass as pfx } from "../../utils";
 import DataType from "../fields/DataType";
 import { Label } from "../fields/SchemaField";
 
@@ -22,6 +22,8 @@ function CheckboxWidget(props) {
   const dataType = schema.dataTypeDisplayText
     ? schema.dataTypeDisplayText
     : schema.type;
+
+  const markdown = schema.dataTypeMarkdown;
   return (
     <div>
       {label && (
@@ -35,7 +37,13 @@ function CheckboxWidget(props) {
         </div>
       )}
       <div className={pfx("type-container")}>
-        <DataType title={dataType} link={schema.dataTypeLink} type="schema" />
+        <DataType
+          markdownTitle={getOneOfAnyOfTitle(props.schema)}
+          markdown={markdown}
+          title={dataType}
+          link={schema.dataTypeLink}
+          type="schema"
+        />
 
         {schema.paramType && (
           <div className={pfx("param-type")}>{schema.paramType}</div>

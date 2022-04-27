@@ -4,12 +4,23 @@ import { prefixClass as pfx } from "../../utils";
 import { ContextConsumer } from "../context";
 
 function DataType(props) {
-  const { title, link, type } = props;
+  const { title, link, type, markdown, markdownTitle } = props;
 
-  if (!title) {
+  if (!title && !markdown) {
     // See #312: Ensure compatibility with old versions of React.
     return <div />;
   }
+
+  if (markdown) {
+    return (
+      <ContextConsumer>
+        {({ renderTypesPopover }) =>
+          renderTypesPopover(markdown, markdownTitle)
+        }
+      </ContextConsumer>
+    );
+  }
+
   return (
     <ContextConsumer>
       {({ onRouteChange }) => (

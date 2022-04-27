@@ -204,6 +204,7 @@ export default class Form extends Component {
       noHtml5Validate,
       disableFormJsonEdit,
       markdownRenderer,
+      renderTypesPopover,
       onRouteChange
     } = this.props;
 
@@ -222,6 +223,7 @@ export default class Form extends Component {
       <ContextProvider
         value={{
           markdownRenderer,
+          renderTypesPopover,
           onRouteChange
         }}
       >

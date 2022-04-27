@@ -15,7 +15,8 @@ import {
   retrieveSchema,
   toIdSchema,
   getDefaultRegistry,
-  prefixClass as pfx
+  prefixClass as pfx,
+  getOneOfAnyOfTitle
 } from "../../utils";
 import { ArrowUpIcon, DeleteIcon, ArrowDownIcon, ChevronIcon } from "../Icons";
 
@@ -218,6 +219,7 @@ function DefaultNormalArrayFieldTemplate(props) {
     props.title;
 
   const dataType = props.schema.dataTypeDisplayText;
+  const markdown = props.schema.dataTypeMarkdown;
 
   return (
     <fieldset className={pfx(props.className)}>
@@ -253,6 +255,8 @@ function DefaultNormalArrayFieldTemplate(props) {
           title={dataType}
           link={props.schema.dataTypeLink}
           type="array-type"
+          markdownTitle={getOneOfAnyOfTitle(props.schema)}
+          markdown={markdown}
         />
         {props.schema.paramType && (
           <div className={pfx("param-type")}> {props.schema.paramType} </div>
