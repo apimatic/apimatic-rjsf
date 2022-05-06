@@ -11,8 +11,7 @@ import {
   deepEquals,
   prefixClass as pfx,
   isOneOfSchema,
-  prefixClass,
-  getOneOfAnyOfTitle
+  prefixClass
 } from "../../utils";
 import UnsupportedField from "./UnsupportedField";
 
@@ -166,7 +165,6 @@ export function DefaultTemplate(props) {
             title={dataType}
             link={props.schema.dataTypeLink}
             type="schema"
-            markdownTitle={getOneOfAnyOfTitle(props.schema)}
             markdown={markdown}
           />
 

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import DescriptionField from "../fields/DescriptionField.js";
-import { getOneOfAnyOfTitle, prefixClass as pfx } from "../../utils";
+import { prefixClass as pfx } from "../../utils";
 import DataType from "../fields/DataType";
 import { Label } from "../fields/SchemaField";
 
@@ -38,7 +38,6 @@ function CheckboxWidget(props) {
       )}
       <div className={pfx("type-container")}>
         <DataType
-          markdownTitle={getOneOfAnyOfTitle(props.schema)}
           markdown={markdown}
           title={dataType}
           link={schema.dataTypeLink}

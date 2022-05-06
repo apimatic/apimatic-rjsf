@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { prefixClass as pfx } from "../../utils";
+import { getListRootItem, prefixClass as pfx } from "../../utils";
 import { ContextConsumer } from "../context";
 
 function DataType(props) {
-  const { title, link, type, markdown, markdownTitle } = props;
+  const { title, link, type, markdown } = props;
 
   if (!title && !markdown) {
     // See #312: Ensure compatibility with old versions of React.
@@ -12,11 +12,11 @@ function DataType(props) {
   }
 
   if (markdown) {
+    const label = getListRootItem(markdown);
+
     return (
       <ContextConsumer>
-        {({ renderTypesPopover }) =>
-          renderTypesPopover(markdown, markdownTitle)
-        }
+        {({ renderTypesPopover }) => renderTypesPopover(markdown, label)}
       </ContextConsumer>
     );
   }

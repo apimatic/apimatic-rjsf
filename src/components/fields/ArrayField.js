@@ -15,8 +15,7 @@ import {
   retrieveSchema,
   toIdSchema,
   getDefaultRegistry,
-  prefixClass as pfx,
-  getOneOfAnyOfTitle
+  prefixClass as pfx
 } from "../../utils";
 import { ArrowUpIcon, DeleteIcon, ArrowDownIcon, ChevronIcon } from "../Icons";
 
@@ -255,7 +254,6 @@ function DefaultNormalArrayFieldTemplate(props) {
           title={dataType}
           link={props.schema.dataTypeLink}
           type="array-type"
-          markdownTitle={getOneOfAnyOfTitle(props.schema)}
           markdown={markdown}
         />
         {props.schema.paramType && (

@@ -991,8 +991,7 @@ export function pipe(...func) {
     }, data);
 }
 
-export function getOneOfAnyOfTitle(schema) {
-  if (isOneOfSchema(schema)) {
-    return schema.oneOf ? "OneOf" : "AnyOf";
-  }
+export function getListRootItem(markdown) {
+  const items = markdown.split("*");
+  return items[1];
 }

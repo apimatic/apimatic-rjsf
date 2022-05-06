@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { getOneOfAnyOfTitle, prefixClass as pfx } from "../../utils";
+import { prefixClass as pfx } from "../../utils";
 
 import {
   getDefaultFormState,
@@ -174,7 +174,6 @@ function DefaultNormalMapFieldTemplate(props) {
           title={dataType}
           link={props.schema.dataTypeLink}
           type="map-field-type"
-          markdownTitle={getOneOfAnyOfTitle(props.schema)}
           markdown={markdown}
         />
 

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import MapField from "./MapField";
-import { getOneOfAnyOfTitle, prefixClass as pfx } from "../../utils";
+import { prefixClass as pfx } from "../../utils";
 import { toErrorList } from "../../validate";
 import CodeMirror from "react-codemirror2";
 import DataType from "../fields/DataType";
@@ -190,7 +190,6 @@ function DefaultObjectFieldTemplate(props) {
           title={dataType}
           link={props.schema.dataTypeLink}
           type="object-type"
-          markdownTitle={getOneOfAnyOfTitle(props.schema)}
           markdown={markdown}
         />
 
@@ -491,7 +490,6 @@ class ObjectField extends Component {
             title={dataType}
             link={templateProps.schema.dataTypeLink}
             type="object-type"
-            markdownTitle={getOneOfAnyOfTitle(templateProps.schema)}
             markdown={markdown}
           />
 
