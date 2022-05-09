@@ -17,6 +17,7 @@ import "codemirror/theme/ttcn.css";
 import "codemirror/theme/solarized.css";
 import "codemirror/theme/monokai.css";
 import "codemirror/theme/eclipse.css";
+import "./tag-selector.css";
 
 const log = type => console.log.bind(console, type);
 const fromJson = json => JSON.parse(json);

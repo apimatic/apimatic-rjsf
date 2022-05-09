@@ -137,7 +137,7 @@ function DefaultObjectFieldTemplate(props) {
     !props.uiSchema.disableFieldJsonEdit;
 
   const dataType = props.schema.dataTypeDisplayText;
-
+  const markdown = props.schema.dataTypeMarkdown;
   const title = props.uiSchema["ui:title"] || props.schema.title || props.title;
 
   return (
@@ -147,9 +147,7 @@ function DefaultObjectFieldTemplate(props) {
     >
       <div className={pfx("object-header")}>
         <div className={pfx("header-left hand")} onClick={toggleCollapse}>
-          {(props.uiSchema["ui:title"] ||
-            props.title ||
-            props.schema.title) && (
+          {title && (
             <TitleField
               id={`${props.idSchema.$id}__title`}
               title={title}
@@ -158,6 +156,7 @@ function DefaultObjectFieldTemplate(props) {
               nullify={nullify}
               onNullifyChange={onNullifyChange}
               disabled={disabled}
+              fromDiscriminator={props.fromDiscriminator}
             />
           )}
 
@@ -175,7 +174,7 @@ function DefaultObjectFieldTemplate(props) {
           <IconBtn
             tabIndex="-1"
             onClick={toggleCollapse}
-            className={pfx("btn toggle-button")}
+            className={pfx(`btn toggle-button`)}
           >
             {collapse ? (
               <ChevronIcon width={14} rotate={-90} />
@@ -191,6 +190,7 @@ function DefaultObjectFieldTemplate(props) {
           title={dataType}
           link={props.schema.dataTypeLink}
           type="object-type"
+          markdown={markdown}
         />
 
         {props.schema.paramType && (
@@ -256,7 +256,7 @@ class ObjectField extends Component {
     this.state.formJson = JSON.stringify(props.formData, null, 2);
     this.state.formJsonError = false;
     this.state.showEditView = false;
-    this.state.collapse = true;
+    this.state.collapse = false;
     this.state.isEven = props.isEven || props.levelReversal ? true : false;
     this.state.expandAllLevel = props.expandAllLevel;
     this.state.depth = props.depth ? props.depth : 1;
@@ -312,9 +312,13 @@ class ObjectField extends Component {
   }
 
   onPropertyChange = name => {
-    return (value, options) => {
-      const newFormData = { ...this.props.formData, [name]: value };
-      this.props.onChange(newFormData, options);
+    return (value, options, schemaIndex) => {
+      let newFormData = {};
+      newFormData = {
+        ...this.props.formData,
+        [name]: value
+      };
+      this.props.onChange(newFormData, options, schemaIndex);
     };
   };
 
@@ -347,7 +351,8 @@ class ObjectField extends Component {
     return (
       (this.props.formData === undefined ||
         Object.keys(this.props.formData).length === 0) &&
-      !this.props.required
+      !this.props.required &&
+      !this.props.fromDiscriminator
     );
   };
 
@@ -375,7 +380,9 @@ class ObjectField extends Component {
       depth,
       isEven,
       expandAllLevel,
-      expandAll
+      expandAll,
+      fromDiscriminator,
+      typeCombinatorTypes
     } = this.props;
 
     const { definitions, fields, formContext } = registry;
@@ -413,7 +420,9 @@ class ObjectField extends Component {
       depth,
       isEven,
       expandAllLevel,
-      expandAll
+      expandAll,
+      fromDiscriminator,
+      typeCombinatorTypes
     };
 
     if (schema.properties && Object.keys(schema.properties).length > 0) {
@@ -455,6 +464,7 @@ class ObjectField extends Component {
     const { TitleField, DescriptionField } = templateProps;
 
     const dataType = templateProps.schema.dataTypeDisplayText;
+    const markdown = templateProps.schema.dataTypeMarkdown;
 
     const title =
       templateProps.uiSchema["ui:title"] ||
@@ -471,6 +481,7 @@ class ObjectField extends Component {
             nullify={templateProps.nullify}
             onNullifyChange={this.onNullifyChange}
             disabled={templateProps.disabled}
+            fromDiscriminator={templateProps.fromDiscriminator}
           />
         )}
 
@@ -479,6 +490,7 @@ class ObjectField extends Component {
             title={dataType}
             link={templateProps.schema.dataTypeLink}
             type="object-type"
+            markdown={markdown}
           />
 
           {templateProps.schema.paramType && (
@@ -536,7 +548,7 @@ class ObjectField extends Component {
   }
 
   renderObject(templateProps) {
-    const { name, SchemaField } = templateProps;
+    const { name, SchemaField, typeCombinatorTypes } = templateProps;
     let orderedProperties;
 
     try {
@@ -595,6 +607,7 @@ class ObjectField extends Component {
               disabled={templateProps.disabled || this.shouldDisable()}
               readonly={templateProps.readonly}
               disableFormJsonEdit={templateProps.disableFormJsonEdit}
+              typeCombinatorTypes={typeCombinatorTypes}
             />
           ),
           name,

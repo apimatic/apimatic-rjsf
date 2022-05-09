@@ -13,19 +13,19 @@ module.exports = {
         type: "object",
         properties: {
           name: {
-            type: "string",
+            type: "string"
           },
           credit_card: {
-            type: "number",
+            type: "number"
           },
           billing_address: {
-            type: "string",
-          },
+            type: "string"
+          }
         },
         required: ["name"],
         dependencies: {
-          credit_card: ["billing_address"],
-        },
+          credit_card: ["billing_address"]
+        }
       },
       bidirectional: {
         title: "Bidirectional",
@@ -36,22 +36,22 @@ module.exports = {
         type: "object",
         properties: {
           name: {
-            type: "string",
+            type: "string"
           },
           credit_card: {
-            type: "number",
+            type: "number"
           },
           billing_address: {
-            type: "string",
-          },
+            type: "string"
+          }
         },
         required: ["name"],
         dependencies: {
           credit_card: ["billing_address"],
-          billing_address: ["credit_card"],
-        },
-      },
-    },
+          billing_address: ["credit_card"]
+        }
+      }
+    }
   },
   uiSchema: {
     unidirectional: {
@@ -61,12 +61,12 @@ module.exports = {
             If you enter anything here then <code>billing_address</code> will
             become required.
           </p>
-        ),
+        )
       },
       billing_address: {
         "ui:help":
-          "It’s okay to have a billing address without a credit card number.",
-      },
+          "It’s okay to have a billing address without a credit card number."
+      }
     },
     bidirectional: {
       credit_card: {
@@ -75,7 +75,7 @@ module.exports = {
             "If you enter anything here then <code>billing_address</code> will
             become required.
           </p>
-        ),
+        )
       },
       billing_address: {
         "ui:help": (
@@ -83,16 +83,16 @@ module.exports = {
             If you enter anything here then <code>credit_card</code> will become
             required.
           </p>
-        ),
-      },
-    },
+        )
+      }
+    }
   },
   formData: {
     unidirectional: {
-      name: "Tim",
+      name: "Tim"
     },
     bidirectional: {
-      name: "Jill",
-    },
-  },
+      name: "Jill"
+    }
+  }
 };

@@ -19,7 +19,8 @@ function MapFieldTitle({
   required,
   onNullifyChange,
   nullify,
-  disabled
+  disabled,
+  fromDiscriminator
 }) {
   if (!title) {
     // See #312: Ensure compatibility with old versions of React.
@@ -34,6 +35,7 @@ function MapFieldTitle({
       nullify={nullify}
       onNullifyChange={onNullifyChange}
       disabled={disabled}
+      fromDiscriminator={fromDiscriminator}
     />
   );
 }
@@ -81,7 +83,7 @@ function DefaultMapItem(props) {
         <IconBtn
           tabIndex="-1"
           onClick={() => props.toggleCollapse(props.key)}
-          className={pfx("btn toggle-button")}
+          className={pfx(`btn toggle-button`)}
         >
           {props.collapse ? (
             <ChevronIcon width={14} rotate={-90} />
@@ -121,7 +123,7 @@ function DefaultMapItem(props) {
               )}
               style={{ flex: "1" }}
             >
-              {props.children}
+              {React.cloneElement(props.children, { fromMap: true })}
             </div>
           </div>
         </div>
@@ -132,6 +134,7 @@ function DefaultMapItem(props) {
 
 function DefaultNormalMapFieldTemplate(props) {
   const dataType = props.schema.dataTypeDisplayText;
+  const markdown = props.schema.dataTypeMarkdown;
 
   return (
     <fieldset className={pfx(props.className)}>
@@ -149,13 +152,14 @@ function DefaultNormalMapFieldTemplate(props) {
             nullify={props.nullify}
             onNullifyChange={props.onNullifyChange}
             disabled={props.disabled}
+            fromDiscriminator={props.fromDiscriminator}
           />
         </div>
 
         <IconBtn
           tabIndex="-1"
           onClick={props.toggleGroupCollapse}
-          className={pfx("btn toggle-button")}
+          className={pfx(`btn toggle-button ${props.title ? "" : "anyof"}`)}
         >
           {props.collapse ? (
             <ChevronIcon width={14} rotate={-90} />
@@ -170,6 +174,7 @@ function DefaultNormalMapFieldTemplate(props) {
           title={dataType}
           link={props.schema.dataTypeLink}
           type="map-field-type"
+          markdown={markdown}
         />
 
         {props.schema.paramType && (
@@ -303,9 +308,10 @@ class MapField extends Component {
   }
 
   onValueChange(i) {
-    return value => {
+    return (value, options, schemaIndex) => {
       let newHash = this.state.hash.slice();
       newHash[i] = { k: this.state.hash[i].k, v: value };
+
       this.setState(
         {
           hash: newHash
@@ -398,7 +404,6 @@ class MapField extends Component {
     const { schema, registry } = this.props;
     const { definitions } = registry;
     let itemSchema = schema.additionalProperties;
-
     let newHash = this.state.hash.slice();
     newHash.push({
       k: "key" + index,
@@ -417,7 +422,8 @@ class MapField extends Component {
       (this.props.formData === undefined ||
         (this.props.formData &&
           Object.keys(this.props.formData).length === 0)) &&
-      !this.props.required
+      !this.props.required &&
+      !this.props.fromDiscriminator
     );
   };
 
@@ -456,7 +462,9 @@ class MapField extends Component {
       onBlur,
       onFocus,
       depth,
-      isEven
+      isEven,
+      fromDiscriminator,
+      typeCombinatorTypes
     } = this.props;
     const title = schema.title || name;
     const { definitions, fields } = registry;
@@ -497,7 +505,8 @@ class MapField extends Component {
           onFocus,
           depth,
           isEven,
-          collapse
+          collapse,
+          typeCombinatorTypes
         });
       }),
       className: `field field-array field-array-of-${addPropsSchema.type}  ${
@@ -521,7 +530,8 @@ class MapField extends Component {
       depth: depth,
       isEven: isEven,
       toggleGroupCollapse: this.toggleGroupCollapse,
-      collapse: this.state.collapse
+      collapse: this.state.collapse,
+      fromDiscriminator
     };
 
     return <DefaultNormalMapFieldTemplate {...mapProps} />;
@@ -541,7 +551,8 @@ class MapField extends Component {
       onBlur,
       onFocus,
       depth,
-      isEven
+      isEven,
+      typeCombinatorTypes
     } = props;
     const { disabled, readonly, uiSchema, registry } = this.props;
     const {
@@ -582,6 +593,7 @@ class MapField extends Component {
           autofocus={autofocus}
           depth={depth + 1}
           isEven={isEven}
+          typeCombinatorTypes={typeCombinatorTypes}
         />
       ),
       className: "map-item",

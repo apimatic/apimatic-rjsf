@@ -9,7 +9,9 @@ import {
   getUiOptions,
   isFilesArray,
   deepEquals,
-  prefixClass as pfx
+  prefixClass as pfx,
+  isOneOfSchema,
+  prefixClass
 } from "../../utils";
 import UnsupportedField from "./UnsupportedField";
 
@@ -20,7 +22,8 @@ const COMPONENT_TYPES = {
   integer: "NumberField",
   number: "NumberField",
   object: "ObjectField",
-  string: "StringField"
+  string: "StringField",
+  discriminator: "DiscriminatorField"
 };
 
 function getFieldComponent(schema, uiSchema, idSchema, fields) {
@@ -31,7 +34,15 @@ function getFieldComponent(schema, uiSchema, idSchema, fields) {
   if (typeof field === "string" && field in fields) {
     return fields[field];
   }
+
   const componentName = COMPONENT_TYPES[schema.type];
+
+  if (!componentName && (schema.oneOf || schema.anyOf)) {
+    const a = fields["DiscriminatorField"];
+    return a;
+  }
+
+  // console.log(componentName);
   return componentName in fields
     ? fields[componentName]
     : () => {
@@ -92,7 +103,7 @@ function ErrorList(props) {
   );
 }
 
-function DefaultTemplate(props) {
+export function DefaultTemplate(props) {
   const {
     id,
     classNames,
@@ -103,7 +114,11 @@ function DefaultTemplate(props) {
     description,
     hidden,
     required,
-    displayLabel
+    displayLabel,
+    nullify,
+    onNullifyChange,
+    disabled,
+    fromDiscriminator
   } = props;
   if (hidden) {
     return children;
@@ -112,13 +127,31 @@ function DefaultTemplate(props) {
   const dataType = props.schema.dataTypeDisplayText
     ? props.schema.dataTypeDisplayText
     : props.schema.type;
+  const markdown = props.schema.dataTypeMarkdown;
 
   return (
     <div className={pfx(classNames)}>
       {displayLabel && (
         <div className={pfx("field-header")}>
-          <Label label={label} required={required} id={id} />
-          {required && (
+          {onNullifyChange && !required ? (
+            <legend>
+              <label onClick={ev => ev.stopPropagation()}>
+                <input
+                  type="checkbox"
+                  checked={nullify}
+                  className={!disabled && nullify ? "checked" : "unchecked"}
+                  onChange={onNullifyChange}
+                  disabled={disabled}
+                />
+                <span />
+              </label>
+              <div className={prefixClass("checkbox-text")}>{label}</div>
+            </legend>
+          ) : (
+            <Label label={label} required={required} id={id} />
+          )}
+
+          {!fromDiscriminator && required && (
             <div className={pfx("element-required")}>
               <span>Required</span>
             </div>
@@ -132,6 +165,7 @@ function DefaultTemplate(props) {
             title={dataType}
             link={props.schema.dataTypeLink}
             type="schema"
+            markdown={markdown}
           />
 
           {props.schema.paramType && (
@@ -142,7 +176,7 @@ function DefaultTemplate(props) {
 
       {displayLabel && description ? description : null}
       {children}
-      {errors}
+      {onNullifyChange && !nullify ? null : errors}
       {help}
     </div>
   );
@@ -184,7 +218,10 @@ function SchemaFieldRender(props) {
     idSchema,
     name,
     required,
-    registry = getDefaultRegistry()
+    schemaIndex,
+    registry = getDefaultRegistry(),
+    anyOfTitle,
+    typeCombinatorTypes
   } = props;
   const {
     definitions,
@@ -198,6 +235,8 @@ function SchemaFieldRender(props) {
   const disabled = Boolean(props.disabled || uiSchema["ui:disabled"]);
   const readonly = Boolean(props.readonly || uiSchema["ui:readonly"]);
   const autofocus = Boolean(props.autofocus || uiSchema["ui:autofocus"]);
+  const _typeCombinatorTypes =
+    typeCombinatorTypes || schema.typeCombinatorTypes || null;
 
   if (Object.keys(schema).length === 0) {
     // See #312: Ensure compatibility with old versions of React.
@@ -223,20 +262,6 @@ function SchemaFieldRender(props) {
 
   const { __errors, ...fieldErrorSchema } = errorSchema;
 
-  // See #439: uiSchema: Don't pass consumed class names to child components
-  const field = (
-    <FieldComponent
-      {...props}
-      schema={schema}
-      uiSchema={{ ...uiSchema, classNames: undefined }}
-      disabled={disabled}
-      readonly={readonly}
-      autofocus={autofocus}
-      errorSchema={fieldErrorSchema}
-      formContext={formContext}
-    />
-  );
-
   const { type } = schema;
   const id = idSchema.$id;
   const label =
@@ -253,6 +278,7 @@ function SchemaFieldRender(props) {
     "field",
     `field-${type}`,
     errors && errors.length > 0 ? "field-error has-error has-danger" : "",
+    schema.oneOf || schema.anyOf ? "discriminator-container" : "",
     uiSchema.classNames
   ]
     .join(" ")
@@ -282,10 +308,32 @@ function SchemaFieldRender(props) {
     formContext,
     fields,
     schema,
-    uiSchema
+    uiSchema,
+    anyOfTitle
   };
 
-  return <FieldTemplate {...fieldProps}>{field}</FieldTemplate>;
+  // See #439: uiSchema: Don't pass consumed class names to child components
+  const field = (
+    <FieldComponent
+      {...props}
+      schema={schema}
+      uiSchema={{ ...uiSchema, classNames: undefined }}
+      disabled={disabled}
+      readonly={readonly}
+      autofocus={autofocus}
+      errorSchema={fieldErrorSchema}
+      formContext={formContext}
+      schemaIndex={schemaIndex}
+      typeCombinatorTypes={_typeCombinatorTypes}
+      fieldProps={fieldProps}
+    />
+  );
+
+  return isOneOfSchema(schema) ? (
+    field
+  ) : (
+    <FieldTemplate {...fieldProps}>{field}</FieldTemplate>
+  );
 }
 
 class SchemaField extends React.Component {
@@ -320,6 +368,7 @@ if (process.env.NODE_ENV !== "production") {
     idSchema: PropTypes.object,
     formData: PropTypes.any,
     errorSchema: PropTypes.object,
+    schemaIndex: PropTypes.number,
     registry: PropTypes.shape({
       widgets: PropTypes.objectOf(
         PropTypes.oneOfType([PropTypes.func, PropTypes.object])

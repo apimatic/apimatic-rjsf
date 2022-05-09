@@ -4,4 +4,5 @@ build
 yarn.lock
 .nyc_output
 coverage
-.vscode
+.vscode/chrome
+.vscode/launch.json

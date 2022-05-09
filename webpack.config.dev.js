@@ -14,8 +14,7 @@ module.exports = {
     new webpack.NoErrorsPlugin(),
   ],
   module: {
-    loaders: [
-      {
+    loaders: [{
         test: /\.jsx?$/,
         loader: "babel",
         include: [

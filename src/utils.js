@@ -1,6 +1,35 @@
 import React from "react";
 import "setimmediate";
-import validateFormData from "./validate";
+import validateFormData, { isValid } from "./validate";
+
+export function unwrapFormData(formData) {
+  let newFormData = formData;
+
+  if (isObject(newFormData)) {
+    if (checkDiscriminator(newFormData)) {
+      newFormData = unwrapFormData(newFormData.value);
+    } else {
+      for (const key in newFormData) {
+        newFormData = {
+          ...newFormData,
+          [key]: unwrapFormData(newFormData[key])
+        };
+      }
+    }
+  }
+
+  if (Array.isArray(newFormData)) {
+    newFormData = newFormData.map(item => {
+      if (item && isObject(item)) {
+        return unwrapFormData(item);
+      } else {
+        return item;
+      }
+    });
+  }
+
+  return newFormData;
+}
 
 const widgetMap = {
   boolean: {
@@ -71,7 +100,13 @@ export function getWidget(schema, widget, registeredWidgets = {}) {
       const defaultOptions =
         (Widget.defaultProps && Widget.defaultProps.options) || {};
       Widget.MergedWidget = ({ options = {}, ...props }) => (
-        <Widget options={{ ...defaultOptions, ...options }} {...props} />
+        <Widget
+          options={{
+            ...defaultOptions,
+            ...options
+          }}
+          {...props}
+        />
       );
     }
     return Widget.MergedWidget;
@@ -102,7 +137,13 @@ export function getWidget(schema, widget, registeredWidgets = {}) {
   throw new Error(`No widget "${widget}" for type "${type}"`);
 }
 
-function computeDefaults(schema, parentDefaults, definitions = {}) {
+function computeDefaults(
+  schema,
+  parentDefaults,
+  definitions = {},
+  schemaIndex = 0,
+  isNestedDiscriminator
+) {
   // Compute the defaults recursively: give highest priority to deepest nodes.
   let defaults = parentDefaults;
   if (isObject(defaults) && isObject(schema.default)) {
@@ -120,6 +161,30 @@ function computeDefaults(schema, parentDefaults, definitions = {}) {
     defaults = schema.items.map(itemSchema =>
       computeDefaults(itemSchema, undefined, definitions)
     );
+  } else if ("oneOf" in schema) {
+    defaults = {
+      $$__case: schemaIndex,
+      $$__case_of: "oneOf",
+      value: computeDefaults(
+        schema.oneOf[schemaIndex],
+        undefined,
+        definitions,
+        schemaIndex,
+        true
+      )
+    };
+  } else if ("anyOf" in schema) {
+    defaults = {
+      $$__case: schemaIndex,
+      $$__case_of: "anyOf",
+      value: computeDefaults(
+        schema.anyOf[schemaIndex],
+        undefined,
+        definitions,
+        schemaIndex,
+        true
+      )
+    };
   }
   // Not defaults defined for this node, fallback to generic typed ones.
   if (typeof defaults === "undefined") {
@@ -128,10 +193,8 @@ function computeDefaults(schema, parentDefaults, definitions = {}) {
 
   switch (schema.type) {
     // We need to recur for object schema inner default values.
-    case "object":
-      return Object.keys(schema.properties || {}).reduce((acc, key) => {
-        // Compute the defaults for this node, with the parent defaults we might
-        // have from a previous run: defaults[key].
+    case "object": {
+      defaults = Object.keys(schema.properties || {}).reduce((acc, key) => {
         acc[key] = computeDefaults(
           schema.properties[key],
           (defaults || {})[key],
@@ -139,8 +202,20 @@ function computeDefaults(schema, parentDefaults, definitions = {}) {
         );
         return acc;
       }, {});
+      break;
+    }
 
-    case "array":
+    case "array": {
+      // Inject defaults into existing array defaults
+      if (Array.isArray(defaults)) {
+        defaults = defaults.map((item, idx) => {
+          return computeDefaults(
+            schema.items[idx] || schema.additionalItems || {},
+            item,
+            definitions
+          );
+        });
+      }
       if (schema.minItems) {
         if (!isMultiSelect(schema, definitions)) {
           const defaultsLength = defaults ? defaults.length : 0;
@@ -160,23 +235,37 @@ function computeDefaults(schema, parentDefaults, definitions = {}) {
           return [];
         }
       }
+      break;
+    }
   }
+
   return defaults;
 }
 
-export function getDefaultFormState(_schema, formData, definitions = {}) {
+export function getDefaultFormState(
+  _schema,
+  formData,
+  definitions = {},
+  schemaIndex = 0
+) {
   if (!isObject(_schema)) {
     throw new Error("Invalid schema: " + _schema);
   }
   const schema = retrieveSchema(_schema, definitions, formData);
-  const defaults = computeDefaults(schema, _schema.default, definitions);
+  const defaults = computeDefaults(
+    schema,
+    _schema.default,
+    definitions,
+    schemaIndex
+  );
   if (typeof formData === "undefined") {
     // No form data? Use schema defaults.
     return defaults;
   }
   if (isObject(formData)) {
     // Override schema defaults with form data.
-    return mergeObjects(defaults, formData);
+    let a = mergeDefaultsWithFormData(defaults, formData);
+    return a;
   }
   return formData || defaults;
 }
@@ -199,9 +288,15 @@ export function getUiOptions(uiSchema) {
         };
       }
       if (key === "ui:options" && isObject(value)) {
-        return { ...options, ...value };
+        return {
+          ...options,
+          ...value
+        };
       }
-      return { ...options, [key.substring(3)]: value };
+      return {
+        ...options,
+        [key.substring(3)]: value
+      };
     }, {});
 }
 
@@ -224,6 +319,42 @@ export function mergeObjects(obj1, obj2, concatArrays = false) {
     }
     return acc;
   }, acc);
+}
+
+/**
+ * When merging defaults and form data, we want to merge in this specific way:
+ * - objects are deeply merged
+ * - arrays are merged in such a way that:
+ *   - when the array is set in form data, only array entries set in form data
+ *     are deeply merged; additional entries from the defaults are ignored
+ *   - when the array is not set in form data, the default is copied over
+ * - scalars are overwritten/set by form data
+ */
+export function mergeDefaultsWithFormData(defaults, formData) {
+  if (Array.isArray(formData)) {
+    if (!Array.isArray(defaults)) {
+      defaults = [];
+    }
+
+    return formData.map((value, idx) => {
+      if (defaults[idx]) {
+        return mergeDefaultsWithFormData(defaults[idx], value);
+      }
+      return value;
+    });
+  } else if (isObject(formData) && formData.$$__case === undefined) {
+    const acc = Object.assign({}, defaults);
+
+    return Object.keys(formData).reduce((acc, key) => {
+      acc[key] = mergeDefaultsWithFormData(
+        defaults ? defaults[key] : {},
+        formData[key]
+      );
+      return acc;
+    }, acc);
+  } else {
+    return formData;
+  }
 }
 
 export function asNumber(value) {
@@ -361,14 +492,20 @@ export function optionsList(schema) {
   if (schema.enum) {
     return schema.enum.map((value, i) => {
       const label = (schema.enumNames && schema.enumNames[i]) || String(value);
-      return { label, value };
+      return {
+        label,
+        value
+      };
     });
   } else {
     const altSchemas = schema.oneOf || schema.anyOf;
     return altSchemas.map((schema, i) => {
       const value = toConstant(schema);
       const label = schema.title || String(value);
-      return { label, value };
+      return {
+        label,
+        value
+      };
     });
   }
 }
@@ -403,7 +540,10 @@ export function retrieveSchema(schema, definitions = {}, formData = {}) {
     const { $ref, ...localSchema } = schema;
     // Update referenced schema definition with local schema properties.
     return retrieveSchema(
-      { ...$refSchema, ...localSchema },
+      {
+        ...$refSchema,
+        ...localSchema
+      },
       definitions,
       formData
     );
@@ -448,7 +588,10 @@ function withDependentProperties(schema, additionallyRequired) {
   const required = Array.isArray(schema.required)
     ? Array.from(new Set([...schema.required, ...additionallyRequired]))
     : additionallyRequired;
-  return { ...schema, required: required };
+  return {
+    ...schema,
+    required: required
+  };
 }
 
 function withDependentSchema(
@@ -514,7 +657,10 @@ function withExactlyOneSubschema(
     [dependencyKey]: conditionPropertySchema,
     ...dependentSubschema
   } = subschema.properties;
-  const dependentSchema = { ...subschema, properties: dependentSubschema };
+  const dependentSchema = {
+    ...subschema,
+    properties: dependentSubschema
+  };
   return mergeSchemas(
     schema,
     retrieveSchema(dependentSchema, definitions, formData)
@@ -713,9 +859,14 @@ export function dataURItoBlob(dataURI) {
     array.push(binary.charCodeAt(i));
   }
   // Create the blob object
-  const blob = new window.Blob([new Uint8Array(array)], { type });
+  const blob = new window.Blob([new Uint8Array(array)], {
+    type
+  });
 
-  return { blob, name };
+  return {
+    blob,
+    name
+  };
 }
 
 export function rangeSpec(schema) {
@@ -745,6 +896,102 @@ export function prefixClass(className) {
     : className;
 }
 
-export function generateKey(pre) {
-  return `${pre}_${new Date().getTime()}`;
+export function getMatchingOption(formData, options, rootSchema) {
+  for (let i = 0; i < options.length; i++) {
+    const option = options[i];
+
+    // If the schema describes an object then we need to add slightly more
+    // strict matching to the schema, because unless the schema uses the
+    // "requires" keyword, an object will match the schema as long as it
+    // doesn't have matching keys with a conflicting type. To do this we use an
+    // "anyOf" with an array of requires. This augmentation expresses that the
+    // schema should match if any of the keys in the schema are present on the
+    // object and pass validation.
+    if (option.properties) {
+      // Create an "anyOf" schema that requires at least one of the keys in the
+      // "properties" object
+      const requiresAnyOf = {
+        anyOf: Object.keys(option.properties).map(key => ({
+          required: [key]
+        }))
+      };
+
+      let augmentedSchema;
+
+      // If the "anyOf" keyword already exists, wrap the augmentation in an "allOf"
+      if (option.anyOf) {
+        // Create a shallow clone of the option
+        const { ...shallowClone } = option;
+
+        if (!shallowClone.allOf) {
+          shallowClone.allOf = [];
+        } else {
+          // If "allOf" already exists, shallow clone the array
+          shallowClone.allOf = shallowClone.allOf.slice();
+        }
+
+        shallowClone.allOf.push(requiresAnyOf);
+
+        augmentedSchema = shallowClone;
+      } else {
+        augmentedSchema = Object.assign({}, option, requiresAnyOf);
+      }
+
+      // Remove the "required" field as it's likely that not all fields have
+      // been filled in yet, which will mean that the schema is not valid
+      delete augmentedSchema.required;
+
+      if (isValid(augmentedSchema, formData)) {
+        return i;
+      }
+    } else if (isValid(options[i], formData)) {
+      return i;
+    }
+  }
+  return 0;
+}
+
+export function checkDiscriminator(data) {
+  if (data && isObject(data) && data.hasOwnProperty("$$__case")) {
+    return true;
+  }
+  return false;
+}
+
+export const isMultipleSchema = schema =>
+  !!(
+    schema &&
+    (schema.hasOwnProperty("oneOf") || schema.hasOwnProperty("anyOf"))
+  );
+
+export function classNames(classObj) {
+  if (typeof classObj !== "object") {
+    return;
+  }
+
+  let className = "";
+
+  Object.entries(classObj).forEach(([key, value]) => {
+    if (value) {
+      className += ` ${key}`;
+    }
+  });
+
+  return className;
+}
+
+export function isOneOfSchema(schema = {}) {
+  return schema.oneOf || schema.anyOf;
+}
+
+export function pipe(...func) {
+  return data =>
+    func.reduce((cache, currentFunc) => {
+      return currentFunc(cache);
+    }, data);
+}
+
+export function getListRootItem(markdown) {
+  const items = markdown.split("*");
+  return items[1];
 }

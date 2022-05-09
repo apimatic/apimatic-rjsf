@@ -1,5 +1,107 @@
 module.exports = {
   schema: {
+    title: "My form",
+    description: "My description",
+    type: "string"
+  },
+  formData: ""
+};
+
+module.exports = {
+  schema: {
+    value: {
+      oneOf: [
+        {
+          type: "number"
+        },
+        {
+          type: "boolean"
+        }
+      ]
+    }
+  },
+  formData: ""
+};
+
+module.exports = {
+  schema: {
+    id: "endpoint_7C26ABBCDB1F9",
+    title: "endpoint_7C26ABBCDB1F9",
+    type: "object",
+    properties: {
+      isPrimitiveType: {
+        type: "boolean"
+      },
+      isAtEndpointLevel: {
+        type: "boolean"
+      },
+      hasDiscriminator: {
+        type: "boolean"
+      },
+
+      session: {
+        description: "Course session",
+        oneOf: [
+          {
+            id: "Morning",
+            title: "Morning",
+            description: "Course morning session",
+            type: "object",
+            properties: {
+              startsAt: {
+                description: "Session start time",
+                type: "string"
+              },
+              endsAt: {
+                description: "Session end time",
+                type: "string"
+              },
+              offerTeaBreak: {
+                description: "Offer tea break during session",
+                type: "boolean"
+              }
+            },
+            required: ["startsAt", "endsAt", "offerTeaBreak"]
+          },
+          {
+            id: "Evening",
+            title: "Evening",
+            description: "Course evening session",
+            type: "object",
+            properties: {
+              startsAt: {
+                description: "Session start time",
+                type: "string"
+              },
+              endsAt: {
+                description: "Session end time",
+                type: "string"
+              },
+              offerDinner: {
+                description: "Offer dinner during session",
+                type: "boolean"
+              }
+            },
+            required: ["startsAt", "endsAt", "offerDinner"]
+          }
+        ]
+      }
+    },
+    required: [
+      "isPrimitiveType",
+      "isAtEndpointLevel",
+      "hasDiscriminator",
+      "session"
+    ]
+  },
+  formData: {
+    session: {
+      offerDinner: true
+    }
+  }
+};
+module.exports = {
+  schema: {
     title: "Endpoint Arguments",
     type: "object",
     additionalProperties: false,
@@ -9,830 +111,3358 @@ module.exports = {
         title: "endpoint_7C26ABBCDB1F9",
         type: "object",
         properties: {
-          body: {
-            id: "FullupdateImagesRequest",
-            title: "body",
-            example: {
-              data: {
-                productId: 1234893572,
-                images: [
+          isPrimitiveType: {
+            type: "boolean"
+          },
+          isAtEndpointLevel: {
+            type: "boolean"
+          },
+          hasDiscriminator: {
+            type: "boolean"
+          },
+          Array: {
+            type: "array",
+            items: {
+              type: "number"
+            }
+          },
+          "Simple oneOf Fields": {
+            oneOf: [
+              {
+                type: "number"
+              },
+              {
+                type: "boolean"
+              }
+            ]
+          },
+          "Simple oneOf Array": {
+            oneOf: [
+              {
+                type: "array",
+                items: {
+                  type: "number"
+                }
+              },
+              {
+                type: "array",
+                items: {
+                  type: "boolean"
+                }
+              }
+            ]
+          },
+          "Simple number array + boolean": {
+            oneOf: [
+              {
+                type: "array",
+                items: {
+                  type: "number"
+                }
+              },
+              {
+                type: "boolean"
+              }
+            ]
+          },
+          "Simple boolean array + number": {
+            oneOf: [
+              {
+                type: "array",
+                items: {
+                  type: "number"
+                }
+              },
+              {
+                type: "boolean"
+              }
+            ]
+          },
+          "Simple Object": {
+            oneOf: [
+              {
+                type: "object",
+                additionalProperties: {
+                  type: "number"
+                }
+              },
+              {
+                type: "object",
+                additionalProperties: {
+                  type: "boolean"
+                }
+              }
+            ]
+          },
+          "Simple Object + boolean": {
+            oneOf: [
+              {
+                type: "object",
+                additionalProperties: {
+                  type: "number"
+                }
+              },
+              {
+                type: "boolean"
+              }
+            ]
+          }
+        },
+        required: [
+          "isPrimitiveType",
+          "isAtEndpointLevel",
+          "hasDiscriminator",
+          "value"
+        ]
+      }
+    },
+    required: ["args"]
+  },
+  formData: {}
+};
+
+module.exports = {
+  schema: {
+    title: "Endpoint Arguments",
+    type: "object",
+    additionalProperties: false,
+    properties: {
+      args: {
+        id: "endpoint_7C26ABBCDB1F9",
+        title: "endpoint_7C26ABBCDB1F9",
+        type: "object",
+        properties: {
+          // "Array":{
+          //   "type": "array",
+          //   "items": {
+          //     "type": "number"
+          //   }
+          // },
+          // "Simple oneOf Array": {
+          //   "oneOf": [
+          //     {
+          //       "type": "array",
+          //       "items": {
+          //         "type": "number"
+          //       }
+          //     },
+          //     {
+          //       "type": "array",
+          //       "items": {
+          //         "type": "boolean"
+          //       }
+          //     }
+          //   ]
+          // },
+          // "Simple boolean array + number": {
+          //   "oneOf": [{
+          //       "type": "array",
+          //       "items": {
+          //         "type": "number"
+          //       }
+          //     },
+          //     {
+          //       "type": "boolean"
+          //     }
+          //   ]
+          // },
+          // "send_oneof_inner_arrayOfMap_flag": {
+          //   "oneOf": [{
+          //       "type": "array",
+          //       "items": {
+          //         "type": "object",
+          //         "additionalProperties": {
+          //           "type": "number"
+          //         }
+          //       }
+          //     },
+          //     {
+          //       "type": "array",
+          //       "items": {
+          //         "type": "object",
+          //         "additionalProperties": {
+          //           "type": "boolean"
+          //         }
+          //       }
+          //     }
+          //   ]
+          // },
+          // "send_oneof_mapOfArray": {
+          //   "type": "object",
+          //   "additionalProperties": {
+          //     "oneOf": [
+          //       {
+          //         "type": "number"
+          //       },
+          //       {
+          //         "type": "boolean"
+          //       }
+          //     ]
+          //   }
+          // },
+          // "send_oneof_inner_mapOfArray": {
+          //   "oneOf": [
+          //     {
+          //       "type": "object",
+          //       "additionalProperties": {
+          //         "type": "array",
+          //         "items": {
+          //           "type": "number"
+          //         }
+          //       }
+          //     },
+          //     {
+          //       "type": "object",
+          //       "additionalProperties": {
+          //         "type": "array",
+          //         "items": {
+          //           "type": "boolean"
+          //         }
+          //       }
+          //     }
+          //   ]
+          // },
+          send_oneof_arrayOfMap_flag_of_mixed_arrayOfMap_flag: {
+            description: "",
+            type: "array",
+            items: {
+              type: "object",
+              additionalProperties: {
+                oneOf: [
                   {
-                    url:
-                      "http://aff.bstatic.com/images/hotel/max500/110/11069097.jpg",
-                    tags: [1, 2, 3]
+                    type: "array",
+                    items: {
+                      type: "object",
+                      additionalProperties: {
+                        type: "number"
+                      }
+                    }
                   },
                   {
-                    url:
-                      "http://aff.bstatic.com/images/hotel/max500/110/11069097.jpg",
-                    tags: [1, 2, 3]
+                    type: "boolean"
                   }
                 ]
               }
-            },
-            type: "object",
-            properties: {
-              data: {
-                id: "ImagesURLForFullUpdate",
-                title: "Data",
-                description:
-                  "Model with one image URL for one property used for inserting new image",
-                example: {
-                  productId: 1234893572,
-                  images: [
-                    {
-                      url:
-                        "http://aff.bstatic.com/images/hotel/max500/110/11069097.jpg",
-                      tags: [1, 2, 3]
-                    },
-                    {
-                      url:
-                        "http://aff.bstatic.com/images/hotel/max500/110/11069097.jpg",
-                      tags: [1, 2, 3]
-                    }
-                  ]
-                },
-                type: "object",
-                properties: {
-                  productId: {
-                    description: "Id of the product",
-                    type: "integer",
-                    dataTypeDisplayText: "int",
-                    paramType: null,
-                    title: "ProductId"
-                  },
-                  images: {
-                    type: "array",
-                    items: {
-                      id: "AddImage",
-                      title: "AddImage",
-                      description: "Object for adding images",
-                      example: {
-                        url:
-                          "http://aff.bstatic.com/images/hotel/max500/110/11069098.jpg",
-                        tags: [4, 5, 6]
-                      },
-                      type: "object",
-                      properties: {
-                        url: {
-                          description:
-                            "URL of the image. Please send normal URL, like https://example.com/image01.jpg, and do not use some GET parameters in URL, otherwise image might not be imported.",
-                          example: "https://example.com/image01.jpg",
-                          type: "string",
-                          dataTypeDisplayText: "string",
-                          paramType: null,
-                          title: "Url"
-                        },
-                        tags: {
-                          description:
-                            "Image tag. Tags codes are given in Appendix.",
-                          type: "array",
-                          items: {
-                            title: "ImageTagsEnum",
-                            example: 1,
-                            "x-enum-elements": [
-                              {
-                                name: "Enum_1",
-                                description: "Shower"
-                              },
-                              {
-                                name: "Enum_2",
-                                description: "Toilet"
-                              },
-                              {
-                                name: "Enum_3",
-                                description: "Property building"
-                              },
-                              {
-                                name: "Enum_4",
-                                description: "patio"
-                              },
-                              {
-                                name: "Enum_5",
-                                description: "Nearby landmark"
-                              },
-                              {
-                                name: "Enum_6",
-                                description: "Staff"
-                              },
-                              {
-                                name: "Enum_7",
-                                description: "Restaurant/places to eat"
-                              },
-                              {
-                                name: "Enum_8",
-                                description: "Communal lounge/ TV room"
-                              },
-                              {
-                                name: "Enum_10",
-                                description: "Facade/entrance"
-                              },
-                              {
-                                name: "Enum_43",
-                                description: "People"
-                              },
-                              {
-                                name: "Enum_11",
-                                description: "Spring"
-                              },
-                              {
-                                name: "Enum_13",
-                                description: "Bed"
-                              },
-                              {
-                                name: "Enum_14",
-                                description: "Off site"
-                              },
-                              {
-                                name: "Enum_37",
-                                description: "Food close-up"
-                              },
-                              {
-                                name: "Enum_41",
-                                description: "Day"
-                              },
-                              {
-                                name: "Enum_42",
-                                description: "Night"
-                              },
-                              {
-                                name: "Enum_50",
-                                description: "Property logo or sign"
-                              },
-                              {
-                                name: "Enum_55",
-                                description: "Neighbourhood"
-                              },
-                              {
-                                name: "Enum_61",
-                                description: "Natural landscape"
-                              },
-                              {
-                                name: "Enum_70",
-                                description: "Activities"
-                              },
-                              {
-                                name: "Enum_74",
-                                description: "Bird's eye view"
-                              },
-                              {
-                                name: "Enum_81",
-                                description: "Winter"
-                              },
-                              {
-                                name: "Enum_82",
-                                description: "Summer"
-                              },
-                              {
-                                name: "Enum_87",
-                                description: "BBQ facilities"
-                              },
-                              {
-                                name: "Enum_89",
-                                description: "Billiard"
-                              },
-                              {
-                                name: "Enum_90",
-                                description: "Bowling"
-                              },
-                              {
-                                name: "Enum_94",
-                                description: "Casino"
-                              },
-                              {
-                                name: "Enum_95",
-                                description: "Place of worship"
-                              },
-                              {
-                                name: "Enum_96",
-                                description: "Children play ground"
-                              },
-                              {
-                                name: "Enum_97",
-                                description: "Darts"
-                              },
-                              {
-                                name: "Enum_100",
-                                description: "Fishing"
-                              },
-                              {
-                                name: "Enum_102",
-                                description: "Game Room"
-                              },
-                              {
-                                name: "Enum_103",
-                                description: "Garden"
-                              },
-                              {
-                                name: "Enum_104",
-                                description: "Golf course"
-                              },
-                              {
-                                name: "Enum_106",
-                                description: "Horse-riding"
-                              },
-                              {
-                                name: "Enum_107",
-                                description: "Hot Spring Bath"
-                              },
-                              {
-                                name: "Enum_141",
-                                description: "Table tennis"
-                              },
-                              {
-                                name: "Enum_108",
-                                description: "Hot Tub"
-                              },
-                              {
-                                name: "Enum_112",
-                                description: "Karaoke"
-                              },
-                              {
-                                name: "Enum_113",
-                                description: "Library"
-                              },
-                              {
-                                name: "Enum_114",
-                                description: "Massage"
-                              },
-                              {
-                                name: "Enum_115",
-                                description: "Minigolf"
-                              },
-                              {
-                                name: "Enum_116",
-                                description: "Nightclub / DJ"
-                              },
-                              {
-                                name: "Enum_124",
-                                description: "Sauna"
-                              },
-                              {
-                                name: "Enum_125",
-                                description: "On-site shops"
-                              },
-                              {
-                                name: "Enum_128",
-                                description: "Ski School"
-                              },
-                              {
-                                name: "Enum_131",
-                                description: "Skiing"
-                              },
-                              {
-                                name: "Enum_137",
-                                description: "Squash"
-                              },
-                              {
-                                name: "Enum_133",
-                                description: "Snorkeling"
-                              },
-                              {
-                                name: "Enum_134",
-                                description: "Solarium"
-                              },
-                              {
-                                name: "Enum_143",
-                                description: "Steam room"
-                              },
-                              {
-                                name: "Enum_153",
-                                description: "Bathroom"
-                              },
-                              {
-                                name: "Enum_154",
-                                description: "TV and multimedia"
-                              },
-                              {
-                                name: "Enum_155",
-                                description: "Coffee/tea facilities"
-                              },
-                              {
-                                name: "Enum_156",
-                                description: "View (from property/room)"
-                              },
-                              {
-                                name: "Enum_157",
-                                description: "Balcony/Terrace"
-                              },
-                              {
-                                name: "Enum_158",
-                                description: "Kitchen or kitchenette"
-                              },
-                              {
-                                name: "Enum_159",
-                                description: "Living room"
-                              },
-                              {
-                                name: "Enum_160",
-                                description: "Lobby or reception"
-                              },
-                              {
-                                name: "Enum_161",
-                                description: "Lounge or bar"
-                              },
-                              {
-                                name: "Enum_164",
-                                description: "Spa and wellness centre/facili"
-                              },
-                              {
-                                name: "Enum_165",
-                                description: "Fitness centre/facilities"
-                              },
-                              {
-                                name: "Enum_167",
-                                description: "Food and drinks"
-                              },
-                              {
-                                name: "Enum_172",
-                                description: "Other"
-                              },
-                              {
-                                name: "Enum_173",
-                                description: "Photo of the whole room"
-                              },
-                              {
-                                name: "Enum_177",
-                                description: "Business facilities"
-                              },
-                              {
-                                name: "Enum_178",
-                                description: "Banquet/Function facilities"
-                              },
-                              {
-                                name: "Enum_179",
-                                description: "Decorative detail"
-                              },
-                              {
-                                name: "Enum_182",
-                                description: "Seating area"
-                              },
-                              {
-                                name: "Enum_183",
-                                description: "Floor plan"
-                              },
-                              {
-                                name: "Enum_184",
-                                description: "Dining area"
-                              },
-                              {
-                                name: "Enum_185",
-                                description: "Beach"
-                              },
-                              {
-                                name: "Enum_186",
-                                description: "Aqua park"
-                              },
-                              {
-                                name: "Enum_187",
-                                description: "Tennis court"
-                              },
-                              {
-                                name: "Enum_188",
-                                description: "Windsurfing"
-                              },
-                              {
-                                name: "Enum_189",
-                                description: "Canoeing"
-                              },
-                              {
-                                name: "Enum_190",
-                                description: "Hiking"
-                              },
-                              {
-                                name: "Enum_191",
-                                description: "Cycling"
-                              },
-                              {
-                                name: "Enum_192",
-                                description: "Diving"
-                              },
-                              {
-                                name: "Enum_193",
-                                description: "Kids's club"
-                              },
-                              {
-                                name: "Enum_194",
-                                description: "Evening entertainment"
-                              },
-                              {
-                                name: "Enum_197",
-                                description: "Logo/Certificate/Sign"
-                              },
-                              {
-                                name: "Enum_198",
-                                description: "Animals"
-                              },
-                              {
-                                name: "Enum_199",
-                                description: "Bedroom"
-                              },
-                              {
-                                name: "Enum_204",
-                                description: "Communal kitchen"
-                              },
-                              {
-                                name: "Enum_205",
-                                description: "Autumn"
-                              },
-                              {
-                                name: "Enum_240",
-                                description: "On site"
-                              },
-                              {
-                                name: "Enum_241",
-                                description: "Meeting/conference room"
-                              },
-                              {
-                                name: "Enum_242",
-                                description: "Food"
-                              },
-                              {
-                                name: "Enum_245",
-                                description: "Text overlay"
-                              },
-                              {
-                                name: "Enum_246",
-                                description: "Pets"
-                              },
-                              {
-                                name: "Enum_247",
-                                description: "Guests"
-                              },
-                              {
-                                name: "Enum_248",
-                                description: "City view"
-                              },
-                              {
-                                name: "Enum_249",
-                                description: "Garden view"
-                              },
-                              {
-                                name: "Enum_250",
-                                description: "Lake view"
-                              },
-                              {
-                                name: "Enum_251",
-                                description: "Landmark view"
-                              },
-                              {
-                                name: "Enum_252",
-                                description: "Mountain view"
-                              },
-                              {
-                                name: "Enum_253",
-                                description: "Pool view"
-                              },
-                              {
-                                name: "Enum_254",
-                                description: "River view"
-                              },
-                              {
-                                name: "Enum_255",
-                                description: "Sea view"
-                              },
-                              {
-                                name: "Enum_256",
-                                description: "Street view"
-                              },
-                              {
-                                name: "Enum_257",
-                                description: "Area and facilities"
-                              },
-                              {
-                                name: "Enum_258",
-                                description: "Supermarket/grocery shop"
-                              },
-                              {
-                                name: "Enum_259",
-                                description: "Shopping Area"
-                              },
-                              {
-                                name: "Enum_260",
-                                description: "Swimming pool"
-                              },
-                              {
-                                name: "Enum_261",
-                                description: "Sports"
-                              },
-                              {
-                                name: "Enum_262",
-                                description: "Entertainment"
-                              },
-                              {
-                                name: "Enum_263",
-                                description: "Meals"
-                              },
-                              {
-                                name: "Enum_264",
-                                description: "Breakfast"
-                              },
-                              {
-                                name: "Enum_265",
-                                description: "Continental breakfast"
-                              },
-                              {
-                                name: "Enum_266",
-                                description: "Buffet breakfast"
-                              },
-                              {
-                                name: "Enum_267",
-                                description: "Asian breakfast"
-                              },
-                              {
-                                name: "Enum_268",
-                                description: "Italian breakfast"
-                              },
-                              {
-                                name: "Enum_269",
-                                description: "English/Irish breakfast"
-                              },
-                              {
-                                name: "Enum_270",
-                                description: "American breakfast"
-                              },
-                              {
-                                name: "Enum_271",
-                                description: "Lunch"
-                              },
-                              {
-                                name: "Enum_272",
-                                description: "Dinner"
-                              },
-                              {
-                                name: "Enum_273",
-                                description: "Drinks"
-                              },
-                              {
-                                name: "Enum_274",
-                                description: "Alcoholic drinks"
-                              },
-                              {
-                                name: "Enum_275",
-                                description: "Non alcoholic drinks"
-                              },
-                              {
-                                name: "Enum_276",
-                                description: "Seasons"
-                              },
-                              {
-                                name: "Enum_277",
-                                description: "Time of day"
-                              },
-                              {
-                                name: "Enum_278",
-                                description: "Location"
-                              },
-                              {
-                                name: "Enum_279",
-                                description: "Sunrise"
-                              },
-                              {
-                                name: "Enum_280",
-                                description: "Sunset"
-                              },
-                              {
-                                name: "Enum_281",
-                                description: "children"
-                              },
-                              {
-                                name: "Enum_282",
-                                description: "young children"
-                              },
-                              {
-                                name: "Enum_283",
-                                description: "older children"
-                              },
-                              {
-                                name: "Enum_284",
-                                description: "group of guests"
-                              },
-                              {
-                                name: "Enum_285",
-                                description: "cot"
-                              },
-                              {
-                                name: "Enum_286",
-                                description: "bunk bed"
-                              },
-                              {
-                                name: "Enum_287",
-                                description: "Certificate/Award"
-                              },
-                              {
-                                name: "Enum_288",
-                                description: "ADAM"
-                              },
-                              {
-                                name: "Enum_289",
-                                description: "Open Air Bath"
-                              },
-                              {
-                                name: "Enum_290",
-                                description: "Public Bath"
-                              },
-                              {
-                                name: "Enum_291",
-                                description: "Family"
-                              }
-                            ],
-                            type: "integer",
-                            enum: [
-                              1,
-                              2,
-                              3,
-                              4,
-                              5,
-                              6,
-                              7,
-                              8,
-                              10,
-                              43,
-                              11,
-                              13,
-                              14,
-                              37,
-                              41,
-                              42,
-                              50,
-                              55,
-                              61,
-                              70,
-                              74,
-                              81,
-                              82,
-                              87,
-                              89,
-                              90,
-                              94,
-                              95,
-                              96,
-                              97,
-                              100,
-                              102,
-                              103,
-                              104,
-                              106,
-                              107,
-                              141,
-                              108,
-                              112,
-                              113,
-                              114,
-                              115,
-                              116,
-                              124,
-                              125,
-                              128,
-                              131,
-                              137,
-                              133,
-                              134,
-                              143,
-                              153,
-                              154,
-                              155,
-                              156,
-                              157,
-                              158,
-                              159,
-                              160,
-                              161,
-                              164,
-                              165,
-                              167,
-                              172,
-                              173,
-                              177,
-                              178,
-                              179,
-                              182,
-                              183,
-                              184,
-                              185,
-                              186,
-                              187,
-                              188,
-                              189,
-                              190,
-                              191,
-                              192,
-                              193,
-                              194,
-                              197,
-                              198,
-                              199,
-                              204,
-                              205,
-                              240,
-                              241,
-                              242,
-                              245,
-                              246,
-                              247,
-                              248,
-                              249,
-                              250,
-                              251,
-                              252,
-                              253,
-                              254,
-                              255,
-                              256,
-                              257,
-                              258,
-                              259,
-                              260,
-                              261,
-                              262,
-                              263,
-                              264,
-                              265,
-                              266,
-                              267,
-                              268,
-                              269,
-                              270,
-                              271,
-                              272,
-                              273,
-                              274,
-                              275,
-                              276,
-                              277,
-                              278,
-                              279,
-                              280,
-                              281,
-                              282,
-                              283,
-                              284,
-                              285,
-                              286,
-                              287,
-                              288,
-                              289,
-                              290,
-                              291
-                            ],
-                            dataTypeDisplayText: "Image Tags Enum",
-                            dataTypeLink:
-                              "/net-standard-library/models/enumerations/image-tags-enum"
-                          },
-                          dataTypeDisplayText: "List<Models.ImageTagsEnum>",
-                          dataTypeLink:
-                            "/net-standard-library/models/enumerations/image-tags-enum",
-                          paramType: null,
-                          title: "Tags"
-                        }
-                      },
-                      required: ["url"],
-                      dataTypeDisplayText: "Add Image",
-                      dataTypeLink:
-                        "/net-standard-library/models/structures/add-image"
-                    },
-                    dataTypeDisplayText: "List<Models.AddImage>",
-                    dataTypeLink:
-                      "/net-standard-library/models/structures/add-image",
-                    paramType: null,
-                    title: "Images"
-                  }
-                },
-                required: ["productId", "images"],
-                dataTypeDisplayText: "Models.ImagesURLForFullUpdate",
-                dataTypeLink:
-                  "/net-standard-library/models/structures/images-url-for-full-update",
-                paramType: null
-              }
-            },
-            required: ["data"],
-            dataTypeDisplayText: "Models.FullupdateImagesRequest",
-            dataTypeLink:
-              "/net-standard-library/models/structures/fullupdate-images-request",
-            paramType: "Body"
+            }
           }
         },
-        required: ["body"]
+
+        required: []
       }
     },
     required: ["args"]
   },
   formData: {
     args: {
-      body: {
-        data: {
-          productId: 1234893572,
-          images: [
+      send_oneof_arrayOfMap_flag_of_mixed_arrayOfMap_flag: [
+        {
+          key0: [
             {
-              url:
-                "http://aff.bstatic.com/images/hotel/max500/110/11069097.jpg",
-              tags: [1, 2, 3]
+              key0sadds: 12331321321
             },
             {
-              url:
-                "http://aff.bstatic.com/images/hotel/max500/110/11069097.jpg",
-              tags: [1, 2, 3]
+              asdasdd: 32444224424
             }
-          ]
+          ],
+          key2: true
+        }
+      ]
+    }
+  }
+};
+
+module.exports = {
+  schema: {
+    value: {
+      oneOf: [
+        {
+          type: "number"
+        },
+        {
+          type: "boolean"
+        }
+      ]
+    }
+  },
+  formData: ""
+};
+
+module.exports = {
+  schema: {
+    title: "Endpoint Arguments",
+    type: "object",
+    additionalProperties: false,
+    properties: {
+      args: {
+        id: "endpoint_7C26ABBCDB1F9",
+        title: "endpoint_7C26ABBCDB1F9",
+        type: "object",
+        properties: {
+          isPrimitiveType: {
+            type: "boolean"
+          },
+          isAtEndpointLevel: {
+            type: "boolean"
+          },
+          hasDiscriminator: {
+            type: "boolean"
+          },
+          nestedObject: {
+            id: "nestedObject",
+            title: "nestedObject",
+            type: "object",
+            properties: {
+              nested_object_oneOf: {
+                oneOf: [
+                  {
+                    type: "object",
+                    additionalProperties: {
+                      type: "array",
+                      items: {
+                        type: "number"
+                      }
+                    }
+                  },
+                  {
+                    type: "object",
+                    additionalProperties: {
+                      type: "array",
+                      items: {
+                        type: "boolean"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          send_oneof_arrayOfMap_flag_of_mixed_arrayOfMap_flag: {
+            description: "",
+            type: "array",
+            items: {
+              type: "object",
+              additionalProperties: {
+                oneOf: [
+                  {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      additionalProperties: {
+                        type: "number"
+                      }
+                    }
+                  },
+                  {
+                    type: "boolean"
+                  }
+                ]
+              }
+            }
+          },
+          send_oneof_inner_mapOfArray: {
+            oneOf: [
+              {
+                type: "object",
+                additionalProperties: {
+                  type: "array",
+                  items: {
+                    type: "number"
+                  }
+                }
+              },
+              {
+                type: "object",
+                additionalProperties: {
+                  type: "array",
+                  items: {
+                    type: "boolean"
+                  }
+                }
+              }
+            ]
+          },
+          session: {
+            description: "Course session",
+            oneOf: [
+              {
+                id: "Morning",
+                title: "Morning",
+                description: "Course morning session",
+                type: "object",
+                properties: {
+                  startsAt: {
+                    description: "Session start time",
+                    type: "string"
+                  },
+                  endsAt: {
+                    description: "Session end time",
+                    type: "string"
+                  },
+                  offerTeaBreak: {
+                    description: "Offer tea break during session",
+                    type: "boolean"
+                  }
+                },
+                required: ["startsAt", "endsAt", "offerTeaBreak"]
+              },
+              {
+                id: "Evening",
+                title: "Evening",
+                description: "Course evening session",
+                type: "object",
+                properties: {
+                  startsAt: {
+                    description: "Session start time",
+                    type: "string"
+                  },
+                  endsAt: {
+                    description: "Session end time",
+                    type: "string"
+                  },
+                  offerDinner: {
+                    description: "Offer dinner during session",
+                    type: "boolean"
+                  }
+                },
+                required: ["startsAt", "endsAt", "offerDinner", "offerTeaBreak"]
+              }
+            ]
+          }
+        },
+        required: [
+          "isPrimitiveType",
+          "isAtEndpointLevel",
+          "hasDiscriminator",
+          "session"
+        ]
+      }
+    },
+    required: ["args"]
+  },
+  formData: {
+    // session: {
+    //   offerDinner: true
+    // }
+  }
+};
+
+module.exports = {
+  // schema: {
+  //   title: "Endpoint Arguments",
+  //   type: "object",
+  //   additionalProperties: false,
+  //   properties: {
+  //     args: {
+  //       id: "endpoint_7C26ABBCDB1F9",
+  //       title: "endpoint_7C26ABBCDB1F9",
+  //       type: "object",
+  //       properties: {
+  //         // isPrimitiveType: {
+  //         //   type: "boolean"
+  //         // },
+  //         // isAtEndpointLevel: {
+  //         //   type: "boolean"
+  //         // },
+  //         // hasDiscriminator: {
+  //         //   type: "boolean"
+  //         // },
+  //         value: {
+  //           oneOf: [{
+  //               type: "number"
+  //             },
+  //             {
+  //               type: "boolean"
+  //             }
+  //           ]
+  //         }
+  //       },
+  //       required: [
+  //         // "isPrimitiveType",
+  //         // "isAtEndpointLevel",
+  //         // "hasDiscriminator",
+  //         "value"
+  //       ]
+  //     }
+  //   },
+  //   required: ["args"]
+  // },
+  schema: {
+    title: "Endpoint Arguments",
+    type: "object",
+    additionalProperties: false,
+    properties: {
+      args: {
+        id: "endpoint_7C26ABBCDB1F9",
+        title: "endpoint_7C26ABBCDB1F9",
+        type: "object",
+        properties: {
+          simpleCase: {
+            id: "SimpleCase",
+            title: "simpleCase",
+            example: {
+              scalarValue: true
+            },
+            type: "object",
+            properties: {
+              scalarValue: {
+                oneOf: [
+                  {
+                    type: "number"
+                  },
+                  {
+                    type: "boolean"
+                  }
+                ],
+                dataTypeDisplayText: "OneOfScalarValue",
+                paramType: null,
+                title: "ScalarValue"
+              }
+            },
+            required: ["scalarValue"],
+            dataTypeDisplayText: "SimpleCase",
+            dataTypeLink: "/java/models/structures/simple-case",
+            paramType: "Body"
+          }
+        },
+        required: [
+          "isPrimitiveType",
+          "isAtEndpointLevel",
+          "hasDiscriminator",
+          "simpleCase"
+        ]
+      }
+    },
+    required: ["args"]
+  },
+  // schema: {
+  //   "title": "Endpoint Arguments",
+  //   "type": "object",
+  //   "additionalProperties": false,
+  //   "properties": {
+  //     "args": {
+  //       "id": "endpoint_7C26ABBCDB1F9",
+  //       "title": "endpoint_7C26ABBCDB1F9",
+  //       "type": "object",
+  //       "properties": {
+  //         "isPrimitiveType": {
+  //           "type": "boolean"
+  //         },
+  //         "isAtEndpointLevel": {
+  //           "type": "boolean"
+  //         },
+  //         "hasDiscriminator": {
+  //           "type": "boolean"
+  //         },
+  //         "value": {
+  //           "description": "",
+  //           "type": "array",
+  //           "items": {
+  //             "oneOf": [{
+  //                 "type": "number"
+  //               },
+  //               {
+  //                 "type": "boolean"
+  //               }
+  //             ]
+  //           }
+  //         }
+  //       },
+  //       "required": [
+  //         "isPrimitiveType",
+  //         "isAtEndpointLevel",
+  //         "hasDiscriminator",
+  //         "value"
+  //       ]
+  //     }
+  //   },
+  //   "required": [
+  //     "args"
+  //   ]
+  // },
+
+  formData: {
+    args: {
+      simpleCase: {
+        scalarValue: {
+          $$__case: 1,
+          value: true
+        }
+      }
+    }
+  }
+};
+
+module.exports = {
+  schema: {
+    title: "Endpoint Arguments",
+    type: "object",
+    additionalProperties: false,
+    properties: {
+      args: {
+        id: "endpoint_7C26ABBCDB1F9",
+        title: "endpoint_7C26ABBCDB1F9",
+        type: "object",
+        properties: {
+          Authorization: {
+            description: "Bearer AccessToken",
+            type: "string",
+            dataTypeDisplayText: "String",
+            paramType: "Header",
+            title: "authorization",
+            typeCombinatorTypes: null
+          },
+          body: {
+            oneOf: [
+              {
+                id: "AlertChannels_AwsS3_Create_Schema",
+                title: "AlertChannels_AwsS3_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$"
+                  },
+                  type: {
+                    example: "AwsS3",
+                    type: "string",
+                    enum: ["AwsS3"]
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1
+                  },
+                  data: {
+                    id: "Data",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      s3CrossAccountCredentials: {
+                        id: "S3CrossAccountCredentials",
+                        title: "S3CrossAccountCredentials",
+                        type: "object",
+                        properties: {
+                          externalId: {
+                            type: "string",
+                            minLength: 1
+                          },
+                          roleArn: {
+                            type: "string",
+                            pattern:
+                              "^arn:aws(-[a-zA-Z]+)?:iam:([a-zA-Z0-9-_]+)?:([0-9]{12}):([a-zA-Z0-9_-]+)([/:][a-zA-Z0-9_-]+)*$"
+                          },
+                          bucketArn: {
+                            type: "string",
+                            pattern:
+                              "^arn:aws(-[a-zA-Z]+)?:s3:([a-zA-Z0-9-_]+)?:([0-9]{12})?:([a-zA-Z0-9_-]+)([/:][a-zA-Z0-9_-]+)*$"
+                          }
+                        },
+                        required: ["externalId", "roleArn", "bucketArn"]
+                      }
+                    },
+                    required: ["s3CrossAccountCredentials"]
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_CiscoSparkWebhook_Create_Schema",
+                title: "AlertChannels_CiscoSparkWebhook_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$"
+                  },
+                  type: {
+                    example: "CiscoSparkWebhook",
+                    type: "string",
+                    enum: ["CiscoSparkWebhook"]
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1
+                  },
+                  data: {
+                    id: "Data1",
+                    title: "Data1",
+                    type: "object",
+                    properties: {
+                      webhook: {
+                        type: "string",
+                        pattern:
+                          "^https://(api.ciscospark|webexapis).com/v1/webhooks/incoming([/][a-zA-Z0-9#-_]+)+$"
+                      }
+                    },
+                    required: ["webhook"]
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_CloudwatchEb_Create_Schema",
+                title: "AlertChannels_CloudwatchEb_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$"
+                  },
+                  type: {
+                    example: "CloudwatchEb",
+                    type: "string",
+                    enum: ["CloudwatchEb"]
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1
+                  },
+                  data: {
+                    id: "Data2",
+                    title: "Data2",
+                    type: "object",
+                    properties: {
+                      eventBusArn: {
+                        type: "string",
+                        pattern:
+                          "^arn:aws(-[a-zA-Z]+)?:events:([a-zA-Z0-9]{1}[a-zA-Z0-9-]+[a-zA-Z0-9]{1}):([0-9]{12}):([a-zA-Z0-9_-]+)([/:][a-zA-Z0-9_-]+)?$"
+                      },
+                      issueGrouping: {
+                        title: "Group Issues by",
+                        example: "Events",
+                        "x-enum-elements": [
+                          {
+                            name: "Events",
+                            description: ""
+                          },
+                          {
+                            name: "Resources",
+                            description: ""
+                          }
+                        ],
+                        type: "string",
+                        enum: ["Events", "Resources"]
+                      }
+                    },
+                    required: ["eventBusArn"]
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_Datadog_Create_Schema",
+                title: "AlertChannels_Datadog_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$"
+                  },
+                  type: {
+                    example: "Datadog",
+                    type: "string",
+                    enum: ["Datadog"]
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1
+                  },
+                  data: {
+                    id: "Data3",
+                    title: "Data3",
+                    type: "object",
+                    properties: {
+                      datadogType: {
+                        title: "Datadog Service",
+                        example: "Logs Detail",
+                        "x-enum-elements": [
+                          {
+                            name: "Enum_Logs Detail",
+                            description: ""
+                          },
+                          {
+                            name: "Enum_Logs Summary",
+                            description: ""
+                          },
+                          {
+                            name: "Enum_Events Summary",
+                            description: ""
+                          }
+                        ],
+                        type: "string",
+                        enum: ["Logs Detail", "Logs Summary", "Events Summary"]
+                      },
+                      datadogSite: {
+                        title: "Datadog Site",
+                        example: "com",
+                        "x-enum-elements": [
+                          {
+                            name: "com",
+                            description: ""
+                          },
+                          {
+                            name: "eu",
+                            description: ""
+                          }
+                        ],
+                        type: "string",
+                        enum: ["com", "eu"]
+                      },
+                      apiKey: {
+                        type: "string",
+                        minLength: 1
+                      }
+                    },
+                    required: ["datadogType", "datadogSite", "apiKey"]
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_EmailUser_Create_Schema",
+                title: "AlertChannels_EmailUser_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$"
+                  },
+                  type: {
+                    example: "EmailUser",
+                    type: "string",
+                    enum: ["EmailUser"]
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1
+                  },
+                  data: {
+                    id: "Data25",
+                    title: "Data25",
+                    type: "object",
+                    properties: {
+                      channelProps: {
+                        id: "ChannelProps",
+                        title: "ChannelProps",
+                        type: "object",
+                        properties: {
+                          recipients: {
+                            description: "a list of email addresses",
+                            type: "array",
+                            items: {
+                              type: "object"
+                            }
+                          }
+                        },
+                        required: ["recipients"]
+                      }
+                    }
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_GcpPubsub_Create_Schema",
+                title: "AlertChannels_GcpPubsub_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$"
+                  },
+                  type: {
+                    example: "GcpPubsub",
+                    type: "string",
+                    enum: ["GcpPubsub"]
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1
+                  },
+                  data: {
+                    id: "Data5",
+                    title: "Data5",
+                    type: "object",
+                    properties: {
+                      credentials: {
+                        id: "Credentials",
+                        title: "Credentials",
+                        type: "object",
+                        properties: {
+                          clientId: {
+                            type: "string",
+                            minLength: 1
+                          },
+                          privateKeyId: {
+                            type: "string",
+                            minLength: 1
+                          },
+                          clientEmail: {
+                            type: "string",
+                            minLength: 1,
+                            pattern:
+                              "^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$"
+                          },
+                          privateKey: {
+                            type: "string",
+                            minLength: 1
+                          }
+                        },
+                        required: [
+                          "clientId",
+                          "privateKeyId",
+                          "clientEmail",
+                          "privateKey"
+                        ]
+                      },
+                      projectId: {
+                        type: "string"
+                      },
+                      topicId: {
+                        type: "string"
+                      },
+                      issueGrouping: {
+                        title: "Group Issues by",
+                        example: "Events",
+                        "x-enum-elements": [
+                          {
+                            name: "Events",
+                            description: ""
+                          },
+                          {
+                            name: "Resources",
+                            description: ""
+                          }
+                        ],
+                        type: "string",
+                        enum: ["Events", "Resources"]
+                      }
+                    },
+                    required: ["credentials", "projectId", "topicId"]
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_IbmQradar_Create_Schema",
+                title: "AlertChannels_IbmQradar_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$"
+                  },
+                  type: {
+                    example: "IbmQradar",
+                    type: "string",
+                    enum: ["IbmQradar"]
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1
+                  },
+                  data: {
+                    id: "Data6",
+                    title: "Data6",
+                    type: "object",
+                    properties: {
+                      qradarCommType: {
+                        title: "Communication Type",
+                        example: "HTTPS",
+                        "x-enum-elements": [
+                          {
+                            name: "HTTPS",
+                            description: ""
+                          },
+                          {
+                            name: "Enum_HTTPS Self Signed Cert",
+                            description: ""
+                          }
+                        ],
+                        type: "string",
+                        enum: ["HTTPS", "HTTPS Self Signed Cert"]
+                      },
+                      qradarHostUrl: {
+                        type: "string",
+                        minLength: 1,
+                        pattern: ".+[a-zA-Z0-9]$"
+                      },
+                      qradarHostPort: {
+                        type: "number",
+                        minimum: 0,
+                        maximum: 65535
+                      }
+                    },
+                    required: ["qradarCommType", "qradarHostUrl"]
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_Jira_Create_Schema",
+                title: "AlertChannels_Jira_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$"
+                  },
+                  type: {
+                    example: "Jira",
+                    type: "string",
+                    enum: ["Jira"]
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1
+                  },
+                  data: {
+                    oneOf: [
+                      {
+                        id: "JIRA_CLOUD",
+                        title: "JIRA_CLOUD",
+                        type: "object",
+                        properties: {
+                          jiraUrl: {
+                            type: "string",
+                            pattern:
+                              "[a-zA-Z0-9]\\.(atlassian\\.net|jira\\.com)$"
+                          },
+                          projectId: {
+                            type: "string"
+                          },
+                          issueType: {
+                            type: "string"
+                          },
+                          username: {
+                            type: "string"
+                          },
+                          apiToken: {
+                            type: "string"
+                          },
+                          jiraType: {
+                            title: "Jira Type",
+                            example: "JIRA_CLOUD",
+                            "x-enum-elements": [
+                              {
+                                name: "JIRA_CLOUD",
+                                description: ""
+                              }
+                            ],
+                            type: "string",
+                            enum: ["JIRA_CLOUD"]
+                          },
+                          issueGrouping: {
+                            title: "Group Issues by",
+                            example: "Events",
+                            "x-enum-elements": [
+                              {
+                                name: "Events",
+                                description: ""
+                              },
+                              {
+                                name: "Resources",
+                                description: ""
+                              }
+                            ],
+                            type: "string",
+                            enum: ["Events", "Resources"]
+                          },
+                          customTemplateFile: {
+                            type: "string",
+                            format: "data-url"
+                          }
+                        },
+                        required: [
+                          "jiraUrl",
+                          "projectId",
+                          "issueType",
+                          "username",
+                          "apiToken"
+                        ]
+                      },
+                      {
+                        id: "JIRA_SERVER",
+                        title: "JIRA_SERVER",
+                        type: "object",
+                        properties: {
+                          jiraUrl: {
+                            type: "string",
+                            pattern: "[A-Za-z0-9\\/\\-&?_.=:]+"
+                          },
+                          projectId: {
+                            type: "string"
+                          },
+                          issueType: {
+                            type: "string"
+                          },
+                          username: {
+                            type: "string"
+                          },
+                          password: {
+                            type: "string"
+                          },
+                          jiraType: {
+                            title: "Jira Type1",
+                            example: "JIRA_SERVER",
+                            "x-enum-elements": [
+                              {
+                                name: "JIRA_SERVER",
+                                description: ""
+                              }
+                            ],
+                            type: "string",
+                            enum: ["JIRA_SERVER"]
+                          },
+                          issueGrouping: {
+                            title: "Group Issues by",
+                            example: "Events",
+                            "x-enum-elements": [
+                              {
+                                name: "Events",
+                                description: ""
+                              },
+                              {
+                                name: "Resources",
+                                description: ""
+                              }
+                            ],
+                            type: "string",
+                            enum: ["Events", "Resources"]
+                          },
+                          customTemplateFile: {
+                            type: "string",
+                            format: "data-url"
+                          }
+                        },
+                        required: [
+                          "jiraUrl",
+                          "projectId",
+                          "issueType",
+                          "username",
+                          "password"
+                        ]
+                      }
+                    ]
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_MicrosoftTeams_Create_Schema",
+                title: "AlertChannels_MicrosoftTeams_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$"
+                  },
+                  type: {
+                    example: "MicrosoftTeams",
+                    type: "string",
+                    enum: ["MicrosoftTeams"]
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1
+                  },
+                  data: {
+                    id: "Data7",
+                    title: "Data7",
+                    type: "object",
+                    properties: {
+                      teamsUrl: {
+                        type: "string",
+                        pattern:
+                          "^https://[a-zA-Z0-9-_\\.]*(outlook|webhook).office.com/webhook[a-zA-Z0-9#-_]*([/][a-zA-Z0-9#-_]+)+$"
+                      }
+                    },
+                    required: ["teamsUrl"]
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_NewRelicInsights_Create_Schema",
+                title: "AlertChannels_NewRelicInsights_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$"
+                  },
+                  type: {
+                    example: "NewRelicInsights",
+                    type: "string",
+                    enum: ["NewRelicInsights"]
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1
+                  },
+                  data: {
+                    id: "Data8",
+                    title: "Data8",
+                    type: "object",
+                    properties: {
+                      insertKey: {
+                        type: "string",
+                        minLength: 1
+                      },
+                      accountId: {
+                        type: "number"
+                      }
+                    },
+                    required: ["insertKey", "accountId"]
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_PagerDutyApi_Create_Schema",
+                title: "AlertChannels_PagerDutyApi_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$"
+                  },
+                  type: {
+                    example: "PagerDutyApi",
+                    type: "string",
+                    enum: ["PagerDutyApi"]
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1
+                  },
+                  data: {
+                    id: "Data9",
+                    title: "Data9",
+                    type: "object",
+                    properties: {
+                      apiIntgKey: {
+                        type: "string",
+                        minLength: 1
+                      }
+                    },
+                    required: ["apiIntgKey"]
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_ServiceNowRest_Create_Schema",
+                title: "AlertChannels_ServiceNowRest_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$"
+                  },
+                  type: {
+                    example: "ServiceNowRest",
+                    type: "string",
+                    enum: ["ServiceNowRest"]
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1
+                  },
+                  data: {
+                    id: "Data10",
+                    title: "Data10",
+                    type: "object",
+                    properties: {
+                      userName: {
+                        type: "string",
+                        minLength: 1
+                      },
+                      password: {
+                        type: "string",
+                        minLength: 1
+                      },
+                      instanceUrl: {
+                        type: "string",
+                        pattern:
+                          "^https://[A-Za-z0-9]+[.]{1}service-now[.]{1}com/?$"
+                      },
+                      issueGrouping: {
+                        title: "Group Issues by",
+                        example: "Events",
+                        "x-enum-elements": [
+                          {
+                            name: "Events",
+                            description: ""
+                          },
+                          {
+                            name: "Resources",
+                            description: ""
+                          }
+                        ],
+                        type: "string",
+                        enum: ["Events", "Resources"]
+                      },
+                      customTemplateFile: {
+                        type: "string",
+                        format: "data-url"
+                      }
+                    },
+                    required: ["userName", "password", "instanceUrl"]
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_SlackChannel_Create_Schema",
+                title: "AlertChannels_SlackChannel_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$"
+                  },
+                  type: {
+                    example: "SlackChannel",
+                    type: "string",
+                    enum: ["SlackChannel"]
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1
+                  },
+                  data: {
+                    id: "Data11",
+                    title: "Data11",
+                    type: "object",
+                    properties: {
+                      slackUrl: {
+                        type: "string",
+                        pattern:
+                          "^https://hooks.slack.com([/][a-zA-Z0-9#-_]+)+$"
+                      }
+                    },
+                    required: ["slackUrl"]
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_SplunkHec_Create_Schema",
+                title: "AlertChannels_SplunkHec_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$"
+                  },
+                  type: {
+                    example: "SplunkHec",
+                    type: "string",
+                    enum: ["SplunkHec"]
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1
+                  },
+                  data: {
+                    id: "Data12",
+                    title: "Data12",
+                    type: "object",
+                    properties: {
+                      hecToken: {
+                        type: "string",
+                        minLength: 1
+                      },
+                      host: {
+                        type: "string",
+                        minLength: 1
+                      },
+                      port: {
+                        type: "number",
+                        minimum: 0,
+                        maximum: 65536
+                      },
+                      eventData: {
+                        id: "Event Data",
+                        title: "Event Data",
+                        type: "object",
+                        properties: {
+                          index: {
+                            type: "string",
+                            minLength: 1
+                          },
+                          source: {
+                            type: "string",
+                            minLength: 1
+                          }
+                        },
+                        required: ["index", "source"]
+                      },
+                      channel: {
+                        type: "string",
+                        minLength: 1
+                      },
+                      ssl: {
+                        type: "boolean"
+                      }
+                    },
+                    required: ["hecToken", "host", "port", "eventData"]
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_VictorOps_Create_Schema",
+                title: "AlertChannels_VictorOps_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$"
+                  },
+                  type: {
+                    example: "VictorOps",
+                    type: "string",
+                    enum: ["VictorOps"]
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1
+                  },
+                  data: {
+                    id: "Data13",
+                    title: "Data13",
+                    type: "object",
+                    properties: {
+                      intgUrl: {
+                        type: "string",
+                        maxLength: 2083,
+                        pattern:
+                          "^https:\\/\\/alert.victorops.com\\/integrations\\/generic\\/([0-9]+)\\/alert\\/[a-zA-Z0-9-._~!$&'()*+%,;=:@]+\\/[a-zA-Z0-9-._~!$&'()*+%,;=:@]+$"
+                      }
+                    },
+                    required: ["intgUrl"]
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_Webhook_Create_Schema",
+                title: "AlertChannels_Webhook_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$"
+                  },
+                  type: {
+                    example: "Webhook",
+                    type: "string",
+                    enum: ["Webhook"]
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1
+                  },
+                  data: {
+                    id: "Data14",
+                    title: "Data14",
+                    type: "object",
+                    properties: {
+                      webhookUrl: {
+                        type: "string",
+                        pattern: "https:\\/\\/[A-Za-z0-9\\/\\-&?_.=:]+"
+                      }
+                    },
+                    required: ["webhookUrl"]
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              }
+            ],
+            dataTypeDisplayText: "CreateAlertChannelsBody",
+            dataTypeLink: "/java/models/containers/create-alert-channels-body",
+            paramType: "Body",
+            title: "body",
+            typeCombinatorTypes: [
+              {
+                DataType: "AlertChannelsAwsS3CreateSchema",
+                LinkTo: "$m/AlertChannels_AwsS3_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsCiscoSparkWebhookCreateSchema",
+                LinkTo: "$m/AlertChannels_CiscoSparkWebhook_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsCloudwatchEbCreateSchema",
+                LinkTo: "$m/AlertChannels_CloudwatchEb_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsDatadogCreateSchema",
+                LinkTo: "$m/AlertChannels_Datadog_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsEmailUserCreateSchema",
+                LinkTo: "$m/AlertChannels_EmailUser_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsGcpPubsubCreateSchema",
+                LinkTo: "$m/AlertChannels_GcpPubsub_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsIbmQradarCreateSchema",
+                LinkTo: "$m/AlertChannels_IbmQradar_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsJiraCreateSchema",
+                LinkTo: "$m/AlertChannels_Jira_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsMicrosoftTeamsCreateSchema",
+                LinkTo: "$m/AlertChannels_MicrosoftTeams_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsNewRelicInsightsCreateSchema",
+                LinkTo: "$m/AlertChannels_NewRelicInsights_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsPagerDutyApiCreateSchema",
+                LinkTo: "$m/AlertChannels_PagerDutyApi_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsServiceNowRestCreateSchema",
+                LinkTo: "$m/AlertChannels_ServiceNowRest_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsSlackChannelCreateSchema",
+                LinkTo: "$m/AlertChannels_SlackChannel_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsSplunkHecCreateSchema",
+                LinkTo: "$m/AlertChannels_SplunkHec_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsVictorOpsCreateSchema",
+                LinkTo: "$m/AlertChannels_VictorOps_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsWebhookCreateSchema",
+                LinkTo: "$m/AlertChannels_Webhook_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              }
+            ]
+          }
+        },
+        required: ["Authorization", "body"]
+      }
+    },
+    required: ["args"]
+  },
+  formData: {
+    //   args: {
+    //     Authorization: "Authorization8",
+    //     body: {
+    //       $$__case: 7,
+    //       $$__case_of: "oneOf",
+    //       value: {
+    //         data: {
+    //           $$__case: 0,
+    //           $$__case_of: "oneOf",
+    //           value: {}
+    //         }
+    //       }
+    //     }
+    //   }
+  }
+};
+
+module.exports = {
+  schema: {
+    title: "Endpoint Arguments",
+    type: "object",
+    additionalProperties: false,
+    properties: {
+      args: {
+        id: "endpoint_7C26ABBCDB1F9",
+        title: "endpoint_7C26ABBCDB1F9",
+        type: "object",
+        properties: {
+          Authorization: {
+            description: "Bearer AccessToken",
+            type: "string",
+            dataTypeDisplayText: "String",
+            paramType: "Header",
+            title: "authorization",
+            typeCombinatorTypes: null
+          },
+          body: {
+            oneOf: [
+              {
+                id: "AlertChannels_AwsS3_Create_Schema",
+                title: "AlertChannels_AwsS3_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "AwsS3",
+                    type: "string",
+                    enum: ["AwsS3"],
+                    description: '**Default**: `"AwsS3"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      s3CrossAccountCredentials: {
+                        id: "S3CrossAccountCredentials",
+                        title: "S3CrossAccountCredentials",
+                        type: "object",
+                        properties: {
+                          externalId: {
+                            type: "string",
+                            minLength: 1,
+                            description:
+                              "**Constraints**: *Minimum Length*: `1`",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "ExternalId",
+                            typeCombinatorTypes: null
+                          },
+                          roleArn: {
+                            type: "string",
+                            pattern:
+                              "^arn:aws(-[a-zA-Z]+)?:iam:([a-zA-Z0-9-_]+)?:([0-9]{12}):([a-zA-Z0-9_-]+)([/:][a-zA-Z0-9_-]+)*$",
+                            description:
+                              "**Constraints**: *Pattern*: `^arn:aws(-[a-zA-Z]+)?:iam:([a-zA-Z0-9-_]+)?:([0-9]{12}):([a-zA-Z0-9_-]+)([/:][a-zA-Z0-9_-]+)*$`",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "RoleArn",
+                            typeCombinatorTypes: null
+                          },
+                          bucketArn: {
+                            type: "string",
+                            pattern:
+                              "^arn:aws(-[a-zA-Z]+)?:s3:([a-zA-Z0-9-_]+)?:([0-9]{12})?:([a-zA-Z0-9_-]+)([/:][a-zA-Z0-9_-]+)*$",
+                            description:
+                              "**Constraints**: *Pattern*: `^arn:aws(-[a-zA-Z]+)?:s3:([a-zA-Z0-9-_]+)?:([0-9]{12})?:([a-zA-Z0-9_-]+)([/:][a-zA-Z0-9_-]+)*$`",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "BucketArn",
+                            typeCombinatorTypes: null
+                          }
+                        },
+                        required: ["externalId", "roleArn", "bucketArn"],
+                        dataTypeDisplayText: "S3CrossAccountCredentials",
+                        dataTypeLink:
+                          "/java/models/structures/s3-cross-account-credentials",
+                        paramType: null,
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    required: ["s3CrossAccountCredentials"],
+                    dataTypeDisplayText: "Data",
+                    dataTypeLink: "/java/models/structures/data",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_CiscoSparkWebhook_Create_Schema",
+                title: "AlertChannels_CiscoSparkWebhook_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "CiscoSparkWebhook",
+                    type: "string",
+                    enum: ["CiscoSparkWebhook"],
+                    description: '**Default**: `"CiscoSparkWebhook"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data1",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      webhook: {
+                        type: "string",
+                        pattern:
+                          "^https://(api.ciscospark|webexapis).com/v1/webhooks/incoming([/][a-zA-Z0-9#-_]+)+$",
+                        description:
+                          "**Constraints**: *Pattern*: `^https://(api.ciscospark|webexapis).com/v1/webhooks/incoming([/][a-zA-Z0-9#-_]+)+$`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "Webhook",
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    required: ["webhook"],
+                    dataTypeDisplayText: "Data1",
+                    dataTypeLink: "/java/models/structures/data-1",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_CloudwatchEb_Create_Schema",
+                title: "AlertChannels_CloudwatchEb_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "CloudwatchEb",
+                    type: "string",
+                    enum: ["CloudwatchEb"],
+                    description: '**Default**: `"CloudwatchEb"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data2",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      eventBusArn: {
+                        type: "string",
+                        pattern:
+                          "^arn:aws(-[a-zA-Z]+)?:events:([a-zA-Z0-9]{1}[a-zA-Z0-9-]+[a-zA-Z0-9]{1}):([0-9]{12}):([a-zA-Z0-9_-]+)([/:][a-zA-Z0-9_-]+)?$",
+                        description:
+                          "**Constraints**: *Pattern*: `^arn:aws(-[a-zA-Z]+)?:events:([a-zA-Z0-9]{1}[a-zA-Z0-9-]+[a-zA-Z0-9]{1}):([0-9]{12}):([a-zA-Z0-9_-]+)([/:][a-zA-Z0-9_-]+)?$`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "EventBusArn",
+                        typeCombinatorTypes: null
+                      },
+                      issueGrouping: {
+                        title: "IssueGrouping",
+                        example: "Events",
+                        "x-enum-elements": [
+                          {
+                            name: "Events",
+                            description: ""
+                          },
+                          {
+                            name: "Resources",
+                            description: ""
+                          }
+                        ],
+                        type: "string",
+                        enum: ["Events", "Resources"],
+                        description: "**Default**: `GroupIssuesByEnum.EVENTS`",
+                        dataTypeDisplayText: "GroupIssuesByEnum",
+                        dataTypeLink:
+                          "/java/models/enumerations/group-issues-by",
+                        paramType: null,
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    required: ["eventBusArn"],
+                    dataTypeDisplayText: "Data2",
+                    dataTypeLink: "/java/models/structures/data-2",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_Datadog_Create_Schema",
+                title: "AlertChannels_Datadog_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "Datadog",
+                    type: "string",
+                    enum: ["Datadog"],
+                    description: '**Default**: `"Datadog"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data3",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      datadogType: {
+                        title: "DatadogType",
+                        example: "Logs Detail",
+                        "x-enum-elements": [
+                          {
+                            name: "Enum_Logs Detail",
+                            description: ""
+                          },
+                          {
+                            name: "Enum_Logs Summary",
+                            description: ""
+                          },
+                          {
+                            name: "Enum_Events Summary",
+                            description: ""
+                          }
+                        ],
+                        type: "string",
+                        enum: ["Logs Detail", "Logs Summary", "Events Summary"],
+                        description:
+                          "**Default**: `DatadogServiceEnum.ENUM_LOGS_DETAIL`",
+                        dataTypeDisplayText: "DatadogServiceEnum",
+                        dataTypeLink:
+                          "/java/models/enumerations/datadog-service",
+                        paramType: null,
+                        typeCombinatorTypes: null
+                      },
+                      datadogSite: {
+                        title: "DatadogSite",
+                        example: "com",
+                        "x-enum-elements": [
+                          {
+                            name: "com",
+                            description: ""
+                          },
+                          {
+                            name: "eu",
+                            description: ""
+                          }
+                        ],
+                        type: "string",
+                        enum: ["com", "eu"],
+                        description: "**Default**: `DatadogSiteEnum.COM`",
+                        dataTypeDisplayText: "DatadogSiteEnum",
+                        dataTypeLink: "/java/models/enumerations/datadog-site",
+                        paramType: null,
+                        typeCombinatorTypes: null
+                      },
+                      apiKey: {
+                        type: "string",
+                        minLength: 1,
+                        description: "**Constraints**: *Minimum Length*: `1`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "ApiKey",
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    required: ["datadogType", "datadogSite", "apiKey"],
+                    dataTypeDisplayText: "Data3",
+                    dataTypeLink: "/java/models/structures/data-3",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_EmailUser_Create_Schema",
+                title: "AlertChannels_EmailUser_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "EmailUser",
+                    type: "string",
+                    enum: ["EmailUser"],
+                    description: '**Default**: `"EmailUser"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data25",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      channelProps: {
+                        id: "ChannelProps",
+                        title: "ChannelProps",
+                        type: "object",
+                        properties: {
+                          recipients: {
+                            description: "a list of email addresses",
+                            type: "array",
+                            items: {
+                              type: "object",
+                              dataTypeDisplayText: "Object"
+                            },
+                            dataTypeDisplayText: "List<Object>",
+                            paramType: null,
+                            title: "Recipients",
+                            typeCombinatorTypes: null
+                          }
+                        },
+                        required: ["recipients"],
+                        dataTypeDisplayText: "ChannelProps",
+                        dataTypeLink: "/java/models/structures/channel-props",
+                        paramType: null,
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    dataTypeDisplayText: "Data25",
+                    dataTypeLink: "/java/models/structures/data-25",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_GcpPubsub_Create_Schema",
+                title: "AlertChannels_GcpPubsub_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "GcpPubsub",
+                    type: "string",
+                    enum: ["GcpPubsub"],
+                    description: '**Default**: `"GcpPubsub"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data5",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      credentials: {
+                        id: "Credentials",
+                        title: "Credentials",
+                        type: "object",
+                        properties: {
+                          clientId: {
+                            type: "string",
+                            minLength: 1,
+                            description:
+                              "**Constraints**: *Minimum Length*: `1`",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "ClientId",
+                            typeCombinatorTypes: null
+                          },
+                          privateKeyId: {
+                            type: "string",
+                            minLength: 1,
+                            description:
+                              "**Constraints**: *Minimum Length*: `1`",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "PrivateKeyId",
+                            typeCombinatorTypes: null
+                          },
+                          clientEmail: {
+                            type: "string",
+                            minLength: 1,
+                            pattern:
+                              "^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$",
+                            description:
+                              "**Constraints**: *Minimum Length*: `1`, *Pattern*: `^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$`",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "ClientEmail",
+                            typeCombinatorTypes: null
+                          },
+                          privateKey: {
+                            type: "string",
+                            minLength: 1,
+                            description:
+                              "**Constraints**: *Minimum Length*: `1`",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "PrivateKey",
+                            typeCombinatorTypes: null
+                          }
+                        },
+                        required: [
+                          "clientId",
+                          "privateKeyId",
+                          "clientEmail",
+                          "privateKey"
+                        ],
+                        dataTypeDisplayText: "Credentials",
+                        dataTypeLink: "/java/models/structures/credentials",
+                        paramType: null,
+                        typeCombinatorTypes: null
+                      },
+                      projectId: {
+                        type: "string",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "ProjectId",
+                        typeCombinatorTypes: null
+                      },
+                      topicId: {
+                        type: "string",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "TopicId",
+                        typeCombinatorTypes: null
+                      },
+                      issueGrouping: {
+                        title: "IssueGrouping",
+                        example: "Events",
+                        "x-enum-elements": [
+                          {
+                            name: "Events",
+                            description: ""
+                          },
+                          {
+                            name: "Resources",
+                            description: ""
+                          }
+                        ],
+                        type: "string",
+                        enum: ["Events", "Resources"],
+                        description: "**Default**: `GroupIssuesByEnum.EVENTS`",
+                        dataTypeDisplayText: "GroupIssuesByEnum",
+                        dataTypeLink:
+                          "/java/models/enumerations/group-issues-by",
+                        paramType: null,
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    required: ["credentials", "projectId", "topicId"],
+                    dataTypeDisplayText: "Data5",
+                    dataTypeLink: "/java/models/structures/data-5",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_IbmQradar_Create_Schema",
+                title: "AlertChannels_IbmQradar_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "IbmQradar",
+                    type: "string",
+                    enum: ["IbmQradar"],
+                    description: '**Default**: `"IbmQradar"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data6",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      qradarCommType: {
+                        title: "QradarCommType",
+                        example: "HTTPS",
+                        "x-enum-elements": [
+                          {
+                            name: "HTTPS",
+                            description: ""
+                          },
+                          {
+                            name: "Enum_HTTPS Self Signed Cert",
+                            description: ""
+                          }
+                        ],
+                        type: "string",
+                        enum: ["HTTPS", "HTTPS Self Signed Cert"],
+                        description:
+                          "**Default**: `CommunicationTypeEnum.HTTPS`",
+                        dataTypeDisplayText: "CommunicationTypeEnum",
+                        dataTypeLink:
+                          "/java/models/enumerations/communication-type",
+                        paramType: null,
+                        typeCombinatorTypes: null
+                      },
+                      qradarHostUrl: {
+                        type: "string",
+                        minLength: 1,
+                        pattern: ".+[a-zA-Z0-9]$",
+                        description:
+                          "**Constraints**: *Minimum Length*: `1`, *Pattern*: `.+[a-zA-Z0-9]$`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "QradarHostUrl",
+                        typeCombinatorTypes: null
+                      },
+                      qradarHostPort: {
+                        type: "number",
+                        minimum: 0,
+                        maximum: 65535,
+                        description: "**Constraints**: `>= 0`, `<= 65535`",
+                        dataTypeDisplayText: "Double",
+                        paramType: null,
+                        title: "QradarHostPort",
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    required: ["qradarCommType", "qradarHostUrl"],
+                    dataTypeDisplayText: "Data6",
+                    dataTypeLink: "/java/models/structures/data-6",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_Jira_Create_Schema",
+                title: "AlertChannels_Jira_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "Jira",
+                    type: "string",
+                    enum: ["Jira"],
+                    description: '**Default**: `"Jira"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    oneOf: [
+                      {
+                        id: "JIRA_CLOUD",
+                        title: "JIRA_CLOUD",
+                        type: "object",
+                        properties: {
+                          jiraUrl: {
+                            type: "string",
+                            pattern:
+                              "[a-zA-Z0-9]\\.(atlassian\\.net|jira\\.com)$",
+                            description:
+                              "**Constraints**: *Pattern*: `[a-zA-Z0-9]\\.(atlassian\\.net|jira\\.com)$`",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "JiraUrl",
+                            typeCombinatorTypes: null
+                          },
+                          projectId: {
+                            type: "string",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "ProjectId",
+                            typeCombinatorTypes: null
+                          },
+                          issueType: {
+                            type: "string",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "IssueType",
+                            typeCombinatorTypes: null
+                          },
+                          username: {
+                            type: "string",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "Username",
+                            typeCombinatorTypes: null
+                          },
+                          apiToken: {
+                            type: "string",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "ApiToken",
+                            typeCombinatorTypes: null
+                          },
+                          jiraType: {
+                            title: "JiraType",
+                            example: "JIRA_CLOUD",
+                            "x-enum-elements": [
+                              {
+                                name: "JIRA_CLOUD",
+                                description: ""
+                              }
+                            ],
+                            type: "string",
+                            enum: ["JIRA_CLOUD"],
+                            description:
+                              "**Default**: `JiraTypeEnum.JIRA_CLOUD`",
+                            dataTypeDisplayText: "JiraTypeEnum",
+                            dataTypeLink: "/java/models/enumerations/jira-type",
+                            paramType: null,
+                            typeCombinatorTypes: null
+                          },
+                          issueGrouping: {
+                            title: "IssueGrouping",
+                            example: "Events",
+                            "x-enum-elements": [
+                              {
+                                name: "Events",
+                                description: ""
+                              },
+                              {
+                                name: "Resources",
+                                description: ""
+                              }
+                            ],
+                            type: "string",
+                            enum: ["Events", "Resources"],
+                            description:
+                              "**Default**: `GroupIssuesByEnum.EVENTS`",
+                            dataTypeDisplayText: "GroupIssuesByEnum",
+                            dataTypeLink:
+                              "/java/models/enumerations/group-issues-by",
+                            paramType: null,
+                            typeCombinatorTypes: null
+                          },
+                          customTemplateFile: {
+                            type: "string",
+                            format: "data-url",
+                            dataTypeDisplayText: "InputStream",
+                            paramType: null,
+                            title: "CustomTemplateFile",
+                            typeCombinatorTypes: null
+                          }
+                        },
+                        required: [
+                          "jiraUrl",
+                          "projectId",
+                          "issueType",
+                          "username",
+                          "apiToken"
+                        ]
+                      },
+                      {
+                        id: "JIRA_SERVER",
+                        title: "JIRA_SERVER",
+                        type: "object",
+                        properties: {
+                          jiraUrl: {
+                            type: "string",
+                            pattern: "[A-Za-z0-9\\/\\-&?_.=:]+",
+                            description:
+                              "**Constraints**: *Pattern*: `[A-Za-z0-9\\/\\-&?_.=:]+`",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "JiraUrl",
+                            typeCombinatorTypes: null
+                          },
+                          projectId: {
+                            type: "string",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "ProjectId",
+                            typeCombinatorTypes: null
+                          },
+                          issueType: {
+                            type: "string",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "IssueType",
+                            typeCombinatorTypes: null
+                          },
+                          username: {
+                            type: "string",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "Username",
+                            typeCombinatorTypes: null
+                          },
+                          password: {
+                            type: "string",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "Password",
+                            typeCombinatorTypes: null
+                          },
+                          jiraType: {
+                            title: "JiraType",
+                            example: "JIRA_SERVER",
+                            "x-enum-elements": [
+                              {
+                                name: "JIRA_SERVER",
+                                description: ""
+                              }
+                            ],
+                            type: "string",
+                            enum: ["JIRA_SERVER"],
+                            description:
+                              "**Default**: `JiraType1Enum.JIRA_SERVER`",
+                            dataTypeDisplayText: "JiraType1Enum",
+                            dataTypeLink:
+                              "/java/models/enumerations/jira-type-1",
+                            paramType: null,
+                            typeCombinatorTypes: null
+                          },
+                          issueGrouping: {
+                            title: "IssueGrouping",
+                            example: "Events",
+                            "x-enum-elements": [
+                              {
+                                name: "Events",
+                                description: ""
+                              },
+                              {
+                                name: "Resources",
+                                description: ""
+                              }
+                            ],
+                            type: "string",
+                            enum: ["Events", "Resources"],
+                            description:
+                              "**Default**: `GroupIssuesByEnum.EVENTS`",
+                            dataTypeDisplayText: "GroupIssuesByEnum",
+                            dataTypeLink:
+                              "/java/models/enumerations/group-issues-by",
+                            paramType: null,
+                            typeCombinatorTypes: null
+                          },
+                          customTemplateFile: {
+                            type: "string",
+                            format: "data-url",
+                            dataTypeDisplayText: "InputStream",
+                            paramType: null,
+                            title: "CustomTemplateFile",
+                            typeCombinatorTypes: null
+                          }
+                        },
+                        required: [
+                          "jiraUrl",
+                          "projectId",
+                          "issueType",
+                          "username",
+                          "password"
+                        ]
+                      }
+                    ],
+                    dataTypeDisplayText: "AlertChannelsJiraCreateSchemaData",
+                    dataTypeLink:
+                      "/java/models/containers/alert-channels-jira-create-schema-data",
+                    paramType: null,
+                    title: "Data",
+                    typeCombinatorTypes: [
+                      {
+                        DataType: "JIRACLOUD",
+                        LinkTo: "$m/JIRA_CLOUD",
+                        ContainsSubTypes: false,
+                        SubTypes: null,
+                        Type: "typecombinatortype"
+                      },
+                      {
+                        DataType: "JIRASERVER",
+                        LinkTo: "$m/JIRA_SERVER",
+                        ContainsSubTypes: false,
+                        SubTypes: null,
+                        Type: "typecombinatortype"
+                      }
+                    ]
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_MicrosoftTeams_Create_Schema",
+                title: "AlertChannels_MicrosoftTeams_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "MicrosoftTeams",
+                    type: "string",
+                    enum: ["MicrosoftTeams"],
+                    description: '**Default**: `"MicrosoftTeams"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data7",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      teamsUrl: {
+                        type: "string",
+                        pattern:
+                          "^https://[a-zA-Z0-9-_\\.]*(outlook|webhook).office.com/webhook[a-zA-Z0-9#-_]*([/][a-zA-Z0-9#-_]+)+$",
+                        description:
+                          "**Constraints**: *Pattern*: `^https://[a-zA-Z0-9-_\\.]*(outlook|webhook).office.com/webhook[a-zA-Z0-9#-_]*([/][a-zA-Z0-9#-_]+)+$`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "TeamsUrl",
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    required: ["teamsUrl"],
+                    dataTypeDisplayText: "Data7",
+                    dataTypeLink: "/java/models/structures/data-7",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_NewRelicInsights_Create_Schema",
+                title: "AlertChannels_NewRelicInsights_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "NewRelicInsights",
+                    type: "string",
+                    enum: ["NewRelicInsights"],
+                    description: '**Default**: `"NewRelicInsights"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data8",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      insertKey: {
+                        type: "string",
+                        minLength: 1,
+                        description: "**Constraints**: *Minimum Length*: `1`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "InsertKey",
+                        typeCombinatorTypes: null
+                      },
+                      accountId: {
+                        type: "number",
+                        dataTypeDisplayText: "double",
+                        paramType: null,
+                        title: "AccountId",
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    required: ["insertKey", "accountId"],
+                    dataTypeDisplayText: "Data8",
+                    dataTypeLink: "/java/models/structures/data-8",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_PagerDutyApi_Create_Schema",
+                title: "AlertChannels_PagerDutyApi_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "PagerDutyApi",
+                    type: "string",
+                    enum: ["PagerDutyApi"],
+                    description: '**Default**: `"PagerDutyApi"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data9",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      apiIntgKey: {
+                        type: "string",
+                        minLength: 1,
+                        description: "**Constraints**: *Minimum Length*: `1`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "ApiIntgKey",
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    required: ["apiIntgKey"],
+                    dataTypeDisplayText: "Data9",
+                    dataTypeLink: "/java/models/structures/data-9",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_ServiceNowRest_Create_Schema",
+                title: "AlertChannels_ServiceNowRest_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "ServiceNowRest",
+                    type: "string",
+                    enum: ["ServiceNowRest"],
+                    description: '**Default**: `"ServiceNowRest"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data10",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      userName: {
+                        type: "string",
+                        minLength: 1,
+                        description: "**Constraints**: *Minimum Length*: `1`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "UserName",
+                        typeCombinatorTypes: null
+                      },
+                      password: {
+                        type: "string",
+                        minLength: 1,
+                        description: "**Constraints**: *Minimum Length*: `1`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "Password",
+                        typeCombinatorTypes: null
+                      },
+                      instanceUrl: {
+                        type: "string",
+                        pattern:
+                          "^https://[A-Za-z0-9]+[.]{1}service-now[.]{1}com/?$",
+                        description:
+                          "**Constraints**: *Pattern*: `^https://[A-Za-z0-9]+[.]{1}service-now[.]{1}com/?$`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "InstanceUrl",
+                        typeCombinatorTypes: null
+                      },
+                      issueGrouping: {
+                        title: "IssueGrouping",
+                        example: "Events",
+                        "x-enum-elements": [
+                          {
+                            name: "Events",
+                            description: ""
+                          },
+                          {
+                            name: "Resources",
+                            description: ""
+                          }
+                        ],
+                        type: "string",
+                        enum: ["Events", "Resources"],
+                        description: "**Default**: `GroupIssuesByEnum.EVENTS`",
+                        dataTypeDisplayText: "GroupIssuesByEnum",
+                        dataTypeLink:
+                          "/java/models/enumerations/group-issues-by",
+                        paramType: null,
+                        typeCombinatorTypes: null
+                      },
+                      customTemplateFile: {
+                        type: "string",
+                        format: "data-url",
+                        dataTypeDisplayText: "InputStream",
+                        paramType: null,
+                        title: "CustomTemplateFile",
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    required: ["userName", "password", "instanceUrl"],
+                    dataTypeDisplayText: "Data10",
+                    dataTypeLink: "/java/models/structures/data-10",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_SlackChannel_Create_Schema",
+                title: "AlertChannels_SlackChannel_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "SlackChannel",
+                    type: "string",
+                    enum: ["SlackChannel"],
+                    description: '**Default**: `"SlackChannel"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data11",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      slackUrl: {
+                        type: "string",
+                        pattern:
+                          "^https://hooks.slack.com([/][a-zA-Z0-9#-_]+)+$",
+                        description:
+                          "**Constraints**: *Pattern*: `^https://hooks.slack.com([/][a-zA-Z0-9#-_]+)+$`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "SlackUrl",
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    required: ["slackUrl"],
+                    dataTypeDisplayText: "Data11",
+                    dataTypeLink: "/java/models/structures/data-11",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_SplunkHec_Create_Schema",
+                title: "AlertChannels_SplunkHec_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "SplunkHec",
+                    type: "string",
+                    enum: ["SplunkHec"],
+                    description: '**Default**: `"SplunkHec"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data12",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      hecToken: {
+                        type: "string",
+                        minLength: 1,
+                        description: "**Constraints**: *Minimum Length*: `1`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "HecToken",
+                        typeCombinatorTypes: null
+                      },
+                      host: {
+                        type: "string",
+                        minLength: 1,
+                        description: "**Constraints**: *Minimum Length*: `1`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "Host",
+                        typeCombinatorTypes: null
+                      },
+                      port: {
+                        type: "number",
+                        minimum: 0,
+                        maximum: 65536,
+                        description: "**Constraints**: `>= 0`, `<= 65536`",
+                        dataTypeDisplayText: "double",
+                        paramType: null,
+                        title: "Port",
+                        typeCombinatorTypes: null
+                      },
+                      eventData: {
+                        id: "Event Data",
+                        title: "EventData",
+                        type: "object",
+                        properties: {
+                          index: {
+                            type: "string",
+                            minLength: 1,
+                            description:
+                              "**Constraints**: *Minimum Length*: `1`",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "Index",
+                            typeCombinatorTypes: null
+                          },
+                          source: {
+                            type: "string",
+                            minLength: 1,
+                            description:
+                              "**Constraints**: *Minimum Length*: `1`",
+                            dataTypeDisplayText: "String",
+                            paramType: null,
+                            title: "Source",
+                            typeCombinatorTypes: null
+                          }
+                        },
+                        required: ["index", "source"],
+                        dataTypeDisplayText: "EventData",
+                        dataTypeLink: "/java/models/structures/event-data",
+                        paramType: null,
+                        typeCombinatorTypes: null
+                      },
+                      channel: {
+                        type: "string",
+                        minLength: 1,
+                        description: "**Constraints**: *Minimum Length*: `1`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "Channel",
+                        typeCombinatorTypes: null
+                      },
+                      ssl: {
+                        type: "boolean",
+                        dataTypeDisplayText: "Boolean",
+                        paramType: null,
+                        title: "Ssl",
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    required: ["hecToken", "host", "port", "eventData"],
+                    dataTypeDisplayText: "Data12",
+                    dataTypeLink: "/java/models/structures/data-12",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_VictorOps_Create_Schema",
+                title: "AlertChannels_VictorOps_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "VictorOps",
+                    type: "string",
+                    enum: ["VictorOps"],
+                    description: '**Default**: `"VictorOps"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data13",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      intgUrl: {
+                        type: "string",
+                        maxLength: 2083,
+                        pattern:
+                          "^https:\\/\\/alert.victorops.com\\/integrations\\/generic\\/([0-9]+)\\/alert\\/[a-zA-Z0-9-._~!$&'()*+%,;=:@]+\\/[a-zA-Z0-9-._~!$&'()*+%,;=:@]+$",
+                        description:
+                          "**Constraints**: *Maximum Length*: `2083`, *Pattern*: `^https:\\/\\/alert.victorops.com\\/integrations\\/generic\\/([0-9]+)\\/alert\\/[a-zA-Z0-9-._~!$&'()*+%,;=:@]+\\/[a-zA-Z0-9-._~!$&'()*+%,;=:@]+$`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "IntgUrl",
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    required: ["intgUrl"],
+                    dataTypeDisplayText: "Data13",
+                    dataTypeLink: "/java/models/structures/data-13",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              },
+              {
+                id: "AlertChannels_Webhook_Create_Schema",
+                title: "AlertChannels_Webhook_Create_Schema",
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    minLength: 1,
+                    pattern: "(?!^ +$)^.+$",
+                    description:
+                      "**Constraints**: *Minimum Length*: `1`, *Pattern*: `(?!^ +$)^.+$`",
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Name",
+                    typeCombinatorTypes: null
+                  },
+                  type: {
+                    example: "Webhook",
+                    type: "string",
+                    enum: ["Webhook"],
+                    description: '**Default**: `"Webhook"`',
+                    dataTypeDisplayText: "String",
+                    paramType: null,
+                    title: "Type",
+                    typeCombinatorTypes: null
+                  },
+                  enabled: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                    description: "**Constraints**: `>= 0`, `<= 1`",
+                    dataTypeDisplayText: "double",
+                    paramType: null,
+                    title: "Enabled",
+                    typeCombinatorTypes: null
+                  },
+                  data: {
+                    id: "Data14",
+                    title: "Data",
+                    type: "object",
+                    properties: {
+                      webhookUrl: {
+                        type: "string",
+                        pattern: "https:\\/\\/[A-Za-z0-9\\/\\-&?_.=:]+",
+                        description:
+                          "**Constraints**: *Pattern*: `https:\\/\\/[A-Za-z0-9\\/\\-&?_.=:]+`",
+                        dataTypeDisplayText: "String",
+                        paramType: null,
+                        title: "WebhookUrl",
+                        typeCombinatorTypes: null
+                      }
+                    },
+                    required: ["webhookUrl"],
+                    dataTypeDisplayText: "Data14",
+                    dataTypeLink: "/java/models/structures/data-14",
+                    paramType: null,
+                    typeCombinatorTypes: null
+                  }
+                },
+                required: ["name", "type", "enabled", "data"]
+              }
+            ],
+            dataTypeDisplayText: "CreateAlertChannelsBody",
+            dataTypeLink: "/java/models/containers/create-alert-channels-body",
+            paramType: "Body",
+            title: "body",
+            typeCombinatorTypes: [
+              {
+                DataType: "AlertChannelsAwsS3CreateSchema",
+                LinkTo: "$m/AlertChannels_AwsS3_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsCiscoSparkWebhookCreateSchema",
+                LinkTo: "$m/AlertChannels_CiscoSparkWebhook_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsCloudwatchEbCreateSchema",
+                LinkTo: "$m/AlertChannels_CloudwatchEb_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsDatadogCreateSchema",
+                LinkTo: "$m/AlertChannels_Datadog_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsEmailUserCreateSchema",
+                LinkTo: "$m/AlertChannels_EmailUser_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsGcpPubsubCreateSchema",
+                LinkTo: "$m/AlertChannels_GcpPubsub_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsIbmQradarCreateSchema",
+                LinkTo: "$m/AlertChannels_IbmQradar_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsJiraCreateSchema",
+                LinkTo: "$m/AlertChannels_Jira_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsMicrosoftTeamsCreateSchema",
+                LinkTo: "$m/AlertChannels_MicrosoftTeams_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsNewRelicInsightsCreateSchema",
+                LinkTo: "$m/AlertChannels_NewRelicInsights_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsPagerDutyApiCreateSchema",
+                LinkTo: "$m/AlertChannels_PagerDutyApi_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsServiceNowRestCreateSchema",
+                LinkTo: "$m/AlertChannels_ServiceNowRest_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsSlackChannelCreateSchema",
+                LinkTo: "$m/AlertChannels_SlackChannel_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsSplunkHecCreateSchema",
+                LinkTo: "$m/AlertChannels_SplunkHec_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsVictorOpsCreateSchema",
+                LinkTo: "$m/AlertChannels_VictorOps_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              },
+              {
+                DataType: "AlertChannelsWebhookCreateSchema",
+                LinkTo: "$m/AlertChannels_Webhook_Create_Schema",
+                ContainsSubTypes: false,
+                SubTypes: null,
+                Type: "typecombinatortype"
+              }
+            ]
+          }
+        },
+        required: ["Authorization", "body"]
+      }
+    },
+    required: ["args"]
+  },
+  formData: {
+    args: {
+      Authorization: "Authorization8",
+      body: {
+        $$__case: 0,
+        $$__case_of: "oneOf",
+        value: {
+          name: "name8s",
+          enabled: 47.16,
+          data: {
+            s3CrossAccountCredentials: {
+              externalId: "externalId8",
+              roleArn: "roleArn6",
+              bucketArn: "bucketArn0"
+            }
+          }
         }
       }
     }

@@ -6,7 +6,7 @@ const DEFAULT_GRAY = "#3E445D";
 export const PlusIcon = ({ width, color }) => (
   <svg
     width={width}
-    height={width * 448 / 352}
+    height={(width * 448) / 352}
     className={prefixClass("icon icon-plus")}
     viewBox="0 0 352 448"
   >
@@ -22,7 +22,7 @@ export const PlusIcon = ({ width, color }) => (
 export const CloseIcon = ({ width, color }) => (
   <svg
     width={width}
-    height={width * 448 / 352}
+    height={(width * 448) / 352}
     className={prefixClass("icon icon-remove")}
     viewBox="0 0 352 448"
   >
@@ -62,7 +62,7 @@ export const ArrowUpIcon = ({ width, color, rotate }) => (
     viewBox="0 0 24 24"
     width={width || "12.166"}
     transform={`rotate(${rotate ? rotate : 0})`}
-    height={(width || 13.023) * 12.166 / 13.023}
+    height={((width || 13.023) * 12.166) / 13.023}
     stroke={color || DEFAULT_GRAY}
   >
     <path
@@ -77,7 +77,7 @@ export const ArrowUpIcon = ({ width, color, rotate }) => (
 export const ChevronIcon = ({ width, color, rotate }) => (
   <svg
     width={width}
-    height={width * 14.828 / 8.414}
+    height={(width * 14.828) / 8.414}
     xmlns="http://www.w3.org/2000/svg"
     transform={`rotate(${rotate ? rotate : 0})`}
     fill="none"
@@ -98,7 +98,7 @@ export const RequiredInfoIcon = ({ width, color }) => {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={width || "11.591"}
-      height={(width | 10.149) * 11.591 / 10.149}
+      height={((width | 10.149) * 11.591) / 10.149}
       viewBox="0 0 11.591 10.149"
     >
       <g transform="translate(-1.038 -2.397)">
@@ -138,7 +138,7 @@ export const JsonIcon = ({ width, color }) => {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={width || "16.57"}
-      height={(width | 13) * 16.57 / 13}
+      height={((width | 13) * 16.57) / 13}
       viewBox="0 0 16.57 13"
     >
       <g transform="translate(-374 -272.36)">

@@ -15,12 +15,15 @@ function CheckboxWidget(props) {
     readonly,
     label,
     autofocus,
-    onChange
+    onChange,
+    anyOfTitle
   } = props;
 
   const dataType = schema.dataTypeDisplayText
     ? schema.dataTypeDisplayText
-    : schema.title;
+    : schema.type;
+
+  const markdown = schema.dataTypeMarkdown;
   return (
     <div>
       {label && (
@@ -34,7 +37,12 @@ function CheckboxWidget(props) {
         </div>
       )}
       <div className={pfx("type-container")}>
-        <DataType title={dataType} link={schema.dataTypeLink} type="schema" />
+        <DataType
+          markdown={markdown}
+          title={dataType}
+          link={schema.dataTypeLink}
+          type="schema"
+        />
 
         {schema.paramType && (
           <div className={pfx("param-type")}>{schema.paramType}</div>
@@ -62,7 +70,7 @@ function CheckboxWidget(props) {
             />
             <span />
           </label>
-          <div>{label}</div>
+          <div className={pfx("checkbox-text")}>{label || anyOfTitle}</div>
         </div>
       </div>
     </div>

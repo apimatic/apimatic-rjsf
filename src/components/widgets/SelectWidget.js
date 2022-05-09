@@ -81,7 +81,6 @@ function SelectWidget(props) {
       required={required}
       autoFocus={autofocus}
       placeholder={placeholder}
-      required={required}
       onBlur={onBlur}
       onFocus={onFocus}
       onChange={event => {

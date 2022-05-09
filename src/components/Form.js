@@ -8,6 +8,7 @@ import {
   toIdSchema,
   setState,
   getDefaultRegistry,
+  unwrapFormData,
   prefixClass as pfx
 } from "../utils";
 import validateFormData from "../validate";
@@ -28,6 +29,7 @@ export default class Form extends Component {
     super(props);
 
     this.state = this.getStateFromProps(props);
+    //TODO: Changing for development
     this.state.expandAll = true;
   }
 
@@ -46,8 +48,9 @@ export default class Form extends Component {
     const formData = props.dontAssignDefaults
       ? props.formData
       : getDefaultFormState(schema, props.formData, definitions);
+    const newFormData = unwrapFormData(formData);
     const { errors, errorSchema } = mustValidate
-      ? this.validate(formData, schema)
+      ? this.validate(newFormData, schema, formData)
       : {
           errors: state.errors || [],
           errorSchema: state.errorSchema || {}
@@ -73,13 +76,15 @@ export default class Form extends Component {
     return shouldRender(this, nextProps, nextState);
   }
 
-  validate(formData, schema) {
+  validate(formData, schema, originalFormData) {
     const { validate, transformErrors } = this.props;
+
     return validateFormData(
       formData,
       schema || this.props.schema,
       validate,
-      transformErrors
+      transformErrors,
+      originalFormData
     );
   }
 
@@ -105,8 +110,13 @@ export default class Form extends Component {
     const mustValidate =
       !this.props.noValidate && (this.props.liveValidate || options.validate);
     let state = { formData };
+    let newFormData = unwrapFormData(formData);
     if (mustValidate) {
-      const { errors, errorSchema } = this.validate(formData);
+      const { errors, errorSchema } = this.validate(
+        newFormData,
+        undefined,
+        formData
+      );
       state = { ...state, errors, errorSchema };
     }
     setState(this, state, () => {
@@ -132,7 +142,12 @@ export default class Form extends Component {
     event.preventDefault();
 
     if (!this.props.noValidate) {
-      const { errors, errorSchema } = this.validate(this.state.formData);
+      const newFormData = unwrapFormData(this.state.formData);
+      const { errors, errorSchema } = this.validate(
+        newFormData,
+        undefined,
+        this.state.formData
+      );
       if (Object.keys(errors).length > 0) {
         setState(this, { errors, errorSchema }, () => {
           if (this.props.onError) {
@@ -189,6 +204,7 @@ export default class Form extends Component {
       noHtml5Validate,
       disableFormJsonEdit,
       markdownRenderer,
+      renderTypesPopover,
       onRouteChange
     } = this.props;
 
@@ -204,7 +220,13 @@ export default class Form extends Component {
     const _SchemaField = registry.fields.SchemaField;
 
     return (
-      <ContextProvider value={{ markdownRenderer, onRouteChange }}>
+      <ContextProvider
+        value={{
+          markdownRenderer,
+          renderTypesPopover,
+          onRouteChange
+        }}
+      >
         <form
           className={className ? className : "rjsf"}
           id={id}
