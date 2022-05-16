@@ -47,11 +47,7 @@
     "node": ">=6"
   },
   "peerDependencies": {
-    "codemirror": "^5.30.0",
-    "moment": "^2.20.1",
-    "react": ">=15",
-    "react-codemirror2": "^2.0.2",
-    "react-datepicker": "^1.0.4"
+    "react": ">=15"
   },
   "dependencies": {
     "ajv": "^5.2.3",
@@ -63,7 +59,11 @@
     "lodash.topath": "^4.5.2",
     "prop-types": "^15.7.2",
     "react-select": "^2.4.4",
-    "setimmediate": "^1.0.5"
+    "setimmediate": "^1.0.5",
+    "codemirror": "^5.30.0",
+    "moment": "^2.20.1",
+    "react-codemirror2": "^2.0.2",
+    "react-datepicker": "^1.0.4"
   },
   "devDependencies": {
     "atob": "^2.1.2",

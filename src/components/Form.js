@@ -14,6 +14,10 @@ import {
 import validateFormData from "../validate";
 import { ContextProvider } from "./context";
 
+import "react-datepicker/dist/react-datepicker.css";
+import "codemirror/lib/codemirror.css";
+import "codemirror/theme/material.css";
+
 export default class Form extends Component {
   static defaultProps = {
     uiSchema: {},
