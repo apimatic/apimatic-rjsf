@@ -221,7 +221,10 @@ function SchemaFieldRender(props) {
     schemaIndex,
     registry = getDefaultRegistry(),
     anyOfTitle,
-    typeCombinatorTypes
+    typeCombinatorTypes,
+    markdownRenderer,
+    renderTypesPopover,
+    onRouteChange
   } = props;
   const {
     definitions,
@@ -290,6 +293,9 @@ function SchemaFieldRender(props) {
         id={id + "__description"}
         description={description}
         formContext={formContext}
+        markdownRenderer={markdownRenderer}
+        renderTypesPopover={renderTypesPopover}
+        onRouteChange={onRouteChange}
       />
     ),
     rawDescription: description,
@@ -309,7 +315,10 @@ function SchemaFieldRender(props) {
     fields,
     schema,
     uiSchema,
-    anyOfTitle
+    anyOfTitle,
+    markdownRenderer,
+    renderTypesPopover,
+    onRouteChange
   };
 
   // See #439: uiSchema: Don't pass consumed class names to child components

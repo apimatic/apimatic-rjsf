@@ -40,13 +40,29 @@ function MapFieldTitle({
   );
 }
 
-function MapFieldDescription({ DescriptionField, idSchema, description }) {
+function MapFieldDescription({
+  DescriptionField,
+  idSchema,
+  description,
+  markdownRenderer,
+  renderTypesPopover,
+  onRouteChange
+}) {
   if (!description) {
     // See #312: Ensure compatibility with old versions of React.
     return <div />;
   }
   const id = `${idSchema.$id}__description`;
-  return <DescriptionField id={id} description={description} />;
+
+  return (
+    <DescriptionField
+      id={id}
+      description={description}
+      markdownRenderer={markdownRenderer}
+      renderTypesPopover={renderTypesPopover}
+      onRouteChange={onRouteChange}
+    />
+  );
 }
 
 function IconBtn(props) {
@@ -175,6 +191,9 @@ function DefaultNormalMapFieldTemplate(props) {
           link={props.schema.dataTypeLink}
           type="map-field-type"
           markdown={markdown}
+          markdownRenderer={props.markdownRenderer}
+          renderTypesPopover={props.renderTypesPopover}
+          onRouteChange={props.onRouteChange}
         />
 
         {props.schema.paramType && (
@@ -191,6 +210,9 @@ function DefaultNormalMapFieldTemplate(props) {
           props.schema.description ||
           props.addPropsSchema.description
         }
+        markdownRenderer={props.markdownRenderer}
+        renderTypesPopover={props.renderTypesPopover}
+        onRouteChange={props.onRouteChange}
       />
 
       {!props.collapse && (
@@ -464,7 +486,10 @@ class MapField extends Component {
       depth,
       isEven,
       fromDiscriminator,
-      typeCombinatorTypes
+      typeCombinatorTypes,
+      markdownRenderer,
+      renderTypesPopover,
+      onRouteChange
     } = this.props;
     const title = schema.title || name;
     const { definitions, fields } = registry;
@@ -531,7 +556,10 @@ class MapField extends Component {
       isEven: isEven,
       toggleGroupCollapse: this.toggleGroupCollapse,
       collapse: this.state.collapse,
-      fromDiscriminator
+      fromDiscriminator,
+      markdownRenderer,
+      renderTypesPopover,
+      onRouteChange
     };
 
     return <DefaultNormalMapFieldTemplate {...mapProps} />;

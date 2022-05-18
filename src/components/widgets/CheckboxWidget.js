@@ -16,7 +16,10 @@ function CheckboxWidget(props) {
     label,
     autofocus,
     onChange,
-    anyOfTitle
+    anyOfTitle,
+    onRouteChange,
+    markdownRenderer,
+    renderTypesPopover
   } = props;
 
   const dataType = schema.dataTypeDisplayText
@@ -42,6 +45,9 @@ function CheckboxWidget(props) {
           title={dataType}
           link={schema.dataTypeLink}
           type="schema"
+          markdownRenderer={markdownRenderer}
+          renderTypesPopover={renderTypesPopover}
+          onRouteChange={onRouteChange}
         />
 
         {schema.paramType && (
@@ -50,7 +56,12 @@ function CheckboxWidget(props) {
       </div>
 
       {schema.description && (
-        <DescriptionField description={schema.description} />
+        <DescriptionField
+          description={schema.description}
+          markdownRenderer={markdownRenderer}
+          renderTypesPopover={renderTypesPopover}
+          onRouteChange={onRouteChange}
+        />
       )}
 
       <div
