@@ -118,7 +118,10 @@ export function DefaultTemplate(props) {
     nullify,
     onNullifyChange,
     disabled,
-    fromDiscriminator
+    fromDiscriminator,
+    markdownRenderer,
+    renderTypesPopover,
+    onRouteChange
   } = props;
   if (hidden) {
     return children;
@@ -166,6 +169,9 @@ export function DefaultTemplate(props) {
             link={props.schema.dataTypeLink}
             type="schema"
             markdown={markdown}
+            markdownRenderer={markdownRenderer}
+            renderTypesPopover={renderTypesPopover}
+            onRouteChange={onRouteChange}
           />
 
           {props.schema.paramType && (

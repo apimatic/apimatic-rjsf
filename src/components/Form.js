@@ -25,7 +25,8 @@ export default class Form extends Component {
     safeRenderCompletion: false,
     noHtml5Validate: false,
     ErrorList: DefaultErrorList,
-    markdownRenderer: ({ source }) => source
+    markdownRenderer: ({ source }) => source,
+    renderTypesPopover: ({ source }) => source
   };
 
   constructor(props) {
