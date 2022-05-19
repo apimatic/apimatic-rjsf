@@ -168,7 +168,10 @@ class DiscriminatorField extends React.Component {
       uiSchema,
       typeCombinatorTypes,
       parentPath,
-      formData
+      formData,
+      markdownRenderer,
+      renderTypesPopover,
+      onRouteChange
     } = this.props;
     const _SchemaField = registry.fields.SchemaField;
     const { selectedSchema } = this.state;
@@ -240,6 +243,9 @@ class DiscriminatorField extends React.Component {
               anyOfTitle={this.props.schema.title || this.props.anyOfTitle}
               typeCombinatorTypes={typeCombinatorSubTypes}
               parentPath={getOneAnyOfPath(parentPath, formData)}
+              markdownRenderer={markdownRenderer}
+              renderTypesPopover={renderTypesPopover}
+              onRouteChange={onRouteChange}
             />
           ) : (
             <p>schema or formdata not available</p>
