@@ -12,7 +12,6 @@ import {
   prefixClass as pfx
 } from "../utils";
 import validateFormData from "../validate";
-import { ContextProvider } from "./context";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "codemirror/lib/codemirror.css";
@@ -26,7 +25,8 @@ export default class Form extends Component {
     safeRenderCompletion: false,
     noHtml5Validate: false,
     ErrorList: DefaultErrorList,
-    markdownRenderer: source => source
+    markdownRenderer: ({ source }) => source,
+    renderTypesPopover: ({ source }) => source
   };
 
   constructor(props) {
@@ -224,62 +224,57 @@ export default class Form extends Component {
     const _SchemaField = registry.fields.SchemaField;
 
     return (
-      <ContextProvider
-        value={{
-          markdownRenderer,
-          renderTypesPopover,
-          onRouteChange
-        }}
+      <form
+        className={className ? className : "rjsf"}
+        id={id}
+        name={name}
+        method={method}
+        target={target}
+        action={action}
+        autoComplete={autocomplete}
+        encType={enctype}
+        acceptCharset={acceptcharset}
+        noValidate={noHtml5Validate}
+        onSubmit={this.onSubmit}
       >
-        <form
-          className={className ? className : "rjsf"}
-          id={id}
-          name={name}
-          method={method}
-          target={target}
-          action={action}
-          autoComplete={autocomplete}
-          encType={enctype}
-          acceptCharset={acceptcharset}
-          noValidate={noHtml5Validate}
-          onSubmit={this.onSubmit}
-        >
-          {this.renderErrors()}
-          {uiSchema.expandAllLevel && (
-            <div className={pfx("expand-all")}>
-              <button onClick={this.toggleExpandAll} type="button">
-                {expandAll ? "- Collapse all" : "+ Expand all"}
-              </button>
-            </div>
-          )}
-          <_SchemaField
-            schema={schema}
-            expandAllLevel={uiSchema.expandAllLevel}
-            expandAll={expandAll}
-            levelReversal={uiSchema && uiSchema.levelReversal ? true : false}
-            uiSchema={uiSchema}
-            errorSchema={errorSchema}
-            idSchema={idSchema}
-            formData={formData}
-            onChange={this.onChange}
-            onBlur={this.onBlur}
-            onFocus={this.onFocus}
-            registry={registry}
-            safeRenderCompletion={safeRenderCompletion}
-            required={true}
-            disableFormJsonEdit={disableFormJsonEdit || false}
-          />
-          {children ? (
-            children
-          ) : (
-            <p>
-              <button type="submit" className={pfx("btn btn-info")}>
-                Submit
-              </button>
-            </p>
-          )}
-        </form>
-      </ContextProvider>
+        {this.renderErrors()}
+        {uiSchema.expandAllLevel && (
+          <div className={pfx("expand-all")}>
+            <button onClick={this.toggleExpandAll} type="button">
+              {expandAll ? "- Collapse all" : "+ Expand all"}
+            </button>
+          </div>
+        )}
+        <_SchemaField
+          schema={schema}
+          expandAllLevel={uiSchema.expandAllLevel}
+          expandAll={expandAll}
+          levelReversal={uiSchema && uiSchema.levelReversal ? true : false}
+          uiSchema={uiSchema}
+          errorSchema={errorSchema}
+          idSchema={idSchema}
+          formData={formData}
+          onChange={this.onChange}
+          onBlur={this.onBlur}
+          onFocus={this.onFocus}
+          registry={registry}
+          safeRenderCompletion={safeRenderCompletion}
+          required={true}
+          disableFormJsonEdit={disableFormJsonEdit || false}
+          markdownRenderer={markdownRenderer}
+          renderTypesPopover={renderTypesPopover}
+          onRouteChange={onRouteChange}
+        />
+        {children ? (
+          children
+        ) : (
+          <p>
+            <button type="submit" className={pfx("btn btn-info")}>
+              Submit
+            </button>
+          </p>
+        )}
+      </form>
     );
   }
 }

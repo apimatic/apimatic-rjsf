@@ -1,10 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { getListRootItem, prefixClass as pfx } from "../../utils";
-import { ContextConsumer } from "../context";
 
 function DataType(props) {
-  const { title, link, type, markdown } = props;
+  const {
+    title,
+    link,
+    type,
+    markdown,
+    renderTypesPopover: RenderTypesPopover,
+    onRouteChange
+  } = props;
 
   if (!title && !markdown) {
     // See #312: Ensure compatibility with old versions of React.
@@ -14,25 +20,17 @@ function DataType(props) {
   if (markdown) {
     const label = getListRootItem(markdown);
 
-    return (
-      <ContextConsumer>
-        {({ renderTypesPopover }) => renderTypesPopover(markdown, label)}
-      </ContextConsumer>
-    );
+    return <RenderTypesPopover source={markdown} label={label} />;
   }
 
   return (
-    <ContextConsumer>
-      {({ onRouteChange }) => (
-        <div
-          className={pfx(
-            type !== "schema" ? type : link ? "object-type" : "base-type"
-          )}
-        >
-          {link ? <a onClick={() => onRouteChange(link)}>{title}</a> : title}
-        </div>
+    <div
+      className={pfx(
+        type !== "schema" ? type : link ? "object-type" : "base-type"
       )}
-    </ContextConsumer>
+    >
+      {link ? <a onClick={() => onRouteChange(link)}>{title}</a> : title}
+    </div>
   );
 }
 
