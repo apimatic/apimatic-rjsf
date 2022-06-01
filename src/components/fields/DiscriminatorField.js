@@ -250,7 +250,8 @@ class DiscriminatorField extends React.Component {
   };
 
   selectOnChange = (value, initialRender) => {
-    const { onChange, definitions, parentPath } = this.props;
+    const { onChange, parentPath, registry } = this.props;
+    const { definitions } = registry;
     const { formState, selectedSchema } = this.state;
 
     // Don't do anything on same item click
@@ -290,7 +291,8 @@ class DiscriminatorField extends React.Component {
   };
 
   toggleCheckbox = () => {
-    const { formData, schema, definitions, onChange } = this.props;
+    const { formData, schema, registry, onChange } = this.props;
+    const { definitions } = registry;
 
     this.setState(st => {
       const { checked } = st;

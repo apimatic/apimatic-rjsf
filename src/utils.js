@@ -510,9 +510,10 @@ export function optionsList(schema) {
   }
 }
 
-function findSchemaDefinition($ref, definitions = {}) {
+function findSchemaDefinition(ref, definitions = {}) {
+  const $ref = decodeURI(ref);
   // Extract and use the referenced definition if we have it.
-  const match = /^#\/definitions\/(.*)$/.exec($ref);
+  const match = /^ModelSchemas#\/(.*)$/.exec($ref);
   if (match && match[1]) {
     const parts = match[1].split("/");
     let current = definitions;
@@ -642,7 +643,14 @@ function withExactlyOneSubschema(
           [dependencyKey]: conditionPropertySchema
         }
       };
-      const { errors } = validateFormData(formData, conditionSchema);
+      const { errors } = validateFormData(
+        formData,
+        conditionSchema,
+        undefined,
+        undefined,
+        undefined,
+        definitions
+      );
       return errors.length === 0;
     }
   });

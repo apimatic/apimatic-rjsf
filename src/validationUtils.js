@@ -178,8 +178,19 @@ function validate(errors, formData) {
   return clonedErrors;
 }
 
-export function validateSchema(schema, formData, originalFormData, ajv) {
+export function validateSchema(
+  schema,
+  formData,
+  originalFormData,
+  ajv,
+  definitions
+) {
   const clonedSchema = deepClone(schema);
+  const modalSchemas = ajv.getSchema("ModelSchemas");
+
+  if (!modalSchemas) {
+    ajv.addSchema(definitions, "ModelSchemas");
+  }
 
   // if item of oneOf doesn't has required properties then manually add
   // addtionalProperties in schema.

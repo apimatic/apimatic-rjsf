@@ -26,7 +26,8 @@ export default class Form extends Component {
     safeRenderCompletion: false,
     noHtml5Validate: false,
     ErrorList: DefaultErrorList,
-    markdownRenderer: source => source
+    markdownRenderer: source => source,
+    renderTypesPopover: source => source
   };
 
   constructor(props) {
@@ -48,7 +49,7 @@ export default class Form extends Component {
     const edit = typeof props.formData !== "undefined";
     const liveValidate = props.liveValidate || this.props.liveValidate;
     const mustValidate = edit && !props.noValidate && liveValidate;
-    const { definitions } = schema;
+    const { definitions } = props;
     const formData = props.dontAssignDefaults
       ? props.formData
       : getDefaultFormState(schema, props.formData, definitions);
@@ -81,14 +82,15 @@ export default class Form extends Component {
   }
 
   validate(formData, schema, originalFormData) {
-    const { validate, transformErrors } = this.props;
+    const { validate, transformErrors, definitions } = this.props;
 
     return validateFormData(
       formData,
       schema || this.props.schema,
       validate,
       transformErrors,
-      originalFormData
+      originalFormData,
+      definitions
     );
   }
 
@@ -173,6 +175,7 @@ export default class Form extends Component {
   getRegistry() {
     // For BC, accept passed SchemaField and TitleField props and pass them to
     // the "fields" registry one.
+    const { definitions } = this.props;
     const { fields, widgets } = getDefaultRegistry();
     return {
       fields: { ...fields, ...this.props.fields },
@@ -180,7 +183,7 @@ export default class Form extends Component {
       ArrayFieldTemplate: this.props.ArrayFieldTemplate,
       ObjectFieldTemplate: this.props.ObjectFieldTemplate,
       FieldTemplate: this.props.FieldTemplate,
-      definitions: this.props.schema.definitions || {},
+      definitions: definitions || {},
       formContext: this.props.formContext || {}
     };
   }
