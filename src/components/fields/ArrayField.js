@@ -607,7 +607,10 @@ class ArrayField extends Component {
           onBlur,
           onFocus,
           schemaIndex,
-          typeCombinatorTypes
+          typeCombinatorTypes,
+          markdownRenderer,
+          renderTypesPopover,
+          onRouteChange
         });
       }),
       className: `field field-array field-array-of-${itemsSchema.type} ${
@@ -738,7 +741,10 @@ class ArrayField extends Component {
       registry = getDefaultRegistry(),
       onBlur,
       onFocus,
-      typeCombinatorTypes
+      typeCombinatorTypes,
+      markdownRenderer,
+      renderTypesPopover,
+      onRouteChange
     } = this.props;
     const title =
       schema.title === undefined
@@ -805,7 +811,10 @@ class ArrayField extends Component {
           autofocus: autofocus && index === 0,
           onBlur,
           onFocus,
-          typeCombinatorTypes
+          typeCombinatorTypes,
+          markdownRenderer,
+          renderTypesPopover,
+          onRouteChange
         });
       }),
       onAddClick: this.onAddClick,
@@ -816,7 +825,10 @@ class ArrayField extends Component {
       title,
       TitleField,
       onNullifyChange: this.onNullifyChange,
-      nullify: formData && formData.length > 0
+      nullify: formData && formData.length > 0,
+      markdownRenderer,
+      renderTypesPopover,
+      onRouteChange
     };
 
     // Check if a custom template template was passed in
@@ -840,7 +852,10 @@ class ArrayField extends Component {
       onBlur,
       onFocus,
       schemaIndex,
-      typeCombinatorTypes
+      typeCombinatorTypes,
+      markdownRenderer,
+      renderTypesPopover,
+      onRouteChange
     } = props;
     const {
       disabled,
@@ -883,6 +898,9 @@ class ArrayField extends Component {
           readonly={this.props.readonly}
           autofocus={autofocus}
           typeCombinatorTypes={typeCombinatorTypes}
+          markdownRenderer={markdownRenderer}
+          renderTypesPopover={renderTypesPopover}
+          onRouteChange={onRouteChange}
         />
       ),
       className: "array-item",

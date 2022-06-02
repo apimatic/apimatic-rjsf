@@ -531,7 +531,10 @@ class MapField extends Component {
           depth,
           isEven,
           collapse,
-          typeCombinatorTypes
+          typeCombinatorTypes,
+          markdownRenderer,
+          renderTypesPopover,
+          onRouteChange
         });
       }),
       className: `field field-array field-array-of-${addPropsSchema.type}  ${
@@ -580,7 +583,10 @@ class MapField extends Component {
       onFocus,
       depth,
       isEven,
-      typeCombinatorTypes
+      typeCombinatorTypes,
+      markdownRenderer,
+      renderTypesPopover,
+      onRouteChange
     } = props;
     const { disabled, readonly, uiSchema, registry } = this.props;
     const {
@@ -622,6 +628,9 @@ class MapField extends Component {
           depth={depth + 1}
           isEven={isEven}
           typeCombinatorTypes={typeCombinatorTypes}
+          markdownRenderer={markdownRenderer}
+          renderTypesPopover={renderTypesPopover}
+          onRouteChange={onRouteChange}
         />
       ),
       className: "map-item",
