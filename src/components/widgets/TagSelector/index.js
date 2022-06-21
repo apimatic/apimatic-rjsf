@@ -2,7 +2,7 @@ import propTypes from "prop-types";
 import React from "react";
 import Select from "react-select";
 
-import { deepEquals, prefixClass } from "../../../utils";
+import { prefixClass } from "../../../utils";
 
 class TagSelector extends React.Component {
   render() {
@@ -27,9 +27,7 @@ class TagSelector extends React.Component {
           {options.map((option, index) => (
             <span
               key={`option-item-${index}-${option.label}`}
-              className={`--tag ${
-                deepEquals(option.value, value) ? "--active" : ""
-              }`}
+              className={`--tag ${value.index === index ? "--active" : ""}`}
               onClick={onClick(option)}
             >
               {option.label}

@@ -40,29 +40,14 @@ function MapFieldTitle({
   );
 }
 
-function MapFieldDescription({
-  DescriptionField,
-  idSchema,
-  description,
-  markdownRenderer,
-  renderTypesPopover,
-  onRouteChange
-}) {
+function MapFieldDescription({ DescriptionField, idSchema, description }) {
   if (!description) {
     // See #312: Ensure compatibility with old versions of React.
     return <div />;
   }
   const id = `${idSchema.$id}__description`;
 
-  return (
-    <DescriptionField
-      id={id}
-      description={description}
-      markdownRenderer={markdownRenderer}
-      renderTypesPopover={renderTypesPopover}
-      onRouteChange={onRouteChange}
-    />
-  );
+  return <DescriptionField id={id} description={description} />;
 }
 
 function IconBtn(props) {
@@ -191,9 +176,6 @@ function DefaultNormalMapFieldTemplate(props) {
           link={props.schema.dataTypeLink}
           type="map-field-type"
           markdown={markdown}
-          markdownRenderer={props.markdownRenderer}
-          renderTypesPopover={props.renderTypesPopover}
-          onRouteChange={props.onRouteChange}
         />
 
         {props.schema.paramType && (
@@ -210,9 +192,6 @@ function DefaultNormalMapFieldTemplate(props) {
           props.schema.description ||
           props.addPropsSchema.description
         }
-        markdownRenderer={props.markdownRenderer}
-        renderTypesPopover={props.renderTypesPopover}
-        onRouteChange={props.onRouteChange}
       />
 
       {!props.collapse && (
@@ -486,10 +465,7 @@ class MapField extends Component {
       depth,
       isEven,
       fromDiscriminator,
-      typeCombinatorTypes,
-      markdownRenderer,
-      renderTypesPopover,
-      onRouteChange
+      typeCombinatorTypes
     } = this.props;
     const title = schema.title || name;
     const { definitions, fields } = registry;
@@ -531,10 +507,7 @@ class MapField extends Component {
           depth,
           isEven,
           collapse,
-          typeCombinatorTypes,
-          markdownRenderer,
-          renderTypesPopover,
-          onRouteChange
+          typeCombinatorTypes
         });
       }),
       className: `field field-array field-array-of-${addPropsSchema.type}  ${
@@ -559,10 +532,7 @@ class MapField extends Component {
       isEven: isEven,
       toggleGroupCollapse: this.toggleGroupCollapse,
       collapse: this.state.collapse,
-      fromDiscriminator,
-      markdownRenderer,
-      renderTypesPopover,
-      onRouteChange
+      fromDiscriminator
     };
 
     return <DefaultNormalMapFieldTemplate {...mapProps} />;
@@ -583,10 +553,7 @@ class MapField extends Component {
       onFocus,
       depth,
       isEven,
-      typeCombinatorTypes,
-      markdownRenderer,
-      renderTypesPopover,
-      onRouteChange
+      typeCombinatorTypes
     } = props;
     const { disabled, readonly, uiSchema, registry } = this.props;
     const {
@@ -628,9 +595,6 @@ class MapField extends Component {
           depth={depth + 1}
           isEven={isEven}
           typeCombinatorTypes={typeCombinatorTypes}
-          markdownRenderer={markdownRenderer}
-          renderTypesPopover={renderTypesPopover}
-          onRouteChange={onRouteChange}
         />
       ),
       className: "map-item",

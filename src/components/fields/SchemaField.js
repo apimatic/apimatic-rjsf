@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+import mergeAllOf from "json-schema-merge-allof";
+
 import DataType from "./DataType";
 
 import {
@@ -26,8 +28,24 @@ const COMPONENT_TYPES = {
   discriminator: "DiscriminatorField"
 };
 
+const MERGE_ALLOF_OPTIONS = {
+  ignoreAdditionalProperties: true,
+  resolvers: {
+    id: function() {
+      return "";
+    },
+    description: function(values) {
+      return values.length ? values[0] : "";
+    },
+    dataTypeLink: function(values) {
+      return values.length ? values[0] : "";
+    }
+  }
+};
+
 function getFieldComponent(schema, uiSchema, idSchema, fields) {
   const field = uiSchema["ui:field"];
+
   if (typeof field === "function") {
     return field;
   }
@@ -40,6 +58,10 @@ function getFieldComponent(schema, uiSchema, idSchema, fields) {
   if (!componentName && (schema.oneOf || schema.anyOf)) {
     const a = fields["DiscriminatorField"];
     return a;
+  }
+
+  if (schema.typeCombinatorTypes) {
+    return fields["DiscrimatorWrapper"];
   }
 
   // console.log(componentName);
@@ -118,10 +140,7 @@ export function DefaultTemplate(props) {
     nullify,
     onNullifyChange,
     disabled,
-    fromDiscriminator,
-    markdownRenderer,
-    renderTypesPopover,
-    onRouteChange
+    fromDiscriminator
   } = props;
   if (hidden) {
     return children;
@@ -169,9 +188,6 @@ export function DefaultTemplate(props) {
             link={props.schema.dataTypeLink}
             type="schema"
             markdown={markdown}
-            markdownRenderer={markdownRenderer}
-            renderTypesPopover={renderTypesPopover}
-            onRouteChange={onRouteChange}
           />
 
           {props.schema.paramType && (
@@ -219,18 +235,16 @@ DefaultTemplate.defaultProps = {
 function SchemaFieldRender(props) {
   const {
     uiSchema,
-    formData,
     errorSchema,
     idSchema,
     name,
+    formData,
     required,
     schemaIndex,
     registry = getDefaultRegistry(),
     anyOfTitle,
     typeCombinatorTypes,
-    markdownRenderer,
-    renderTypesPopover,
-    onRouteChange
+    disciminatorObj = {}
   } = props;
   const {
     definitions,
@@ -238,14 +252,33 @@ function SchemaFieldRender(props) {
     formContext,
     FieldTemplate = DefaultTemplate
   } = registry;
-  const schema = retrieveSchema(props.schema, definitions, formData);
+
+  const { name: discriminatorProperty } = disciminatorObj;
+  const isDiscriminator =
+    discriminatorProperty && discriminatorProperty === name;
+
+  let schema = retrieveSchema(props.schema, definitions, formData);
+
+  if (schema.allOf && !schema.typeCombinatorTypes) {
+    schema = mergeAllOf(schema, MERGE_ALLOF_OPTIONS);
+  }
+
   const FieldComponent = getFieldComponent(schema, uiSchema, idSchema, fields);
   const { DescriptionField } = fields;
-  const disabled = Boolean(props.disabled || uiSchema["ui:disabled"]);
+  const disabled = Boolean(
+    props.disabled || uiSchema["ui:disabled"] || isDiscriminator
+  );
   const readonly = Boolean(props.readonly || uiSchema["ui:readonly"]);
   const autofocus = Boolean(props.autofocus || uiSchema["ui:autofocus"]);
   const _typeCombinatorTypes =
     typeCombinatorTypes || schema.typeCombinatorTypes || null;
+
+  if (
+    props.schema.hasOwnProperty("$ref") ||
+    (schema.type === "array" && props.schema.items.hasOwnProperty("$ref"))
+  ) {
+    schema.title = name;
+  }
 
   if (Object.keys(schema).length === 0) {
     // See #312: Ensure compatibility with old versions of React.
@@ -259,7 +292,7 @@ function SchemaFieldRender(props) {
       isMultiSelect(schema, definitions) ||
       isFilesArray(schema, uiSchema, definitions);
   }
-  if (schema.type === "object") {
+  if (schema.type === "object" && !schema.discriminator) {
     displayLabel = false;
   }
   if (schema.type === "boolean" && !uiSchema["ui:widget"]) {
@@ -274,7 +307,7 @@ function SchemaFieldRender(props) {
   const { type } = schema;
   const id = idSchema.$id;
   const label =
-    uiSchema["ui:title"] || props.schema.title || schema.title || name;
+    uiSchema["ui:title"] || name || props.schema.title || schema.title;
   const description =
     uiSchema["ui:description"] ||
     props.schema.description ||
@@ -299,9 +332,6 @@ function SchemaFieldRender(props) {
         id={id + "__description"}
         description={description}
         formContext={formContext}
-        markdownRenderer={markdownRenderer}
-        renderTypesPopover={renderTypesPopover}
-        onRouteChange={onRouteChange}
       />
     ),
     rawDescription: description,
@@ -322,15 +352,14 @@ function SchemaFieldRender(props) {
     schema,
     uiSchema,
     anyOfTitle,
-    markdownRenderer,
-    renderTypesPopover,
-    onRouteChange
+    disciminatorObj
   };
 
   // See #439: uiSchema: Don't pass consumed class names to child components
   const field = (
     <FieldComponent
       {...props}
+      definitions={definitions}
       schema={schema}
       uiSchema={{ ...uiSchema, classNames: undefined }}
       disabled={disabled}
@@ -344,7 +373,8 @@ function SchemaFieldRender(props) {
     />
   );
 
-  return isOneOfSchema(schema) ? (
+  return isOneOfSchema(schema) ||
+    (!isOneOfSchema(schema) && schema.typeCombinatorTypes) ? (
     field
   ) : (
     <FieldTemplate {...fieldProps}>{field}</FieldTemplate>

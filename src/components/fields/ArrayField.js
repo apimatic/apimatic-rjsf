@@ -49,28 +49,13 @@ function ArrayFieldTitle({
   );
 }
 
-function ArrayFieldDescription({
-  DescriptionField,
-  idSchema,
-  description,
-  markdownRenderer,
-  renderTypesPopover,
-  onRouteChange
-}) {
+function ArrayFieldDescription({ DescriptionField, idSchema, description }) {
   if (!description) {
     // See #312: Ensure compatibility with old versions of React.
     return <div />;
   }
   const id = `${idSchema.$id}__description`;
-  return (
-    <DescriptionField
-      id={id}
-      description={description}
-      markdownRenderer={markdownRenderer}
-      renderTypesPopover={renderTypesPopover}
-      onRouteChange={onRouteChange}
-    />
-  );
+  return <DescriptionField id={id} description={description} />;
 }
 
 export function IconBtn(props) {
@@ -270,9 +255,6 @@ function DefaultNormalArrayFieldTemplate(props) {
           link={props.schema.dataTypeLink}
           type="array-type"
           markdown={markdown}
-          markdownRenderer={props.markdownRenderer}
-          renderTypesPopover={props.renderTypesPopover}
-          onRouteChange={props.onRouteChange}
         />
         {props.schema.paramType && (
           <div className={pfx("param-type")}> {props.schema.paramType} </div>
@@ -290,9 +272,6 @@ function DefaultNormalArrayFieldTemplate(props) {
             props.schema.description ||
             props.itemsSchema.description
           }
-          markdownRenderer={props.markdownRenderer}
-          renderTypesPopover={props.renderTypesPopover}
-          onRouteChange={props.onRouteChange}
         />
       )}
       {!props.collapse && (
@@ -562,10 +541,7 @@ class ArrayField extends Component {
       onFocus,
       schemaIndex,
       fromDiscriminator,
-      typeCombinatorTypes,
-      markdownRenderer,
-      renderTypesPopover,
-      onRouteChange
+      typeCombinatorTypes
     } = this.props;
     const { ArrayFieldTemplate, definitions, fields } = registry;
     const { TitleField, DescriptionField } = fields;
@@ -607,10 +583,7 @@ class ArrayField extends Component {
           onBlur,
           onFocus,
           schemaIndex,
-          typeCombinatorTypes,
-          markdownRenderer,
-          renderTypesPopover,
-          onRouteChange
+          typeCombinatorTypes
         });
       }),
       className: `field field-array field-array-of-${itemsSchema.type} ${
@@ -633,10 +606,7 @@ class ArrayField extends Component {
       formData,
       onNullifyChange: this.onNullifyChange,
       nullify: formData && formData.length > 0,
-      fromDiscriminator,
-      markdownRenderer,
-      renderTypesPopover,
-      onRouteChange
+      fromDiscriminator
     };
 
     // Check if a custom render function was passed in
@@ -741,10 +711,7 @@ class ArrayField extends Component {
       registry = getDefaultRegistry(),
       onBlur,
       onFocus,
-      typeCombinatorTypes,
-      markdownRenderer,
-      renderTypesPopover,
-      onRouteChange
+      typeCombinatorTypes
     } = this.props;
     const title =
       schema.title === undefined
@@ -811,10 +778,7 @@ class ArrayField extends Component {
           autofocus: autofocus && index === 0,
           onBlur,
           onFocus,
-          typeCombinatorTypes,
-          markdownRenderer,
-          renderTypesPopover,
-          onRouteChange
+          typeCombinatorTypes
         });
       }),
       onAddClick: this.onAddClick,
@@ -825,10 +789,7 @@ class ArrayField extends Component {
       title,
       TitleField,
       onNullifyChange: this.onNullifyChange,
-      nullify: formData && formData.length > 0,
-      markdownRenderer,
-      renderTypesPopover,
-      onRouteChange
+      nullify: formData && formData.length > 0
     };
 
     // Check if a custom template template was passed in
@@ -852,10 +813,7 @@ class ArrayField extends Component {
       onBlur,
       onFocus,
       schemaIndex,
-      typeCombinatorTypes,
-      markdownRenderer,
-      renderTypesPopover,
-      onRouteChange
+      typeCombinatorTypes
     } = props;
     const {
       disabled,
@@ -898,9 +856,6 @@ class ArrayField extends Component {
           readonly={this.props.readonly}
           autofocus={autofocus}
           typeCombinatorTypes={typeCombinatorTypes}
-          markdownRenderer={markdownRenderer}
-          renderTypesPopover={renderTypesPopover}
-          onRouteChange={onRouteChange}
         />
       ),
       className: "array-item",

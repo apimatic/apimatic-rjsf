@@ -23,8 +23,15 @@ function StringField(props) {
     onChange,
     onBlur,
     onFocus,
-    registry = getDefaultRegistry()
+    registry = getDefaultRegistry(),
+    disciminatorObj = {}
   } = props;
+  const {
+    name: discriminatorProperty,
+    value: discriminatorValue
+  } = disciminatorObj;
+  const isDiscriminator =
+    discriminatorProperty && discriminatorProperty === name;
   const { title, format } = schema;
   const { widgets, formContext } = registry;
   const enumOptions = isSelect(schema) && optionsList(schema);
@@ -47,7 +54,7 @@ function StringField(props) {
       schema={schema}
       id={idSchema && idSchema.$id}
       label={title === undefined ? name : title}
-      value={formData}
+      value={isDiscriminator ? discriminatorValue : formData}
       onChange={_onChange}
       onBlur={onBlur}
       onFocus={onFocus}

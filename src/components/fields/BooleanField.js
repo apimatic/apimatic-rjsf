@@ -21,10 +21,7 @@ function BooleanField(props) {
     readonly,
     autofocus,
     onChange,
-    anyOfTitle,
-    onRouteChange,
-    markdownRenderer,
-    renderTypesPopover
+    anyOfTitle
   } = props;
   const { title } = schema;
   const { widgets, formContext } = registry;
@@ -49,9 +46,6 @@ function BooleanField(props) {
       formContext={formContext}
       autofocus={autofocus}
       anyOfTitle={anyOfTitle}
-      markdownRenderer={markdownRenderer}
-      renderTypesPopover={renderTypesPopover}
-      onRouteChange={onRouteChange}
     />
   );
 }

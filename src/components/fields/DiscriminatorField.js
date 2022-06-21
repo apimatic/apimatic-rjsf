@@ -7,7 +7,8 @@ import {
   prefixClass,
   isMultipleSchema,
   classNames,
-  isOneOfSchema
+  isOneOfSchema,
+  retrieveSchema
 } from "../../utils";
 import TagSelector from "../widgets/TagSelector";
 import { getOneAnyOfPath } from "../../validationUtils";
@@ -96,7 +97,8 @@ class DiscriminatorField extends React.Component {
     }
 
     const initialSchema = schema.oneOf || schema.anyOf;
-    const initialSchemaIndex = formData ? formData.$$__case : 0;
+    const initialSchemaIndex =
+      formData && formData.$$__case ? formData.$$__case : 0;
     const data = formData || {};
     const caseOf = getMultipleSchemaType(schema);
     const newState = {
@@ -169,9 +171,7 @@ class DiscriminatorField extends React.Component {
       typeCombinatorTypes,
       parentPath,
       formData,
-      markdownRenderer,
-      renderTypesPopover,
-      onRouteChange
+      schema
     } = this.props;
     const _SchemaField = registry.fields.SchemaField;
     const { selectedSchema } = this.state;
@@ -194,6 +194,7 @@ class DiscriminatorField extends React.Component {
       childIsNestedMultipleSchema
     );
     const uiTitle = selectOptions[selectedSchema.index].label;
+    let disciminatorObj = undefined;
 
     const discriminatorChildFieldsetDepth = depth + 1;
     const childDepth = isDiscriminatorChild ? depth + 2 : depth + 1;
@@ -206,6 +207,10 @@ class DiscriminatorField extends React.Component {
     let typeCombinatorSubTypes;
 
     if (typeCombinatorTypes) {
+      disciminatorObj = {
+        name: schema.discriminator,
+        value: typeCombinatorTypes[selectedSchema.index].DiscriminatorValue
+      };
       const selectedSchemaTypeCombinator =
         typeCombinatorTypes[selectedSchema.index];
       typeCombinatorSubTypes = selectedSchemaTypeCombinator.ContainsSubTypes
@@ -243,9 +248,7 @@ class DiscriminatorField extends React.Component {
               anyOfTitle={this.props.schema.title || this.props.anyOfTitle}
               typeCombinatorTypes={typeCombinatorSubTypes}
               parentPath={getOneAnyOfPath(parentPath, formData)}
-              markdownRenderer={markdownRenderer}
-              renderTypesPopover={renderTypesPopover}
-              onRouteChange={onRouteChange}
+              disciminatorObj={disciminatorObj}
             />
           ) : (
             <p>schema or formdata not available</p>
@@ -346,11 +349,15 @@ class DiscriminatorField extends React.Component {
   };
 
   getSelectOptions = () => {
-    const { schema, typeCombinatorTypes } = this.props;
+    const { schema, typeCombinatorTypes, definitions, formData } = this.props;
     const multipleSchema = schema.oneOf || schema.anyOf;
 
     return multipleSchema.reduce(
       ({ selectOptions, charCounts }, schema, index) => {
+        if (schema.hasOwnProperty("$ref")) {
+          schema = retrieveSchema(schema, definitions, formData);
+        }
+
         const type = typeCombinatorTypes && typeCombinatorTypes[index].DataType;
         const label = type ? type : getMultipleLabel(schema) || schema.type;
 
@@ -374,7 +381,8 @@ class DiscriminatorField extends React.Component {
       fromMap,
       fieldProps,
       fromDiscriminator,
-      disabled
+      disabled,
+      tagsTitle
     } = this.props;
     const { selectedSchema, checked, optional } = this.state;
     const { selectOptions, charCounts } = this.getSelectOptions();
@@ -412,7 +420,7 @@ class DiscriminatorField extends React.Component {
             <TagSelector
               className={tagSelectorClassName}
               value={selectedSchema}
-              title={getMultipleLabel(schema)}
+              title={tagsTitle || getMultipleLabel(schema)}
               options={selectOptions}
               onChange={this.selectOnChange}
             />

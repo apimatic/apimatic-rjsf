@@ -16,6 +16,7 @@ import validateFormData from "../validate";
 import "react-datepicker/dist/react-datepicker.css";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/material.css";
+import { ContextProvider } from "./context";
 
 export default class Form extends Component {
   static defaultProps = {
@@ -24,9 +25,7 @@ export default class Form extends Component {
     liveValidate: false,
     safeRenderCompletion: false,
     noHtml5Validate: false,
-    ErrorList: DefaultErrorList,
-    markdownRenderer: ({ source }) => source,
-    renderTypesPopover: ({ source }) => source
+    ErrorList: DefaultErrorList
   };
 
   constructor(props) {
@@ -48,7 +47,9 @@ export default class Form extends Component {
     const edit = typeof props.formData !== "undefined";
     const liveValidate = props.liveValidate || this.props.liveValidate;
     const mustValidate = edit && !props.noValidate && liveValidate;
-    const { definitions } = props;
+    const {
+      dxInterface: { definitions }
+    } = props;
     const formData = props.dontAssignDefaults
       ? props.formData
       : getDefaultFormState(schema, props.formData, definitions);
@@ -81,7 +82,11 @@ export default class Form extends Component {
   }
 
   validate(formData, schema, originalFormData) {
-    const { validate, transformErrors, definitions } = this.props;
+    const {
+      validate,
+      transformErrors,
+      dxInterface: { definitions }
+    } = this.props;
 
     return validateFormData(
       formData,
@@ -174,7 +179,9 @@ export default class Form extends Component {
   getRegistry() {
     // For BC, accept passed SchemaField and TitleField props and pass them to
     // the "fields" registry one.
-    const { definitions } = this.props;
+    const {
+      dxInterface: { definitions }
+    } = this.props;
     const { fields, widgets } = getDefaultRegistry();
     return {
       fields: { ...fields, ...this.props.fields },
@@ -209,11 +216,8 @@ export default class Form extends Component {
       acceptcharset,
       noHtml5Validate,
       disableFormJsonEdit,
-      markdownRenderer,
-      renderTypesPopover,
-      onRouteChange
+      dxInterface
     } = this.props;
-
     const {
       schema,
       uiSchema,
@@ -239,43 +243,42 @@ export default class Form extends Component {
         noValidate={noHtml5Validate}
         onSubmit={this.onSubmit}
       >
-        {this.renderErrors()}
-        {uiSchema.expandAllLevel && (
-          <div className={pfx("expand-all")}>
-            <button onClick={this.toggleExpandAll} type="button">
-              {expandAll ? "- Collapse all" : "+ Expand all"}
-            </button>
-          </div>
-        )}
-        <_SchemaField
-          schema={schema}
-          expandAllLevel={uiSchema.expandAllLevel}
-          expandAll={expandAll}
-          levelReversal={uiSchema && uiSchema.levelReversal ? true : false}
-          uiSchema={uiSchema}
-          errorSchema={errorSchema}
-          idSchema={idSchema}
-          formData={formData}
-          onChange={this.onChange}
-          onBlur={this.onBlur}
-          onFocus={this.onFocus}
-          registry={registry}
-          safeRenderCompletion={safeRenderCompletion}
-          required={true}
-          disableFormJsonEdit={disableFormJsonEdit || false}
-          markdownRenderer={markdownRenderer}
-          renderTypesPopover={renderTypesPopover}
-          onRouteChange={onRouteChange}
-        />
-        {children ? (
-          children
-        ) : (
-          <p>
-            <button type="submit" className={pfx("btn btn-info")}>
-              Submit
-            </button>
-          </p>
-        )}
+        <ContextProvider value={dxInterface}>
+          {this.renderErrors()}
+          {uiSchema.expandAllLevel && (
+            <div className={pfx("expand-all")}>
+              <button onClick={this.toggleExpandAll} type="button">
+                {expandAll ? "- Collapse all" : "+ Expand all"}
+              </button>
+            </div>
+          )}
+          <_SchemaField
+            schema={schema}
+            expandAllLevel={uiSchema.expandAllLevel}
+            expandAll={expandAll}
+            levelReversal={uiSchema && uiSchema.levelReversal ? true : false}
+            uiSchema={uiSchema}
+            errorSchema={errorSchema}
+            idSchema={idSchema}
+            formData={formData}
+            onChange={this.onChange}
+            onBlur={this.onBlur}
+            onFocus={this.onFocus}
+            registry={registry}
+            safeRenderCompletion={safeRenderCompletion}
+            required={true}
+            disableFormJsonEdit={disableFormJsonEdit || false}
+          />
+          {children ? (
+            children
+          ) : (
+            <p>
+              <button type="submit" className={pfx("btn btn-info")}>
+                Submit
+              </button>
+            </p>
+          )}
+        </ContextProvider>
       </form>
     );
   }

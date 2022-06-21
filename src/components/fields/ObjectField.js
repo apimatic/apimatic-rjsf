@@ -191,9 +191,6 @@ function DefaultObjectFieldTemplate(props) {
           link={props.schema.dataTypeLink}
           type="object-type"
           markdown={markdown}
-          markdownRenderer={props.markdownRenderer}
-          renderTypesPopover={props.renderTypesPopover}
-          onRouteChange={props.onRouteChange}
         />
 
         {props.schema.paramType && (
@@ -206,9 +203,6 @@ function DefaultObjectFieldTemplate(props) {
           id={`${props.idSchema.$id}__description`}
           description={props.description}
           formContext={props.formContext}
-          markdownRenderer={props.markdownRenderer}
-          renderTypesPopover={props.renderTypesPopover}
-          onRouteChange={props.onRouteChange}
         />
       )}
 
@@ -389,9 +383,7 @@ class ObjectField extends Component {
       expandAll,
       fromDiscriminator,
       typeCombinatorTypes,
-      markdownRenderer,
-      renderTypesPopover,
-      onRouteChange
+      disciminatorObj
     } = this.props;
 
     const { definitions, fields, formContext } = registry;
@@ -432,9 +424,7 @@ class ObjectField extends Component {
       expandAll,
       fromDiscriminator,
       typeCombinatorTypes,
-      markdownRenderer,
-      renderTypesPopover,
-      onRouteChange
+      disciminatorObj
     };
 
     if (schema.properties && Object.keys(schema.properties).length > 0) {
@@ -503,9 +493,6 @@ class ObjectField extends Component {
             link={templateProps.schema.dataTypeLink}
             type="object-type"
             markdown={markdown}
-            markdownRenderer={templateProps.markdownRenderer}
-            renderTypesPopover={templateProps.renderTypesPopover}
-            onRouteChange={templateProps.onRouteChange}
           />
 
           {templateProps.schema.paramType && (
@@ -520,9 +507,6 @@ class ObjectField extends Component {
             id={`${templateProps.idSchema.$id}__description`}
             description={templateProps.description}
             formContext={templateProps.formContext}
-            markdownRenderer={templateProps.markdownRenderer}
-            renderTypesPopover={templateProps.renderTypesPopover}
-            onRouteChange={templateProps.onRouteChange}
           />
         )}
         <div style={{ position: "relative" }}>
@@ -626,9 +610,7 @@ class ObjectField extends Component {
               readonly={templateProps.readonly}
               disableFormJsonEdit={templateProps.disableFormJsonEdit}
               typeCombinatorTypes={typeCombinatorTypes}
-              markdownRenderer={templateProps.markdownRenderer}
-              renderTypesPopover={templateProps.renderTypesPopover}
-              onRouteChange={templateProps.onRouteChange}
+              disciminatorObj={templateProps.disciminatorObj}
             />
           ),
           name,

@@ -551,6 +551,11 @@ export function retrieveSchema(schema, definitions = {}, formData = {}) {
   } else if (schema.hasOwnProperty("dependencies")) {
     const resolvedSchema = resolveDependencies(schema, definitions, formData);
     return retrieveSchema(resolvedSchema, definitions, formData);
+  } else if (schema.hasOwnProperty("allOf")) {
+    schema.allOf = schema.allOf.map(schema =>
+      retrieveSchema(schema, definitions, formData)
+    );
+    return schema;
   } else {
     // No $ref or dependencies attribute found, returning the original schema.
     return schema;
