@@ -537,8 +537,11 @@ function findSchemaDefinition(ref, definitions = {}) {
 }
 
 function getStructure(modelName, structures) {
-  const linkTo = "$m/" + modelName;
-  const structure = structures.find(struct => struct.LinkTo === linkTo);
+  const structure = structures.find(struct => {
+    return (
+      struct.Name === modelName || mergeStructure.OriginalName === modelName
+    );
+  });
 
   return structure;
 }
@@ -572,6 +575,29 @@ function generateAdditionalProperties(type, linkMapper) {
   };
 }
 
+function mergeStructure(schema, structure, linkMapper) {
+  if (structure.Fields) {
+    structure.Fields.forEach(field => {
+      let property = schema.properties[field.Name];
+      if (property) {
+        if (property.type === "array") {
+          schema.properties[field.Name].items = {
+            ...property.items,
+            typeCombinatorTypes: field.TypeCombinatorTypes
+          };
+        } else {
+          schema.properties[field.Name] = {
+            ...property,
+            ...generateAdditionalProperties(field, linkMapper)
+          };
+        }
+      }
+    });
+  }
+
+  return schema;
+}
+
 function mergeFieldsData(refSchema, modelName, structure, linkMapper) {
   if (refSchema.hasOwnProperty("allOf")) {
     if (structure) {
@@ -580,25 +606,14 @@ function mergeFieldsData(refSchema, modelName, structure, linkMapper) {
       );
       const selectedSchema = refSchema.allOf[selectedIndex];
 
-      if (structure.Fields) {
-        structure.Fields.forEach(field => {
-          let property = selectedSchema.properties[field.Name];
-          if (property) {
-            if (property.type === "array") {
-              refSchema.allOf[selectedIndex].properties[field.Name].items = {
-                ...property.items,
-                typeCombinatorTypes: field.TypeCombinatorTypes
-              };
-            } else {
-              refSchema.allOf[selectedIndex].properties[field.Name] = {
-                ...property,
-                ...generateAdditionalProperties(field, linkMapper)
-              };
-            }
-          }
-        });
-      }
+      refSchema.allOf[selectedIndex] = mergeStructure(
+        selectedSchema,
+        structure,
+        linkMapper
+      );
     }
+  } else {
+    refSchema = mergeStructure(refSchema, structure, linkMapper);
   }
 
   return refSchema;
@@ -608,11 +623,12 @@ export function retrieveSchema(schema, formData = {}, dxInterface) {
   const { definitions = {}, structures = [], linkMapper } = dxInterface;
 
   if (schema.hasOwnProperty("$ref")) {
-    const modelName = schema["$ref"].replace("ModelSchemas#/", "");
-    const structure = getStructure(modelName, structures);
-
     // Retrieve the referenced schema definition.
     let $refSchema = findSchemaDefinition(schema.$ref, definitions);
+
+    const modelName = $refSchema.id || $refSchema.title;
+    const structure = getStructure(modelName, structures);
+
     $refSchema = mergeFieldsData($refSchema, modelName, structure, linkMapper);
 
     // Drop the $ref property of the source schema.

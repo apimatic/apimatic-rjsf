@@ -31,8 +31,8 @@ const COMPONENT_TYPES = {
 const MERGE_ALLOF_OPTIONS = {
   ignoreAdditionalProperties: true,
   resolvers: {
-    id: function() {
-      return "";
+    id: function(values) {
+      return values.length ? values[0] : "";
     },
     description: function(values) {
       return values.length ? values[0] : "";
