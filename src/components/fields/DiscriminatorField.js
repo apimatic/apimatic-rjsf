@@ -260,7 +260,7 @@ class DiscriminatorField extends React.Component {
 
   selectOnChange = (value, initialRender) => {
     const { onChange, parentPath, registry } = this.props;
-    const { definitions } = registry;
+    const { dxInterface } = registry;
     const { formState, selectedSchema } = this.state;
 
     // Don't do anything on same item click
@@ -275,8 +275,8 @@ class DiscriminatorField extends React.Component {
     let defaultFormState = getDefaultFormState(
       value.schema,
       getInitialFormData(value.schema, value.index, this.state.caseOf),
-      definitions,
-      0
+      0,
+      dxInterface
     );
     const path = getOneAnyOfPath(parentPath, defaultFormState);
 
@@ -301,7 +301,7 @@ class DiscriminatorField extends React.Component {
 
   toggleCheckbox = () => {
     const { formData, schema, registry, onChange } = this.props;
-    const { definitions } = registry;
+    const { dxInterface } = registry;
 
     this.setState(st => {
       const { checked } = st;
@@ -316,8 +316,8 @@ class DiscriminatorField extends React.Component {
           initialSchemaIndex,
           this.state.caseOf
         ),
-        definitions,
-        0
+        0,
+        dxInterface
       );
 
       onChange(
@@ -349,13 +349,15 @@ class DiscriminatorField extends React.Component {
   };
 
   getSelectOptions = () => {
-    const { schema, typeCombinatorTypes, definitions, formData } = this.props;
+    const { schema, typeCombinatorTypes, formData, registry } = this.props;
+    const { dxInterface } = registry;
+
     const multipleSchema = schema.oneOf || schema.anyOf;
 
     return multipleSchema.reduce(
       ({ selectOptions, charCounts }, schema, index) => {
         if (schema.hasOwnProperty("$ref")) {
-          schema = retrieveSchema(schema, definitions, formData);
+          schema = retrieveSchema(schema, formData, dxInterface);
         }
 
         const type = typeCombinatorTypes && typeCombinatorTypes[index].DataType;

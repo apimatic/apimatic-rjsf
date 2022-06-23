@@ -247,7 +247,7 @@ function SchemaFieldRender(props) {
     disciminatorObj = {}
   } = props;
   const {
-    definitions,
+    dxInterface,
     fields,
     formContext,
     FieldTemplate = DefaultTemplate
@@ -257,7 +257,7 @@ function SchemaFieldRender(props) {
   const isDiscriminator =
     discriminatorProperty && discriminatorProperty === name;
 
-  let schema = retrieveSchema(props.schema, definitions, formData);
+  let schema = retrieveSchema(props.schema, formData, dxInterface);
 
   if (schema.allOf && !schema.typeCombinatorTypes) {
     schema = mergeAllOf(schema, MERGE_ALLOF_OPTIONS);
@@ -289,10 +289,10 @@ function SchemaFieldRender(props) {
   let { label: displayLabel = true } = uiOptions;
   if (schema.type === "array") {
     displayLabel =
-      isMultiSelect(schema, definitions) ||
-      isFilesArray(schema, uiSchema, definitions);
+      isMultiSelect(schema, dxInterface) ||
+      isFilesArray(schema, uiSchema, dxInterface);
   }
-  if (schema.type === "object" && !schema.discriminator) {
+  if (schema.type === "object" && !schema.typeCombinatorTypes) {
     displayLabel = false;
   }
   if (schema.type === "boolean" && !uiSchema["ui:widget"]) {
@@ -359,7 +359,7 @@ function SchemaFieldRender(props) {
   const field = (
     <FieldComponent
       {...props}
-      definitions={definitions}
+      definitions={dxInterface.definitions}
       schema={schema}
       uiSchema={{ ...uiSchema, classNames: undefined }}
       disabled={disabled}

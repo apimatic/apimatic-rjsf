@@ -33,8 +33,8 @@ function StringField(props) {
   const isDiscriminator =
     discriminatorProperty && discriminatorProperty === name;
   const { title, format } = schema;
-  const { widgets, formContext } = registry;
-  const enumOptions = isSelect(schema) && optionsList(schema);
+  const { widgets, formContext, dxInterface } = registry;
+  const enumOptions = isSelect(schema, dxInterface) && optionsList(schema);
   const defaultWidget = format || (enumOptions ? "select" : "text");
   const { widget = defaultWidget, placeholder = "", ...options } = getUiOptions(
     uiSchema

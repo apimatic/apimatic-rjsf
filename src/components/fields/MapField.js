@@ -403,12 +403,12 @@ class MapField extends Component {
     }
 
     const { schema, registry } = this.props;
-    const { definitions } = registry;
+    const { dxInterface } = registry;
     let itemSchema = schema.additionalProperties;
     let newHash = this.state.hash.slice();
     newHash.push({
       k: "key" + index,
-      v: getDefaultFormState(itemSchema, undefined, definitions)
+      v: getDefaultFormState(itemSchema, undefined, undefined, dxInterface)
     });
     this.setState(
       {
@@ -437,7 +437,8 @@ class MapField extends Component {
           key0: getDefaultFormState(
             this.props.schema.additionalProperties,
             undefined,
-            this.props.registry.definitions
+            undefined,
+            this.props.registry.dxInterface
           )
         });
       }
@@ -468,11 +469,12 @@ class MapField extends Component {
       typeCombinatorTypes
     } = this.props;
     const title = schema.title || name;
-    const { definitions, fields } = registry;
+    const { fields, dxInterface } = registry;
     const { TitleField, DescriptionField } = fields;
     const addPropsSchema = retrieveSchema(
       schema.additionalProperties,
-      definitions
+      formData,
+      dxInterface
     );
     const itemSchema = { ...addPropsSchema, description: undefined };
     const duplicationCounts = this.getDuplicateCounts(this.state.hash);
@@ -489,8 +491,8 @@ class MapField extends Component {
         const itemIdSchema = toIdSchema(
           itemSchema,
           itemIdPrefix,
-          definitions,
-          item
+          item,
+          dxInterface
         );
         const collapse = this.state.expandInfo[pair.k] ? false : true;
         return this.renderMapFieldItem({

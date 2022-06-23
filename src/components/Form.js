@@ -47,12 +47,10 @@ export default class Form extends Component {
     const edit = typeof props.formData !== "undefined";
     const liveValidate = props.liveValidate || this.props.liveValidate;
     const mustValidate = edit && !props.noValidate && liveValidate;
-    const {
-      dxInterface: { definitions }
-    } = props;
+    const { dxInterface } = props;
     const formData = props.dontAssignDefaults
       ? props.formData
-      : getDefaultFormState(schema, props.formData, definitions);
+      : getDefaultFormState(schema, props.formData, undefined, dxInterface);
     const newFormData = unwrapFormData(formData);
     const { errors, errorSchema } = mustValidate
       ? this.validate(newFormData, schema, formData)
@@ -63,8 +61,8 @@ export default class Form extends Component {
     const idSchema = toIdSchema(
       schema,
       uiSchema["ui:rootFieldId"],
-      definitions,
-      formData
+      formData,
+      dxInterface
     );
     return {
       schema,
@@ -179,9 +177,7 @@ export default class Form extends Component {
   getRegistry() {
     // For BC, accept passed SchemaField and TitleField props and pass them to
     // the "fields" registry one.
-    const {
-      dxInterface: { definitions }
-    } = this.props;
+    const { dxInterface } = this.props;
     const { fields, widgets } = getDefaultRegistry();
     return {
       fields: { ...fields, ...this.props.fields },
@@ -189,7 +185,7 @@ export default class Form extends Component {
       ArrayFieldTemplate: this.props.ArrayFieldTemplate,
       ObjectFieldTemplate: this.props.ObjectFieldTemplate,
       FieldTemplate: this.props.FieldTemplate,
-      definitions: definitions || {},
+      dxInterface: dxInterface || {},
       formContext: this.props.formContext || {}
     };
   }

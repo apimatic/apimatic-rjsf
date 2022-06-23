@@ -338,7 +338,8 @@ class ObjectField extends Component {
           getDefaultFormState(
             this.props.schema,
             this.props.formData,
-            this.props.definitions
+            undefined,
+            this.props.registry.dxInterface
           )
         );
       }
@@ -386,9 +387,9 @@ class ObjectField extends Component {
       disciminatorObj
     } = this.props;
 
-    const { definitions, fields, formContext } = registry;
+    const { fields, formContext, dxInterface } = registry;
     const { SchemaField, TitleField, DescriptionField } = fields;
-    const schema = retrieveSchema(this.props.schema, definitions, formData);
+    const schema = retrieveSchema(this.props.schema, formData, dxInterface);
     const title = name;
     // schema.title === undefined
     //   ? name

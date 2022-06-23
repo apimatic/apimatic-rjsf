@@ -137,13 +137,8 @@ export function getWidget(schema, widget, registeredWidgets = {}) {
   throw new Error(`No widget "${widget}" for type "${type}"`);
 }
 
-function computeDefaults(
-  schema,
-  parentDefaults,
-  definitions = {},
-  schemaIndex = 0,
-  isNestedDiscriminator
-) {
+function computeDefaults(schema, parentDefaults, schemaIndex = 0, dxInterface) {
+  const { definitions = {} } = dxInterface;
   // Compute the defaults recursively: give highest priority to deepest nodes.
   let defaults = parentDefaults;
   if (isObject(defaults) && isObject(schema.default)) {
@@ -156,10 +151,10 @@ function computeDefaults(
   } else if ("$ref" in schema) {
     // Use referenced schema defaults for this node.
     const refSchema = findSchemaDefinition(schema.$ref, definitions);
-    return computeDefaults(refSchema, defaults, definitions);
+    return computeDefaults(refSchema, defaults, undefined, dxInterface);
   } else if (isFixedItems(schema)) {
     defaults = schema.items.map(itemSchema =>
-      computeDefaults(itemSchema, undefined, definitions)
+      computeDefaults(itemSchema, undefined, undefined, dxInterface)
     );
   } else if ("oneOf" in schema) {
     defaults = {
@@ -168,9 +163,8 @@ function computeDefaults(
       value: computeDefaults(
         schema.oneOf[schemaIndex],
         undefined,
-        definitions,
         schemaIndex,
-        true
+        dxInterface
       )
     };
   } else if ("anyOf" in schema) {
@@ -180,9 +174,8 @@ function computeDefaults(
       value: computeDefaults(
         schema.anyOf[schemaIndex],
         undefined,
-        definitions,
         schemaIndex,
-        true
+        dxInterface
       )
     };
   }
@@ -198,7 +191,8 @@ function computeDefaults(
         acc[key] = computeDefaults(
           schema.properties[key],
           (defaults || {})[key],
-          definitions
+          undefined,
+          dxInterface
         );
         return acc;
       }, {});
@@ -212,12 +206,13 @@ function computeDefaults(
           return computeDefaults(
             schema.items[idx] || schema.additionalItems || {},
             item,
-            definitions
+            undefined,
+            dxInterface
           );
         });
       }
       if (schema.minItems) {
-        if (!isMultiSelect(schema, definitions)) {
+        if (!isMultiSelect(schema, dxInterface)) {
           const defaultsLength = defaults ? defaults.length : 0;
           if (schema.minItems > defaultsLength) {
             const defaultEntries = defaults || [];
@@ -225,7 +220,12 @@ function computeDefaults(
             const fillerEntries = new Array(
               schema.minItems - defaultsLength
             ).fill(
-              computeDefaults(schema.items, schema.items.defaults, definitions)
+              computeDefaults(
+                schema.items,
+                schema.items.defaults,
+                undefined,
+                dxInterface
+              )
             );
             // then fill up the rest with either the item default or empty, up to minItems
 
@@ -245,18 +245,19 @@ function computeDefaults(
 export function getDefaultFormState(
   _schema,
   formData,
-  definitions = {},
-  schemaIndex = 0
+  schemaIndex = 0,
+  dxInterface
 ) {
   if (!isObject(_schema)) {
     throw new Error("Invalid schema: " + _schema);
   }
-  const schema = retrieveSchema(_schema, definitions, formData);
+  // clear
+  const schema = retrieveSchema(_schema, formData, dxInterface);
   const defaults = computeDefaults(
     schema,
     _schema.default,
-    definitions,
-    schemaIndex
+    schemaIndex,
+    dxInterface
   );
   if (typeof formData === "undefined") {
     // No form data? Use schema defaults.
@@ -445,8 +446,9 @@ export function toConstant(schema) {
   }
 }
 
-export function isSelect(_schema, definitions = {}) {
-  const schema = retrieveSchema(_schema, definitions);
+export function isSelect(_schema, dxInterface) {
+  // clear
+  const schema = retrieveSchema(_schema, undefined, dxInterface);
   const altSchemas = schema.oneOf || schema.anyOf;
   if (Array.isArray(schema.enum)) {
     return true;
@@ -456,18 +458,19 @@ export function isSelect(_schema, definitions = {}) {
   return false;
 }
 
-export function isMultiSelect(schema, definitions = {}) {
+export function isMultiSelect(schema, dxInterface) {
   if (!schema.uniqueItems || !schema.items) {
     return false;
   }
-  return isSelect(schema.items, definitions);
+  return isSelect(schema.items, dxInterface);
 }
 
-export function isFilesArray(schema, uiSchema, definitions = {}) {
+export function isFilesArray(schema, uiSchema, dxInterface) {
   if (uiSchema["ui:widget"] === "files") {
     return true;
   } else if (schema.items) {
-    const itemsSchema = retrieveSchema(schema.items, definitions);
+    // clear
+    const itemsSchema = retrieveSchema(schema.items, undefined, dxInterface);
     return itemsSchema.type === "string" && itemsSchema.format === "data-url";
   }
   return false;
@@ -533,10 +536,85 @@ function findSchemaDefinition(ref, definitions = {}) {
   throw new Error(`Could not find a definition for ${$ref}.`);
 }
 
-export function retrieveSchema(schema, definitions = {}, formData = {}) {
+function getStructure(modelName, structures) {
+  const linkTo = "$m/" + modelName;
+  const structure = structures.find(struct => struct.LinkTo === linkTo);
+
+  return structure;
+}
+
+export function getDescription(type) {
+  return type.Description
+    ? type.Description.trim() !== "-"
+      ? type.Description
+      : undefined
+    : undefined;
+}
+
+function getDataTypeDisplayText(type) {
+  return type.DataType ? type.DataType : undefined;
+}
+
+function getUrl(linkMapper, link) {
+  return linkMapper(link);
+}
+
+function generateAdditionalProperties(type, linkMapper) {
+  return {
+    description: getDescription(type),
+    dataTypeDisplayText: getDataTypeDisplayText(type),
+    dataTypeLink: type.LinkTo ? getUrl(linkMapper, type.LinkTo) : undefined,
+    dataTypeMarkdown: type.DataTypeMarkdown,
+    paramType: type.ParamType,
+    title: type.Name,
+    typeCombinatorTypes: type.TypeCombinatorTypes,
+    discriminator: type.Discriminator
+  };
+}
+
+function mergeFieldsData(refSchema, modelName, structure, linkMapper) {
+  if (refSchema.hasOwnProperty("allOf")) {
+    if (structure) {
+      const selectedIndex = refSchema.allOf.findIndex(
+        item => item.id === modelName
+      );
+      const selectedSchema = refSchema.allOf[selectedIndex];
+
+      if (structure.Fields) {
+        structure.Fields.forEach(field => {
+          let property = selectedSchema.properties[field.Name];
+          if (property) {
+            if (property.type === "array") {
+              refSchema.allOf[selectedIndex].properties[field.Name].items = {
+                ...property.items,
+                typeCombinatorTypes: field.TypeCombinatorTypes
+              };
+            } else {
+              refSchema.allOf[selectedIndex].properties[field.Name] = {
+                ...property,
+                ...generateAdditionalProperties(field, linkMapper)
+              };
+            }
+          }
+        });
+      }
+    }
+  }
+
+  return refSchema;
+}
+
+export function retrieveSchema(schema, formData = {}, dxInterface) {
+  const { definitions = {}, structures = [], linkMapper } = dxInterface;
+
   if (schema.hasOwnProperty("$ref")) {
+    const modelName = schema["$ref"].replace("ModelSchemas#/", "");
+    const structure = getStructure(modelName, structures);
+
     // Retrieve the referenced schema definition.
-    const $refSchema = findSchemaDefinition(schema.$ref, definitions);
+    let $refSchema = findSchemaDefinition(schema.$ref, definitions);
+    $refSchema = mergeFieldsData($refSchema, modelName, structure, linkMapper);
+
     // Drop the $ref property of the source schema.
     const { $ref, ...localSchema } = schema;
     // Update referenced schema definition with local schema properties.
@@ -545,16 +623,24 @@ export function retrieveSchema(schema, definitions = {}, formData = {}) {
         ...$refSchema,
         ...localSchema
       },
-      definitions,
-      formData
+      formData,
+      dxInterface
     );
   } else if (schema.hasOwnProperty("dependencies")) {
-    const resolvedSchema = resolveDependencies(schema, definitions, formData);
-    return retrieveSchema(resolvedSchema, definitions, formData);
+    const resolvedSchema = resolveDependencies(schema, formData, dxInterface);
+
+    return retrieveSchema(resolvedSchema, formData, dxInterface);
   } else if (schema.hasOwnProperty("allOf")) {
-    schema.allOf = schema.allOf.map(schema =>
-      retrieveSchema(schema, definitions, formData)
+    const name = schema.id || schema.title;
+    const structure = getStructure(name, structures);
+
+    let $refSchema = schema;
+    $refSchema = mergeFieldsData($refSchema, name, structure, linkMapper);
+
+    $refSchema.allOf = $refSchema.allOf.map(schema =>
+      retrieveSchema(schema, formData, dxInterface)
     );
+
     return schema;
   } else {
     // No $ref or dependencies attribute found, returning the original schema.
@@ -562,7 +648,7 @@ export function retrieveSchema(schema, definitions = {}, formData = {}) {
   }
 }
 
-function resolveDependencies(schema, definitions, formData) {
+function resolveDependencies(schema, formData, dxInterface) {
   // Drop the dependencies from the source schema.
   let { dependencies = {}, ...resolvedSchema } = schema;
   // Process dependencies updating the local schema properties as appropriate.
@@ -577,10 +663,10 @@ function resolveDependencies(schema, definitions, formData) {
     } else if (isObject(dependencyValue)) {
       resolvedSchema = withDependentSchema(
         resolvedSchema,
-        definitions,
         formData,
         dependencyKey,
-        dependencyValue
+        dependencyValue,
+        dxInterface
       );
     }
   }
@@ -602,35 +688,37 @@ function withDependentProperties(schema, additionallyRequired) {
 
 function withDependentSchema(
   schema,
-  definitions,
   formData,
   dependencyKey,
-  dependencyValue
+  dependencyValue,
+  dxInterface
 ) {
+  // clear
   let { oneOf, ...dependentSchema } = retrieveSchema(
     dependencyValue,
-    definitions,
-    formData
+    formData,
+    dxInterface
   );
   schema = mergeSchemas(schema, dependentSchema);
   return oneOf === undefined
     ? schema
     : withExactlyOneSubschema(
         schema,
-        definitions,
         formData,
         dependencyKey,
-        oneOf
+        oneOf,
+        dxInterface
       );
 }
 
 function withExactlyOneSubschema(
   schema,
-  definitions,
   formData,
   dependencyKey,
-  oneOf
+  oneOf,
+  dxInterface
 ) {
+  const { definitions } = dxInterface;
   if (!Array.isArray(oneOf)) {
     throw new Error(
       `invalid oneOf: it is some ${typeof oneOf} instead of an array`
@@ -674,9 +762,11 @@ function withExactlyOneSubschema(
     ...subschema,
     properties: dependentSubschema
   };
+
   return mergeSchemas(
     schema,
-    retrieveSchema(dependentSchema, definitions, formData)
+    // clear
+    retrieveSchema(dependentSchema, formData, dxInterface)
   );
 }
 
@@ -770,16 +860,17 @@ export function shouldRender(comp, nextProps, nextState) {
   return !deepEquals(props, nextProps) || !deepEquals(state, nextState);
 }
 
-export function toIdSchema(schema, id, definitions, formData = {}) {
+export function toIdSchema(schema, id, formData = {}, dxInterface) {
   const idSchema = {
     $id: id || "root"
   };
   if ("$ref" in schema) {
-    const _schema = retrieveSchema(schema, definitions, formData);
-    return toIdSchema(_schema, id, definitions, formData);
+    // clear
+    const _schema = retrieveSchema(schema, formData, dxInterface);
+    return toIdSchema(_schema, id, formData, dxInterface);
   }
   if ("items" in schema && !schema.items.$ref) {
-    return toIdSchema(schema.items, id, definitions, formData);
+    return toIdSchema(schema.items, id, formData, dxInterface);
   }
   if (schema.type !== "object") {
     return idSchema;
@@ -787,7 +878,7 @@ export function toIdSchema(schema, id, definitions, formData = {}) {
   for (const name in schema.properties || {}) {
     const field = schema.properties[name];
     const fieldId = idSchema.$id + "_" + name;
-    idSchema[name] = toIdSchema(field, fieldId, definitions, formData[name]);
+    idSchema[name] = toIdSchema(field, fieldId, formData[name], dxInterface);
   }
   return idSchema;
 }
