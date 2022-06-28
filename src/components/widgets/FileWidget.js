@@ -53,9 +53,12 @@ function FilesInfo(props) {
 
 function extractFileInfo(dataURLs) {
   return dataURLs
-    .filter(dataURL => typeof dataURL !== "undefined")
+    .filter(dataURL => {
+      return typeof dataURL !== "undefined" && dataURL.includes(",");
+    })
     .map(dataURL => {
       const { blob, name } = dataURItoBlob(dataURL);
+
       return {
         name: name,
         size: blob.size,

@@ -576,7 +576,7 @@ function generateAdditionalProperties(type, linkMapper) {
 }
 
 function mergeStructure(schema, structure, linkMapper) {
-  if (structure.Fields) {
+  if (structure && structure.Fields) {
     structure.Fields.forEach(field => {
       let property = schema.properties[field.Name];
       if (property) {
@@ -600,18 +600,16 @@ function mergeStructure(schema, structure, linkMapper) {
 
 function mergeFieldsData(refSchema, modelName, structure, linkMapper) {
   if (refSchema.hasOwnProperty("allOf")) {
-    if (structure) {
-      const selectedIndex = refSchema.allOf.findIndex(
-        item => item.id === modelName
-      );
-      const selectedSchema = refSchema.allOf[selectedIndex];
+    const selectedIndex = refSchema.allOf.findIndex(
+      item => item.id === modelName
+    );
+    const selectedSchema = refSchema.allOf[selectedIndex];
 
-      refSchema.allOf[selectedIndex] = mergeStructure(
-        selectedSchema,
-        structure,
-        linkMapper
-      );
-    }
+    refSchema.allOf[selectedIndex] = mergeStructure(
+      selectedSchema,
+      structure,
+      linkMapper
+    );
   } else {
     refSchema = mergeStructure(refSchema, structure, linkMapper);
   }

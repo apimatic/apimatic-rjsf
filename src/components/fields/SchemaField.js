@@ -39,6 +39,9 @@ const MERGE_ALLOF_OPTIONS = {
     },
     dataTypeLink: function(values) {
       return values.length ? values[0] : "";
+    },
+    dataTypeDisplayText: function(values) {
+      return values.length ? values[0] : "";
     }
   }
 };
