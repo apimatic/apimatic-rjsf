@@ -547,11 +547,13 @@ function getStructure(modelName, structures) {
 }
 
 export function getDescription(type) {
-  return type.Description
-    ? type.Description.trim() !== "-"
-      ? type.Description
-      : undefined
-    : undefined;
+  const { Description = "" } = type;
+  const description = Description.trim();
+  const isDescription = Boolean(
+    description !== "-" && !description.includes("| Type | Value |")
+  );
+
+  return isDescription ? description : undefined;
 }
 
 function getDataTypeDisplayText(type) {
