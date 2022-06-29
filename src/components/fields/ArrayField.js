@@ -634,11 +634,8 @@ class ArrayField extends Component {
       registry = getDefaultRegistry()
     } = this.props;
     const items = this.props.formData;
-    const { widgets, definitions, formContext, structures } = registry;
-    const itemsSchema = retrieveSchema(schema.items, formData, {
-      definitions,
-      structures
-    });
+    const { widgets, dxInterface, formContext } = registry;
+    const itemsSchema = retrieveSchema(schema.items, formData, dxInterface);
     const enumOptions = optionsList(itemsSchema);
     const { widget = "select", ...options } = {
       ...getUiOptions(uiSchema),

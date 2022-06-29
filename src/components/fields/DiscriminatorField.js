@@ -361,7 +361,9 @@ class DiscriminatorField extends React.Component {
         }
 
         const type = typeCombinatorTypes && typeCombinatorTypes[index].DataType;
-        const label = type ? type : getMultipleLabel(schema) || schema.type;
+        const label = type
+          ? type
+          : getMultipleLabel(schema) || schema.type || "";
 
         selectOptions.push({
           label,

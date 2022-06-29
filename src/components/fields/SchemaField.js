@@ -31,6 +31,9 @@ const COMPONENT_TYPES = {
 const MERGE_ALLOF_OPTIONS = {
   ignoreAdditionalProperties: true,
   resolvers: {
+    defaultResolver: function(values) {
+      return values.length ? values[0] : "";
+    },
     id: function(values) {
       return values.length ? values[0] : "";
     },
@@ -67,7 +70,6 @@ function getFieldComponent(schema, uiSchema, idSchema, fields) {
     return fields["DiscrimatorWrapper"];
   }
 
-  // console.log(componentName);
   return componentName in fields
     ? fields[componentName]
     : () => {

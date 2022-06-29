@@ -251,7 +251,6 @@ export function getDefaultFormState(
   if (!isObject(_schema)) {
     throw new Error("Invalid schema: " + _schema);
   }
-  // clear
   const schema = retrieveSchema(_schema, formData, dxInterface);
   const defaults = computeDefaults(
     schema,
@@ -515,6 +514,7 @@ export function optionsList(schema) {
 
 function findSchemaDefinition(ref, definitions = {}) {
   const $ref = decodeURI(ref);
+
   // Extract and use the referenced definition if we have it.
   const match = /^ModelSchemas#\/(.*)$/.exec($ref);
   if (match && match[1]) {
@@ -538,9 +538,7 @@ function findSchemaDefinition(ref, definitions = {}) {
 
 function getStructure(modelName, structures) {
   const structure = structures.find(struct => {
-    return (
-      struct.Name === modelName || mergeStructure.OriginalName === modelName
-    );
+    return struct.Name === modelName || struct.OriginalName === modelName;
   });
 
   return structure;
@@ -548,7 +546,7 @@ function getStructure(modelName, structures) {
 
 export function getDescription(type) {
   const { Description = "" } = type;
-  const description = Description.trim();
+  const description = typeof Description === "string" ? Description.trim() : "";
   const isDescription = Boolean(
     description !== "-" && !description.includes("| Type | Value |")
   );
@@ -580,15 +578,15 @@ function generateAdditionalProperties(type, linkMapper) {
 function mergeStructure(schema, structure, linkMapper) {
   if (structure && structure.Fields) {
     structure.Fields.forEach(field => {
-      let property = schema.properties[field.Name];
+      let property = schema.properties[field.GenericName];
       if (property) {
         if (property.type === "array") {
-          schema.properties[field.Name].items = {
+          schema.properties[field.GenericName].items = {
             ...property.items,
             typeCombinatorTypes: field.TypeCombinatorTypes
           };
         } else {
-          schema.properties[field.Name] = {
+          schema.properties[field.GenericName] = {
             ...property,
             ...generateAdditionalProperties(field, linkMapper)
           };
@@ -628,7 +626,6 @@ export function retrieveSchema(schema, formData = {}, dxInterface) {
 
     const modelName = $refSchema.id || $refSchema.title;
     const structure = getStructure(modelName, structures);
-
     $refSchema = mergeFieldsData($refSchema, modelName, structure, linkMapper);
 
     // Drop the $ref property of the source schema.
@@ -709,7 +706,6 @@ function withDependentSchema(
   dependencyValue,
   dxInterface
 ) {
-  // clear
   let { oneOf, ...dependentSchema } = retrieveSchema(
     dependencyValue,
     formData,
@@ -778,10 +774,8 @@ function withExactlyOneSubschema(
     ...subschema,
     properties: dependentSubschema
   };
-
   return mergeSchemas(
     schema,
-    // clear
     retrieveSchema(dependentSchema, formData, dxInterface)
   );
 }
@@ -881,7 +875,6 @@ export function toIdSchema(schema, id, formData = {}, dxInterface) {
     $id: id || "root"
   };
   if ("$ref" in schema) {
-    // clear
     const _schema = retrieveSchema(schema, formData, dxInterface);
     return toIdSchema(_schema, id, formData, dxInterface);
   }
