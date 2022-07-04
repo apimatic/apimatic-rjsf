@@ -583,7 +583,8 @@ function mergeStructure(schema, structure, linkMapper) {
         if (property.type === "array") {
           schema.properties[field.GenericName].items = {
             ...property.items,
-            typeCombinatorTypes: field.TypeCombinatorTypes
+            typeCombinatorTypes: field.TypeCombinatorTypes,
+            discriminator: field.Discriminator
           };
         } else {
           schema.properties[field.GenericName] = {
@@ -603,13 +604,16 @@ function mergeFieldsData(refSchema, modelName, structure, linkMapper) {
     const selectedIndex = refSchema.allOf.findIndex(
       item => item.id === modelName
     );
-    const selectedSchema = refSchema.allOf[selectedIndex];
 
-    refSchema.allOf[selectedIndex] = mergeStructure(
-      selectedSchema,
-      structure,
-      linkMapper
-    );
+    if (selectedIndex) {
+      const selectedSchema = refSchema.allOf[selectedIndex];
+
+      refSchema.allOf[selectedIndex] = mergeStructure(
+        selectedSchema,
+        structure,
+        linkMapper
+      );
+    }
   } else {
     refSchema = mergeStructure(refSchema, structure, linkMapper);
   }

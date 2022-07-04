@@ -5,8 +5,10 @@ import { rangeSpec } from "../../utils";
 
 function UpDownWidget(props) {
   const {
-    registry: {
-      widgets: { BaseInput }
+    dxInterface: {
+      registry: {
+        widgets: { BaseInput }
+      }
     }
   } = props;
   return <BaseInput type="number" {...props} {...rangeSpec(props.schema)} />;

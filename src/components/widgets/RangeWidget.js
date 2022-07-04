@@ -7,8 +7,10 @@ function RangeWidget(props) {
   const {
     schema,
     value,
-    registry: {
-      widgets: { BaseInput }
+    dxInterface: {
+      registry: {
+        widgets: { BaseInput }
+      }
     }
   } = props;
   return (

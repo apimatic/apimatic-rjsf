@@ -59,7 +59,6 @@ function DateTimeWidget(props) {
       disabled={disabled}
       required={required}
       readOnly={readonly}
-      readOnly={readonly}
       autoFocus={autofocus}
       onBlur={onBlur}
       onFocus={onFocus}

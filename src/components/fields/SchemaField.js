@@ -249,7 +249,7 @@ function SchemaFieldRender(props) {
     registry = getDefaultRegistry(),
     anyOfTitle,
     typeCombinatorTypes,
-    disciminatorObj = {}
+    discriminatorObj = {}
   } = props;
   const {
     dxInterface,
@@ -258,7 +258,11 @@ function SchemaFieldRender(props) {
     FieldTemplate = DefaultTemplate
   } = registry;
 
-  const { name: discriminatorProperty } = disciminatorObj;
+  if (props.schema.discriminator && !discriminatorObj.name) {
+    discriminatorObj.name = props.schema.discriminator;
+  }
+
+  const { name: discriminatorProperty } = discriminatorObj;
   const isDiscriminator =
     discriminatorProperty && discriminatorProperty === name;
 
@@ -357,7 +361,7 @@ function SchemaFieldRender(props) {
     schema,
     uiSchema,
     anyOfTitle,
-    disciminatorObj
+    discriminatorObj
   };
 
   // See #439: uiSchema: Don't pass consumed class names to child components
@@ -375,6 +379,7 @@ function SchemaFieldRender(props) {
       schemaIndex={schemaIndex}
       typeCombinatorTypes={_typeCombinatorTypes}
       fieldProps={fieldProps}
+      discriminatorObj={discriminatorObj}
     />
   );
 
@@ -419,16 +424,15 @@ if (process.env.NODE_ENV !== "production") {
     formData: PropTypes.any,
     errorSchema: PropTypes.object,
     schemaIndex: PropTypes.number,
-    registry: PropTypes.shape({
-      widgets: PropTypes.objectOf(
-        PropTypes.oneOfType([PropTypes.func, PropTypes.object])
-      ).isRequired,
-      fields: PropTypes.objectOf(PropTypes.func).isRequired,
-      definitions: PropTypes.object.isRequired,
-      ArrayFieldTemplate: PropTypes.func,
-      ObjectFieldTemplate: PropTypes.func,
-      FieldTemplate: PropTypes.func,
-      formContext: PropTypes.object.isRequired
+    dxInterface: PropTypes.shape({
+      registry: PropTypes.shape({
+        widgets: PropTypes.objectOf(
+          PropTypes.oneOfType([PropTypes.func, PropTypes.object])
+        ).isRequired,
+        fields: PropTypes.objectOf(PropTypes.func).isRequired,
+        definitions: PropTypes.object.isRequired,
+        formContext: PropTypes.object.isRequired
+      })
     })
   };
 }

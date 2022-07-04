@@ -384,7 +384,7 @@ class ObjectField extends Component {
       expandAll,
       fromDiscriminator,
       typeCombinatorTypes,
-      disciminatorObj
+      discriminatorObj
     } = this.props;
 
     const { fields, formContext, dxInterface } = registry;
@@ -425,7 +425,7 @@ class ObjectField extends Component {
       expandAll,
       fromDiscriminator,
       typeCombinatorTypes,
-      disciminatorObj
+      discriminatorObj
     };
 
     if (schema.properties && Object.keys(schema.properties).length > 0) {
@@ -611,7 +611,7 @@ class ObjectField extends Component {
               readonly={templateProps.readonly}
               disableFormJsonEdit={templateProps.disableFormJsonEdit}
               typeCombinatorTypes={typeCombinatorTypes}
-              disciminatorObj={templateProps.disciminatorObj}
+              discriminatorObj={templateProps.discriminatorObj}
             />
           ),
           name,
@@ -637,13 +637,15 @@ if (process.env.NODE_ENV !== "production") {
     required: PropTypes.bool,
     disabled: PropTypes.bool,
     readonly: PropTypes.bool,
-    registry: PropTypes.shape({
-      widgets: PropTypes.objectOf(
-        PropTypes.oneOfType([PropTypes.func, PropTypes.object])
-      ).isRequired,
-      fields: PropTypes.objectOf(PropTypes.func).isRequired,
-      definitions: PropTypes.object.isRequired,
-      formContext: PropTypes.object.isRequired
+    dxInterface: PropTypes.shape({
+      registry: PropTypes.shape({
+        widgets: PropTypes.objectOf(
+          PropTypes.oneOfType([PropTypes.func, PropTypes.object])
+        ).isRequired,
+        fields: PropTypes.objectOf(PropTypes.func).isRequired,
+        definitions: PropTypes.object.isRequired,
+        formContext: PropTypes.object.isRequired
+      })
     })
   };
 }

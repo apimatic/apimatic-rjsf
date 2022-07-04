@@ -19,6 +19,7 @@ const CHAR_THRESHOLD = 120;
 export function generateFormDataForMultipleSchema(schema, index, caseOf) {
   if (isMultipleSchema(schema)) {
     const _schema = schema.oneOf ? schema.oneOf[index] : schema.anyOf[index];
+
     return {
       $$__case: index,
       $$__case_of: caseOf,
@@ -194,7 +195,7 @@ class DiscriminatorField extends React.Component {
       childIsNestedMultipleSchema
     );
     const uiTitle = selectOptions[selectedSchema.index].label;
-    let disciminatorObj = undefined;
+    let discriminatorObj = undefined;
 
     const discriminatorChildFieldsetDepth = depth + 1;
     const childDepth = isDiscriminatorChild ? depth + 2 : depth + 1;
@@ -207,7 +208,7 @@ class DiscriminatorField extends React.Component {
     let typeCombinatorSubTypes;
 
     if (typeCombinatorTypes) {
-      disciminatorObj = {
+      discriminatorObj = {
         name: schema.discriminator,
         value: typeCombinatorTypes[selectedSchema.index].DiscriminatorValue
       };
@@ -248,7 +249,7 @@ class DiscriminatorField extends React.Component {
               anyOfTitle={this.props.schema.title || this.props.anyOfTitle}
               typeCombinatorTypes={typeCombinatorSubTypes}
               parentPath={getOneAnyOfPath(parentPath, formData)}
-              disciminatorObj={disciminatorObj}
+              discriminatorObj={discriminatorObj}
             />
           ) : (
             <p>schema or formdata not available</p>
@@ -452,10 +453,15 @@ if (process.env.NODE_ENV !== "production") {
     idSchema: PropTypes.object,
     formData: PropTypes.any,
     errorSchema: PropTypes.object,
-    registry: PropTypes.shape({
-      fields: PropTypes.objectOf(PropTypes.func).isRequired,
-      definitions: PropTypes.object.isRequired,
-      formContext: PropTypes.object.isRequired
+    dxInterface: PropTypes.shape({
+      registry: PropTypes.shape({
+        widgets: PropTypes.objectOf(
+          PropTypes.oneOfType([PropTypes.func, PropTypes.object])
+        ).isRequired,
+        fields: PropTypes.objectOf(PropTypes.func).isRequired,
+        definitions: PropTypes.object.isRequired,
+        formContext: PropTypes.object.isRequired
+      })
     })
   };
 }
