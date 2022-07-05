@@ -12,6 +12,7 @@ import {
   prefixClass as pfx
 } from "../utils";
 import validateFormData from "../validate";
+import { AJV } from "../AJV";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "codemirror/lib/codemirror.css";
@@ -34,6 +35,11 @@ export default class Form extends Component {
     this.state = this.getStateFromProps(props);
     //TODO: Changing for development
     this.state.expandAll = true;
+
+    const {
+      dxInterface: { definitions }
+    } = props;
+    AJV.setInstance(definitions);
   }
 
   componentWillReceiveProps(nextProps) {

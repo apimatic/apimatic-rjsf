@@ -7,7 +7,9 @@ function converToOneOf(sch, definitions) {
   const schema = deepClone(sch);
   const { typeCombinatorTypes } = schema;
 
-  schema.oneOf = typeCombinatorTypes.map(type => definitions[type.DataType]);
+  schema.oneOf = typeCombinatorTypes.map(
+    type => definitions["Root"][type.DataType]
+  );
 
   return schema;
 }
