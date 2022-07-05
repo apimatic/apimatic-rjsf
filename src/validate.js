@@ -2,7 +2,7 @@ import toPath from "lodash.topath";
 import { AJV } from "./AJV";
 
 import { isObject, mergeObjects } from "./utils";
-import { validateSchema } from "./validationUtils";
+// import { validateSchema } from "./validationUtils";
 
 function toErrorSchema(errors) {
   // Transforms a ajv validation errors list:
@@ -144,7 +144,7 @@ export default function validateFormData(
   definitions
 ) {
   const ajv = AJV.getInstance();
-  validateSchema(schema, formData, originalFormData, ajv, definitions);
+  // validateSchema(schema, formData, originalFormData, ajv, definitions);
 
   let errors = transformAjvErrors(ajv.errors);
 

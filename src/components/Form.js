@@ -70,6 +70,7 @@ export default class Form extends Component {
       formData,
       dxInterface
     );
+
     return {
       schema,
       uiSchema,

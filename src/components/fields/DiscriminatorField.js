@@ -360,6 +360,16 @@ class DiscriminatorField extends React.Component {
         if (schema.hasOwnProperty("$ref")) {
           schema = retrieveSchema(schema, formData, dxInterface);
         }
+        if (
+          schema.additionalProperties &&
+          schema.additionalProperties.hasOwnProperty("$ref")
+        ) {
+          schema.additionalProperties = retrieveSchema(
+            schema.additionalProperties,
+            formData,
+            dxInterface
+          );
+        }
 
         const type = typeCombinatorTypes && typeCombinatorTypes[index].DataType;
         const label = type

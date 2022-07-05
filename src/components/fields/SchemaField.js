@@ -16,6 +16,7 @@ import {
   prefixClass
 } from "../../utils";
 import UnsupportedField from "./UnsupportedField";
+import { validateField } from "../../validationUtils";
 
 // const REQUIRED_FIELD_SYMBOL = "*";
 const COMPONENT_TYPES = {
@@ -66,8 +67,22 @@ function getFieldComponent(schema, uiSchema, idSchema, fields) {
     return a;
   }
 
-  if (schema.typeCombinatorTypes) {
+  if (
+    schema.typeCombinatorTypes &&
+    schema.type !== "array" &&
+    !schema.additionalProperties
+  ) {
     return fields["DiscrimatorWrapper"];
+  }
+
+  // In case of multiple types, we are going to pick first one
+  // according to @saeedjamshaid
+  if (Array.isArray(schema.type)) {
+    const [type] = schema.type;
+    const compName = COMPONENT_TYPES[type];
+
+    schema.type = type;
+    return fields[compName];
   }
 
   return componentName in fields
@@ -136,7 +151,6 @@ export function DefaultTemplate(props) {
     classNames,
     label,
     children,
-    errors,
     help,
     description,
     hidden,
@@ -145,7 +159,9 @@ export function DefaultTemplate(props) {
     nullify,
     onNullifyChange,
     disabled,
-    fromDiscriminator
+    fromDiscriminator,
+    formData,
+    schema
   } = props;
   if (hidden) {
     return children;
@@ -155,6 +171,9 @@ export function DefaultTemplate(props) {
     ? props.schema.dataTypeDisplayText
     : props.schema.type;
   const markdown = props.schema.dataTypeMarkdown;
+  const errors = (
+    <ErrorList errors={validateField(schema, formData, required, disabled)} />
+  );
 
   return (
     <div className={pfx(classNames)}>
@@ -361,7 +380,8 @@ function SchemaFieldRender(props) {
     schema,
     uiSchema,
     anyOfTitle,
-    discriminatorObj
+    discriminatorObj,
+    formData
   };
 
   // See #439: uiSchema: Don't pass consumed class names to child components
