@@ -9,12 +9,21 @@ export function getOneAnyOfPath(path = "", obj) {
   return result;
 }
 
+function isPrimitiveSchema(schema) {
+  return (
+    schema.type !== "object" &&
+    schema.type !== "array" &&
+    !schema.hasOwnProperty("oneOf") &&
+    !schema.hasOwnProperty("oneOf")
+  );
+}
+
 export function validateField(schema, formData, required, disabled) {
   let errors = [];
 
   if (required && formData === undefined && !disabled) {
     errors = ["is a required property"];
-  } else if (schema.type !== "object" && schema.type !== "array" && !disabled) {
+  } else if (isPrimitiveSchema(schema) && !disabled) {
     const clonedSchema = deepClone(schema);
     delete clonedSchema.id;
 
