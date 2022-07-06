@@ -571,7 +571,8 @@ function generateAdditionalProperties(type, linkMapper) {
     paramType: type.ParamType,
     title: type.Name,
     typeCombinatorTypes: type.TypeCombinatorTypes,
-    discriminator: type.Discriminator
+    discriminator: type.Discriminator,
+    discriminatorValue: type.DiscriminatorValue
   };
 }
 
@@ -1111,4 +1112,12 @@ export function pipe(...func) {
 export function getListRootItem(markdown) {
   const items = markdown.split("*");
   return items[1];
+}
+
+export function isDiscriminator(name = "", discriminatorObj = {}) {
+  const { name: discriminatorProperty } = discriminatorObj;
+  const isDiscriminator =
+    discriminatorProperty && discriminatorProperty === name;
+
+  return isDiscriminator;
 }

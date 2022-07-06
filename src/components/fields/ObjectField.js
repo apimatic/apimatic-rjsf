@@ -384,7 +384,7 @@ class ObjectField extends Component {
       expandAll,
       fromDiscriminator,
       typeCombinatorTypes,
-      discriminatorObj
+      discriminatorObj = {}
     } = this.props;
 
     const { fields, formContext, dxInterface } = registry;
@@ -551,7 +551,13 @@ class ObjectField extends Component {
   }
 
   renderObject(templateProps) {
-    const { name, SchemaField, typeCombinatorTypes } = templateProps;
+    const {
+      name,
+      SchemaField,
+      typeCombinatorTypes,
+      discriminatorObj,
+      schema
+    } = templateProps;
     let orderedProperties;
 
     try {
@@ -588,6 +594,15 @@ class ObjectField extends Component {
       formJson: this.state.formJson,
       formJsonError: this.state.formJsonError,
       properties: orderedProperties.map(name => {
+        if (
+          schema.discriminator &&
+          name === schema.discriminator &&
+          schema.discriminatorValue
+        ) {
+          discriminatorObj.name = name;
+          discriminatorObj.value = schema.discriminatorValue;
+        }
+
         return {
           content: (
             <SchemaField
@@ -611,7 +626,7 @@ class ObjectField extends Component {
               readonly={templateProps.readonly}
               disableFormJsonEdit={templateProps.disableFormJsonEdit}
               typeCombinatorTypes={typeCombinatorTypes}
-              discriminatorObj={templateProps.discriminatorObj}
+              discriminatorObj={discriminatorObj}
             />
           ),
           name,

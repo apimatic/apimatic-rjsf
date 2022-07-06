@@ -277,10 +277,6 @@ function SchemaFieldRender(props) {
     FieldTemplate = DefaultTemplate
   } = registry;
 
-  if (props.schema.discriminator && !discriminatorObj.name) {
-    discriminatorObj.name = props.schema.discriminator;
-  }
-
   const { name: discriminatorProperty } = discriminatorObj;
   const isDiscriminator =
     discriminatorProperty && discriminatorProperty === name;

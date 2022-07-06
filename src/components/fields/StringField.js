@@ -6,7 +6,8 @@ import {
   getUiOptions,
   isSelect,
   optionsList,
-  getDefaultRegistry
+  getDefaultRegistry,
+  isDiscriminator
 } from "../../utils";
 
 class StringField extends React.Component {
@@ -21,23 +22,14 @@ class StringField extends React.Component {
   };
 
   setDiscriminatorValue = () => {
-    const { discriminatorObj = {}, formData } = this.props;
+    const { discriminatorObj = {}, formData, name } = this.props;
     const { value: discriminatorValue } = discriminatorObj;
 
-    if (this.isDiscriminator() && !formData) {
+    if (isDiscriminator(name, discriminatorObj) && !formData) {
       setTimeout(() => {
         this._onChange(discriminatorValue);
       }, 0);
     }
-  };
-
-  isDiscriminator = () => {
-    const { discriminatorObj = {}, name } = this.props;
-    const { name: discriminatorProperty } = discriminatorObj;
-    const isDiscriminator =
-      discriminatorProperty && discriminatorProperty === name;
-
-    return isDiscriminator;
   };
 
   componentDidUpdate() {
