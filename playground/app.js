@@ -317,7 +317,13 @@ class App extends Component {
   constructor(props) {
     super(props);
     // initialize state with Simple data sample
-    const { schema, uiSchema, formData, validate } = samples.Simple;
+    const {
+      schema,
+      uiSchema,
+      formData,
+      validate,
+      definitions
+    } = samples.Simple;
     this.state = {
       form: false,
       schema,
@@ -327,7 +333,8 @@ class App extends Component {
       editor: "default",
       theme: "default",
       liveValidate: true,
-      shareURL: null
+      shareURL: null,
+      definitions
     };
   }
 
@@ -405,7 +412,8 @@ class App extends Component {
       editor,
       ArrayFieldTemplate,
       ObjectFieldTemplate,
-      transformErrors
+      transformErrors,
+      definitions
     } = this.state;
 
     return (
@@ -480,6 +488,7 @@ class App extends Component {
               transformErrors={transformErrors}
               onError={log("errors")}
               expandAllLevel={true}
+              definitions={definitions}
             >
               <div className="row">
                 <div className="col-sm-3">

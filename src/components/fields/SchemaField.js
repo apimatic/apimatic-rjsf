@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+import mergeAllOf from "json-schema-merge-allof";
+
 import DataType from "./DataType";
 
 import {
@@ -14,6 +16,7 @@ import {
   prefixClass
 } from "../../utils";
 import UnsupportedField from "./UnsupportedField";
+import { validateField } from "../../validationUtils";
 
 // const REQUIRED_FIELD_SYMBOL = "*";
 const COMPONENT_TYPES = {
@@ -26,8 +29,30 @@ const COMPONENT_TYPES = {
   discriminator: "DiscriminatorField"
 };
 
+const MERGE_ALLOF_OPTIONS = {
+  ignoreAdditionalProperties: true,
+  resolvers: {
+    defaultResolver: function(values) {
+      return values.length ? values[0] : "";
+    },
+    id: function(values) {
+      return values.length ? values[0] : "";
+    },
+    description: function(values) {
+      return values.length ? values[0] : "";
+    },
+    dataTypeLink: function(values) {
+      return values.length ? values[0] : "";
+    },
+    dataTypeDisplayText: function(values) {
+      return values.length ? values[0] : "";
+    }
+  }
+};
+
 function getFieldComponent(schema, uiSchema, idSchema, fields) {
   const field = uiSchema["ui:field"];
+
   if (typeof field === "function") {
     return field;
   }
@@ -42,7 +67,24 @@ function getFieldComponent(schema, uiSchema, idSchema, fields) {
     return a;
   }
 
-  // console.log(componentName);
+  if (
+    schema.typeCombinatorTypes &&
+    schema.type !== "array" &&
+    !schema.additionalProperties
+  ) {
+    return fields["DiscrimatorWrapper"];
+  }
+
+  // In case of multiple types, we are going to pick first one
+  // according to @saeedjamshaid
+  if (Array.isArray(schema.type)) {
+    const [type] = schema.type;
+    const compName = COMPONENT_TYPES[type];
+
+    schema.type = type;
+    return fields[compName];
+  }
+
   return componentName in fields
     ? fields[componentName]
     : () => {
@@ -109,7 +151,6 @@ export function DefaultTemplate(props) {
     classNames,
     label,
     children,
-    errors,
     help,
     description,
     hidden,
@@ -119,9 +160,8 @@ export function DefaultTemplate(props) {
     onNullifyChange,
     disabled,
     fromDiscriminator,
-    markdownRenderer,
-    renderTypesPopover,
-    onRouteChange
+    formData,
+    schema
   } = props;
   if (hidden) {
     return children;
@@ -131,6 +171,9 @@ export function DefaultTemplate(props) {
     ? props.schema.dataTypeDisplayText
     : props.schema.type;
   const markdown = props.schema.dataTypeMarkdown;
+  const errors = (
+    <ErrorList errors={validateField(schema, formData, required, disabled)} />
+  );
 
   return (
     <div className={pfx(classNames)}>
@@ -169,9 +212,6 @@ export function DefaultTemplate(props) {
             link={props.schema.dataTypeLink}
             type="schema"
             markdown={markdown}
-            markdownRenderer={markdownRenderer}
-            renderTypesPopover={renderTypesPopover}
-            onRouteChange={onRouteChange}
           />
 
           {props.schema.paramType && (
@@ -219,33 +259,50 @@ DefaultTemplate.defaultProps = {
 function SchemaFieldRender(props) {
   const {
     uiSchema,
-    formData,
     errorSchema,
     idSchema,
     name,
+    formData,
     required,
     schemaIndex,
     registry = getDefaultRegistry(),
     anyOfTitle,
     typeCombinatorTypes,
-    markdownRenderer,
-    renderTypesPopover,
-    onRouteChange
+    discriminatorObj = {}
   } = props;
   const {
-    definitions,
+    dxInterface,
     fields,
     formContext,
     FieldTemplate = DefaultTemplate
   } = registry;
-  const schema = retrieveSchema(props.schema, definitions, formData);
+
+  const { name: discriminatorProperty } = discriminatorObj;
+  const isDiscriminator =
+    discriminatorProperty && discriminatorProperty === name;
+
+  let schema = retrieveSchema(props.schema, formData, dxInterface);
+
+  if (schema.allOf && !schema.typeCombinatorTypes) {
+    schema = mergeAllOf(schema, MERGE_ALLOF_OPTIONS);
+  }
+
   const FieldComponent = getFieldComponent(schema, uiSchema, idSchema, fields);
   const { DescriptionField } = fields;
-  const disabled = Boolean(props.disabled || uiSchema["ui:disabled"]);
+  const disabled = Boolean(
+    props.disabled || uiSchema["ui:disabled"] || isDiscriminator
+  );
   const readonly = Boolean(props.readonly || uiSchema["ui:readonly"]);
   const autofocus = Boolean(props.autofocus || uiSchema["ui:autofocus"]);
   const _typeCombinatorTypes =
     typeCombinatorTypes || schema.typeCombinatorTypes || null;
+
+  if (
+    props.schema.hasOwnProperty("$ref") ||
+    (schema.type === "array" && props.schema.items.hasOwnProperty("$ref"))
+  ) {
+    schema.title = name;
+  }
 
   if (Object.keys(schema).length === 0) {
     // See #312: Ensure compatibility with old versions of React.
@@ -256,10 +313,10 @@ function SchemaFieldRender(props) {
   let { label: displayLabel = true } = uiOptions;
   if (schema.type === "array") {
     displayLabel =
-      isMultiSelect(schema, definitions) ||
-      isFilesArray(schema, uiSchema, definitions);
+      isMultiSelect(schema, dxInterface) ||
+      isFilesArray(schema, uiSchema, dxInterface);
   }
-  if (schema.type === "object") {
+  if (schema.type === "object" && !schema.typeCombinatorTypes) {
     displayLabel = false;
   }
   if (schema.type === "boolean" && !uiSchema["ui:widget"]) {
@@ -274,7 +331,7 @@ function SchemaFieldRender(props) {
   const { type } = schema;
   const id = idSchema.$id;
   const label =
-    uiSchema["ui:title"] || props.schema.title || schema.title || name;
+    uiSchema["ui:title"] || name || props.schema.title || schema.title;
   const description =
     uiSchema["ui:description"] ||
     props.schema.description ||
@@ -299,9 +356,6 @@ function SchemaFieldRender(props) {
         id={id + "__description"}
         description={description}
         formContext={formContext}
-        markdownRenderer={markdownRenderer}
-        renderTypesPopover={renderTypesPopover}
-        onRouteChange={onRouteChange}
       />
     ),
     rawDescription: description,
@@ -322,15 +376,15 @@ function SchemaFieldRender(props) {
     schema,
     uiSchema,
     anyOfTitle,
-    markdownRenderer,
-    renderTypesPopover,
-    onRouteChange
+    discriminatorObj,
+    formData
   };
 
   // See #439: uiSchema: Don't pass consumed class names to child components
   const field = (
     <FieldComponent
       {...props}
+      definitions={dxInterface.definitions}
       schema={schema}
       uiSchema={{ ...uiSchema, classNames: undefined }}
       disabled={disabled}
@@ -341,10 +395,12 @@ function SchemaFieldRender(props) {
       schemaIndex={schemaIndex}
       typeCombinatorTypes={_typeCombinatorTypes}
       fieldProps={fieldProps}
+      discriminatorObj={discriminatorObj}
     />
   );
 
-  return isOneOfSchema(schema) ? (
+  return isOneOfSchema(schema) ||
+    (!isOneOfSchema(schema) && schema.typeCombinatorTypes) ? (
     field
   ) : (
     <FieldTemplate {...fieldProps}>{field}</FieldTemplate>
@@ -384,16 +440,15 @@ if (process.env.NODE_ENV !== "production") {
     formData: PropTypes.any,
     errorSchema: PropTypes.object,
     schemaIndex: PropTypes.number,
-    registry: PropTypes.shape({
-      widgets: PropTypes.objectOf(
-        PropTypes.oneOfType([PropTypes.func, PropTypes.object])
-      ).isRequired,
-      fields: PropTypes.objectOf(PropTypes.func).isRequired,
-      definitions: PropTypes.object.isRequired,
-      ArrayFieldTemplate: PropTypes.func,
-      ObjectFieldTemplate: PropTypes.func,
-      FieldTemplate: PropTypes.func,
-      formContext: PropTypes.object.isRequired
+    dxInterface: PropTypes.shape({
+      registry: PropTypes.shape({
+        widgets: PropTypes.objectOf(
+          PropTypes.oneOfType([PropTypes.func, PropTypes.object])
+        ).isRequired,
+        fields: PropTypes.objectOf(PropTypes.func).isRequired,
+        definitions: PropTypes.object.isRequired,
+        formContext: PropTypes.object.isRequired
+      })
     })
   };
 }

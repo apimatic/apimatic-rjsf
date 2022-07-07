@@ -5,8 +5,10 @@ import PropTypes from "prop-types";
 function DateWidget(props) {
   const {
     onChange,
-    registry: {
-      widgets: { BaseInput }
+    dxInterface: {
+      registry: {
+        widgets: { BaseInput }
+      }
     }
   } = props;
   return (

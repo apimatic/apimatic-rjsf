@@ -1,22 +1,8 @@
 import toPath from "lodash.topath";
-import Ajv from "ajv";
-
-const ajv = new Ajv({
-  errorDataPath: "property",
-  allErrors: true
-});
-// add custom formats
-ajv.addFormat(
-  "data-url",
-  /^data:([a-z]+\/[a-z0-9-+.]+)?;name=(.*);base64,(.*)$/
-);
-ajv.addFormat(
-  "color",
-  /^(#?([0-9A-Fa-f]{3}){1,2}\b|aqua|black|blue|fuchsia|gray|green|lime|maroon|navy|olive|orange|purple|red|silver|teal|white|yellow|(rgb\(\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*,\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*,\s*\b([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\b\s*\))|(rgb\(\s*(\d?\d%|100%)+\s*,\s*(\d?\d%|100%)+\s*,\s*(\d?\d%|100%)+\s*\)))$/
-);
+import { AJV } from "./AJV";
 
 import { isObject, mergeObjects } from "./utils";
-import { validateSchema } from "./validationUtils";
+// import { validateSchema } from "./validationUtils";
 
 function toErrorSchema(errors) {
   // Transforms a ajv validation errors list:
@@ -154,9 +140,11 @@ export default function validateFormData(
   schema,
   customValidate,
   transformErrors,
-  originalFormData
+  originalFormData,
+  definitions
 ) {
-  validateSchema(schema, formData, originalFormData, ajv);
+  const ajv = AJV.getInstance();
+  // validateSchema(schema, formData, originalFormData, ajv, definitions);
 
   let errors = transformAjvErrors(ajv.errors);
 
@@ -186,6 +174,7 @@ export default function validateFormData(
  * false.
  */
 export function isValid(schema, data) {
+  const ajv = AJV.getInstance();
   try {
     return ajv.validate(schema, data);
   } catch (e) {

@@ -37,8 +37,10 @@ function DateTimeWidget(props) {
   const {
     value,
     onChange,
-    registry: {
-      widgets: { BaseInput }
+    dxInterface: {
+      registry: {
+        widgets: { BaseInput }
+      }
     }
   } = props;
   return (

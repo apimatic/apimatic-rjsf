@@ -40,29 +40,14 @@ function MapFieldTitle({
   );
 }
 
-function MapFieldDescription({
-  DescriptionField,
-  idSchema,
-  description,
-  markdownRenderer,
-  renderTypesPopover,
-  onRouteChange
-}) {
+function MapFieldDescription({ DescriptionField, idSchema, description }) {
   if (!description) {
     // See #312: Ensure compatibility with old versions of React.
     return <div />;
   }
   const id = `${idSchema.$id}__description`;
 
-  return (
-    <DescriptionField
-      id={id}
-      description={description}
-      markdownRenderer={markdownRenderer}
-      renderTypesPopover={renderTypesPopover}
-      onRouteChange={onRouteChange}
-    />
-  );
+  return <DescriptionField id={id} description={description} />;
 }
 
 function IconBtn(props) {
@@ -191,9 +176,6 @@ function DefaultNormalMapFieldTemplate(props) {
           link={props.schema.dataTypeLink}
           type="map-field-type"
           markdown={markdown}
-          markdownRenderer={props.markdownRenderer}
-          renderTypesPopover={props.renderTypesPopover}
-          onRouteChange={props.onRouteChange}
         />
 
         {props.schema.paramType && (
@@ -210,9 +192,6 @@ function DefaultNormalMapFieldTemplate(props) {
           props.schema.description ||
           props.addPropsSchema.description
         }
-        markdownRenderer={props.markdownRenderer}
-        renderTypesPopover={props.renderTypesPopover}
-        onRouteChange={props.onRouteChange}
       />
 
       {!props.collapse && (
@@ -424,12 +403,12 @@ class MapField extends Component {
     }
 
     const { schema, registry } = this.props;
-    const { definitions } = registry;
+    const { dxInterface } = registry;
     let itemSchema = schema.additionalProperties;
     let newHash = this.state.hash.slice();
     newHash.push({
       k: "key" + index,
-      v: getDefaultFormState(itemSchema, undefined, definitions)
+      v: getDefaultFormState(itemSchema, undefined, undefined, dxInterface)
     });
     this.setState(
       {
@@ -458,7 +437,8 @@ class MapField extends Component {
           key0: getDefaultFormState(
             this.props.schema.additionalProperties,
             undefined,
-            this.props.registry.definitions
+            undefined,
+            this.props.registry.dxInterface
           )
         });
       }
@@ -486,17 +466,15 @@ class MapField extends Component {
       depth,
       isEven,
       fromDiscriminator,
-      typeCombinatorTypes,
-      markdownRenderer,
-      renderTypesPopover,
-      onRouteChange
+      typeCombinatorTypes
     } = this.props;
     const title = schema.title || name;
-    const { definitions, fields } = registry;
+    const { fields, dxInterface } = registry;
     const { TitleField, DescriptionField } = fields;
     const addPropsSchema = retrieveSchema(
       schema.additionalProperties,
-      definitions
+      formData,
+      dxInterface
     );
     const itemSchema = { ...addPropsSchema, description: undefined };
     const duplicationCounts = this.getDuplicateCounts(this.state.hash);
@@ -513,8 +491,8 @@ class MapField extends Component {
         const itemIdSchema = toIdSchema(
           itemSchema,
           itemIdPrefix,
-          definitions,
-          item
+          item,
+          dxInterface
         );
         const collapse = this.state.expandInfo[pair.k] ? false : true;
         return this.renderMapFieldItem({
@@ -531,10 +509,7 @@ class MapField extends Component {
           depth,
           isEven,
           collapse,
-          typeCombinatorTypes,
-          markdownRenderer,
-          renderTypesPopover,
-          onRouteChange
+          typeCombinatorTypes
         });
       }),
       className: `field field-array field-array-of-${addPropsSchema.type}  ${
@@ -559,10 +534,7 @@ class MapField extends Component {
       isEven: isEven,
       toggleGroupCollapse: this.toggleGroupCollapse,
       collapse: this.state.collapse,
-      fromDiscriminator,
-      markdownRenderer,
-      renderTypesPopover,
-      onRouteChange
+      fromDiscriminator
     };
 
     return <DefaultNormalMapFieldTemplate {...mapProps} />;
@@ -583,10 +555,7 @@ class MapField extends Component {
       onFocus,
       depth,
       isEven,
-      typeCombinatorTypes,
-      markdownRenderer,
-      renderTypesPopover,
-      onRouteChange
+      typeCombinatorTypes
     } = props;
     const { disabled, readonly, uiSchema, registry } = this.props;
     const {
@@ -628,9 +597,6 @@ class MapField extends Component {
           depth={depth + 1}
           isEven={isEven}
           typeCombinatorTypes={typeCombinatorTypes}
-          markdownRenderer={markdownRenderer}
-          renderTypesPopover={renderTypesPopover}
-          onRouteChange={onRouteChange}
         />
       ),
       className: "map-item",
@@ -687,13 +653,15 @@ if (process.env.NODE_ENV !== "production") {
     disabled: PropTypes.bool,
     readonly: PropTypes.bool,
     autofocus: PropTypes.bool,
-    registry: PropTypes.shape({
-      widgets: PropTypes.objectOf(
-        PropTypes.oneOfType([PropTypes.func, PropTypes.object])
-      ).isRequired,
-      fields: PropTypes.objectOf(PropTypes.func).isRequired,
-      definitions: PropTypes.object.isRequired,
-      formContext: PropTypes.object.isRequired
+    dxInterface: PropTypes.shape({
+      registry: PropTypes.shape({
+        widgets: PropTypes.objectOf(
+          PropTypes.oneOfType([PropTypes.func, PropTypes.object])
+        ).isRequired,
+        fields: PropTypes.objectOf(PropTypes.func).isRequired,
+        definitions: PropTypes.object.isRequired,
+        formContext: PropTypes.object.isRequired
+      })
     })
   };
 }

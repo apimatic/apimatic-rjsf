@@ -7,7 +7,8 @@ import {
   prefixClass,
   isMultipleSchema,
   classNames,
-  isOneOfSchema
+  isOneOfSchema,
+  retrieveSchema
 } from "../../utils";
 import TagSelector from "../widgets/TagSelector";
 import { getOneAnyOfPath } from "../../validationUtils";
@@ -18,6 +19,7 @@ const CHAR_THRESHOLD = 120;
 export function generateFormDataForMultipleSchema(schema, index, caseOf) {
   if (isMultipleSchema(schema)) {
     const _schema = schema.oneOf ? schema.oneOf[index] : schema.anyOf[index];
+
     return {
       $$__case: index,
       $$__case_of: caseOf,
@@ -96,7 +98,8 @@ class DiscriminatorField extends React.Component {
     }
 
     const initialSchema = schema.oneOf || schema.anyOf;
-    const initialSchemaIndex = formData ? formData.$$__case : 0;
+    const initialSchemaIndex =
+      formData && formData.$$__case ? formData.$$__case : 0;
     const data = formData || {};
     const caseOf = getMultipleSchemaType(schema);
     const newState = {
@@ -169,9 +172,7 @@ class DiscriminatorField extends React.Component {
       typeCombinatorTypes,
       parentPath,
       formData,
-      markdownRenderer,
-      renderTypesPopover,
-      onRouteChange
+      schema
     } = this.props;
     const _SchemaField = registry.fields.SchemaField;
     const { selectedSchema } = this.state;
@@ -194,6 +195,7 @@ class DiscriminatorField extends React.Component {
       childIsNestedMultipleSchema
     );
     const uiTitle = selectOptions[selectedSchema.index].label;
+    let discriminatorObj = undefined;
 
     const discriminatorChildFieldsetDepth = depth + 1;
     const childDepth = isDiscriminatorChild ? depth + 2 : depth + 1;
@@ -206,6 +208,10 @@ class DiscriminatorField extends React.Component {
     let typeCombinatorSubTypes;
 
     if (typeCombinatorTypes) {
+      discriminatorObj = {
+        name: schema.discriminator,
+        value: typeCombinatorTypes[selectedSchema.index].DiscriminatorValue
+      };
       const selectedSchemaTypeCombinator =
         typeCombinatorTypes[selectedSchema.index];
       typeCombinatorSubTypes = selectedSchemaTypeCombinator.ContainsSubTypes
@@ -243,9 +249,7 @@ class DiscriminatorField extends React.Component {
               anyOfTitle={this.props.schema.title || this.props.anyOfTitle}
               typeCombinatorTypes={typeCombinatorSubTypes}
               parentPath={getOneAnyOfPath(parentPath, formData)}
-              markdownRenderer={markdownRenderer}
-              renderTypesPopover={renderTypesPopover}
-              onRouteChange={onRouteChange}
+              discriminatorObj={discriminatorObj}
             />
           ) : (
             <p>schema or formdata not available</p>
@@ -256,7 +260,8 @@ class DiscriminatorField extends React.Component {
   };
 
   selectOnChange = (value, initialRender) => {
-    const { onChange, definitions, parentPath } = this.props;
+    const { onChange, parentPath, registry } = this.props;
+    const { dxInterface } = registry;
     const { formState, selectedSchema } = this.state;
 
     // Don't do anything on same item click
@@ -271,8 +276,8 @@ class DiscriminatorField extends React.Component {
     let defaultFormState = getDefaultFormState(
       value.schema,
       getInitialFormData(value.schema, value.index, this.state.caseOf),
-      definitions,
-      0
+      0,
+      dxInterface
     );
     const path = getOneAnyOfPath(parentPath, defaultFormState);
 
@@ -296,7 +301,8 @@ class DiscriminatorField extends React.Component {
   };
 
   toggleCheckbox = () => {
-    const { formData, schema, definitions, onChange } = this.props;
+    const { formData, schema, registry, onChange } = this.props;
+    const { dxInterface } = registry;
 
     this.setState(st => {
       const { checked } = st;
@@ -311,8 +317,8 @@ class DiscriminatorField extends React.Component {
           initialSchemaIndex,
           this.state.caseOf
         ),
-        definitions,
-        0
+        0,
+        dxInterface
       );
 
       onChange(
@@ -344,13 +350,31 @@ class DiscriminatorField extends React.Component {
   };
 
   getSelectOptions = () => {
-    const { schema, typeCombinatorTypes } = this.props;
+    const { schema, typeCombinatorTypes, formData, registry } = this.props;
+    const { dxInterface } = registry;
+
     const multipleSchema = schema.oneOf || schema.anyOf;
 
     return multipleSchema.reduce(
       ({ selectOptions, charCounts }, schema, index) => {
+        if (schema.hasOwnProperty("$ref")) {
+          schema = retrieveSchema(schema, formData, dxInterface);
+        }
+        if (
+          schema.additionalProperties &&
+          schema.additionalProperties.hasOwnProperty("$ref")
+        ) {
+          schema.additionalProperties = retrieveSchema(
+            schema.additionalProperties,
+            formData,
+            dxInterface
+          );
+        }
+
         const type = typeCombinatorTypes && typeCombinatorTypes[index].DataType;
-        const label = type ? type : getMultipleLabel(schema) || schema.type;
+        const label = type
+          ? type
+          : getMultipleLabel(schema) || schema.type || "";
 
         selectOptions.push({
           label,
@@ -372,7 +396,8 @@ class DiscriminatorField extends React.Component {
       fromMap,
       fieldProps,
       fromDiscriminator,
-      disabled
+      disabled,
+      tagsTitle
     } = this.props;
     const { selectedSchema, checked, optional } = this.state;
     const { selectOptions, charCounts } = this.getSelectOptions();
@@ -410,7 +435,7 @@ class DiscriminatorField extends React.Component {
             <TagSelector
               className={tagSelectorClassName}
               value={selectedSchema}
-              title={getMultipleLabel(schema)}
+              title={tagsTitle || getMultipleLabel(schema)}
               options={selectOptions}
               onChange={this.selectOnChange}
             />
@@ -438,10 +463,15 @@ if (process.env.NODE_ENV !== "production") {
     idSchema: PropTypes.object,
     formData: PropTypes.any,
     errorSchema: PropTypes.object,
-    registry: PropTypes.shape({
-      fields: PropTypes.objectOf(PropTypes.func).isRequired,
-      definitions: PropTypes.object.isRequired,
-      formContext: PropTypes.object.isRequired
+    dxInterface: PropTypes.shape({
+      registry: PropTypes.shape({
+        widgets: PropTypes.objectOf(
+          PropTypes.oneOfType([PropTypes.func, PropTypes.object])
+        ).isRequired,
+        fields: PropTypes.objectOf(PropTypes.func).isRequired,
+        definitions: PropTypes.object.isRequired,
+        formContext: PropTypes.object.isRequired
+      })
     })
   };
 }

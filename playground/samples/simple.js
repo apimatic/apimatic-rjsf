@@ -1801,8 +1801,16 @@ module.exports = {
             ]
           }
         },
-        required: ["Authorization", "body"]
-      }
+        endsAt: {
+          description: "Session end time",
+          type: "string"
+        },
+        offerLunch: {
+          description: "Offer lunch during session",
+          type: "boolean"
+        }
+      },
+      required: ["startsAt", "endsAt", "offerLunch"]
     },
     required: ["args"]
   },

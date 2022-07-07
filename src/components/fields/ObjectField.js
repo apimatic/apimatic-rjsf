@@ -191,9 +191,6 @@ function DefaultObjectFieldTemplate(props) {
           link={props.schema.dataTypeLink}
           type="object-type"
           markdown={markdown}
-          markdownRenderer={props.markdownRenderer}
-          renderTypesPopover={props.renderTypesPopover}
-          onRouteChange={props.onRouteChange}
         />
 
         {props.schema.paramType && (
@@ -206,9 +203,6 @@ function DefaultObjectFieldTemplate(props) {
           id={`${props.idSchema.$id}__description`}
           description={props.description}
           formContext={props.formContext}
-          markdownRenderer={props.markdownRenderer}
-          renderTypesPopover={props.renderTypesPopover}
-          onRouteChange={props.onRouteChange}
         />
       )}
 
@@ -344,7 +338,8 @@ class ObjectField extends Component {
           getDefaultFormState(
             this.props.schema,
             this.props.formData,
-            this.props.definitions
+            undefined,
+            this.props.registry.dxInterface
           )
         );
       }
@@ -389,14 +384,12 @@ class ObjectField extends Component {
       expandAll,
       fromDiscriminator,
       typeCombinatorTypes,
-      markdownRenderer,
-      renderTypesPopover,
-      onRouteChange
+      discriminatorObj = {}
     } = this.props;
 
-    const { definitions, fields, formContext } = registry;
+    const { fields, formContext, dxInterface } = registry;
     const { SchemaField, TitleField, DescriptionField } = fields;
-    const schema = retrieveSchema(this.props.schema, definitions, formData);
+    const schema = retrieveSchema(this.props.schema, formData, dxInterface);
     const title = name;
     // schema.title === undefined
     //   ? name
@@ -432,9 +425,7 @@ class ObjectField extends Component {
       expandAll,
       fromDiscriminator,
       typeCombinatorTypes,
-      markdownRenderer,
-      renderTypesPopover,
-      onRouteChange
+      discriminatorObj
     };
 
     if (schema.properties && Object.keys(schema.properties).length > 0) {
@@ -503,9 +494,6 @@ class ObjectField extends Component {
             link={templateProps.schema.dataTypeLink}
             type="object-type"
             markdown={markdown}
-            markdownRenderer={templateProps.markdownRenderer}
-            renderTypesPopover={templateProps.renderTypesPopover}
-            onRouteChange={templateProps.onRouteChange}
           />
 
           {templateProps.schema.paramType && (
@@ -520,9 +508,6 @@ class ObjectField extends Component {
             id={`${templateProps.idSchema.$id}__description`}
             description={templateProps.description}
             formContext={templateProps.formContext}
-            markdownRenderer={templateProps.markdownRenderer}
-            renderTypesPopover={templateProps.renderTypesPopover}
-            onRouteChange={templateProps.onRouteChange}
           />
         )}
         <div style={{ position: "relative" }}>
@@ -566,7 +551,13 @@ class ObjectField extends Component {
   }
 
   renderObject(templateProps) {
-    const { name, SchemaField, typeCombinatorTypes } = templateProps;
+    const {
+      name,
+      SchemaField,
+      typeCombinatorTypes,
+      discriminatorObj,
+      schema
+    } = templateProps;
     let orderedProperties;
 
     try {
@@ -603,6 +594,15 @@ class ObjectField extends Component {
       formJson: this.state.formJson,
       formJsonError: this.state.formJsonError,
       properties: orderedProperties.map(name => {
+        if (
+          schema.discriminator &&
+          name === schema.discriminator &&
+          schema.discriminatorValue
+        ) {
+          discriminatorObj.name = name;
+          discriminatorObj.value = schema.discriminatorValue;
+        }
+
         return {
           content: (
             <SchemaField
@@ -626,9 +626,7 @@ class ObjectField extends Component {
               readonly={templateProps.readonly}
               disableFormJsonEdit={templateProps.disableFormJsonEdit}
               typeCombinatorTypes={typeCombinatorTypes}
-              markdownRenderer={templateProps.markdownRenderer}
-              renderTypesPopover={templateProps.renderTypesPopover}
-              onRouteChange={templateProps.onRouteChange}
+              discriminatorObj={discriminatorObj}
             />
           ),
           name,
@@ -654,13 +652,15 @@ if (process.env.NODE_ENV !== "production") {
     required: PropTypes.bool,
     disabled: PropTypes.bool,
     readonly: PropTypes.bool,
-    registry: PropTypes.shape({
-      widgets: PropTypes.objectOf(
-        PropTypes.oneOfType([PropTypes.func, PropTypes.object])
-      ).isRequired,
-      fields: PropTypes.objectOf(PropTypes.func).isRequired,
-      definitions: PropTypes.object.isRequired,
-      formContext: PropTypes.object.isRequired
+    dxInterface: PropTypes.shape({
+      registry: PropTypes.shape({
+        widgets: PropTypes.objectOf(
+          PropTypes.oneOfType([PropTypes.func, PropTypes.object])
+        ).isRequired,
+        fields: PropTypes.objectOf(PropTypes.func).isRequired,
+        definitions: PropTypes.object.isRequired,
+        formContext: PropTypes.object.isRequired
+      })
     })
   };
 }

@@ -5,8 +5,10 @@ function ColorWidget(props) {
   const {
     disabled,
     readonly,
-    registry: {
-      widgets: { BaseInput }
+    dxInterface: {
+      registry: {
+        widgets: { BaseInput }
+      }
     }
   } = props;
   return <BaseInput type="color" {...props} disabled={disabled || readonly} />;

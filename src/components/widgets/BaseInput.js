@@ -49,7 +49,7 @@ BaseInput.defaultProps = {
 /* istanbul ignore else */
 if (process.env.NODE_ENV !== "production") {
   BaseInput.propTypes = {
-    id: PropTypes.string.isRequired,
+    id: PropTypes.string,
     placeholder: PropTypes.string,
     value: PropTypes.any,
     required: PropTypes.bool,

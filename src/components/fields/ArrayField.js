@@ -49,28 +49,13 @@ function ArrayFieldTitle({
   );
 }
 
-function ArrayFieldDescription({
-  DescriptionField,
-  idSchema,
-  description,
-  markdownRenderer,
-  renderTypesPopover,
-  onRouteChange
-}) {
+function ArrayFieldDescription({ DescriptionField, idSchema, description }) {
   if (!description) {
     // See #312: Ensure compatibility with old versions of React.
     return <div />;
   }
   const id = `${idSchema.$id}__description`;
-  return (
-    <DescriptionField
-      id={id}
-      description={description}
-      markdownRenderer={markdownRenderer}
-      renderTypesPopover={renderTypesPopover}
-      onRouteChange={onRouteChange}
-    />
-  );
+  return <DescriptionField id={id} description={description} />;
 }
 
 export function IconBtn(props) {
@@ -102,10 +87,12 @@ function DefaultArrayItem(props) {
     paddingRight: 6,
     fontWeight: "bold"
   };
+
   const arrayItemWrapper = {
     display: "flex",
     flexDirection: "column"
   };
+
   return (
     <div
       key={props.index}
@@ -270,9 +257,6 @@ function DefaultNormalArrayFieldTemplate(props) {
           link={props.schema.dataTypeLink}
           type="array-type"
           markdown={markdown}
-          markdownRenderer={props.markdownRenderer}
-          renderTypesPopover={props.renderTypesPopover}
-          onRouteChange={props.onRouteChange}
         />
         {props.schema.paramType && (
           <div className={pfx("param-type")}> {props.schema.paramType} </div>
@@ -290,9 +274,6 @@ function DefaultNormalArrayFieldTemplate(props) {
             props.schema.description ||
             props.itemsSchema.description
           }
-          markdownRenderer={props.markdownRenderer}
-          renderTypesPopover={props.renderTypesPopover}
-          onRouteChange={props.onRouteChange}
         />
       )}
       {!props.collapse && (
@@ -403,14 +384,17 @@ class ArrayField extends Component {
   onAddClick = event => {
     event.preventDefault();
     const { schema, formData, registry = getDefaultRegistry() } = this.props;
-    const { definitions } = registry;
+    const { dxInterface } = registry;
     let itemSchema = schema.items;
     if (isFixedItems(schema) && allowAdditionalItems(schema)) {
       itemSchema = schema.additionalItems;
     }
 
     this.props.onChange(
-      [...formData, getDefaultFormState(itemSchema, undefined, definitions)],
+      [
+        ...formData,
+        getDefaultFormState(itemSchema, undefined, undefined, dxInterface)
+      ],
       {
         validate: false
       }
@@ -497,7 +481,8 @@ class ArrayField extends Component {
           getDefaultFormState(
             this.props.schema,
             undefined,
-            this.props.registry.definitions
+            undefined,
+            this.props.registry.dxInterface
           )
         );
       }
@@ -513,7 +498,7 @@ class ArrayField extends Component {
       idSchema,
       registry = getDefaultRegistry()
     } = this.props;
-    const { definitions } = registry;
+    const { dxInterface } = registry;
     if (!schema.hasOwnProperty("items")) {
       return (
         <UnsupportedField
@@ -526,10 +511,10 @@ class ArrayField extends Component {
     if (isFixedItems(schema)) {
       return this.renderFixedArray();
     }
-    if (isFilesArray(schema, uiSchema, definitions)) {
+    if (isFilesArray(schema, uiSchema, dxInterface)) {
       return this.renderFiles();
     }
-    if (isMultiSelect(schema, definitions)) {
+    if (isMultiSelect(schema, dxInterface)) {
       return this.renderMultiSelect();
     }
     return this.renderNormalArray();
@@ -562,14 +547,11 @@ class ArrayField extends Component {
       onFocus,
       schemaIndex,
       fromDiscriminator,
-      typeCombinatorTypes,
-      markdownRenderer,
-      renderTypesPopover,
-      onRouteChange
+      typeCombinatorTypes
     } = this.props;
-    const { ArrayFieldTemplate, definitions, fields } = registry;
+    const { ArrayFieldTemplate, fields, dxInterface } = registry;
     const { TitleField, DescriptionField } = fields;
-    const itemsSchema = retrieveSchema(schema.items, definitions);
+    const itemsSchema = retrieveSchema(schema.items, formData, dxInterface);
     const title = name;
     // schema.title === undefined && itemsSchema.title === undefined
     //   ? name
@@ -579,14 +561,14 @@ class ArrayField extends Component {
     const arrayProps = {
       canAdd: this.canAddItem(formData),
       items: formData.map((item, index) => {
-        const itemSchema = retrieveSchema(schema.items, definitions, item);
+        const itemSchema = retrieveSchema(schema.items, item, dxInterface);
         const itemErrorSchema = errorSchema ? errorSchema[index] : undefined;
         const itemIdPrefix = idSchema.$id + "_" + index;
         const itemIdSchema = toIdSchema(
           itemSchema,
           itemIdPrefix,
-          definitions,
-          item
+          item,
+          dxInterface
         );
         return this.renderArrayFieldItem({
           index,
@@ -607,10 +589,7 @@ class ArrayField extends Component {
           onBlur,
           onFocus,
           schemaIndex,
-          typeCombinatorTypes,
-          markdownRenderer,
-          renderTypesPopover,
-          onRouteChange
+          typeCombinatorTypes
         });
       }),
       className: `field field-array field-array-of-${itemsSchema.type} ${
@@ -633,10 +612,7 @@ class ArrayField extends Component {
       formData,
       onNullifyChange: this.onNullifyChange,
       nullify: formData && formData.length > 0,
-      fromDiscriminator,
-      markdownRenderer,
-      renderTypesPopover,
-      onRouteChange
+      fromDiscriminator
     };
 
     // Check if a custom render function was passed in
@@ -658,8 +634,8 @@ class ArrayField extends Component {
       registry = getDefaultRegistry()
     } = this.props;
     const items = this.props.formData;
-    const { widgets, definitions, formContext } = registry;
-    const itemsSchema = retrieveSchema(schema.items, definitions, formData);
+    const { widgets, dxInterface, formContext } = registry;
+    const itemsSchema = retrieveSchema(schema.items, formData, dxInterface);
     const enumOptions = optionsList(itemsSchema);
     const { widget = "select", ...options } = {
       ...getUiOptions(uiSchema),
@@ -741,10 +717,7 @@ class ArrayField extends Component {
       registry = getDefaultRegistry(),
       onBlur,
       onFocus,
-      typeCombinatorTypes,
-      markdownRenderer,
-      renderTypesPopover,
-      onRouteChange
+      typeCombinatorTypes
     } = this.props;
     const title =
       schema.title === undefined
@@ -753,13 +726,13 @@ class ArrayField extends Component {
         ? schema.title
         : name + " (" + schema.title + ")";
     let items = this.props.formData;
-    const { ArrayFieldTemplate, definitions, fields } = registry;
+    const { ArrayFieldTemplate, fields, dxInterface } = registry;
     const { TitleField } = fields;
     const itemSchemas = schema.items.map((item, index) =>
-      retrieveSchema(item, definitions, formData[index])
+      retrieveSchema(item, formData[index], dxInterface)
     );
     const additionalSchema = allowAdditionalItems(schema)
-      ? retrieveSchema(schema.additionalItems, definitions, formData)
+      ? retrieveSchema(schema.additionalItems, formData, dxInterface)
       : null;
 
     if (!items || items.length < itemSchemas.length) {
@@ -778,14 +751,14 @@ class ArrayField extends Component {
       items: items.map((item, index) => {
         const additional = index >= itemSchemas.length;
         const itemSchema = additional
-          ? retrieveSchema(schema.additionalItems, definitions, item)
+          ? retrieveSchema(schema.additionalItems, item, dxInterface)
           : itemSchemas[index];
         const itemIdPrefix = idSchema.$id + "_" + index;
         const itemIdSchema = toIdSchema(
           itemSchema,
           itemIdPrefix,
-          definitions,
-          item
+          item,
+          dxInterface
         );
         const itemUiSchema = additional
           ? uiSchema.additionalItems || {}
@@ -811,10 +784,7 @@ class ArrayField extends Component {
           autofocus: autofocus && index === 0,
           onBlur,
           onFocus,
-          typeCombinatorTypes,
-          markdownRenderer,
-          renderTypesPopover,
-          onRouteChange
+          typeCombinatorTypes
         });
       }),
       onAddClick: this.onAddClick,
@@ -825,10 +795,7 @@ class ArrayField extends Component {
       title,
       TitleField,
       onNullifyChange: this.onNullifyChange,
-      nullify: formData && formData.length > 0,
-      markdownRenderer,
-      renderTypesPopover,
-      onRouteChange
+      nullify: formData && formData.length > 0
     };
 
     // Check if a custom template template was passed in
@@ -852,10 +819,7 @@ class ArrayField extends Component {
       onBlur,
       onFocus,
       schemaIndex,
-      typeCombinatorTypes,
-      markdownRenderer,
-      renderTypesPopover,
-      onRouteChange
+      typeCombinatorTypes
     } = props;
     const {
       disabled,
@@ -863,6 +827,7 @@ class ArrayField extends Component {
       uiSchema,
       registry = getDefaultRegistry()
     } = this.props;
+
     const {
       fields: { SchemaField }
     } = registry;
@@ -898,9 +863,6 @@ class ArrayField extends Component {
           readonly={this.props.readonly}
           autofocus={autofocus}
           typeCombinatorTypes={typeCombinatorTypes}
-          markdownRenderer={markdownRenderer}
-          renderTypesPopover={renderTypesPopover}
-          onRouteChange={onRouteChange}
         />
       ),
       className: "array-item",
@@ -957,13 +919,15 @@ if (process.env.NODE_ENV !== "production") {
     disabled: PropTypes.bool,
     readonly: PropTypes.bool,
     autofocus: PropTypes.bool,
-    registry: PropTypes.shape({
-      widgets: PropTypes.objectOf(
-        PropTypes.oneOfType([PropTypes.func, PropTypes.object])
-      ).isRequired,
-      fields: PropTypes.objectOf(PropTypes.func).isRequired,
-      definitions: PropTypes.object.isRequired,
-      formContext: PropTypes.object.isRequired
+    dxInterface: PropTypes.shape({
+      registry: PropTypes.shape({
+        widgets: PropTypes.objectOf(
+          PropTypes.oneOfType([PropTypes.func, PropTypes.object])
+        ).isRequired,
+        fields: PropTypes.objectOf(PropTypes.func).isRequired,
+        definitions: PropTypes.object.isRequired,
+        formContext: PropTypes.object.isRequired
+      })
     })
   };
 }
