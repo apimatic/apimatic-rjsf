@@ -581,18 +581,24 @@ function mergeStructure(schema, structure, linkMapper) {
     structure.Fields.forEach(field => {
       let property = schema.properties[field.GenericName];
       if (property) {
+        const additionalProperties = generateAdditionalProperties(
+          field,
+          linkMapper
+        );
         if (property.type === "array") {
           schema.properties[field.GenericName].items = {
             ...property.items,
             typeCombinatorTypes: field.TypeCombinatorTypes,
-            discriminator: field.Discriminator
-          };
-        } else {
-          schema.properties[field.GenericName] = {
-            ...property,
-            ...generateAdditionalProperties(field, linkMapper)
+            discriminator: field.Discriminator,
+            dataTypeDisplayText: getArrayItem(field.DataType),
+            dataTypeLink: additionalProperties.dataTypeLink,
+            dataTypeMarkdown: additionalProperties.dataTypeMarkdown
           };
         }
+        schema.properties[field.GenericName] = {
+          ...property,
+          ...additionalProperties
+        };
       }
     });
   }
@@ -1120,4 +1126,14 @@ export function isDiscriminator(name = "", discriminatorObj = {}) {
     discriminatorProperty && discriminatorProperty === name;
 
   return isDiscriminator;
+}
+
+export function getArrayItem(type) {
+  const pattern = /<(.+)>/;
+  const match = pattern.exec(type);
+  if (match) {
+    return match[1];
+  }
+
+  return "";
 }
