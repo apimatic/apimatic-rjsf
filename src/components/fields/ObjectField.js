@@ -15,7 +15,7 @@ import {
   retrieveSchema,
   getDefaultRegistry,
   getDefaultFormState,
-  deepEquals
+  deepEquals,
 } from "../../utils";
 import { ChevronIcon, JsonIcon } from "../Icons";
 
@@ -26,12 +26,12 @@ const cmOptions = {
   mode: {
     name: "javascript",
     json: true,
-    statementIndent: 2
+    statementIndent: 2,
   },
   lineNumbers: true,
   lineWrapping: true,
   indentWithTabs: false,
-  tabSize: 2
+  tabSize: 2,
 };
 
 // const viewJsonButtonStyle = {
@@ -65,8 +65,7 @@ function IconBtn(props) {
     <button
       type="button"
       className={pfx(`btn btn-${type}`) + " " + className}
-      {...otherProps}
-    >
+      {...otherProps}>
       <span className={pfx("tooltip")} />
       {props.children}
     </button>
@@ -85,8 +84,7 @@ function renderViewJsonButton(props) {
   ) : (
     <IconBtn
       onClick={toggleEditView}
-      className={pfx(`btn json-button ${showEditView ? "form-view" : ""}`)}
-    >
+      className={pfx(`btn json-button ${showEditView ? "form-view" : ""}`)}>
       <JsonIcon />
     </IconBtn>
   );
@@ -114,6 +112,10 @@ function renderViewJsonButton(props) {
       )} */
 }
 
+function DefaultOnlyProperties(props) {
+  return props.properties.map(prop => prop.content);
+}
+
 function DefaultObjectFieldTemplate(props) {
   const {
     TitleField,
@@ -122,7 +124,7 @@ function DefaultObjectFieldTemplate(props) {
     onNullifyChange,
     disabled,
     collapse,
-    toggleCollapse
+    toggleCollapse,
   } = props;
 
   let canEditJson =
@@ -143,8 +145,7 @@ function DefaultObjectFieldTemplate(props) {
   return (
     <fieldset
       className={pfx((props.isEven ? "even" : "odd") + ` depth_${props.depth}`)}
-      id={`${props.idSchema.$id}__object`}
-    >
+      id={`${props.idSchema.$id}__object`}>
       <div className={pfx("object-header")}>
         <div className={pfx("header-left hand")} onClick={toggleCollapse}>
           {title && (
@@ -174,8 +175,7 @@ function DefaultObjectFieldTemplate(props) {
           <IconBtn
             tabIndex="-1"
             onClick={toggleCollapse}
-            className={pfx(`btn toggle-button`)}
-          >
+            className={pfx(`btn toggle-button`)}>
             {collapse ? (
               <ChevronIcon width={14} rotate={-90} />
             ) : (
@@ -210,8 +210,7 @@ function DefaultObjectFieldTemplate(props) {
         <div
           className={pfx(
             `element-properties ${props.showEditView ? "json-edit-view" : ""}`
-          )}
-        >
+          )}>
           {props.showEditView && canEditJson ? (
             <div>
               <CodeMirror
@@ -246,7 +245,7 @@ class ObjectField extends Component {
     idSchema: {},
     required: false,
     disabled: false,
-    readonly: false
+    readonly: false,
   };
 
   constructor(props) {
@@ -274,7 +273,7 @@ class ObjectField extends Component {
       ...this.getStateFromProps(nextProps),
       collapse,
       expandAllLevel: this.state.expandAllLevel,
-      expandAll: nextProps.expandAll
+      expandAll: nextProps.expandAll,
     });
   }
 
@@ -300,7 +299,7 @@ class ObjectField extends Component {
         this.isJsonString(this.state.formJson) &&
         deepEquals(nextProps.formData, this.state.formJson)
           ? this.state.formJson
-          : JSON.stringify(nextProps.formData, null, 2)
+          : JSON.stringify(nextProps.formData, null, 2),
     };
   }
 
@@ -316,7 +315,7 @@ class ObjectField extends Component {
       let newFormData = {};
       newFormData = {
         ...this.props.formData,
-        [name]: value
+        [name]: value,
       };
       this.props.onChange(newFormData, options, schemaIndex);
     };
@@ -325,7 +324,7 @@ class ObjectField extends Component {
   onNullifyChange = () => {
     this.setState({
       formJsonError: false,
-      showEditView: false
+      showEditView: false,
     });
 
     if (this.shouldDisable()) {
@@ -360,7 +359,7 @@ class ObjectField extends Component {
   toggleEditView() {
     this.setState(state => ({
       showEditView: !state.showEditView,
-      collapse: false
+      collapse: false,
     }));
   }
 
@@ -384,7 +383,7 @@ class ObjectField extends Component {
       expandAll,
       fromDiscriminator,
       typeCombinatorTypes,
-      discriminatorObj = {}
+      discriminatorObj = {},
     } = this.props;
 
     const { fields, formContext, dxInterface } = registry;
@@ -425,7 +424,7 @@ class ObjectField extends Component {
       expandAll,
       fromDiscriminator,
       typeCombinatorTypes,
-      discriminatorObj
+      discriminatorObj,
     };
 
     if (schema.properties && Object.keys(schema.properties).length > 0) {
@@ -449,7 +448,7 @@ class ObjectField extends Component {
       !err && props.onChange(parsed);
       return {
         formJson: code,
-        formJsonError: err
+        formJsonError: err,
       };
     });
   };
@@ -458,7 +457,7 @@ class ObjectField extends Component {
     this.setState((prevState, props) => {
       return {
         ...prevState,
-        collapse: !prevState.collapse
+        collapse: !prevState.collapse,
       };
     });
   }
@@ -528,7 +527,7 @@ class ObjectField extends Component {
               display:
                 templateProps.disabled || this.shouldDisable()
                   ? "block"
-                  : "none"
+                  : "none",
             }}
           />
         </div>
@@ -550,13 +549,37 @@ class ObjectField extends Component {
     return <MapField {...templateProps} onChange={this.props.onChange} />;
   }
 
+  // If object is calling directly from discriminator
+  // we need to render properties
+  // otherwise we need to render whole object including properties
+  getTemplate = () => {
+    const { registry, fromDiscriminator } = this.props;
+    return registry.ObjectFieldTemplate || fromDiscriminator
+      ? DefaultOnlyProperties
+      : DefaultObjectFieldTemplate;
+  };
+
+  // If object is calling directly from discriminator
+  // we need to set isEven as of root level
+  getIsEven = () => {
+    const { fromDiscriminator } = this.props;
+    return fromDiscriminator ? this.state.isEven : !this.state.isEven;
+  };
+
+  // If object is calling directly from discriminator
+  // we need to set depth as of root level
+  getDepth = () => {
+    const { fromDiscriminator } = this.props;
+    return fromDiscriminator ? this.state.depth : this.state.depth + 1;
+  };
+
   renderObject(templateProps) {
     const {
       name,
       SchemaField,
       typeCombinatorTypes,
       discriminatorObj,
-      schema
+      schema,
     } = templateProps;
     let orderedProperties;
 
@@ -578,8 +601,7 @@ class ObjectField extends Component {
       );
     }
 
-    const Template =
-      templateProps.registry.ObjectFieldTemplate || DefaultObjectFieldTemplate;
+    const Template = this.getTemplate();
 
     const newProps = {
       ...templateProps,
@@ -608,8 +630,8 @@ class ObjectField extends Component {
             <SchemaField
               key={name}
               name={name}
-              isEven={!this.state.isEven}
-              depth={this.state.depth + 1}
+              isEven={this.getIsEven()}
+              depth={this.getDepth()}
               expandAll={this.state.expandAll}
               expandAllLevel={this.state.expandAllLevel}
               required={this.isRequired(name)}
@@ -632,10 +654,11 @@ class ObjectField extends Component {
           name,
           readonly: templateProps.readonly,
           disabled: templateProps.disabled || this.shouldDisable(),
-          required: templateProps.required
+          required: templateProps.required,
         };
-      })
+      }),
     };
+
     return <Template {...newProps} />;
   }
 }
@@ -659,9 +682,9 @@ if (process.env.NODE_ENV !== "production") {
         ).isRequired,
         fields: PropTypes.objectOf(PropTypes.func).isRequired,
         definitions: PropTypes.object.isRequired,
-        formContext: PropTypes.object.isRequired
-      })
-    })
+        formContext: PropTypes.object.isRequired,
+      }),
+    }),
   };
 }
 
