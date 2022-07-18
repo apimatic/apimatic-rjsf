@@ -5,7 +5,7 @@ import {
   getWidget,
   getUiOptions,
   optionsList,
-  getDefaultRegistry
+  getDefaultRegistry,
 } from "../../utils";
 
 function BooleanField(props) {
@@ -21,7 +21,7 @@ function BooleanField(props) {
     readonly,
     autofocus,
     onChange,
-    anyOfTitle
+    anyOfTitle,
   } = props;
   const { title } = schema;
   const { widgets, formContext } = registry;
@@ -29,7 +29,7 @@ function BooleanField(props) {
   const Widget = getWidget(schema, widget, widgets);
   const enumOptions = optionsList({
     enum: [true, false],
-    enumNames: schema.enumNames || ["yes", "no"]
+    enumNames: schema.enumNames || ["yes", "no"],
   });
   return (
     <Widget
@@ -69,9 +69,9 @@ if (process.env.NODE_ENV !== "production") {
         ).isRequired,
         fields: PropTypes.objectOf(PropTypes.func).isRequired,
         definitions: PropTypes.object.isRequired,
-        formContext: PropTypes.object.isRequired
-      })
-    })
+        formContext: PropTypes.object.isRequired,
+      }),
+    }),
   };
 }
 
@@ -79,7 +79,7 @@ BooleanField.defaultProps = {
   uiSchema: {},
   disabled: false,
   readonly: false,
-  autofocus: false
+  autofocus: false,
 };
 
 export default BooleanField;

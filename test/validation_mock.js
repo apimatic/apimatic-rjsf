@@ -9,20 +9,20 @@ export const schema = {
       type: "object",
       properties: {
         isPrimitiveType: {
-          type: "boolean"
+          type: "boolean",
         },
         isAtEndpointLevel: {
-          type: "boolean"
+          type: "boolean",
         },
         hasDiscriminator: {
-          type: "boolean"
+          type: "boolean",
         },
         session: {
           description: "Course session",
           example: {
             startsAt: "startsAtDummy",
             endsAt: "endsAtDummy",
-            offerDinner: true
+            offerDinner: true,
           },
           oneOf: [
             {
@@ -33,18 +33,18 @@ export const schema = {
               properties: {
                 startsAt: {
                   description: "Session start time",
-                  type: "string"
+                  type: "string",
                 },
                 endsAt: {
                   description: "Session end time",
-                  type: "string"
+                  type: "string",
                 },
                 offerTeaBreak: {
                   description: "Offer tea break during session",
-                  type: "boolean"
-                }
+                  type: "boolean",
+                },
               },
-              required: ["startsAt", "endsAt", "offerTeaBreak"]
+              required: ["startsAt", "endsAt", "offerTeaBreak"],
             },
             {
               id: "Evening",
@@ -54,31 +54,31 @@ export const schema = {
               properties: {
                 startsAt: {
                   description: "Session start time",
-                  type: "string"
+                  type: "string",
                 },
                 endsAt: {
                   description: "Session end time",
-                  type: "string"
+                  type: "string",
                 },
                 offerDinner: {
                   description: "Offer dinner during session",
-                  type: "boolean"
-                }
+                  type: "boolean",
+                },
               },
-              required: ["startsAt", "endsAt", "offerDinner"]
-            }
-          ]
-        }
+              required: ["startsAt", "endsAt", "offerDinner"],
+            },
+          ],
+        },
       },
       required: [
         "isPrimitiveType",
         "isAtEndpointLevel",
         "hasDiscriminator",
-        "session"
-      ]
-    }
+        "session",
+      ],
+    },
   },
-  required: ["args"]
+  required: ["args"],
 };
 
 export const origninalFormData1 = {
@@ -92,10 +92,10 @@ export const origninalFormData1 = {
       value: {
         startsAt: "startsAtDummy",
         endsAt: "endsAtDummy",
-        offerTeaBreak: true
-      }
-    }
-  }
+        offerTeaBreak: true,
+      },
+    },
+  },
 };
 
 export const originalFormData = {
@@ -109,17 +109,17 @@ export const originalFormData = {
       value: {
         startsAt: "startsAtDummy",
         endsAt: "endsAtDummy",
-        offerDinner: true
-      }
-    }
-  }
+        offerDinner: true,
+      },
+    },
+  },
 };
 
 // function getNestedValue
 export const GET_NESTED_VALUE_VARIABLES = {
   INITIAL_RENDER: "initial render",
   NESTED_DATA: "get possible paths in nested oneOf or anyOf",
-  NESTED_3D_DATA: "get possible paths in 3d nesting oneOf or anyOf"
+  NESTED_3D_DATA: "get possible paths in 3d nesting oneOf or anyOf",
 };
 
 export const GET_NESTED_VALUE_DATA = {
@@ -137,9 +137,9 @@ export const GET_NESTED_VALUE_DATA = {
           value: {
             $$__case: 0,
             $$__case_of: "anyOf",
-            value: ["helllo", "hi"]
-          }
-        }
+            value: ["helllo", "hi"],
+          },
+        },
       },
       {
         $$__case: 1,
@@ -149,11 +149,11 @@ export const GET_NESTED_VALUE_DATA = {
           $$__case_of: "oneOf",
           value: {
             $$__case: 1,
-            $$__case_of: "anyOf"
-          }
-        }
-      }
-    ]
+            $$__case_of: "anyOf",
+          },
+        },
+      },
+    ],
   },
   [GET_NESTED_VALUE_VARIABLES.NESTED_3D_DATA]: {
     $$__case: 0,
@@ -178,9 +178,9 @@ export const GET_NESTED_VALUE_DATA = {
                   value: {
                     $$__case: 0,
                     $$__case_of: "anyOf",
-                    value: ["helllo", "hi"]
-                  }
-                }
+                    value: ["helllo", "hi"],
+                  },
+                },
               },
               {
                 $$__case: 1,
@@ -190,13 +190,13 @@ export const GET_NESTED_VALUE_DATA = {
                   $$__case_of: "oneOf",
                   value: {
                     $$__case: 1,
-                    $$__case_of: "anyOf"
-                  }
-                }
-              }
-            ]
-          }
-        }
+                    $$__case_of: "anyOf",
+                  },
+                },
+              },
+            ],
+          },
+        },
       },
       {
         $$__case: 1,
@@ -206,19 +206,19 @@ export const GET_NESTED_VALUE_DATA = {
           $$__case_of: "oneOf",
           value: {
             $$__case: 1,
-            $$__case_of: "anyOf"
-          }
-        }
-      }
-    ]
-  }
+            $$__case_of: "anyOf",
+          },
+        },
+      },
+    ],
+  },
 };
 
 // function getSelectedFormDataFieldPath
 export const GET_SELECTED_FORM_DATA_FIELD_PATH_VARIABLES = {
   INITIAL_RENDER: "initial render",
   WITH_DATA: "with some nested data",
-  WITH_3D_DATA: "with nested 3d data"
+  WITH_3D_DATA: "with nested 3d data",
 };
 
 export const GET_SELECTED_FORM_DATA_FIELD_PATH_DATA = {
@@ -236,19 +236,19 @@ export const GET_SELECTED_FORM_DATA_FIELD_PATH_DATA = {
           {
             startsAt: "startsAtDummys",
             endsAt: "endsAtDummy",
-            offerDinner: true
+            offerDinner: true,
           },
           {
             startsAt: "sadadad",
             endsAt: "asdasdsads",
-            offerDinner: true
-          }
-        ]
-      }
-    }
+            offerDinner: true,
+          },
+        ],
+      },
+    },
   },
   [GET_SELECTED_FORM_DATA_FIELD_PATH_VARIABLES.WITH_3D_DATA]:
-    GET_NESTED_VALUE_DATA[GET_NESTED_VALUE_VARIABLES.NESTED_3D_DATA]
+    GET_NESTED_VALUE_DATA[GET_NESTED_VALUE_VARIABLES.NESTED_3D_DATA],
 };
 
 // function validateSchema
@@ -262,7 +262,7 @@ export const ONEOF_NONSCALAR_ENDPOINTS_VARIABLES = {
   SEND_ONEOF_OUTER_MAP: "Send Oneof Outer Map",
   SEND_ONEOF_INNER_ARRAY: "Send Oneof Inner Array",
   SEND_ONEOF_INNER_MIXED_MAP: "Send Oneof Inner Mixed Map",
-  SEND_ONEOF_CONTAINER_OF_ANYOF: "Send Oneof Conatiner of Anyof"
+  SEND_ONEOF_CONTAINER_OF_ANYOF: "Send Oneof Conatiner of Anyof",
 };
 
 export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
@@ -281,27 +281,27 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isPrimitiveType"
+              title: "isPrimitiveType",
             },
             isAtEndpointLevel: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isAtEndpointLevel"
+              title: "isAtEndpointLevel",
             },
             hasDiscriminator: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "hasDiscriminator"
+              title: "hasDiscriminator",
             },
             session: {
               example: [
                 {
                   startsAt: "startsAtDummy",
                   endsAt: "endsAtDummy",
-                  offerDinner: true
-                }
+                  offerDinner: true,
+                },
               ],
               oneOf: [
                 {
@@ -316,18 +316,18 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
                           properties: {
                             startsAt: {
                               description: "Session start time",
-                              type: "string"
+                              type: "string",
                             },
                             endsAt: {
                               description: "Session end time",
-                              type: "string"
+                              type: "string",
                             },
                             offerDinner: {
                               description: "Offer dinner during session",
-                              type: "boolean"
-                            }
+                              type: "boolean",
+                            },
                           },
-                          required: ["startsAt", "endsAt", "offerDinner"]
+                          required: ["startsAt", "endsAt", "offerDinner"],
                         },
                         {
                           type: "array",
@@ -339,21 +339,21 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
                             properties: {
                               startsAt: {
                                 description: "Session start time",
-                                type: "string"
+                                type: "string",
                               },
                               endsAt: {
                                 description: "Session end time",
-                                type: "string"
+                                type: "string",
                               },
                               offerDinner: {
                                 description: "Offer dinner during session",
-                                type: "boolean"
-                              }
+                                type: "boolean",
+                              },
                             },
-                            required: ["startsAt", "endsAt", "offerDinner"]
-                          }
-                        }
-                      ]
+                            required: ["startsAt", "endsAt", "offerDinner"],
+                          },
+                        },
+                      ],
                     },
                     {
                       id: "Noon",
@@ -363,20 +363,20 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
                       properties: {
                         startsAt: {
                           description: "Session start time",
-                          type: "string"
+                          type: "string",
                         },
                         endsAt: {
                           description: "Session end time",
-                          type: "string"
+                          type: "string",
                         },
                         offerLunch: {
                           description: "Offer lunch during session",
-                          type: "boolean"
-                        }
+                          type: "boolean",
+                        },
                       },
-                      required: ["startsAt", "endsAt", "offerLunch"]
-                    }
-                  ]
+                      required: ["startsAt", "endsAt", "offerLunch"],
+                    },
+                  ],
                 },
                 {
                   id: "Morning",
@@ -386,34 +386,34 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
                   properties: {
                     startsAt: {
                       description: "Session start time",
-                      type: "string"
+                      type: "string",
                     },
                     endsAt: {
                       description: "Session end time",
-                      type: "string"
+                      type: "string",
                     },
                     offerTeaBreak: {
                       description: "Offer tea break during session",
-                      type: "boolean"
-                    }
+                      type: "boolean",
+                    },
                   },
-                  required: ["startsAt", "endsAt", "offerTeaBreak"]
-                }
+                  required: ["startsAt", "endsAt", "offerTeaBreak"],
+                },
               ],
               dataTypeDisplayText: "OneOfSession",
               paramType: "Body",
-              title: "session"
-            }
+              title: "session",
+            },
           },
           required: [
             "isPrimitiveType",
             "isAtEndpointLevel",
             "hasDiscriminator",
-            "session"
-          ]
-        }
+            "session",
+          ],
+        },
       },
-      required: ["args"]
+      required: ["args"],
     },
     originalFormData: {
       args: {
@@ -430,12 +430,12 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
               $$__case: 0,
               $$__case_of: "oneOf",
               value: {
-                offerDinner: true
-              }
-            }
-          }
-        }
-      }
+                offerDinner: true,
+              },
+            },
+          },
+        },
+      },
     },
     formData: {
       args: {
@@ -443,10 +443,10 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
         isAtEndpointLevel: false,
         hasDiscriminator: false,
         session: {
-          offerDinner: true
-        }
-      }
-    }
+          offerDinner: true,
+        },
+      },
+    },
   },
   [ONEOF_NONSCALAR_ENDPOINTS_VARIABLES.SEND_ONEOF_OUTER_ARRAY]: {
     schema: {
@@ -463,19 +463,19 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isPrimitiveType"
+              title: "isPrimitiveType",
             },
             isAtEndpointLevel: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isAtEndpointLevel"
+              title: "isAtEndpointLevel",
             },
             hasDiscriminator: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "hasDiscriminator"
+              title: "hasDiscriminator",
             },
             session: {
               description: "Course session",
@@ -483,8 +483,8 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
                 {
                   startsAt: "startsAtDummy",
                   endsAt: "endsAtDummy",
-                  offerDinner: true
-                }
+                  offerDinner: true,
+                },
               ],
               type: "array",
               items: {
@@ -497,18 +497,18 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
                     properties: {
                       startsAt: {
                         description: "Session start time",
-                        type: "string"
+                        type: "string",
                       },
                       endsAt: {
                         description: "Session end time",
-                        type: "string"
+                        type: "string",
                       },
                       offerTeaBreak: {
                         description: "Offer tea break during session",
-                        type: "boolean"
-                      }
+                        type: "boolean",
+                      },
                     },
-                    required: ["startsAt", "endsAt", "offerTeaBreak"]
+                    required: ["startsAt", "endsAt", "offerTeaBreak"],
                   },
                   {
                     id: "Evening",
@@ -518,44 +518,44 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
                     properties: {
                       startsAt: {
                         description: "Session start time",
-                        type: "string"
+                        type: "string",
                       },
                       endsAt: {
                         description: "Session end time",
-                        type: "string"
+                        type: "string",
                       },
                       offerDinner: {
                         description: "Offer dinner during session",
-                        type: "boolean"
-                      }
+                        type: "boolean",
+                      },
                     },
-                    required: ["startsAt", "endsAt", "offerDinner"]
-                  }
+                    required: ["startsAt", "endsAt", "offerDinner"],
+                  },
                 ],
-                dataTypeDisplayText: "OneOfSession2"
+                dataTypeDisplayText: "OneOfSession2",
               },
               dataTypeDisplayText: "List<OneOfSession2>",
               paramType: "Body",
-              title: "session"
-            }
+              title: "session",
+            },
           },
           required: [
             "isPrimitiveType",
             "isAtEndpointLevel",
             "hasDiscriminator",
-            "session"
-          ]
-        }
+            "session",
+          ],
+        },
       },
-      required: ["args"]
+      required: ["args"],
     },
     formData: {
       args: {
         isPrimitiveType: false,
         isAtEndpointLevel: false,
         hasDiscriminator: false,
-        session: [{}]
-      }
+        session: [{}],
+      },
     },
     originalFormData: {
       args: {
@@ -566,11 +566,11 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
           {
             $$__case: 0,
             $$__case_of: "oneOf",
-            value: {}
-          }
-        ]
-      }
-    }
+            value: {},
+          },
+        ],
+      },
+    },
   },
   [ONEOF_NONSCALAR_ENDPOINTS_VARIABLES.SEND_ONEOF_SIMPLE]: {
     schema: {
@@ -587,26 +587,26 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isPrimitiveType"
+              title: "isPrimitiveType",
             },
             isAtEndpointLevel: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isAtEndpointLevel"
+              title: "isAtEndpointLevel",
             },
             hasDiscriminator: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "hasDiscriminator"
+              title: "hasDiscriminator",
             },
             session: {
               description: "Course session",
               example: {
                 startsAt: "startsAtDummy",
                 endsAt: "endsAtDummy",
-                offerDinner: true
+                offerDinner: true,
               },
               oneOf: [
                 {
@@ -617,18 +617,18 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
                   properties: {
                     startsAt: {
                       description: "Session start time",
-                      type: "string"
+                      type: "string",
                     },
                     endsAt: {
                       description: "Session end time",
-                      type: "string"
+                      type: "string",
                     },
                     offerTeaBreak: {
                       description: "Offer tea break during session",
-                      type: "boolean"
-                    }
+                      type: "boolean",
+                    },
                   },
-                  required: ["startsAt", "endsAt", "offerTeaBreak"]
+                  required: ["startsAt", "endsAt", "offerTeaBreak"],
                 },
                 {
                   id: "Evening",
@@ -638,42 +638,42 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
                   properties: {
                     startsAt: {
                       description: "Session start time",
-                      type: "string"
+                      type: "string",
                     },
                     endsAt: {
                       description: "Session end time",
-                      type: "string"
+                      type: "string",
                     },
                     offerDinner: {
                       description: "Offer dinner during session",
-                      type: "boolean"
-                    }
+                      type: "boolean",
+                    },
                   },
-                  required: ["startsAt", "endsAt", "offerDinner"]
-                }
+                  required: ["startsAt", "endsAt", "offerDinner"],
+                },
               ],
               dataTypeDisplayText: "OneOfSession2",
               paramType: "Body",
-              title: "session"
-            }
+              title: "session",
+            },
           },
           required: [
             "isPrimitiveType",
             "isAtEndpointLevel",
             "hasDiscriminator",
-            "session"
-          ]
-        }
+            "session",
+          ],
+        },
       },
-      required: ["args"]
+      required: ["args"],
     },
     formData: {
       args: {
         isPrimitiveType: false,
         isAtEndpointLevel: false,
         hasDiscriminator: false,
-        session: {}
-      }
+        session: {},
+      },
     },
     originalFormData: {
       args: {
@@ -683,10 +683,10 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
         session: {
           $$__case: 0,
           $$__case_of: "oneOf",
-          value: {}
-        }
-      }
-    }
+          value: {},
+        },
+      },
+    },
   },
   [ONEOF_NONSCALAR_ENDPOINTS_VARIABLES.SEND_ONEOF_INNER_MAP]: {
     schema: {
@@ -703,19 +703,19 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isPrimitiveType"
+              title: "isPrimitiveType",
             },
             isAtEndpointLevel: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isAtEndpointLevel"
+              title: "isAtEndpointLevel",
             },
             hasDiscriminator: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "hasDiscriminator"
+              title: "hasDiscriminator",
             },
             session: {
               description: "Course session",
@@ -723,13 +723,13 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
                 key1: {
                   startsAt: "startsAtDummy",
                   endsAt: "endsAtDummy",
-                  offerDinner: true
+                  offerDinner: true,
                 },
                 key2: {
                   startsAt: "startsAtDummy",
                   endsAt: "endsAtDummy",
-                  offerDinner: true
-                }
+                  offerDinner: true,
+                },
               },
               oneOf: [
                 {
@@ -742,19 +742,19 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
                     properties: {
                       startsAt: {
                         description: "Session start time",
-                        type: "string"
+                        type: "string",
                       },
                       endsAt: {
                         description: "Session end time",
-                        type: "string"
+                        type: "string",
                       },
                       offerTeaBreak: {
                         description: "Offer tea break during session",
-                        type: "boolean"
-                      }
+                        type: "boolean",
+                      },
                     },
-                    required: ["startsAt", "endsAt", "offerTeaBreak"]
-                  }
+                    required: ["startsAt", "endsAt", "offerTeaBreak"],
+                  },
                 },
                 {
                   title: "Evening",
@@ -766,35 +766,35 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
                     properties: {
                       startsAt: {
                         description: "Session start time",
-                        type: "string"
+                        type: "string",
                       },
                       endsAt: {
                         description: "Session end time",
-                        type: "string"
+                        type: "string",
                       },
                       offerDinner: {
                         description: "Offer dinner during session",
-                        type: "boolean"
-                      }
+                        type: "boolean",
+                      },
                     },
-                    required: ["startsAt", "endsAt", "offerDinner"]
-                  }
-                }
+                    required: ["startsAt", "endsAt", "offerDinner"],
+                  },
+                },
               ],
               dataTypeDisplayText: "OneOfSession3",
               paramType: "Body",
-              title: "session"
-            }
+              title: "session",
+            },
           },
           required: [
             "isPrimitiveType",
             "isAtEndpointLevel",
             "hasDiscriminator",
-            "session"
-          ]
-        }
+            "session",
+          ],
+        },
       },
-      required: ["args"]
+      required: ["args"],
     },
     formData: {
       args: {
@@ -802,9 +802,9 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
         isAtEndpointLevel: false,
         hasDiscriminator: false,
         session: {
-          key0: {}
-        }
-      }
+          key0: {},
+        },
+      },
     },
     originalFormData: {
       args: {
@@ -815,11 +815,11 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
           $$__case: 0,
           $$__case_of: "oneOf",
           value: {
-            key0: {}
-          }
-        }
-      }
-    }
+            key0: {},
+          },
+        },
+      },
+    },
   },
   [ONEOF_NONSCALAR_ENDPOINTS_VARIABLES.SEND_ONEOF_INNER_MIXED_ARRAYS]: {
     schema: {
@@ -836,19 +836,19 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isPrimitiveType"
+              title: "isPrimitiveType",
             },
             isAtEndpointLevel: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isAtEndpointLevel"
+              title: "isAtEndpointLevel",
             },
             hasDiscriminator: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "hasDiscriminator"
+              title: "hasDiscriminator",
             },
             session: {
               description: "Course session",
@@ -856,8 +856,8 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
                 {
                   startsAt: "startsAtDummy",
                   endsAt: "endsAtDummy",
-                  offerTeaBreak: true
-                }
+                  offerTeaBreak: true,
+                },
               ],
               oneOf: [
                 {
@@ -870,19 +870,19 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
                     properties: {
                       startsAt: {
                         description: "Session start time",
-                        type: "string"
+                        type: "string",
                       },
                       endsAt: {
                         description: "Session end time",
-                        type: "string"
+                        type: "string",
                       },
                       offerTeaBreak: {
                         description: "Offer tea break during session",
-                        type: "boolean"
-                      }
+                        type: "boolean",
+                      },
                     },
-                    required: ["startsAt", "endsAt", "offerTeaBreak"]
-                  }
+                    required: ["startsAt", "endsAt", "offerTeaBreak"],
+                  },
                 },
                 {
                   id: "Evening",
@@ -892,42 +892,42 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
                   properties: {
                     startsAt: {
                       description: "Session start time",
-                      type: "string"
+                      type: "string",
                     },
                     endsAt: {
                       description: "Session end time",
-                      type: "string"
+                      type: "string",
                     },
                     offerDinner: {
                       description: "Offer dinner during session",
-                      type: "boolean"
-                    }
+                      type: "boolean",
+                    },
                   },
-                  required: ["startsAt", "endsAt", "offerDinner"]
-                }
+                  required: ["startsAt", "endsAt", "offerDinner"],
+                },
               ],
               dataTypeDisplayText: "OneOfSession4",
               paramType: "Body",
-              title: "session"
-            }
+              title: "session",
+            },
           },
           required: [
             "isPrimitiveType",
             "isAtEndpointLevel",
             "hasDiscriminator",
-            "session"
-          ]
-        }
+            "session",
+          ],
+        },
       },
-      required: ["args"]
+      required: ["args"],
     },
     formData: {
       args: {
         isPrimitiveType: false,
         isAtEndpointLevel: false,
         hasDiscriminator: false,
-        session: [{}]
-      }
+        session: [{}],
+      },
     },
     originalFormData: {
       args: {
@@ -937,10 +937,10 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
         session: {
           $$__case: 0,
           $$__case_of: "oneOf",
-          value: [{}]
-        }
-      }
-    }
+          value: [{}],
+        },
+      },
+    },
   },
   [ONEOF_NONSCALAR_ENDPOINTS_VARIABLES.SEND_ONEOF_OUTER_MAP]: {
     schema: {
@@ -957,19 +957,19 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isPrimitiveType"
+              title: "isPrimitiveType",
             },
             isAtEndpointLevel: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isAtEndpointLevel"
+              title: "isAtEndpointLevel",
             },
             hasDiscriminator: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "hasDiscriminator"
+              title: "hasDiscriminator",
             },
             session: {
               description: "Course session",
@@ -977,13 +977,13 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
                 key1: {
                   startsAt: "startsAtDummy",
                   endsAt: "endsAtDummy",
-                  offerTeaBreak: true
+                  offerTeaBreak: true,
                 },
                 key2: {
                   startsAt: "startsAtDummy",
                   endsAt: "endsAtDummy",
-                  offerDinner: true
-                }
+                  offerDinner: true,
+                },
               },
               type: "object",
               additionalProperties: {
@@ -996,18 +996,18 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
                     properties: {
                       startsAt: {
                         description: "Session start time",
-                        type: "string"
+                        type: "string",
                       },
                       endsAt: {
                         description: "Session end time",
-                        type: "string"
+                        type: "string",
                       },
                       offerTeaBreak: {
                         description: "Offer tea break during session",
-                        type: "boolean"
-                      }
+                        type: "boolean",
+                      },
                     },
-                    required: ["startsAt", "endsAt", "offerTeaBreak"]
+                    required: ["startsAt", "endsAt", "offerTeaBreak"],
                   },
                   {
                     id: "Evening",
@@ -1017,35 +1017,35 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
                     properties: {
                       startsAt: {
                         description: "Session start time",
-                        type: "string"
+                        type: "string",
                       },
                       endsAt: {
                         description: "Session end time",
-                        type: "string"
+                        type: "string",
                       },
                       offerDinner: {
                         description: "Offer dinner during session",
-                        type: "boolean"
-                      }
+                        type: "boolean",
+                      },
                     },
-                    required: ["startsAt", "endsAt", "offerDinner"]
-                  }
-                ]
+                    required: ["startsAt", "endsAt", "offerDinner"],
+                  },
+                ],
               },
               dataTypeDisplayText: "Map<String, OneOfSession2>",
               paramType: "Body",
-              title: "session"
-            }
+              title: "session",
+            },
           },
           required: [
             "isPrimitiveType",
             "isAtEndpointLevel",
             "hasDiscriminator",
-            "session"
-          ]
-        }
+            "session",
+          ],
+        },
       },
-      required: ["args"]
+      required: ["args"],
     },
     formData: {
       args: {
@@ -1057,10 +1057,10 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
           key2: {
             startsAt: "startsAtDummy",
             endsAt: "endsAtDummy",
-            offerDinner: true
-          }
-        }
-      }
+            offerDinner: true,
+          },
+        },
+      },
     },
     originalFormData: {
       args: {
@@ -1071,19 +1071,19 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
           key1: {
             $$__case: 0,
             $$__case_of: "oneOf",
-            value: {}
+            value: {},
           },
           key2: {
             $$__case: 1,
             value: {
               startsAt: "startsAtDummy",
               endsAt: "endsAtDummy",
-              offerDinner: true
-            }
-          }
-        }
-      }
-    }
+              offerDinner: true,
+            },
+          },
+        },
+      },
+    },
   },
   [ONEOF_NONSCALAR_ENDPOINTS_VARIABLES.SEND_ONEOF_INNER_ARRAY]: {
     schema: {
@@ -1100,19 +1100,19 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isPrimitiveType"
+              title: "isPrimitiveType",
             },
             isAtEndpointLevel: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isAtEndpointLevel"
+              title: "isAtEndpointLevel",
             },
             hasDiscriminator: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "hasDiscriminator"
+              title: "hasDiscriminator",
             },
             session: {
               description: "Course session",
@@ -1120,8 +1120,8 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
                 {
                   startsAt: "startsAtDummy",
                   endsAt: "endsAtDummy",
-                  offerDinner: true
-                }
+                  offerDinner: true,
+                },
               ],
               oneOf: [
                 {
@@ -1134,19 +1134,19 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
                     properties: {
                       startsAt: {
                         description: "Session start time",
-                        type: "string"
+                        type: "string",
                       },
                       endsAt: {
                         description: "Session end time",
-                        type: "string"
+                        type: "string",
                       },
                       offerTeaBreak: {
                         description: "Offer tea break during session",
-                        type: "boolean"
-                      }
+                        type: "boolean",
+                      },
                     },
-                    required: ["startsAt", "endsAt", "offerTeaBreak"]
-                  }
+                    required: ["startsAt", "endsAt", "offerTeaBreak"],
+                  },
                 },
                 {
                   type: "array",
@@ -1158,43 +1158,43 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
                     properties: {
                       startsAt: {
                         description: "Session start time",
-                        type: "string"
+                        type: "string",
                       },
                       endsAt: {
                         description: "Session end time",
-                        type: "string"
+                        type: "string",
                       },
                       offerDinner: {
                         description: "Offer dinner during session",
-                        type: "boolean"
-                      }
+                        type: "boolean",
+                      },
                     },
-                    required: ["startsAt", "endsAt", "offerDinner"]
-                  }
-                }
+                    required: ["startsAt", "endsAt", "offerDinner"],
+                  },
+                },
               ],
               dataTypeDisplayText: "OneOfSession5",
               paramType: "Body",
-              title: "session"
-            }
+              title: "session",
+            },
           },
           required: [
             "isPrimitiveType",
             "isAtEndpointLevel",
             "hasDiscriminator",
-            "session"
-          ]
-        }
+            "session",
+          ],
+        },
       },
-      required: ["args"]
+      required: ["args"],
     },
     formData: {
       args: {
         isPrimitiveType: false,
         isAtEndpointLevel: false,
         hasDiscriminator: false,
-        session: [{}]
-      }
+        session: [{}],
+      },
     },
     originalFormData: {
       args: {
@@ -1204,10 +1204,10 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
         session: {
           $$__case: 1,
           $$__case_of: "oneOf",
-          value: [{}]
-        }
-      }
-    }
+          value: [{}],
+        },
+      },
+    },
   },
   [ONEOF_NONSCALAR_ENDPOINTS_VARIABLES.SEND_ONEOF_INNER_MIXED_MAP]: {
     schema: {
@@ -1224,19 +1224,19 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isPrimitiveType"
+              title: "isPrimitiveType",
             },
             isAtEndpointLevel: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isAtEndpointLevel"
+              title: "isAtEndpointLevel",
             },
             hasDiscriminator: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "hasDiscriminator"
+              title: "hasDiscriminator",
             },
             session: {
               description: "Course session",
@@ -1251,19 +1251,19 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
                     properties: {
                       startsAt: {
                         description: "Session start time",
-                        type: "string"
+                        type: "string",
                       },
                       endsAt: {
                         description: "Session end time",
-                        type: "string"
+                        type: "string",
                       },
                       offerTeaBreak: {
                         description: "Offer tea break during session",
-                        type: "boolean"
-                      }
+                        type: "boolean",
+                      },
                     },
-                    required: ["startsAt", "endsAt", "offerTeaBreak"]
-                  }
+                    required: ["startsAt", "endsAt", "offerTeaBreak"],
+                  },
                 },
                 {
                   id: "Evening",
@@ -1273,34 +1273,34 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
                   properties: {
                     startsAt: {
                       description: "Session start time",
-                      type: "string"
+                      type: "string",
                     },
                     endsAt: {
                       description: "Session end time",
-                      type: "string"
+                      type: "string",
                     },
                     offerDinner: {
                       description: "Offer dinner during session",
-                      type: "boolean"
-                    }
+                      type: "boolean",
+                    },
                   },
-                  required: ["startsAt", "endsAt", "offerDinner"]
-                }
+                  required: ["startsAt", "endsAt", "offerDinner"],
+                },
               ],
               dataTypeDisplayText: "OneOfSession6",
               paramType: "Body",
-              title: "session"
-            }
+              title: "session",
+            },
           },
           required: [
             "isPrimitiveType",
             "isAtEndpointLevel",
             "hasDiscriminator",
-            "session"
-          ]
-        }
+            "session",
+          ],
+        },
       },
-      required: ["args"]
+      required: ["args"],
     },
     formData: {
       args: {
@@ -1308,9 +1308,9 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
         isAtEndpointLevel: false,
         hasDiscriminator: false,
         session: {
-          key0: {}
-        }
-      }
+          key0: {},
+        },
+      },
     },
     originalFormData: {
       args: {
@@ -1321,11 +1321,11 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
           $$__case: 0,
           $$__case_of: "oneOf",
           value: {
-            key0: {}
-          }
-        }
-      }
-    }
+            key0: {},
+          },
+        },
+      },
+    },
   },
   [ONEOF_NONSCALAR_ENDPOINTS_VARIABLES.SEND_ONEOF_CONTAINER_OF_ANYOF]: {
     schema: {
@@ -1342,25 +1342,25 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isPrimitiveType"
+              title: "isPrimitiveType",
             },
             isAtEndpointLevel: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isAtEndpointLevel"
+              title: "isAtEndpointLevel",
             },
             hasDiscriminator: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "hasDiscriminator"
+              title: "hasDiscriminator",
             },
             session: {
               example: {
                 startsAt: "startsAtDummy",
                 endsAt: "endsAtDummy",
-                offerLunch: true
+                offerLunch: true,
               },
               oneOf: [
                 {
@@ -1371,18 +1371,18 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
                   properties: {
                     startsAt: {
                       description: "Session start time",
-                      type: "string"
+                      type: "string",
                     },
                     endsAt: {
                       description: "Session end time",
-                      type: "string"
+                      type: "string",
                     },
                     offerTeaBreak: {
                       description: "Offer tea break during session",
-                      type: "boolean"
-                    }
+                      type: "boolean",
+                    },
                   },
-                  required: ["startsAt", "endsAt", "offerTeaBreak"]
+                  required: ["startsAt", "endsAt", "offerTeaBreak"],
                 },
                 {
                   anyOf: [
@@ -1394,18 +1394,18 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
                       properties: {
                         startsAt: {
                           description: "Session start time",
-                          type: "string"
+                          type: "string",
                         },
                         endsAt: {
                           description: "Session end time",
-                          type: "string"
+                          type: "string",
                         },
                         offerDinner: {
                           description: "Offer dinner during session",
-                          type: "boolean"
-                        }
+                          type: "boolean",
+                        },
                       },
-                      required: ["startsAt", "endsAt", "offerDinner"]
+                      required: ["startsAt", "endsAt", "offerDinner"],
                     },
                     {
                       id: "Noon",
@@ -1415,44 +1415,44 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
                       properties: {
                         startsAt: {
                           description: "Session start time",
-                          type: "string"
+                          type: "string",
                         },
                         endsAt: {
                           description: "Session end time",
-                          type: "string"
+                          type: "string",
                         },
                         offerLunch: {
                           description: "Offer lunch during session",
-                          type: "boolean"
-                        }
+                          type: "boolean",
+                        },
                       },
-                      required: ["startsAt", "endsAt", "offerLunch"]
-                    }
-                  ]
-                }
+                      required: ["startsAt", "endsAt", "offerLunch"],
+                    },
+                  ],
+                },
               ],
               dataTypeDisplayText: "OneOfSession7",
               paramType: "Body",
-              title: "session"
-            }
+              title: "session",
+            },
           },
           required: [
             "isPrimitiveType",
             "isAtEndpointLevel",
             "hasDiscriminator",
-            "session"
-          ]
-        }
+            "session",
+          ],
+        },
       },
-      required: ["args"]
+      required: ["args"],
     },
     formData: {
       args: {
         isPrimitiveType: false,
         isAtEndpointLevel: false,
         hasDiscriminator: false,
-        session: {}
-      }
+        session: {},
+      },
     },
     originalFormData: {
       args: {
@@ -1464,12 +1464,12 @@ export const ONEOF_NONSCALAR_ENDPOINTS_DATA = {
           value: {
             $$__case: 1,
             $$__case_of: "anyOf",
-            value: {}
-          }
-        }
-      }
-    }
-  }
+            value: {},
+          },
+        },
+      },
+    },
+  },
 };
 
 // => Oneof-scaler-endpoints
@@ -1484,7 +1484,7 @@ export const ONEOF_SCALAR_ENDPOINTS_VARIABLES = {
     "Scalar endpoints Send Oneof Inner Mixed Arrays",
   SEND_ONEOF_INNER_MIXED_MAP: "Scalar endpoints Send Oneof Inner Mixed Map",
   SEND_ONEOF_CONTAINER_OF_ANYOF:
-    "Scalar endpoints Send Oneof Conatiner of Anyof"
+    "Scalar endpoints Send Oneof Conatiner of Anyof",
 };
 
 export const ONEOF_SCALAR_ENDPOINTS_DATA = {
@@ -1503,19 +1503,19 @@ export const ONEOF_SCALAR_ENDPOINTS_DATA = {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isPrimitiveType"
+              title: "isPrimitiveType",
             },
             isAtEndpointLevel: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isAtEndpointLevel"
+              title: "isAtEndpointLevel",
             },
             hasDiscriminator: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "hasDiscriminator"
+              title: "hasDiscriminator",
             },
             scalarValue: {
               example: [true, false],
@@ -1523,38 +1523,38 @@ export const ONEOF_SCALAR_ENDPOINTS_DATA = {
                 {
                   type: "array",
                   items: {
-                    type: "number"
-                  }
+                    type: "number",
+                  },
                 },
                 {
                   type: "array",
                   items: {
-                    type: "boolean"
-                  }
-                }
+                    type: "boolean",
+                  },
+                },
               ],
               dataTypeDisplayText: "OneOfScalarValue",
               paramType: "Body",
-              title: "scalarValue"
-            }
+              title: "scalarValue",
+            },
           },
           required: [
             "isPrimitiveType",
             "isAtEndpointLevel",
             "hasDiscriminator",
-            "scalarValue"
-          ]
-        }
+            "scalarValue",
+          ],
+        },
       },
-      required: ["args"]
+      required: ["args"],
     },
     formData: {
       args: {
         isPrimitiveType: false,
         isAtEndpointLevel: false,
         hasDiscriminator: false,
-        scalarValue: [null]
-      }
+        scalarValue: [null],
+      },
     },
     originalFormData: {
       args: {
@@ -1564,10 +1564,10 @@ export const ONEOF_SCALAR_ENDPOINTS_DATA = {
         scalarValue: {
           $$__case: 0,
           $$__case_of: "oneOf",
-          value: [null]
-        }
-      }
-    }
+          value: [null],
+        },
+      },
+    },
   },
   [ONEOF_SCALAR_ENDPOINTS_VARIABLES.SEND_ONEOF_INNER_MAP]: {
     schema: {
@@ -1584,53 +1584,53 @@ export const ONEOF_SCALAR_ENDPOINTS_DATA = {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isPrimitiveType"
+              title: "isPrimitiveType",
             },
             isAtEndpointLevel: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isAtEndpointLevel"
+              title: "isAtEndpointLevel",
             },
             hasDiscriminator: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "hasDiscriminator"
+              title: "hasDiscriminator",
             },
             scalarValue: {
               example: {
                 key1: false,
-                key2: false
+                key2: false,
               },
               oneOf: [
                 {
                   type: "object",
                   additionalProperties: {
-                    type: "number"
-                  }
+                    type: "number",
+                  },
                 },
                 {
                   type: "object",
                   additionalProperties: {
-                    type: "boolean"
-                  }
-                }
+                    type: "boolean",
+                  },
+                },
               ],
               dataTypeDisplayText: "OneOfScalarValue1",
               paramType: "Body",
-              title: "scalarValue"
-            }
+              title: "scalarValue",
+            },
           },
           required: [
             "isPrimitiveType",
             "isAtEndpointLevel",
             "hasDiscriminator",
-            "scalarValue"
-          ]
-        }
+            "scalarValue",
+          ],
+        },
       },
-      required: ["args"]
+      required: ["args"],
     },
     formData: {
       args: {
@@ -1638,9 +1638,9 @@ export const ONEOF_SCALAR_ENDPOINTS_DATA = {
         isAtEndpointLevel: false,
         hasDiscriminator: false,
         scalarValue: {
-          key0: "a"
-        }
-      }
+          key0: "a",
+        },
+      },
     },
     originalFormData: {
       args: {
@@ -1651,11 +1651,11 @@ export const ONEOF_SCALAR_ENDPOINTS_DATA = {
           $$__case: 0,
           $$__case_of: "oneOf",
           value: {
-            key0: "a"
-          }
-        }
-      }
-    }
+            key0: "a",
+          },
+        },
+      },
+    },
   },
   [ONEOF_SCALAR_ENDPOINTS_VARIABLES.SEND_ONEOF_OUTER_MAP]: {
     schema: {
@@ -1672,50 +1672,50 @@ export const ONEOF_SCALAR_ENDPOINTS_DATA = {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isPrimitiveType"
+              title: "isPrimitiveType",
             },
             isAtEndpointLevel: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isAtEndpointLevel"
+              title: "isAtEndpointLevel",
             },
             hasDiscriminator: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "hasDiscriminator"
+              title: "hasDiscriminator",
             },
             scalarValue: {
               example: {
                 key1: false,
-                key2: 10.2
+                key2: 10.2,
               },
               type: "object",
               additionalProperties: {
                 oneOf: [
                   {
-                    type: "number"
+                    type: "number",
                   },
                   {
-                    type: "boolean"
-                  }
-                ]
+                    type: "boolean",
+                  },
+                ],
               },
               dataTypeDisplayText: "Map<String, OneOfScalarValue2>",
               paramType: "Body",
-              title: "scalarValue"
-            }
+              title: "scalarValue",
+            },
           },
           required: [
             "isPrimitiveType",
             "isAtEndpointLevel",
             "hasDiscriminator",
-            "scalarValue"
-          ]
-        }
+            "scalarValue",
+          ],
+        },
       },
-      required: ["args"]
+      required: ["args"],
     },
     formData: {
       args: {
@@ -1725,9 +1725,9 @@ export const ONEOF_SCALAR_ENDPOINTS_DATA = {
         scalarValue: {
           key1: "a",
           key2: 10.2,
-          key0: "a"
-        }
-      }
+          key0: "a",
+        },
+      },
     },
     originalFormData: {
       args: {
@@ -1738,21 +1738,21 @@ export const ONEOF_SCALAR_ENDPOINTS_DATA = {
           key1: {
             $$__case: 0,
             $$__case_of: "oneOf",
-            value: "a"
+            value: "a",
           },
           key2: {
             $$__case: 0,
             $$__case_of: "oneOf",
-            value: 10.2
+            value: 10.2,
           },
           key0: {
             $$__case: 0,
             $$__case_of: "oneOf",
-            value: "a"
-          }
-        }
-      }
-    }
+            value: "a",
+          },
+        },
+      },
+    },
   },
   [ONEOF_SCALAR_ENDPOINTS_VARIABLES.SEND_ONEOF_SIMPLE]: {
     schema: {
@@ -1769,51 +1769,51 @@ export const ONEOF_SCALAR_ENDPOINTS_DATA = {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isPrimitiveType"
+              title: "isPrimitiveType",
             },
             isAtEndpointLevel: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isAtEndpointLevel"
+              title: "isAtEndpointLevel",
             },
             hasDiscriminator: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "hasDiscriminator"
+              title: "hasDiscriminator",
             },
             scalarValue: {
               example: true,
               oneOf: [
                 {
-                  type: "number"
+                  type: "number",
                 },
                 {
-                  type: "boolean"
-                }
+                  type: "boolean",
+                },
               ],
               dataTypeDisplayText: "OneOfScalarValue2",
               paramType: "Body",
-              title: "scalarValue"
-            }
+              title: "scalarValue",
+            },
           },
           required: [
             "isPrimitiveType",
             "isAtEndpointLevel",
             "hasDiscriminator",
-            "scalarValue"
-          ]
-        }
+            "scalarValue",
+          ],
+        },
       },
-      required: ["args"]
+      required: ["args"],
     },
     formData: {
       args: {
         isPrimitiveType: false,
         isAtEndpointLevel: false,
-        hasDiscriminator: false
-      }
+        hasDiscriminator: false,
+      },
     },
     originalFormData: {
       args: {
@@ -1822,10 +1822,10 @@ export const ONEOF_SCALAR_ENDPOINTS_DATA = {
         hasDiscriminator: false,
         scalarValue: {
           $$__case: 0,
-          $$__case_of: "oneOf"
-        }
-      }
-    }
+          $$__case_of: "oneOf",
+        },
+      },
+    },
   },
   [ONEOF_SCALAR_ENDPOINTS_VARIABLES.SEND_MULTILEVEL_ONEOF]: {
     schema: {
@@ -1842,19 +1842,19 @@ export const ONEOF_SCALAR_ENDPOINTS_DATA = {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isPrimitiveType"
+              title: "isPrimitiveType",
             },
             isAtEndpointLevel: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isAtEndpointLevel"
+              title: "isAtEndpointLevel",
             },
             hasDiscriminator: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "hasDiscriminator"
+              title: "hasDiscriminator",
             },
             scalarValue: {
               example: [true, false],
@@ -1866,48 +1866,48 @@ export const ONEOF_SCALAR_ENDPOINTS_DATA = {
                         {
                           type: "array",
                           items: {
-                            type: "number"
-                          }
+                            type: "number",
+                          },
                         },
                         {
                           type: "array",
                           items: {
-                            type: "boolean"
-                          }
-                        }
-                      ]
+                            type: "boolean",
+                          },
+                        },
+                      ],
                     },
                     {
-                      type: "boolean"
-                    }
-                  ]
+                      type: "boolean",
+                    },
+                  ],
                 },
                 {
-                  type: "number"
-                }
+                  type: "number",
+                },
               ],
               dataTypeDisplayText: "OneOfScalarValue3",
               paramType: "Body",
-              title: "scalarValue"
-            }
+              title: "scalarValue",
+            },
           },
           required: [
             "isPrimitiveType",
             "isAtEndpointLevel",
             "hasDiscriminator",
-            "scalarValue"
-          ]
-        }
+            "scalarValue",
+          ],
+        },
       },
-      required: ["args"]
+      required: ["args"],
     },
     formData: {
       args: {
         isPrimitiveType: false,
         isAtEndpointLevel: false,
         hasDiscriminator: false,
-        scalarValue: [null]
-      }
+        scalarValue: [null],
+      },
     },
     originalFormData: {
       args: {
@@ -1921,12 +1921,12 @@ export const ONEOF_SCALAR_ENDPOINTS_DATA = {
             value: {
               $$__case: 0,
               $$__case_of: "oneOf",
-              value: []
-            }
-          }
-        }
-      }
-    }
+              value: [],
+            },
+          },
+        },
+      },
+    },
   },
   [ONEOF_SCALAR_ENDPOINTS_VARIABLES.SEND_ONEOF_OUTER_ARRAY]: {
     schema: {
@@ -1943,55 +1943,55 @@ export const ONEOF_SCALAR_ENDPOINTS_DATA = {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isPrimitiveType"
+              title: "isPrimitiveType",
             },
             isAtEndpointLevel: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isAtEndpointLevel"
+              title: "isAtEndpointLevel",
             },
             hasDiscriminator: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "hasDiscriminator"
+              title: "hasDiscriminator",
             },
             scalarValue: {
               type: "array",
               items: {
                 oneOf: [
                   {
-                    type: "number"
+                    type: "number",
                   },
                   {
-                    type: "boolean"
-                  }
+                    type: "boolean",
+                  },
                 ],
-                dataTypeDisplayText: "OneOfScalarValue2"
+                dataTypeDisplayText: "OneOfScalarValue2",
               },
               dataTypeDisplayText: "List<OneOfScalarValue2>",
               paramType: "Body",
-              title: "scalarValue"
-            }
+              title: "scalarValue",
+            },
           },
           required: [
             "isPrimitiveType",
             "isAtEndpointLevel",
             "hasDiscriminator",
-            "scalarValue"
-          ]
-        }
+            "scalarValue",
+          ],
+        },
       },
-      required: ["args"]
+      required: ["args"],
     },
     formData: {
       args: {
         isPrimitiveType: false,
         isAtEndpointLevel: false,
         hasDiscriminator: false,
-        scalarValue: [null]
-      }
+        scalarValue: [null],
+      },
     },
     originalFormData: {
       args: {
@@ -2001,11 +2001,11 @@ export const ONEOF_SCALAR_ENDPOINTS_DATA = {
         scalarValue: [
           {
             $$__case: 0,
-            $$__case_of: "oneOf"
-          }
-        ]
-      }
-    }
+            $$__case_of: "oneOf",
+          },
+        ],
+      },
+    },
   },
   [ONEOF_SCALAR_ENDPOINTS_VARIABLES.SEND_ONEOF_INNER_MIXED_ARRAYS]: {
     schema: {
@@ -2022,54 +2022,54 @@ export const ONEOF_SCALAR_ENDPOINTS_DATA = {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isPrimitiveType"
+              title: "isPrimitiveType",
             },
             isAtEndpointLevel: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isAtEndpointLevel"
+              title: "isAtEndpointLevel",
             },
             hasDiscriminator: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "hasDiscriminator"
+              title: "hasDiscriminator",
             },
             scalarValue: {
               oneOf: [
                 {
                   type: "array",
                   items: {
-                    type: "number"
-                  }
+                    type: "number",
+                  },
                 },
                 {
-                  type: "boolean"
-                }
+                  type: "boolean",
+                },
               ],
               dataTypeDisplayText: "OneOfScalarValue5",
               paramType: "Body",
-              title: "scalarValue"
-            }
+              title: "scalarValue",
+            },
           },
           required: [
             "isPrimitiveType",
             "isAtEndpointLevel",
             "hasDiscriminator",
-            "scalarValue"
-          ]
-        }
+            "scalarValue",
+          ],
+        },
       },
-      required: ["args"]
+      required: ["args"],
     },
     formData: {
       args: {
         isPrimitiveType: false,
         isAtEndpointLevel: false,
         hasDiscriminator: false,
-        scalarValue: [null]
-      }
+        scalarValue: [null],
+      },
     },
     originalFormData: {
       args: {
@@ -2079,10 +2079,10 @@ export const ONEOF_SCALAR_ENDPOINTS_DATA = {
         scalarValue: {
           $$__case: 0,
           $$__case_of: "oneOf",
-          value: [null]
-        }
-      }
-    }
+          value: [null],
+        },
+      },
+    },
   },
   [ONEOF_SCALAR_ENDPOINTS_VARIABLES.SEND_ONEOF_INNER_MIXED_MAP]: {
     schema: {
@@ -2099,54 +2099,54 @@ export const ONEOF_SCALAR_ENDPOINTS_DATA = {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isPrimitiveType"
+              title: "isPrimitiveType",
             },
             isAtEndpointLevel: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isAtEndpointLevel"
+              title: "isAtEndpointLevel",
             },
             hasDiscriminator: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "hasDiscriminator"
+              title: "hasDiscriminator",
             },
             scalarValue: {
               oneOf: [
                 {
                   type: "object",
                   additionalProperties: {
-                    type: "number"
-                  }
+                    type: "number",
+                  },
                 },
                 {
-                  type: "boolean"
-                }
+                  type: "boolean",
+                },
               ],
               dataTypeDisplayText: "OneOfScalarValue6",
               paramType: "Body",
-              title: "scalarValue"
-            }
+              title: "scalarValue",
+            },
           },
           required: [
             "isPrimitiveType",
             "isAtEndpointLevel",
             "hasDiscriminator",
-            "scalarValue"
-          ]
-        }
+            "scalarValue",
+          ],
+        },
       },
-      required: ["args"]
+      required: ["args"],
     },
     formData: {
       args: {
         isPrimitiveType: false,
         isAtEndpointLevel: false,
         hasDiscriminator: false,
-        scalarValue: {}
-      }
+        scalarValue: {},
+      },
     },
     originalFormData: {
       args: {
@@ -2156,10 +2156,10 @@ export const ONEOF_SCALAR_ENDPOINTS_DATA = {
         scalarValue: {
           $$__case: 0,
           $$__case_of: "oneOf",
-          value: {}
-        }
-      }
-    }
+          value: {},
+        },
+      },
+    },
   },
   [ONEOF_SCALAR_ENDPOINTS_VARIABLES.SEND_ONEOF_CONTAINER_OF_ANYOF]: {
     schema: {
@@ -2176,57 +2176,57 @@ export const ONEOF_SCALAR_ENDPOINTS_DATA = {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isPrimitiveType"
+              title: "isPrimitiveType",
             },
             isAtEndpointLevel: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "isAtEndpointLevel"
+              title: "isAtEndpointLevel",
             },
             hasDiscriminator: {
               type: "boolean",
               dataTypeDisplayText: "boolean",
               paramType: "Query",
-              title: "hasDiscriminator"
+              title: "hasDiscriminator",
             },
             scalarValue: {
               oneOf: [
                 {
-                  type: "number"
+                  type: "number",
                 },
                 {
                   anyOf: [
                     {
-                      type: "boolean"
+                      type: "boolean",
                     },
                     {
-                      type: "integer"
-                    }
-                  ]
-                }
+                      type: "integer",
+                    },
+                  ],
+                },
               ],
               dataTypeDisplayText: "OneOfScalarValue7",
               paramType: "Body",
-              title: "scalarValue"
-            }
+              title: "scalarValue",
+            },
           },
           required: [
             "isPrimitiveType",
             "isAtEndpointLevel",
             "hasDiscriminator",
-            "scalarValue"
-          ]
-        }
+            "scalarValue",
+          ],
+        },
       },
-      required: ["args"]
+      required: ["args"],
     },
     formData: {
       args: {
         isPrimitiveType: false,
         isAtEndpointLevel: false,
-        hasDiscriminator: false
-      }
+        hasDiscriminator: false,
+      },
     },
     originalFormData: {
       args: {
@@ -2238,10 +2238,10 @@ export const ONEOF_SCALAR_ENDPOINTS_DATA = {
           $$__case_of: "oneOf",
           value: {
             $$__case: 1,
-            $$__case_of: "anyOf"
-          }
-        }
-      }
-    }
-  }
+            $$__case_of: "anyOf",
+          },
+        },
+      },
+    },
+  },
 };

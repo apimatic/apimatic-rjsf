@@ -7,7 +7,7 @@ import {
   getSelectedFormDataFieldPath,
   getType,
   TYPE_ENUM,
-  validateSchema
+  validateSchema,
 } from "../src/validationUtils";
 
 import {
@@ -20,12 +20,12 @@ import {
   ONEOF_NONSCALAR_ENDPOINTS_VARIABLES,
   ONEOF_NONSCALAR_ENDPOINTS_DATA,
   ONEOF_SCALAR_ENDPOINTS_VARIABLES,
-  ONEOF_SCALAR_ENDPOINTS_DATA
+  ONEOF_SCALAR_ENDPOINTS_DATA,
 } from "./validation_mock";
 
 const ajv = new Ajv({
   errorDataPath: "property",
-  allErrors: true
+  allErrors: true,
 });
 // add custom formats
 ajv.addFormat(
@@ -81,14 +81,14 @@ describe("file: validationUtils_test.js", () => {
         SEND_ONEOF_INNER_ARRAY,
         SEND_ONEOF_INNER_MIXED_ARRAYS,
         SEND_ONEOF_INNER_MIXED_MAP,
-        SEND_ONEOF_OUTER_MAP
+        SEND_ONEOF_OUTER_MAP,
       } = ONEOF_NONSCALAR_ENDPOINTS_VARIABLES;
 
       it(SEND_MULTILEVEL_ONEOF, () => {
         const {
           formData,
           schema,
-          originalFormData
+          originalFormData,
         } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_MULTILEVEL_ONEOF];
         validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const { startsAt, endsAt } = getErrorObjects(ajv.errors);
@@ -101,7 +101,7 @@ describe("file: validationUtils_test.js", () => {
         const {
           formData,
           schema,
-          originalFormData
+          originalFormData,
         } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_OUTER_ARRAY];
         validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
@@ -115,7 +115,7 @@ describe("file: validationUtils_test.js", () => {
         const {
           formData,
           schema,
-          originalFormData
+          originalFormData,
         } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_SIMPLE];
         validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
@@ -129,7 +129,7 @@ describe("file: validationUtils_test.js", () => {
         const {
           formData,
           schema,
-          originalFormData
+          originalFormData,
         } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_MAP];
         validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
@@ -143,7 +143,7 @@ describe("file: validationUtils_test.js", () => {
         const {
           formData,
           schema,
-          originalFormData
+          originalFormData,
         } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_MIXED_ARRAYS];
         validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
@@ -157,7 +157,7 @@ describe("file: validationUtils_test.js", () => {
         const {
           formData,
           schema,
-          originalFormData
+          originalFormData,
         } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_OUTER_MAP];
         validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
@@ -171,7 +171,7 @@ describe("file: validationUtils_test.js", () => {
         const {
           formData,
           schema,
-          originalFormData
+          originalFormData,
         } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_ARRAY];
         validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const { startsAt, endsAt, offerDinner } = getErrorObjects(ajv.errors);
@@ -185,7 +185,7 @@ describe("file: validationUtils_test.js", () => {
         const {
           formData,
           schema,
-          originalFormData
+          originalFormData,
         } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_MIXED_MAP];
         validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const { startsAt, endsAt, offerTeaBreak } = getErrorObjects(ajv.errors);
@@ -199,7 +199,7 @@ describe("file: validationUtils_test.js", () => {
         const {
           formData,
           schema,
-          originalFormData
+          originalFormData,
         } = ONEOF_NONSCALAR_ENDPOINTS_DATA[SEND_ONEOF_CONTAINER_OF_ANYOF];
         validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const { startsAt, endsAt, offerLunch } = getErrorObjects(ajv.errors);
@@ -220,14 +220,14 @@ describe("file: validationUtils_test.js", () => {
         SEND_ONEOF_INNER_ARRAY,
         SEND_ONEOF_INNER_MIXED_ARRAYS,
         SEND_ONEOF_INNER_MIXED_MAP,
-        SEND_ONEOF_OUTER_MAP
+        SEND_ONEOF_OUTER_MAP,
       } = ONEOF_SCALAR_ENDPOINTS_VARIABLES;
 
       it(SEND_MULTILEVEL_ONEOF, () => {
         const {
           formData,
           schema,
-          originalFormData
+          originalFormData,
         } = ONEOF_SCALAR_ENDPOINTS_DATA[SEND_MULTILEVEL_ONEOF];
         validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const errors = getErrorObjects(ajv.errors);
@@ -239,7 +239,7 @@ describe("file: validationUtils_test.js", () => {
         const {
           formData,
           schema,
-          originalFormData
+          originalFormData,
         } = ONEOF_SCALAR_ENDPOINTS_DATA[SEND_ONEOF_OUTER_ARRAY];
         validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const errors = getErrorObjects(ajv.errors);
@@ -251,7 +251,7 @@ describe("file: validationUtils_test.js", () => {
         const {
           formData,
           schema,
-          originalFormData
+          originalFormData,
         } = ONEOF_SCALAR_ENDPOINTS_DATA[SEND_ONEOF_SIMPLE];
         validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const errors = getErrorObjects(ajv.errors);
@@ -263,7 +263,7 @@ describe("file: validationUtils_test.js", () => {
         const {
           formData,
           schema,
-          originalFormData
+          originalFormData,
         } = ONEOF_SCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_MAP];
         validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const errors = getErrorObjects(ajv.errors);
@@ -274,7 +274,7 @@ describe("file: validationUtils_test.js", () => {
         const {
           formData,
           schema,
-          originalFormData
+          originalFormData,
         } = ONEOF_SCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_MIXED_ARRAYS];
         validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const errors = getErrorObjects(ajv.errors);
@@ -285,7 +285,7 @@ describe("file: validationUtils_test.js", () => {
         const {
           formData,
           schema,
-          originalFormData
+          originalFormData,
         } = ONEOF_SCALAR_ENDPOINTS_DATA[SEND_ONEOF_OUTER_MAP];
         validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const { key1 } = getErrorObjects(ajv.errors);
@@ -297,7 +297,7 @@ describe("file: validationUtils_test.js", () => {
         const {
           formData,
           schema,
-          originalFormData
+          originalFormData,
         } = ONEOF_SCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_ARRAY];
         validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const errors = getErrorObjects(ajv.errors);
@@ -309,7 +309,7 @@ describe("file: validationUtils_test.js", () => {
         const {
           formData,
           schema,
-          originalFormData
+          originalFormData,
         } = ONEOF_SCALAR_ENDPOINTS_DATA[SEND_ONEOF_INNER_MIXED_MAP];
         validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const errors = getErrorObjects(ajv.errors);
@@ -321,7 +321,7 @@ describe("file: validationUtils_test.js", () => {
         const {
           formData,
           schema,
-          originalFormData
+          originalFormData,
         } = ONEOF_SCALAR_ENDPOINTS_DATA[SEND_ONEOF_CONTAINER_OF_ANYOF];
         validateSchema(schema, formData, originalFormData, ajv, true, () => {});
         const { scalarValue } = getErrorObjects(ajv.errors);
@@ -339,14 +339,14 @@ describe("file: validationUtils_test.js", () => {
 
     it("get array type", () => {
       const type = getType({
-        type: "array"
+        type: "array",
       });
       expect(type).equals(TYPE_ENUM.ARRAY);
     });
 
     it("get object type", () => {
       const type = getType({
-        additionalProperties: {}
+        additionalProperties: {},
       });
       expect(type).equals(TYPE_ENUM.OBJECT);
     });
@@ -366,7 +366,7 @@ describe("file: validationUtils_test.js", () => {
     it("empty path with object case", () => {
       const path = getOneAnyOfPath("", {
         $$__case: 0,
-        $$__case_of: "oneOf"
+        $$__case_of: "oneOf",
       });
 
       expect(path).equals("oneOf/0");
@@ -375,7 +375,7 @@ describe("file: validationUtils_test.js", () => {
     it("existing path with object case", () => {
       const path = getOneAnyOfPath("property", {
         $$__case: 0,
-        $$__case_of: "oneOf"
+        $$__case_of: "oneOf",
       });
 
       expect(path).equals("property/oneOf/0");
@@ -386,7 +386,7 @@ describe("file: validationUtils_test.js", () => {
     const {
       INITIAL_RENDER,
       NESTED_DATA,
-      NESTED_3D_DATA
+      NESTED_3D_DATA,
     } = GET_NESTED_VALUE_VARIABLES;
 
     it(INITIAL_RENDER, () => {
@@ -400,7 +400,7 @@ describe("file: validationUtils_test.js", () => {
       const result = getNestedValue(data);
       expect(result).deep.equals([
         "oneOf/0/items/oneOf/0/oneOf/0/anyOf/0",
-        "oneOf/0/items/oneOf/1/oneOf/0/anyOf/1"
+        "oneOf/0/items/oneOf/1/oneOf/0/anyOf/1",
       ]);
     });
 
@@ -410,9 +410,9 @@ describe("file: validationUtils_test.js", () => {
       expect(result).deep.equals([
         [
           "oneOf/0/items/oneOf/0/oneOf/0/anyOf/0/items/oneOf/0/oneOf/0/anyOf/0",
-          "oneOf/0/items/oneOf/0/oneOf/0/anyOf/0/items/oneOf/1/oneOf/0/anyOf/1"
+          "oneOf/0/items/oneOf/0/oneOf/0/anyOf/0/items/oneOf/1/oneOf/0/anyOf/1",
         ],
-        "oneOf/0/items/oneOf/1/oneOf/0/anyOf/1"
+        "oneOf/0/items/oneOf/1/oneOf/0/anyOf/1",
       ]);
     });
   });
@@ -421,7 +421,7 @@ describe("file: validationUtils_test.js", () => {
     const {
       INITIAL_RENDER,
       WITH_DATA,
-      WITH_3D_DATA
+      WITH_3D_DATA,
     } = GET_SELECTED_FORM_DATA_FIELD_PATH_VARIABLES;
 
     it(INITIAL_RENDER, () => {
@@ -448,9 +448,9 @@ describe("file: validationUtils_test.js", () => {
       expect(fieldValue).deep.equals([
         [
           "oneOf/0/items/oneOf/0/oneOf/0/anyOf/0/items/oneOf/0/oneOf/0/anyOf/0",
-          "oneOf/0/items/oneOf/0/oneOf/0/anyOf/0/items/oneOf/1/oneOf/0/anyOf/1"
+          "oneOf/0/items/oneOf/0/oneOf/0/anyOf/0/items/oneOf/1/oneOf/0/anyOf/1",
         ],
-        "oneOf/0/items/oneOf/1/oneOf/0/anyOf/1"
+        "oneOf/0/items/oneOf/1/oneOf/0/anyOf/1",
       ]);
     });
   });

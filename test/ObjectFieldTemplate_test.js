@@ -23,7 +23,7 @@ describe("ObjectFieldTemplate", () => {
         DescriptionField,
         properties,
         title,
-        description
+        description,
       } = this.props;
       return (
         <div className="root">
@@ -48,15 +48,15 @@ describe("ObjectFieldTemplate", () => {
   const { node } = createFormComponent({
     schema: {
       type: "object",
-      properties: { foo: { type: "string" }, bar: { type: "string" } }
+      properties: { foo: { type: "string" }, bar: { type: "string" } },
     },
     uiSchema: { "ui:description": "foobar" },
     formData,
     ObjectFieldTemplate,
     fields: {
       TitleField,
-      DescriptionField
-    }
+      DescriptionField,
+    },
   });
 
   it("should render one root element", () => {

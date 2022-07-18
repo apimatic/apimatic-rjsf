@@ -19,18 +19,18 @@ describe("ObjectField", () => {
     const schema = {
       type: "object",
       additionalProperties: {
-        type: "string"
-      }
+        type: "string",
+      },
     };
 
     const formData = {
       first: "val1",
-      second: "val2"
+      second: "val2",
     };
 
     it("should render title and description", () => {
       const { node } = createFormComponent({
-        schema: { ...schema, title: "some title", description: "some des" }
+        schema: { ...schema, title: "some title", description: "some des" },
       });
 
       expect(node.querySelector("legend").textContent).eql("some title*");
@@ -58,7 +58,7 @@ describe("ObjectField", () => {
       const input = node.querySelector("input");
 
       Simulate.change(input, {
-        target: { value: "changed" }
+        target: { value: "changed" },
       });
 
       expect(Object.keys(comp.state.formData)).to.have.length.of(2);
@@ -71,7 +71,7 @@ describe("ObjectField", () => {
       const input = node.querySelectorAll("input")[1];
 
       Simulate.change(input, {
-        target: { value: "changed" }
+        target: { value: "changed" },
       });
 
       expect(Object.keys(comp.state.formData)).to.have.length.of(2);
@@ -84,7 +84,7 @@ describe("ObjectField", () => {
       const input = node.querySelector("input");
 
       Simulate.change(input, {
-        target: { value: "second" }
+        target: { value: "second" },
       });
 
       const errs = node.querySelectorAll(".error-detail");
@@ -103,7 +103,7 @@ describe("ObjectField", () => {
       const { node } = createFormComponent({
         schema,
         formData,
-        uiSchema: { "ui:options": { addable: false } }
+        uiSchema: { "ui:options": { addable: false } },
       });
 
       expect(node.querySelectorAll(".btn-add")).to.have.length.of(0);
@@ -112,7 +112,7 @@ describe("ObjectField", () => {
     it("should not render add button when maxProperties is reach", () => {
       const { node } = createFormComponent({
         schema: { ...schema, maxProperties: 2 },
-        formData
+        formData,
       });
 
       expect(node.querySelectorAll(".btn-add")).to.have.length.of(0);
@@ -122,7 +122,7 @@ describe("ObjectField", () => {
       const { node } = createFormComponent({
         schema,
         formData,
-        uiSchema: { "ui:options": { removable: false } }
+        uiSchema: { "ui:options": { removable: false } },
       });
 
       expect(node.querySelectorAll(".map-item-remove")).to.have.length.of(0);
@@ -154,7 +154,7 @@ describe("ObjectField", () => {
     it("should nullify form data when value-checkbox is unchecked", () => {
       const { comp, node } = createFormComponent({
         schema: { type: "object", properties: { obj: schema } },
-        formData: { obj: formData }
+        formData: { obj: formData },
       });
 
       const chkbox = node.querySelector("[type=checkbox]");
@@ -167,7 +167,7 @@ describe("ObjectField", () => {
     it("should restore form data when value-checkbox is re-checked", () => {
       const { comp, node } = createFormComponent({
         schema: { type: "object", properties: { obj: schema } },
-        formData: { obj: formData }
+        formData: { obj: formData },
       });
 
       const chkbox = node.querySelector("[type=checkbox]");
@@ -181,7 +181,7 @@ describe("ObjectField", () => {
 
     it("should update form data to defaults when value-checkbox is checked when previously null", () => {
       const { comp, node } = createFormComponent({
-        schema: { type: "object", properties: { obj: schema } }
+        schema: { type: "object", properties: { obj: schema } },
       });
 
       const chkbox = node.querySelector("[type=checkbox]");

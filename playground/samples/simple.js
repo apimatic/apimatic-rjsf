@@ -16,7 +16,7 @@ module.exports = {
             dataTypeMarkdown: null,
             paramType: "Header",
             title: "Authorization",
-            typeCombinatorTypes: null
+            typeCombinatorTypes: null,
           },
           body: {
             oneOf: [
@@ -35,7 +35,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "name",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   type: {
                     example: "AwsS3",
@@ -46,7 +46,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "type",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   enabled: {
                     type: "number",
@@ -57,7 +57,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "enabled",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   data: {
                     id: "Data",
@@ -78,7 +78,7 @@ module.exports = {
                             dataTypeMarkdown: null,
                             paramType: null,
                             title: "externalId",
-                            typeCombinatorTypes: null
+                            typeCombinatorTypes: null,
                           },
                           roleArn: {
                             type: "string",
@@ -90,7 +90,7 @@ module.exports = {
                             dataTypeMarkdown: null,
                             paramType: null,
                             title: "roleArn",
-                            typeCombinatorTypes: null
+                            typeCombinatorTypes: null,
                           },
                           bucketArn: {
                             type: "string",
@@ -102,8 +102,8 @@ module.exports = {
                             dataTypeMarkdown: null,
                             paramType: null,
                             title: "bucketArn",
-                            typeCombinatorTypes: null
-                          }
+                            typeCombinatorTypes: null,
+                          },
                         },
                         required: ["externalId", "roleArn", "bucketArn"],
                         dataTypeDisplayText: "S3 Cross Account Credentials",
@@ -111,18 +111,18 @@ module.exports = {
                           "/http/models/structures/s3-cross-account-credentials",
                         dataTypeMarkdown: null,
                         paramType: null,
-                        typeCombinatorTypes: null
-                      }
+                        typeCombinatorTypes: null,
+                      },
                     },
                     required: ["s3CrossAccountCredentials"],
                     dataTypeDisplayText: "Data",
                     dataTypeLink: "/http/models/structures/data",
                     dataTypeMarkdown: null,
                     paramType: null,
-                    typeCombinatorTypes: null
-                  }
+                    typeCombinatorTypes: null,
+                  },
                 },
-                required: ["name", "type", "enabled", "data"]
+                required: ["name", "type", "enabled", "data"],
               },
               {
                 id: "CiscoSparkWebhook1",
@@ -139,7 +139,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "name",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   type: {
                     example: "CiscoSparkWebhook",
@@ -150,7 +150,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "type",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   enabled: {
                     type: "number",
@@ -161,7 +161,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "enabled",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   data: {
                     id: "Data1",
@@ -178,18 +178,18 @@ module.exports = {
                         dataTypeMarkdown: null,
                         paramType: null,
                         title: "webhook",
-                        typeCombinatorTypes: null
-                      }
+                        typeCombinatorTypes: null,
+                      },
                     },
                     required: ["webhook"],
                     dataTypeDisplayText: "Data 1",
                     dataTypeLink: "/http/models/structures/data-1",
                     dataTypeMarkdown: null,
                     paramType: null,
-                    typeCombinatorTypes: null
-                  }
+                    typeCombinatorTypes: null,
+                  },
                 },
-                required: ["name", "type", "enabled", "data"]
+                required: ["name", "type", "enabled", "data"],
               },
               {
                 id: "CloudwatchEb1",
@@ -206,7 +206,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "name",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   type: {
                     example: "CloudwatchEb",
@@ -217,7 +217,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "type",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   enabled: {
                     type: "number",
@@ -228,7 +228,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "enabled",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   data: {
                     id: "Data2",
@@ -245,7 +245,7 @@ module.exports = {
                         dataTypeMarkdown: null,
                         paramType: null,
                         title: "eventBusArn",
-                        typeCombinatorTypes: null
+                        typeCombinatorTypes: null,
                       },
                       issueGrouping: {
                         title: "issueGrouping",
@@ -253,12 +253,12 @@ module.exports = {
                         "x-enum-elements": [
                           {
                             name: "Events",
-                            description: ""
+                            description: "",
                           },
                           {
                             name: "Resources",
-                            description: ""
-                          }
+                            description: "",
+                          },
                         ],
                         type: "string",
                         enum: ["Events", "Resources"],
@@ -268,18 +268,18 @@ module.exports = {
                           "/http/models/enumerations/group-issues-by",
                         dataTypeMarkdown: null,
                         paramType: null,
-                        typeCombinatorTypes: null
-                      }
+                        typeCombinatorTypes: null,
+                      },
                     },
                     required: ["eventBusArn"],
                     dataTypeDisplayText: "Data 2",
                     dataTypeLink: "/http/models/structures/data-2",
                     dataTypeMarkdown: null,
                     paramType: null,
-                    typeCombinatorTypes: null
-                  }
+                    typeCombinatorTypes: null,
+                  },
                 },
-                required: ["name", "type", "enabled", "data"]
+                required: ["name", "type", "enabled", "data"],
               },
               {
                 id: "Datadog1",
@@ -296,7 +296,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "name",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   type: {
                     example: "Datadog",
@@ -307,7 +307,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "type",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   enabled: {
                     type: "number",
@@ -318,7 +318,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "enabled",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   data: {
                     id: "Data3",
@@ -331,16 +331,16 @@ module.exports = {
                         "x-enum-elements": [
                           {
                             name: "Enum_Logs Detail",
-                            description: ""
+                            description: "",
                           },
                           {
                             name: "Enum_Logs Summary",
-                            description: ""
+                            description: "",
                           },
                           {
                             name: "Enum_Events Summary",
-                            description: ""
-                          }
+                            description: "",
+                          },
                         ],
                         type: "string",
                         enum: ["Logs Detail", "Logs Summary", "Events Summary"],
@@ -350,7 +350,7 @@ module.exports = {
                           "/http/models/enumerations/datadog-service",
                         dataTypeMarkdown: null,
                         paramType: null,
-                        typeCombinatorTypes: null
+                        typeCombinatorTypes: null,
                       },
                       datadogSite: {
                         title: "datadogSite",
@@ -358,12 +358,12 @@ module.exports = {
                         "x-enum-elements": [
                           {
                             name: "com",
-                            description: ""
+                            description: "",
                           },
                           {
                             name: "eu",
-                            description: ""
-                          }
+                            description: "",
+                          },
                         ],
                         type: "string",
                         enum: ["com", "eu"],
@@ -372,7 +372,7 @@ module.exports = {
                         dataTypeLink: "/http/models/enumerations/datadog-site",
                         dataTypeMarkdown: null,
                         paramType: null,
-                        typeCombinatorTypes: null
+                        typeCombinatorTypes: null,
                       },
                       apiKey: {
                         type: "string",
@@ -382,18 +382,18 @@ module.exports = {
                         dataTypeMarkdown: null,
                         paramType: null,
                         title: "apiKey",
-                        typeCombinatorTypes: null
-                      }
+                        typeCombinatorTypes: null,
+                      },
                     },
                     required: ["datadogType", "datadogSite", "apiKey"],
                     dataTypeDisplayText: "Data 3",
                     dataTypeLink: "/http/models/structures/data-3",
                     dataTypeMarkdown: null,
                     paramType: null,
-                    typeCombinatorTypes: null
-                  }
+                    typeCombinatorTypes: null,
+                  },
                 },
-                required: ["name", "type", "enabled", "data"]
+                required: ["name", "type", "enabled", "data"],
               },
               {
                 id: "EmailUser1",
@@ -410,7 +410,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "name",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   type: {
                     example: "EmailUser",
@@ -421,7 +421,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "type",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   enabled: {
                     type: "number",
@@ -432,7 +432,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "enabled",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   data: {
                     id: "Data19",
@@ -449,31 +449,31 @@ module.exports = {
                             type: "array",
                             items: {
                               type: "object",
-                              dataTypeDisplayText: "Object"
+                              dataTypeDisplayText: "Object",
                             },
                             dataTypeDisplayText: "array<Object>",
                             dataTypeMarkdown: null,
                             paramType: null,
                             title: "recipients",
-                            typeCombinatorTypes: null
-                          }
+                            typeCombinatorTypes: null,
+                          },
                         },
                         required: ["recipients"],
                         dataTypeDisplayText: "Channel Props",
                         dataTypeLink: "/http/models/structures/channel-props",
                         dataTypeMarkdown: null,
                         paramType: null,
-                        typeCombinatorTypes: null
-                      }
+                        typeCombinatorTypes: null,
+                      },
                     },
                     dataTypeDisplayText: "Data 19",
                     dataTypeLink: "/http/models/structures/data-19",
                     dataTypeMarkdown: null,
                     paramType: null,
-                    typeCombinatorTypes: null
-                  }
+                    typeCombinatorTypes: null,
+                  },
                 },
-                required: ["name", "type", "enabled", "data"]
+                required: ["name", "type", "enabled", "data"],
               },
               {
                 id: "GcpPubsub1",
@@ -490,7 +490,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "name",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   type: {
                     example: "GcpPubsub",
@@ -501,7 +501,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "type",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   enabled: {
                     type: "number",
@@ -512,7 +512,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "enabled",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   data: {
                     id: "Data5",
@@ -533,7 +533,7 @@ module.exports = {
                             dataTypeMarkdown: null,
                             paramType: null,
                             title: "clientId",
-                            typeCombinatorTypes: null
+                            typeCombinatorTypes: null,
                           },
                           privateKeyId: {
                             type: "string",
@@ -544,7 +544,7 @@ module.exports = {
                             dataTypeMarkdown: null,
                             paramType: null,
                             title: "privateKeyId",
-                            typeCombinatorTypes: null
+                            typeCombinatorTypes: null,
                           },
                           clientEmail: {
                             type: "string",
@@ -557,7 +557,7 @@ module.exports = {
                             dataTypeMarkdown: null,
                             paramType: null,
                             title: "clientEmail",
-                            typeCombinatorTypes: null
+                            typeCombinatorTypes: null,
                           },
                           privateKey: {
                             type: "string",
@@ -568,20 +568,20 @@ module.exports = {
                             dataTypeMarkdown: null,
                             paramType: null,
                             title: "privateKey",
-                            typeCombinatorTypes: null
-                          }
+                            typeCombinatorTypes: null,
+                          },
                         },
                         required: [
                           "clientId",
                           "privateKeyId",
                           "clientEmail",
-                          "privateKey"
+                          "privateKey",
                         ],
                         dataTypeDisplayText: "Credentials",
                         dataTypeLink: "/http/models/structures/credentials",
                         dataTypeMarkdown: null,
                         paramType: null,
-                        typeCombinatorTypes: null
+                        typeCombinatorTypes: null,
                       },
                       projectId: {
                         type: "string",
@@ -589,7 +589,7 @@ module.exports = {
                         dataTypeMarkdown: null,
                         paramType: null,
                         title: "projectId",
-                        typeCombinatorTypes: null
+                        typeCombinatorTypes: null,
                       },
                       topicId: {
                         type: "string",
@@ -597,7 +597,7 @@ module.exports = {
                         dataTypeMarkdown: null,
                         paramType: null,
                         title: "topicId",
-                        typeCombinatorTypes: null
+                        typeCombinatorTypes: null,
                       },
                       issueGrouping: {
                         title: "issueGrouping",
@@ -605,12 +605,12 @@ module.exports = {
                         "x-enum-elements": [
                           {
                             name: "Events",
-                            description: ""
+                            description: "",
                           },
                           {
                             name: "Resources",
-                            description: ""
-                          }
+                            description: "",
+                          },
                         ],
                         type: "string",
                         enum: ["Events", "Resources"],
@@ -620,18 +620,18 @@ module.exports = {
                           "/http/models/enumerations/group-issues-by",
                         dataTypeMarkdown: null,
                         paramType: null,
-                        typeCombinatorTypes: null
-                      }
+                        typeCombinatorTypes: null,
+                      },
                     },
                     required: ["credentials", "projectId", "topicId"],
                     dataTypeDisplayText: "Data 5",
                     dataTypeLink: "/http/models/structures/data-5",
                     dataTypeMarkdown: null,
                     paramType: null,
-                    typeCombinatorTypes: null
-                  }
+                    typeCombinatorTypes: null,
+                  },
                 },
-                required: ["name", "type", "enabled", "data"]
+                required: ["name", "type", "enabled", "data"],
               },
               {
                 id: "IbmQradar1",
@@ -648,7 +648,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "name",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   type: {
                     example: "IbmQradar",
@@ -659,7 +659,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "type",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   enabled: {
                     type: "number",
@@ -670,7 +670,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "enabled",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   data: {
                     id: "Data6",
@@ -683,12 +683,12 @@ module.exports = {
                         "x-enum-elements": [
                           {
                             name: "HTTPS",
-                            description: ""
+                            description: "",
                           },
                           {
                             name: "Enum_HTTPS Self Signed Cert",
-                            description: ""
-                          }
+                            description: "",
+                          },
                         ],
                         type: "string",
                         enum: ["HTTPS", "HTTPS Self Signed Cert"],
@@ -698,7 +698,7 @@ module.exports = {
                           "/http/models/enumerations/communication-type",
                         dataTypeMarkdown: null,
                         paramType: null,
-                        typeCombinatorTypes: null
+                        typeCombinatorTypes: null,
                       },
                       qradarHostUrl: {
                         type: "string",
@@ -710,7 +710,7 @@ module.exports = {
                         dataTypeMarkdown: null,
                         paramType: null,
                         title: "qradarHostUrl",
-                        typeCombinatorTypes: null
+                        typeCombinatorTypes: null,
                       },
                       qradarHostPort: {
                         type: "number",
@@ -721,18 +721,18 @@ module.exports = {
                         dataTypeMarkdown: null,
                         paramType: null,
                         title: "qradarHostPort",
-                        typeCombinatorTypes: null
-                      }
+                        typeCombinatorTypes: null,
+                      },
                     },
                     required: ["qradarCommType", "qradarHostUrl"],
                     dataTypeDisplayText: "Data 6",
                     dataTypeLink: "/http/models/structures/data-6",
                     dataTypeMarkdown: null,
                     paramType: null,
-                    typeCombinatorTypes: null
-                  }
+                    typeCombinatorTypes: null,
+                  },
                 },
-                required: ["name", "type", "enabled", "data"]
+                required: ["name", "type", "enabled", "data"],
               },
               {
                 id: "Jira1",
@@ -749,7 +749,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "name",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   type: {
                     example: "Jira",
@@ -760,7 +760,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "type",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   enabled: {
                     type: "number",
@@ -771,7 +771,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "enabled",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   data: {
                     oneOf: [
@@ -790,7 +790,7 @@ module.exports = {
                             dataTypeMarkdown: null,
                             paramType: null,
                             title: "jiraUrl",
-                            typeCombinatorTypes: null
+                            typeCombinatorTypes: null,
                           },
                           projectId: {
                             type: "string",
@@ -798,7 +798,7 @@ module.exports = {
                             dataTypeMarkdown: null,
                             paramType: null,
                             title: "projectId",
-                            typeCombinatorTypes: null
+                            typeCombinatorTypes: null,
                           },
                           issueType: {
                             type: "string",
@@ -806,7 +806,7 @@ module.exports = {
                             dataTypeMarkdown: null,
                             paramType: null,
                             title: "issueType",
-                            typeCombinatorTypes: null
+                            typeCombinatorTypes: null,
                           },
                           username: {
                             type: "string",
@@ -814,7 +814,7 @@ module.exports = {
                             dataTypeMarkdown: null,
                             paramType: null,
                             title: "username",
-                            typeCombinatorTypes: null
+                            typeCombinatorTypes: null,
                           },
                           apiToken: {
                             type: "string",
@@ -822,7 +822,7 @@ module.exports = {
                             dataTypeMarkdown: null,
                             paramType: null,
                             title: "apiToken",
-                            typeCombinatorTypes: null
+                            typeCombinatorTypes: null,
                           },
                           jiraType: {
                             title: "jiraType",
@@ -830,8 +830,8 @@ module.exports = {
                             "x-enum-elements": [
                               {
                                 name: "JIRA_CLOUD",
-                                description: ""
-                              }
+                                description: "",
+                              },
                             ],
                             type: "string",
                             enum: ["JIRA_CLOUD"],
@@ -840,7 +840,7 @@ module.exports = {
                             dataTypeLink: "/http/models/enumerations/jira-type",
                             dataTypeMarkdown: null,
                             paramType: null,
-                            typeCombinatorTypes: null
+                            typeCombinatorTypes: null,
                           },
                           issueGrouping: {
                             title: "issueGrouping",
@@ -848,12 +848,12 @@ module.exports = {
                             "x-enum-elements": [
                               {
                                 name: "Events",
-                                description: ""
+                                description: "",
                               },
                               {
                                 name: "Resources",
-                                description: ""
-                              }
+                                description: "",
+                              },
                             ],
                             type: "string",
                             enum: ["Events", "Resources"],
@@ -863,7 +863,7 @@ module.exports = {
                               "/http/models/enumerations/group-issues-by",
                             dataTypeMarkdown: null,
                             paramType: null,
-                            typeCombinatorTypes: null
+                            typeCombinatorTypes: null,
                           },
                           customTemplateFile: {
                             type: "string",
@@ -872,16 +872,16 @@ module.exports = {
                             dataTypeMarkdown: null,
                             paramType: null,
                             title: "customTemplateFile",
-                            typeCombinatorTypes: null
-                          }
+                            typeCombinatorTypes: null,
+                          },
                         },
                         required: [
                           "jiraUrl",
                           "projectId",
                           "issueType",
                           "username",
-                          "apiToken"
-                        ]
+                          "apiToken",
+                        ],
                       },
                       {
                         id: "JIRA_SERVER",
@@ -897,7 +897,7 @@ module.exports = {
                             dataTypeMarkdown: null,
                             paramType: null,
                             title: "jiraUrl",
-                            typeCombinatorTypes: null
+                            typeCombinatorTypes: null,
                           },
                           projectId: {
                             type: "string",
@@ -905,7 +905,7 @@ module.exports = {
                             dataTypeMarkdown: null,
                             paramType: null,
                             title: "projectId",
-                            typeCombinatorTypes: null
+                            typeCombinatorTypes: null,
                           },
                           issueType: {
                             type: "string",
@@ -913,7 +913,7 @@ module.exports = {
                             dataTypeMarkdown: null,
                             paramType: null,
                             title: "issueType",
-                            typeCombinatorTypes: null
+                            typeCombinatorTypes: null,
                           },
                           username: {
                             type: "string",
@@ -921,7 +921,7 @@ module.exports = {
                             dataTypeMarkdown: null,
                             paramType: null,
                             title: "username",
-                            typeCombinatorTypes: null
+                            typeCombinatorTypes: null,
                           },
                           password: {
                             type: "string",
@@ -929,7 +929,7 @@ module.exports = {
                             dataTypeMarkdown: null,
                             paramType: null,
                             title: "password",
-                            typeCombinatorTypes: null
+                            typeCombinatorTypes: null,
                           },
                           jiraType: {
                             title: "jiraType",
@@ -937,8 +937,8 @@ module.exports = {
                             "x-enum-elements": [
                               {
                                 name: "JIRA_SERVER",
-                                description: ""
-                              }
+                                description: "",
+                              },
                             ],
                             type: "string",
                             enum: ["JIRA_SERVER"],
@@ -948,7 +948,7 @@ module.exports = {
                               "/http/models/enumerations/jira-type-1",
                             dataTypeMarkdown: null,
                             paramType: null,
-                            typeCombinatorTypes: null
+                            typeCombinatorTypes: null,
                           },
                           issueGrouping: {
                             title: "issueGrouping",
@@ -956,12 +956,12 @@ module.exports = {
                             "x-enum-elements": [
                               {
                                 name: "Events",
-                                description: ""
+                                description: "",
                               },
                               {
                                 name: "Resources",
-                                description: ""
-                              }
+                                description: "",
+                              },
                             ],
                             type: "string",
                             enum: ["Events", "Resources"],
@@ -971,7 +971,7 @@ module.exports = {
                               "/http/models/enumerations/group-issues-by",
                             dataTypeMarkdown: null,
                             paramType: null,
-                            typeCombinatorTypes: null
+                            typeCombinatorTypes: null,
                           },
                           customTemplateFile: {
                             type: "string",
@@ -980,17 +980,17 @@ module.exports = {
                             dataTypeMarkdown: null,
                             paramType: null,
                             title: "customTemplateFile",
-                            typeCombinatorTypes: null
-                          }
+                            typeCombinatorTypes: null,
+                          },
                         },
                         required: [
                           "jiraUrl",
                           "projectId",
                           "issueType",
                           "username",
-                          "password"
-                        ]
-                      }
+                          "password",
+                        ],
+                      },
                     ],
                     dataTypeMarkdown:
                       "* OneOf\r\n  * [JIRA CLOUD]($m/JIRA_CLOUD)\r\n  * [JIRA SERVER]($m/JIRA_SERVER)\r\n",
@@ -1002,19 +1002,19 @@ module.exports = {
                         LinkTo: "$m/JIRA_CLOUD",
                         ContainsSubTypes: false,
                         SubTypes: null,
-                        Type: "typecombinatortype"
+                        Type: "typecombinatortype",
                       },
                       {
                         DataType: "JIRA SERVER",
                         LinkTo: "$m/JIRA_SERVER",
                         ContainsSubTypes: false,
                         SubTypes: null,
-                        Type: "typecombinatortype"
-                      }
-                    ]
-                  }
+                        Type: "typecombinatortype",
+                      },
+                    ],
+                  },
                 },
-                required: ["name", "type", "enabled", "data"]
+                required: ["name", "type", "enabled", "data"],
               },
               {
                 id: "MicrosoftTeams1",
@@ -1031,7 +1031,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "name",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   type: {
                     example: "MicrosoftTeams",
@@ -1042,7 +1042,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "type",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   enabled: {
                     type: "number",
@@ -1053,7 +1053,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "enabled",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   data: {
                     id: "Data7",
@@ -1070,18 +1070,18 @@ module.exports = {
                         dataTypeMarkdown: null,
                         paramType: null,
                         title: "teamsUrl",
-                        typeCombinatorTypes: null
-                      }
+                        typeCombinatorTypes: null,
+                      },
                     },
                     required: ["teamsUrl"],
                     dataTypeDisplayText: "Data 7",
                     dataTypeLink: "/http/models/structures/data-7",
                     dataTypeMarkdown: null,
                     paramType: null,
-                    typeCombinatorTypes: null
-                  }
+                    typeCombinatorTypes: null,
+                  },
                 },
-                required: ["name", "type", "enabled", "data"]
+                required: ["name", "type", "enabled", "data"],
               },
               {
                 id: "NewRelicInsights1",
@@ -1098,7 +1098,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "name",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   type: {
                     example: "NewRelicInsights",
@@ -1109,7 +1109,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "type",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   enabled: {
                     type: "number",
@@ -1120,7 +1120,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "enabled",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   data: {
                     id: "Data8",
@@ -1135,7 +1135,7 @@ module.exports = {
                         dataTypeMarkdown: null,
                         paramType: null,
                         title: "insertKey",
-                        typeCombinatorTypes: null
+                        typeCombinatorTypes: null,
                       },
                       accountId: {
                         type: "number",
@@ -1143,18 +1143,18 @@ module.exports = {
                         dataTypeMarkdown: null,
                         paramType: null,
                         title: "accountId",
-                        typeCombinatorTypes: null
-                      }
+                        typeCombinatorTypes: null,
+                      },
                     },
                     required: ["insertKey", "accountId"],
                     dataTypeDisplayText: "Data 8",
                     dataTypeLink: "/http/models/structures/data-8",
                     dataTypeMarkdown: null,
                     paramType: null,
-                    typeCombinatorTypes: null
-                  }
+                    typeCombinatorTypes: null,
+                  },
                 },
-                required: ["name", "type", "enabled", "data"]
+                required: ["name", "type", "enabled", "data"],
               },
               {
                 id: "PagerDutyApi1",
@@ -1171,7 +1171,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "name",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   type: {
                     example: "PagerDutyApi",
@@ -1182,7 +1182,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "type",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   enabled: {
                     type: "number",
@@ -1193,7 +1193,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "enabled",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   data: {
                     id: "Data9",
@@ -1208,18 +1208,18 @@ module.exports = {
                         dataTypeMarkdown: null,
                         paramType: null,
                         title: "apiIntgKey",
-                        typeCombinatorTypes: null
-                      }
+                        typeCombinatorTypes: null,
+                      },
                     },
                     required: ["apiIntgKey"],
                     dataTypeDisplayText: "Data 9",
                     dataTypeLink: "/http/models/structures/data-9",
                     dataTypeMarkdown: null,
                     paramType: null,
-                    typeCombinatorTypes: null
-                  }
+                    typeCombinatorTypes: null,
+                  },
                 },
-                required: ["name", "type", "enabled", "data"]
+                required: ["name", "type", "enabled", "data"],
               },
               {
                 id: "ServiceNowRest1",
@@ -1236,7 +1236,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "name",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   type: {
                     example: "ServiceNowRest",
@@ -1247,7 +1247,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "type",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   enabled: {
                     type: "number",
@@ -1258,7 +1258,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "enabled",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   data: {
                     id: "Data10",
@@ -1273,7 +1273,7 @@ module.exports = {
                         dataTypeMarkdown: null,
                         paramType: null,
                         title: "userName",
-                        typeCombinatorTypes: null
+                        typeCombinatorTypes: null,
                       },
                       password: {
                         type: "string",
@@ -1283,7 +1283,7 @@ module.exports = {
                         dataTypeMarkdown: null,
                         paramType: null,
                         title: "password",
-                        typeCombinatorTypes: null
+                        typeCombinatorTypes: null,
                       },
                       instanceUrl: {
                         type: "string",
@@ -1295,7 +1295,7 @@ module.exports = {
                         dataTypeMarkdown: null,
                         paramType: null,
                         title: "instanceUrl",
-                        typeCombinatorTypes: null
+                        typeCombinatorTypes: null,
                       },
                       issueGrouping: {
                         title: "issueGrouping",
@@ -1303,12 +1303,12 @@ module.exports = {
                         "x-enum-elements": [
                           {
                             name: "Events",
-                            description: ""
+                            description: "",
                           },
                           {
                             name: "Resources",
-                            description: ""
-                          }
+                            description: "",
+                          },
                         ],
                         type: "string",
                         enum: ["Events", "Resources"],
@@ -1318,7 +1318,7 @@ module.exports = {
                           "/http/models/enumerations/group-issues-by",
                         dataTypeMarkdown: null,
                         paramType: null,
-                        typeCombinatorTypes: null
+                        typeCombinatorTypes: null,
                       },
                       customTemplateFile: {
                         type: "string",
@@ -1327,18 +1327,18 @@ module.exports = {
                         dataTypeMarkdown: null,
                         paramType: null,
                         title: "customTemplateFile",
-                        typeCombinatorTypes: null
-                      }
+                        typeCombinatorTypes: null,
+                      },
                     },
                     required: ["userName", "password", "instanceUrl"],
                     dataTypeDisplayText: "Data 10",
                     dataTypeLink: "/http/models/structures/data-10",
                     dataTypeMarkdown: null,
                     paramType: null,
-                    typeCombinatorTypes: null
-                  }
+                    typeCombinatorTypes: null,
+                  },
                 },
-                required: ["name", "type", "enabled", "data"]
+                required: ["name", "type", "enabled", "data"],
               },
               {
                 id: "SlackChannel1",
@@ -1355,7 +1355,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "name",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   type: {
                     example: "SlackChannel",
@@ -1366,7 +1366,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "type",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   enabled: {
                     type: "number",
@@ -1377,7 +1377,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "enabled",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   data: {
                     id: "Data11",
@@ -1394,18 +1394,18 @@ module.exports = {
                         dataTypeMarkdown: null,
                         paramType: null,
                         title: "slackUrl",
-                        typeCombinatorTypes: null
-                      }
+                        typeCombinatorTypes: null,
+                      },
                     },
                     required: ["slackUrl"],
                     dataTypeDisplayText: "Data 11",
                     dataTypeLink: "/http/models/structures/data-11",
                     dataTypeMarkdown: null,
                     paramType: null,
-                    typeCombinatorTypes: null
-                  }
+                    typeCombinatorTypes: null,
+                  },
                 },
-                required: ["name", "type", "enabled", "data"]
+                required: ["name", "type", "enabled", "data"],
               },
               {
                 id: "SplunkHec1",
@@ -1422,7 +1422,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "name",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   type: {
                     example: "SplunkHec",
@@ -1433,7 +1433,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "type",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   enabled: {
                     type: "number",
@@ -1444,7 +1444,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "enabled",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   data: {
                     id: "Data12",
@@ -1459,7 +1459,7 @@ module.exports = {
                         dataTypeMarkdown: null,
                         paramType: null,
                         title: "hecToken",
-                        typeCombinatorTypes: null
+                        typeCombinatorTypes: null,
                       },
                       host: {
                         type: "string",
@@ -1469,7 +1469,7 @@ module.exports = {
                         dataTypeMarkdown: null,
                         paramType: null,
                         title: "host",
-                        typeCombinatorTypes: null
+                        typeCombinatorTypes: null,
                       },
                       port: {
                         type: "number",
@@ -1480,7 +1480,7 @@ module.exports = {
                         dataTypeMarkdown: null,
                         paramType: null,
                         title: "port",
-                        typeCombinatorTypes: null
+                        typeCombinatorTypes: null,
                       },
                       eventData: {
                         id: "Event Data",
@@ -1496,7 +1496,7 @@ module.exports = {
                             dataTypeMarkdown: null,
                             paramType: null,
                             title: "index",
-                            typeCombinatorTypes: null
+                            typeCombinatorTypes: null,
                           },
                           source: {
                             type: "string",
@@ -1507,15 +1507,15 @@ module.exports = {
                             dataTypeMarkdown: null,
                             paramType: null,
                             title: "source",
-                            typeCombinatorTypes: null
-                          }
+                            typeCombinatorTypes: null,
+                          },
                         },
                         required: ["index", "source"],
                         dataTypeDisplayText: "Event Data",
                         dataTypeLink: "/http/models/structures/event-data",
                         dataTypeMarkdown: null,
                         paramType: null,
-                        typeCombinatorTypes: null
+                        typeCombinatorTypes: null,
                       },
                       channel: {
                         type: "string",
@@ -1525,7 +1525,7 @@ module.exports = {
                         dataTypeMarkdown: null,
                         paramType: null,
                         title: "channel",
-                        typeCombinatorTypes: null
+                        typeCombinatorTypes: null,
                       },
                       ssl: {
                         type: "boolean",
@@ -1533,18 +1533,18 @@ module.exports = {
                         dataTypeMarkdown: null,
                         paramType: null,
                         title: "ssl",
-                        typeCombinatorTypes: null
-                      }
+                        typeCombinatorTypes: null,
+                      },
                     },
                     required: ["hecToken", "host", "port", "eventData"],
                     dataTypeDisplayText: "Data 12",
                     dataTypeLink: "/http/models/structures/data-12",
                     dataTypeMarkdown: null,
                     paramType: null,
-                    typeCombinatorTypes: null
-                  }
+                    typeCombinatorTypes: null,
+                  },
                 },
-                required: ["name", "type", "enabled", "data"]
+                required: ["name", "type", "enabled", "data"],
               },
               {
                 id: "VictorOps1",
@@ -1561,7 +1561,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "name",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   type: {
                     example: "VictorOps",
@@ -1572,7 +1572,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "type",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   enabled: {
                     type: "number",
@@ -1583,7 +1583,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "enabled",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   data: {
                     id: "Data13",
@@ -1601,18 +1601,18 @@ module.exports = {
                         dataTypeMarkdown: null,
                         paramType: null,
                         title: "intgUrl",
-                        typeCombinatorTypes: null
-                      }
+                        typeCombinatorTypes: null,
+                      },
                     },
                     required: ["intgUrl"],
                     dataTypeDisplayText: "Data 13",
                     dataTypeLink: "/http/models/structures/data-13",
                     dataTypeMarkdown: null,
                     paramType: null,
-                    typeCombinatorTypes: null
-                  }
+                    typeCombinatorTypes: null,
+                  },
                 },
-                required: ["name", "type", "enabled", "data"]
+                required: ["name", "type", "enabled", "data"],
               },
               {
                 id: "Webhook1",
@@ -1629,7 +1629,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "name",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   type: {
                     example: "Webhook",
@@ -1640,7 +1640,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "type",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   enabled: {
                     type: "number",
@@ -1651,7 +1651,7 @@ module.exports = {
                     dataTypeMarkdown: null,
                     paramType: null,
                     title: "enabled",
-                    typeCombinatorTypes: null
+                    typeCombinatorTypes: null,
                   },
                   data: {
                     id: "Data14",
@@ -1667,19 +1667,19 @@ module.exports = {
                         dataTypeMarkdown: null,
                         paramType: null,
                         title: "webhookUrl",
-                        typeCombinatorTypes: null
-                      }
+                        typeCombinatorTypes: null,
+                      },
                     },
                     required: ["webhookUrl"],
                     dataTypeDisplayText: "Data 14",
                     dataTypeLink: "/http/models/structures/data-14",
                     dataTypeMarkdown: null,
                     paramType: null,
-                    typeCombinatorTypes: null
-                  }
+                    typeCombinatorTypes: null,
+                  },
                 },
-                required: ["name", "type", "enabled", "data"]
-              }
+                required: ["name", "type", "enabled", "data"],
+              },
             ],
             dataTypeMarkdown:
               "* OneOf\r\n  * [Aws S31]($m/AwsS31)\r\n  * [Cisco Spark Webhook 1]($m/CiscoSparkWebhook1)\r\n  * [Cloudwatch Eb 1]($m/CloudwatchEb1)\r\n  * [Datadog 1]($m/Datadog1)\r\n  * [Email User 1]($m/EmailUser1)\r\n  * [Gcp Pubsub 1]($m/GcpPubsub1)\r\n  * [Ibm Qradar 1]($m/IbmQradar1)\r\n  * [Jira 1]($m/Jira1)\r\n  * [Microsoft Teams 1]($m/MicrosoftTeams1)\r\n  * [New Relic Insights 1]($m/NewRelicInsights1)\r\n  * [Pager Duty Api 1]($m/PagerDutyApi1)\r\n  * [Service Now Rest 1]($m/ServiceNowRest1)\r\n  * [Slack Channel 1]($m/SlackChannel1)\r\n  * [Splunk Hec 1]($m/SplunkHec1)\r\n  * [Victor Ops 1]($m/VictorOps1)\r\n  * [Webhook 1]($m/Webhook1)\r\n",
@@ -1691,130 +1691,130 @@ module.exports = {
                 LinkTo: "$m/AwsS31",
                 ContainsSubTypes: false,
                 SubTypes: null,
-                Type: "typecombinatortype"
+                Type: "typecombinatortype",
               },
               {
                 DataType: "Cisco Spark Webhook 1",
                 LinkTo: "$m/CiscoSparkWebhook1",
                 ContainsSubTypes: false,
                 SubTypes: null,
-                Type: "typecombinatortype"
+                Type: "typecombinatortype",
               },
               {
                 DataType: "Cloudwatch Eb 1",
                 LinkTo: "$m/CloudwatchEb1",
                 ContainsSubTypes: false,
                 SubTypes: null,
-                Type: "typecombinatortype"
+                Type: "typecombinatortype",
               },
               {
                 DataType: "Datadog 1",
                 LinkTo: "$m/Datadog1",
                 ContainsSubTypes: false,
                 SubTypes: null,
-                Type: "typecombinatortype"
+                Type: "typecombinatortype",
               },
               {
                 DataType: "Email User 1",
                 LinkTo: "$m/EmailUser1",
                 ContainsSubTypes: false,
                 SubTypes: null,
-                Type: "typecombinatortype"
+                Type: "typecombinatortype",
               },
               {
                 DataType: "Gcp Pubsub 1",
                 LinkTo: "$m/GcpPubsub1",
                 ContainsSubTypes: false,
                 SubTypes: null,
-                Type: "typecombinatortype"
+                Type: "typecombinatortype",
               },
               {
                 DataType: "Ibm Qradar 1",
                 LinkTo: "$m/IbmQradar1",
                 ContainsSubTypes: false,
                 SubTypes: null,
-                Type: "typecombinatortype"
+                Type: "typecombinatortype",
               },
               {
                 DataType: "Jira 1",
                 LinkTo: "$m/Jira1",
                 ContainsSubTypes: false,
                 SubTypes: null,
-                Type: "typecombinatortype"
+                Type: "typecombinatortype",
               },
               {
                 DataType: "Microsoft Teams 1",
                 LinkTo: "$m/MicrosoftTeams1",
                 ContainsSubTypes: false,
                 SubTypes: null,
-                Type: "typecombinatortype"
+                Type: "typecombinatortype",
               },
               {
                 DataType: "New Relic Insights 1",
                 LinkTo: "$m/NewRelicInsights1",
                 ContainsSubTypes: false,
                 SubTypes: null,
-                Type: "typecombinatortype"
+                Type: "typecombinatortype",
               },
               {
                 DataType: "Pager Duty Api 1",
                 LinkTo: "$m/PagerDutyApi1",
                 ContainsSubTypes: false,
                 SubTypes: null,
-                Type: "typecombinatortype"
+                Type: "typecombinatortype",
               },
               {
                 DataType: "Service Now Rest 1",
                 LinkTo: "$m/ServiceNowRest1",
                 ContainsSubTypes: false,
                 SubTypes: null,
-                Type: "typecombinatortype"
+                Type: "typecombinatortype",
               },
               {
                 DataType: "Slack Channel 1",
                 LinkTo: "$m/SlackChannel1",
                 ContainsSubTypes: false,
                 SubTypes: null,
-                Type: "typecombinatortype"
+                Type: "typecombinatortype",
               },
               {
                 DataType: "Splunk Hec 1",
                 LinkTo: "$m/SplunkHec1",
                 ContainsSubTypes: false,
                 SubTypes: null,
-                Type: "typecombinatortype"
+                Type: "typecombinatortype",
               },
               {
                 DataType: "Victor Ops 1",
                 LinkTo: "$m/VictorOps1",
                 ContainsSubTypes: false,
                 SubTypes: null,
-                Type: "typecombinatortype"
+                Type: "typecombinatortype",
               },
               {
                 DataType: "Webhook 1",
                 LinkTo: "$m/Webhook1",
                 ContainsSubTypes: false,
                 SubTypes: null,
-                Type: "typecombinatortype"
-              }
-            ]
-          }
+                Type: "typecombinatortype",
+              },
+            ],
+          },
         },
         endsAt: {
           description: "Session end time",
-          type: "string"
+          type: "string",
         },
         offerLunch: {
           description: "Offer lunch during session",
-          type: "boolean"
-        }
+          type: "boolean",
+        },
       },
-      required: ["startsAt", "endsAt", "offerLunch"]
+      required: ["startsAt", "endsAt", "offerLunch"],
     },
-    required: ["args"]
+    required: ["args"],
   },
   formData: {
-    args: {}
-  }
+    args: {},
+  },
 };

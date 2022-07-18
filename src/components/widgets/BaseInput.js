@@ -43,7 +43,7 @@ BaseInput.defaultProps = {
   required: false,
   disabled: false,
   readonly: false,
-  autofocus: false
+  autofocus: false,
 };
 
 /* istanbul ignore else */
@@ -58,7 +58,7 @@ if (process.env.NODE_ENV !== "production") {
     autofocus: PropTypes.bool,
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
-    onFocus: PropTypes.func
+    onFocus: PropTypes.func,
   };
 }
 

@@ -11,7 +11,7 @@ class TagSelector extends React.Component {
       options,
       onChange,
       value = options[0],
-      className = ""
+      className = "",
     } = this.props;
 
     const onClick = option => {
@@ -28,8 +28,7 @@ class TagSelector extends React.Component {
             <span
               key={`option-item-${index}-${option.label}`}
               className={`--tag ${value.index === index ? "--active" : ""}`}
-              onClick={onClick(option)}
-            >
+              onClick={onClick(option)}>
               {option.label}
             </span>
           ))}
@@ -53,11 +52,11 @@ TagSelector.defaultProps = {
   options: propTypes.arrayOf(
     propTypes.shape({
       label: propTypes.any,
-      value: propTypes.any
+      value: propTypes.any,
     })
   ).isRequired,
   onChange: propTypes.func,
-  value: propTypes.any
+  value: propTypes.any,
 };
 
 export default TagSelector;

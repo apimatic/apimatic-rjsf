@@ -5,7 +5,7 @@ export class AJV {
   static initializeAJV(definitions) {
     const ajv = new Ajv({
       errorDataPath: "property",
-      allErrors: true
+      allErrors: true,
     });
     // add custom formats
     ajv.addFormat(

@@ -6,44 +6,44 @@ module.exports = {
     properties: {
       title: {
         type: "string",
-        title: "Task list title"
+        title: "Task list title",
       },
       emptyNumbers: {
         type: "object",
         additionalProperties: {
-          type: "integer"
-        }
+          type: "integer",
+        },
       },
       numbers: {
         type: "object",
         additionalProperties: {
-          type: "integer"
-        }
+          type: "integer",
+        },
       },
       strings: {
         type: "object",
         additionalProperties: {
-          type: "string"
-        }
+          type: "string",
+        },
       },
       booleans: {
         type: "object",
         additionalProperties: {
-          type: "boolean"
-        }
+          type: "boolean",
+        },
       },
       dates: {
         type: "object",
         additionalProperties: {
           type: "string",
-          format: "date-time"
-        }
+          format: "date-time",
+        },
       },
       objects: {
         type: "object",
         additionalProperties: {
-          type: "object"
-        }
+          type: "object",
+        },
       },
       models: {
         type: "object",
@@ -51,16 +51,16 @@ module.exports = {
           type: "object",
           properties: {
             name: {
-              type: "string"
+              type: "string",
             },
             value: {
-              type: "number"
-            }
+              type: "number",
+            },
           },
-          required: ["name", "value"]
-        }
-      }
-    }
+          required: ["name", "value"],
+        },
+      },
+    },
   },
   uiSchema: {},
   formData: {
@@ -69,27 +69,27 @@ module.exports = {
     numbers: {
       title: 123,
       details: 444,
-      done: -2
+      done: -2,
     },
     strings: {
-      key: "value value value"
+      key: "value value value",
     },
     booleans: {
-      key: true
+      key: true,
     },
     dates: {
-      key: "2012-12-12T12:00:00Z"
+      key: "2012-12-12T12:00:00Z",
     },
     objects: {
       key: {
-        hello: 233
-      }
+        hello: 233,
+      },
     },
     models: {
       model: {
         name: "mehdi",
-        value: 2341
-      }
-    }
-  }
+        value: 2341,
+      },
+    },
+  },
 };

@@ -9,9 +9,9 @@ function RangeWidget(props) {
     value,
     dxInterface: {
       registry: {
-        widgets: { BaseInput }
-      }
-    }
+        widgets: { BaseInput },
+      },
+    },
   } = props;
   return (
     <div className={pfx("field-range-wrapper")}>
@@ -24,7 +24,7 @@ function RangeWidget(props) {
 /* istanbul ignore else */
 if (process.env.NODE_ENV !== "production") {
   RangeWidget.propTypes = {
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   };
 }
 

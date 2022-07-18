@@ -6,7 +6,7 @@ import {
   getDefaultFormState,
   getUiOptions,
   retrieveSchema,
-  toIdSchema
+  toIdSchema,
 } from "../../utils";
 import { DeleteIcon, ChevronIcon } from "../Icons";
 
@@ -20,7 +20,7 @@ function MapFieldTitle({
   onNullifyChange,
   nullify,
   disabled,
-  fromDiscriminator
+  fromDiscriminator,
 }) {
   if (!title) {
     // See #312: Ensure compatibility with old versions of React.
@@ -56,8 +56,7 @@ function IconBtn(props) {
     <button
       type="button"
       className={pfx(`btn btn-${type}`) + " " + className + " " + pfx("")}
-      {...otherProps}
-    >
+      {...otherProps}>
       {props.children}
     </button>
   );
@@ -69,7 +68,7 @@ function DefaultMapItem(props) {
     flex: 1,
     paddingLeft: 6,
     paddingRight: 6,
-    fontWeight: "bold"
+    fontWeight: "bold",
   };
   return (
     <div key={props.index} className={pfx(`${props.className}`)}>
@@ -78,14 +77,12 @@ function DefaultMapItem(props) {
         style={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between"
-        }}
-      >
+          justifyContent: "space-between",
+        }}>
         <IconBtn
           tabIndex="-1"
           onClick={() => props.toggleCollapse(props.key)}
-          className={pfx(`btn toggle-button`)}
-        >
+          className={pfx(`btn toggle-button`)}>
           {props.collapse ? (
             <ChevronIcon width={14} rotate={-90} />
           ) : (
@@ -108,8 +105,7 @@ function DefaultMapItem(props) {
               tabIndex="-1"
               style={btnStyle}
               disabled={props.disabled || props.readonly}
-              onClick={props.onDropKeyClick}
-            >
+              onClick={props.onDropKeyClick}>
               <DeleteIcon width={14} />
             </IconBtn>
           </div>
@@ -122,8 +118,7 @@ function DefaultMapItem(props) {
               className={pfx(
                 `flex-1 ${props.hasToolbar && props.hasRemove ? "" : ""}`
               )}
-              style={{ flex: "1" }}
-            >
+              style={{ flex: "1" }}>
               {React.cloneElement(props.children, { fromMap: true })}
             </div>
           </div>
@@ -142,8 +137,7 @@ function DefaultNormalMapFieldTemplate(props) {
       <div className={pfx("object-header")}>
         <div
           className={pfx("header-left hand")}
-          onClick={props.toggleGroupCollapse}
-        >
+          onClick={props.toggleGroupCollapse}>
           <MapFieldTitle
             key={`map-field-title-${props.idSchema.$id}`}
             TitleField={props.TitleField}
@@ -160,8 +154,7 @@ function DefaultNormalMapFieldTemplate(props) {
         <IconBtn
           tabIndex="-1"
           onClick={props.toggleGroupCollapse}
-          className={pfx(`btn toggle-button ${props.title ? "" : "anyof"}`)}
-        >
+          className={pfx(`btn toggle-button ${props.title ? "" : "anyof"}`)}>
           {props.collapse ? (
             <ChevronIcon width={14} rotate={-90} />
           ) : (
@@ -198,8 +191,7 @@ function DefaultNormalMapFieldTemplate(props) {
         <div className={pfx("map-item-list-container")}>
           <div
             className={pfx("map-item-list")}
-            key={`map-item-list-${props.idSchema.$id}`}
-          >
+            key={`map-item-list-${props.idSchema.$id}`}>
             {props.items && props.items.map(p => DefaultMapItem(p))}
           </div>
 
@@ -223,7 +215,7 @@ class MapField extends Component {
     required: false,
     disabled: false,
     readonly: false,
-    autofocus: false
+    autofocus: false,
   };
 
   constructor(props) {
@@ -249,7 +241,7 @@ class MapField extends Component {
       ...this.getStateFromProps(nextProps),
       collapse,
       expandAllLevel: this.state.expandAllLevel,
-      expandAll: nextProps.expandAll
+      expandAll: nextProps.expandAll,
     });
   }
 
@@ -269,9 +261,9 @@ class MapField extends Component {
         this.state.hash.length === 0
           ? Object.keys(nextProps.formData).map(k => ({
               k,
-              v: nextProps.formData[k]
+              v: nextProps.formData[k],
             }))
-          : this.state.hash
+          : this.state.hash,
     };
   }
 
@@ -315,7 +307,7 @@ class MapField extends Component {
 
       this.setState(
         {
-          hash: newHash
+          hash: newHash,
         },
         () => this.props.onChange(this.getNewFormData(newHash))
       );
@@ -354,8 +346,8 @@ class MapField extends Component {
         ...prevState,
         expandInfo: {
           ...prevState.expandInfo,
-          [key]: !prevState.expandInfo[key]
-        }
+          [key]: !prevState.expandInfo[key],
+        },
       };
     });
   }
@@ -364,7 +356,7 @@ class MapField extends Component {
     this.setState(prevState => {
       return {
         ...prevState,
-        collapse: !prevState.collapse
+        collapse: !prevState.collapse,
       };
     });
   }
@@ -376,7 +368,7 @@ class MapField extends Component {
       this.setState(
         {
           hash: newHash,
-          duplication: this.hasDuplicates(newHash)
+          duplication: this.hasDuplicates(newHash),
         },
         () => this.props.onChange(this.getNewFormData(newHash))
       );
@@ -389,7 +381,7 @@ class MapField extends Component {
       newHash.splice(index, 1);
       this.setState(
         {
-          hash: newHash
+          hash: newHash,
         },
         () => this.props.onChange(this.getNewFormData(newHash))
       );
@@ -408,11 +400,11 @@ class MapField extends Component {
     let newHash = this.state.hash.slice();
     newHash.push({
       k: "key" + index,
-      v: getDefaultFormState(itemSchema, undefined, undefined, dxInterface)
+      v: getDefaultFormState(itemSchema, undefined, undefined, dxInterface),
     });
     this.setState(
       {
-        hash: newHash
+        hash: newHash,
       },
       () => this.props.onChange(this.getNewFormData(newHash))
     );
@@ -439,7 +431,7 @@ class MapField extends Component {
             undefined,
             undefined,
             this.props.registry.dxInterface
-          )
+          ),
         });
       }
     } else {
@@ -466,7 +458,7 @@ class MapField extends Component {
       depth,
       isEven,
       fromDiscriminator,
-      typeCombinatorTypes
+      typeCombinatorTypes,
     } = this.props;
     const title = schema.title || name;
     const { fields, dxInterface } = registry;
@@ -509,7 +501,7 @@ class MapField extends Component {
           depth,
           isEven,
           collapse,
-          typeCombinatorTypes
+          typeCombinatorTypes,
         });
       }),
       className: `field field-array field-array-of-${addPropsSchema.type}  ${
@@ -534,7 +526,7 @@ class MapField extends Component {
       isEven: isEven,
       toggleGroupCollapse: this.toggleGroupCollapse,
       collapse: this.state.collapse,
-      fromDiscriminator
+      fromDiscriminator,
     };
 
     return <DefaultNormalMapFieldTemplate {...mapProps} />;
@@ -555,18 +547,18 @@ class MapField extends Component {
       onFocus,
       depth,
       isEven,
-      typeCombinatorTypes
+      typeCombinatorTypes,
     } = props;
     const { disabled, readonly, uiSchema, registry } = this.props;
     const {
-      fields: { SchemaField }
+      fields: { SchemaField },
     } = registry;
     const { removable } = {
       removable: true,
-      ...uiSchema["ui:options"]
+      ...uiSchema["ui:options"],
     };
     const has = {
-      remove: removable && canRemove
+      remove: removable && canRemove,
     };
     has.toolbar = Object.keys(has).some(key => has[key]);
 
@@ -574,7 +566,7 @@ class MapField extends Component {
       ? itemSchema
       : {
           ...itemSchema,
-          title: key
+          title: key,
         };
 
     return {
@@ -608,7 +600,7 @@ class MapField extends Component {
       onKeyChange: this.onKeyChange({ k: key, v: itemData }, index),
       toggleCollapse: this.toggleCollapse,
       collapse: props.collapse,
-      readonly
+      readonly,
     };
   }
 }
@@ -622,8 +614,7 @@ function AddButton({ onClick, disabled }) {
           className={pfx("btn-add")}
           tabIndex="0"
           onClick={onClick}
-          disabled={disabled}
-        >
+          disabled={disabled}>
           {/* <PlusIcon width={14} /> */}
           Add Property
         </IconBtn>
@@ -640,8 +631,8 @@ if (process.env.NODE_ENV !== "production") {
       "ui:options": PropTypes.shape({
         addable: PropTypes.bool,
         orderable: PropTypes.bool,
-        removable: PropTypes.bool
-      })
+        removable: PropTypes.bool,
+      }),
     }),
     idSchema: PropTypes.object,
     errorSchema: PropTypes.object,
@@ -660,9 +651,9 @@ if (process.env.NODE_ENV !== "production") {
         ).isRequired,
         fields: PropTypes.objectOf(PropTypes.func).isRequired,
         definitions: PropTypes.object.isRequired,
-        formContext: PropTypes.object.isRequired
-      })
-    })
+        formContext: PropTypes.object.isRequired,
+      }),
+    }),
   };
 }
 

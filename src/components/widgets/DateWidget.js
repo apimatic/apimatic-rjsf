@@ -7,9 +7,9 @@ function DateWidget(props) {
     onChange,
     dxInterface: {
       registry: {
-        widgets: { BaseInput }
-      }
-    }
+        widgets: { BaseInput },
+      },
+    },
   } = props;
   return (
     <BaseInput
@@ -23,7 +23,7 @@ function DateWidget(props) {
 /* istanbul ignore else */
 if (process.env.NODE_ENV !== "production") {
   DateWidget.propTypes = {
-    value: PropTypes.string
+    value: PropTypes.string,
   };
 }
 

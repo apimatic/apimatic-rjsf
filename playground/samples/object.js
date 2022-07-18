@@ -6,18 +6,18 @@ module.exports = {
     properties: {
       title: {
         type: "string",
-        title: "Task list title"
+        title: "Task list title",
       },
       task: {
-        type: "object"
+        type: "object",
       },
       tasks: {
         type: "array",
         items: {
-          type: "object"
-        }
-      }
-    }
+          type: "object",
+        },
+      },
+    },
   },
   uiSchema: {},
   formData: {
@@ -27,8 +27,8 @@ module.exports = {
         title: "My second task",
         details:
           "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur",
-        done: false
-      }
-    ]
-  }
+        done: false,
+      },
+    ],
+  },
 };

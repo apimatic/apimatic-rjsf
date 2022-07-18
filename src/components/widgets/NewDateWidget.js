@@ -9,7 +9,7 @@ function DateWidget(props) {
 /* istanbul ignore else */
 if (process.env.NODE_ENV !== "production") {
   DateWidget.propTypes = {
-    value: PropTypes.string
+    value: PropTypes.string,
   };
 }
 
