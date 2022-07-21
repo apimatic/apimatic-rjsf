@@ -13,7 +13,7 @@ import {
   deepEquals,
   prefixClass as pfx,
   isOneOfSchema,
-  prefixClass,
+  prefixClass
 } from "../../utils";
 import UnsupportedField from "./UnsupportedField";
 import { validateField } from "../../validationUtils";
@@ -26,7 +26,7 @@ const COMPONENT_TYPES = {
   number: "NumberField",
   object: "ObjectField",
   string: "StringField",
-  discriminator: "DiscriminatorField",
+  discriminator: "DiscriminatorField"
 };
 
 const MERGE_ALLOF_OPTIONS = {
@@ -46,8 +46,8 @@ const MERGE_ALLOF_OPTIONS = {
     },
     dataTypeDisplayText: function(values) {
       return values.length ? values[0] : "";
-    },
-  },
+    }
+  }
 };
 
 function getFieldComponent(schema, uiSchema, idSchema, fields) {
@@ -161,7 +161,7 @@ export function DefaultTemplate(props) {
     disabled,
     fromDiscriminator,
     formData,
-    schema,
+    schema
   } = props;
   if (hidden) {
     return children;
@@ -174,6 +174,10 @@ export function DefaultTemplate(props) {
   const errors = (
     <ErrorList errors={validateField(schema, formData, required, disabled)} />
   );
+
+  if (schema.readOnly) {
+    return null;
+  }
 
   return (
     <div className={pfx(classNames)}>
@@ -245,7 +249,7 @@ if (process.env.NODE_ENV !== "production") {
     readonly: PropTypes.bool,
     displayLabel: PropTypes.bool,
     fields: PropTypes.object,
-    formContext: PropTypes.object,
+    formContext: PropTypes.object
   };
 }
 
@@ -253,7 +257,7 @@ DefaultTemplate.defaultProps = {
   hidden: false,
   readonly: false,
   required: false,
-  displayLabel: true,
+  displayLabel: true
 };
 
 function SchemaFieldRender(props) {
@@ -268,13 +272,13 @@ function SchemaFieldRender(props) {
     registry = getDefaultRegistry(),
     anyOfTitle,
     typeCombinatorTypes,
-    discriminatorObj = {},
+    discriminatorObj = {}
   } = props;
   const {
     dxInterface,
     fields,
     formContext,
-    FieldTemplate = DefaultTemplate,
+    FieldTemplate = DefaultTemplate
   } = registry;
 
   const { name: discriminatorProperty } = discriminatorObj;
@@ -345,7 +349,7 @@ function SchemaFieldRender(props) {
     `field-${type}`,
     errors && errors.length > 0 ? "field-error has-error has-danger" : "",
     schema.oneOf || schema.anyOf ? "discriminator-container" : "",
-    uiSchema.classNames,
+    uiSchema.classNames
   ]
     .join(" ")
     .trim();
@@ -377,7 +381,7 @@ function SchemaFieldRender(props) {
     uiSchema,
     anyOfTitle,
     discriminatorObj,
-    formData,
+    formData
   };
 
   // See #439: uiSchema: Don't pass consumed class names to child components
@@ -428,7 +432,7 @@ SchemaField.defaultProps = {
   idSchema: {},
   disabled: false,
   readonly: false,
-  autofocus: false,
+  autofocus: false
 };
 
 /* istanbul ignore else */
@@ -447,9 +451,9 @@ if (process.env.NODE_ENV !== "production") {
         ).isRequired,
         fields: PropTypes.objectOf(PropTypes.func).isRequired,
         definitions: PropTypes.object.isRequired,
-        formContext: PropTypes.object.isRequired,
-      }),
-    }),
+        formContext: PropTypes.object.isRequired
+      })
+    })
   };
 }
 
