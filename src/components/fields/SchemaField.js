@@ -13,7 +13,8 @@ import {
   deepEquals,
   prefixClass as pfx,
   isOneOfSchema,
-  prefixClass
+  prefixClass,
+  isDiscriminator
 } from "../../utils";
 import UnsupportedField from "./UnsupportedField";
 import { validateField } from "../../validationUtils";
@@ -161,15 +162,19 @@ export function DefaultTemplate(props) {
     disabled,
     fromDiscriminator,
     formData,
-    schema
+    schema,
+    discriminatorObj
   } = props;
   if (hidden) {
     return children;
   }
-
   const dataType = props.schema.dataTypeDisplayText
     ? props.schema.dataTypeDisplayText
     : props.schema.type;
+
+  const READONLY_TEXT =
+    "This field is disabled and gets auto-filled based on the selected discriminator value.";
+
   const markdown = props.schema.dataTypeMarkdown;
   const errors = (
     <ErrorList errors={validateField(schema, formData, required, disabled)} />
@@ -200,7 +205,6 @@ export function DefaultTemplate(props) {
           ) : (
             <Label label={label} required={required} id={id} />
           )}
-
           {!fromDiscriminator && required && (
             <div className={pfx("element-required")}>
               <span>Required</span>
@@ -225,6 +229,7 @@ export function DefaultTemplate(props) {
       )}
 
       {displayLabel && description ? description : null}
+      {isDiscriminator(label, discriminatorObj) && <p>{READONLY_TEXT}</p>}
       {children}
       {onNullifyChange && !nullify ? null : errors}
       {help}
