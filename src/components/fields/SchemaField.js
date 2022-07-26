@@ -14,7 +14,7 @@ import {
   prefixClass as pfx,
   isOneOfSchema,
   prefixClass,
-  isDiscriminator
+  isDiscriminator as isDiscriminatorCheck
 } from "../../utils";
 import UnsupportedField from "./UnsupportedField";
 import { validateField } from "../../validationUtils";
@@ -162,8 +162,7 @@ export function DefaultTemplate(props) {
     disabled,
     fromDiscriminator,
     formData,
-    schema,
-    discriminatorObj
+    schema
   } = props;
   if (hidden) {
     return children;
@@ -171,9 +170,6 @@ export function DefaultTemplate(props) {
   const dataType = props.schema.dataTypeDisplayText
     ? props.schema.dataTypeDisplayText
     : props.schema.type;
-
-  const READONLY_TEXT =
-    "This field is disabled and gets auto-filled based on the selected discriminator value.";
 
   const markdown = props.schema.dataTypeMarkdown;
   const errors = (
@@ -229,7 +225,6 @@ export function DefaultTemplate(props) {
       )}
 
       {displayLabel && description ? description : null}
-      {isDiscriminator(label, discriminatorObj) && <p>{READONLY_TEXT}</p>}
       {children}
       {onNullifyChange && !nullify ? null : errors}
       {help}
@@ -289,6 +284,8 @@ function SchemaFieldRender(props) {
   const { name: discriminatorProperty } = discriminatorObj;
   const isDiscriminator =
     discriminatorProperty && discriminatorProperty === name;
+
+  const isDiscriminatorField = isDiscriminatorCheck(name, discriminatorObj);
 
   let schema = retrieveSchema(props.schema, formData, dxInterface);
 
@@ -365,6 +362,7 @@ function SchemaFieldRender(props) {
         id={id + "__description"}
         description={description}
         formContext={formContext}
+        isDiscriminatorField={isDiscriminatorField}
       />
     ),
     rawDescription: description,
