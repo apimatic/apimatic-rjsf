@@ -544,25 +544,25 @@ function getStructure(modelName, structures) {
   return structure;
 }
 
+const TABLE_HEADER = "| Type | Value |";
+
 function splitDesription(description) {
-  let descriptionText;
-  const descriptionHas = Boolean(
-    description !== "-" && description.includes("| Type | Value |")
-  );
+  switch (description) {
+    case "-":
+      return;
+    default: {
+      const descriptionHas = Boolean(description.includes(TABLE_HEADER));
+      const [originalDescription] = description.split(TABLE_HEADER);
 
-  const isDescription = Boolean(
-    description !== "-" && !description.includes("| Type | Value |")
-  );
-
-  if (descriptionHas) {
-    descriptionText = description.split("| Type | Value |")[0];
+      return descriptionHas ? originalDescription : description;
+    }
   }
-  return descriptionHas || isDescription ? descriptionText : undefined;
 }
 
 export function getDescription(type) {
   const { Description = "" } = type;
   const description = typeof Description === "string" ? Description.trim() : "";
+
   return splitDesription(description);
 }
 
