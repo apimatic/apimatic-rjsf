@@ -544,10 +544,8 @@ function getStructure(modelName, structures) {
   return structure;
 }
 
-export function getDescription(type) {
-  const { Description = "" } = type;
-  let description = typeof Description === "string" ? Description.trim() : "";
-
+function splitDesription(description) {
+  let descriptionText;
   const descriptionHas = Boolean(
     description !== "-" && description.includes("| Type | Value |")
   );
@@ -557,10 +555,15 @@ export function getDescription(type) {
   );
 
   if (descriptionHas) {
-    description = description.split("| Type | Value |")[0];
+    descriptionText = description.split("| Type | Value |")[0];
   }
+  return descriptionHas || isDescription ? descriptionText : undefined;
+}
 
-  return descriptionHas || isDescription ? description : undefined;
+export function getDescription(type) {
+  const { Description = "" } = type;
+  const description = typeof Description === "string" ? Description.trim() : "";
+  return splitDesription(description);
 }
 
 function getDataTypeDisplayText(type) {
