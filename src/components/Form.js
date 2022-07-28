@@ -5,7 +5,6 @@ import { default as DefaultErrorList } from "./ErrorList";
 import {
   getDefaultFormState,
   shouldRender,
-  toIdSchema,
   setState,
   getDefaultRegistry,
   unwrapFormData,
@@ -64,17 +63,10 @@ export default class Form extends Component {
           errors: state.errors || [],
           errorSchema: state.errorSchema || {},
         };
-    const idSchema = toIdSchema(
-      schema,
-      uiSchema["ui:rootFieldId"],
-      formData,
-      dxInterface
-    );
 
     return {
       schema,
       uiSchema,
-      idSchema,
       formData,
       edit,
       errors,
