@@ -7,15 +7,18 @@ function DescriptionField(props) {
   const READONLY_TEXT =
     "This field is disabled and gets auto-filled based on the selected discriminator value.";
 
-  const { id, isDiscriminatorField } = props;
-  let { description } = props;
+  const { id, isDiscriminatorField, description } = props;
+
+  let DESCRIPTION_TEXT = description;
 
   // Check if the field is Discriminator Field, then append the discriminator info
   if (isDiscriminatorField) {
-    description = `${description ? description : ""} ${READONLY_TEXT}`;
+    DESCRIPTION_TEXT = `${
+      DESCRIPTION_TEXT ? DESCRIPTION_TEXT : ""
+    } ${READONLY_TEXT}`;
   }
 
-  if (!description) {
+  if (!DESCRIPTION_TEXT) {
     // See #312: Ensure compatibility with old versions of React.
     return <div />;
   }
@@ -23,7 +26,7 @@ function DescriptionField(props) {
   return (
     <div id={id} className={pfx("field-description")}>
       <ContextConsumer>
-        {({ markdownRenderer }) => markdownRenderer(description)}
+        {({ markdownRenderer }) => markdownRenderer(DESCRIPTION_TEXT)}
       </ContextConsumer>
     </div>
   );
