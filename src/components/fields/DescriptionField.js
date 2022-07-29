@@ -12,7 +12,7 @@ function DescriptionField(props) {
 
   // Check if the field is Discriminator Field, then append the discriminator info
   if (isDiscriminatorField) {
-    description = `${description ? description : ""} <br> ${READONLY_TEXT}`;
+    description = `${description ? description : ""} ${READONLY_TEXT}`;
   }
 
   if (!description) {
@@ -23,9 +23,7 @@ function DescriptionField(props) {
   return (
     <div id={id} className={pfx("field-description")}>
       <ContextConsumer>
-        {({ markdownRenderer }) =>
-          markdownRenderer(description.replace(/<br>/gi, "\n"))
-        }
+        {({ markdownRenderer }) => markdownRenderer(description)}
       </ContextConsumer>
     </div>
   );
