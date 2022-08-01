@@ -649,6 +649,11 @@ class ObjectField extends Component {
               disableFormJsonEdit={templateProps.disableFormJsonEdit}
               typeCombinatorTypes={typeCombinatorTypes}
               discriminatorObj={discriminatorObj}
+              // flag for direct circular reference in the objects
+              directCircularRef={
+                templateProps.schema.dataTypeLink ===
+                templateProps.schema.properties[name].dataTypeLink
+              }
             />
           ),
           name,
