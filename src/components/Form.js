@@ -5,11 +5,10 @@ import { default as DefaultErrorList } from "./ErrorList";
 import {
   getDefaultFormState,
   shouldRender,
-  toIdSchema,
   setState,
   getDefaultRegistry,
   unwrapFormData,
-  prefixClass as pfx,
+  prefixClass as pfx
 } from "../utils";
 import validateFormData from "../validate";
 import { AJV } from "../AJV";
@@ -26,7 +25,7 @@ export default class Form extends Component {
     liveValidate: false,
     safeRenderCompletion: false,
     noHtml5Validate: false,
-    ErrorList: DefaultErrorList,
+    ErrorList: DefaultErrorList
   };
 
   constructor(props) {
@@ -37,7 +36,7 @@ export default class Form extends Component {
     this.state.expandAll = true;
 
     const {
-      dxInterface: { definitions },
+      dxInterface: { definitions }
     } = props;
     AJV.setInstance(definitions);
   }
@@ -62,23 +61,16 @@ export default class Form extends Component {
       ? this.validate(newFormData, schema, formData)
       : {
           errors: state.errors || [],
-          errorSchema: state.errorSchema || {},
+          errorSchema: state.errorSchema || {}
         };
-    const idSchema = toIdSchema(
-      schema,
-      uiSchema["ui:rootFieldId"],
-      formData,
-      dxInterface
-    );
 
     return {
       schema,
       uiSchema,
-      idSchema,
       formData,
       edit,
       errors,
-      errorSchema,
+      errorSchema
     };
   }
 
@@ -90,7 +82,7 @@ export default class Form extends Component {
     const {
       validate,
       transformErrors,
-      dxInterface: { definitions },
+      dxInterface: { definitions }
     } = this.props;
 
     return validateFormData(
@@ -193,14 +185,14 @@ export default class Form extends Component {
       ObjectFieldTemplate: this.props.ObjectFieldTemplate,
       FieldTemplate: this.props.FieldTemplate,
       dxInterface: dxInterface || {},
-      formContext: this.props.formContext || {},
+      formContext: this.props.formContext || {}
     };
   }
 
   toggleExpandAll = () => {
     this.setState(previousState => ({
       ...previousState,
-      expandAll: !previousState.expandAll,
+      expandAll: !previousState.expandAll
     }));
   };
 
@@ -219,7 +211,7 @@ export default class Form extends Component {
       acceptcharset,
       noHtml5Validate,
       disableFormJsonEdit,
-      dxInterface,
+      dxInterface
     } = this.props;
     const {
       schema,
@@ -227,7 +219,7 @@ export default class Form extends Component {
       formData,
       errorSchema,
       idSchema,
-      expandAll,
+      expandAll
     } = this.state;
     const registry = this.getRegistry();
     const _SchemaField = registry.fields.SchemaField;
@@ -244,7 +236,8 @@ export default class Form extends Component {
         encType={enctype}
         acceptCharset={acceptcharset}
         noValidate={noHtml5Validate}
-        onSubmit={this.onSubmit}>
+        onSubmit={this.onSubmit}
+      >
         <ContextProvider value={dxInterface}>
           {this.renderErrors()}
           {uiSchema.expandAllLevel && (
@@ -323,6 +316,6 @@ if (process.env.NODE_ENV !== "production") {
     dontAssignDefaults: PropTypes.bool,
     disableFormJsonEdit: PropTypes.bool,
     markdownRenderer: PropTypes.func,
-    onRouteChange: PropTypes.func,
+    onRouteChange: PropTypes.func
   };
 }

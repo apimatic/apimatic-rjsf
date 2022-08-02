@@ -272,7 +272,9 @@ function SchemaFieldRender(props) {
     registry = getDefaultRegistry(),
     anyOfTitle,
     typeCombinatorTypes,
-    discriminatorObj = {}
+    discriminatorObj = {},
+    // flag for direct circular reference in the objects
+    directCircularRef
   } = props;
   const {
     dxInterface,
@@ -287,7 +289,10 @@ function SchemaFieldRender(props) {
 
   const isDiscriminatorField = isDiscriminatorCheck(name, discriminatorObj);
 
-  let schema = retrieveSchema(props.schema, formData, dxInterface);
+  // If direct circular reference, we will not fetch further schema through references
+  let schema = directCircularRef
+    ? props.schema
+    : retrieveSchema(props.schema, formData, dxInterface);
 
   if (schema.allOf && !schema.typeCombinatorTypes) {
     schema = mergeAllOf(schema, MERGE_ALLOF_OPTIONS);
