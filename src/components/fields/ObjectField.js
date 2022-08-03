@@ -398,14 +398,8 @@ class ObjectField extends Component {
     const { SchemaField, TitleField, DescriptionField } = fields;
     const schema = retrieveSchema(this.props.schema, formData, dxInterface);
 
-    console.log(
-      " MY SCHEMA  -->>",
-      retrieveSchema(this.props.schema, formData, dxInterface)
-    );
     const title = name;
-    // schema.title === undefined
-    //   ? name
-    //   : name === undefined ? schema.title : name + " (" + schema.title + ")";
+
     const description = uiSchema["ui:description"] || schema.description;
 
     const templateProps = {
@@ -633,7 +627,7 @@ class ObjectField extends Component {
       onJsonChange: this.onJsonChange,
       formJson: this.state.formJson,
       formJsonError: this.state.formJsonError,
-      properties: checkSchemaForReadOnly(schema)
+      properties: checkAllReadOnly(schema)
         ? [
             {
               content: renderCallOutFallback({
@@ -695,7 +689,7 @@ class ObjectField extends Component {
   }
 }
 
-function checkSchemaForReadOnly(schema) {
+function checkAllReadOnly(schema) {
   const { properties } = schema;
   return Object.values(properties).every(item => item.readOnly);
 }
