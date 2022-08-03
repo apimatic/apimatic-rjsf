@@ -16,6 +16,7 @@ import {
   toIdSchema,
   getDefaultRegistry,
   prefixClass as pfx,
+  classNames,
 } from "../../utils";
 import { ArrowUpIcon, DeleteIcon, ArrowDownIcon, ChevronIcon } from "../Icons";
 
@@ -204,6 +205,11 @@ function DefaultFixedArrayFieldTemplate(props) {
 }
 
 function DefaultNormalArrayFieldTemplate(props) {
+  const { fromDiscriminator } = props;
+  const headerClasses = classNames({
+    [pfx("object-header")]: true,
+    "position-unset": fromDiscriminator,
+  });
   const title =
     props.uiSchema["ui:title"] ||
     props.schema.title ||
@@ -215,25 +221,27 @@ function DefaultNormalArrayFieldTemplate(props) {
 
   return (
     <fieldset className={pfx(props.className)}>
-      <div className={pfx("object-header")}>
+      <div className={headerClasses}>
         <div className={pfx("header-left hand")} onClick={props.toggleCollapse}>
-          <ArrayFieldTitle
-            key={`array-field-title-${props.idSchema.$id}`}
-            TitleField={props.TitleField}
-            idSchema={props.idSchema}
-            title={title}
-            required={props.required}
-            nullify={props.nullify}
-            onNullifyChange={props.onNullifyChange}
-            disabled={props.disabled}
-            fromDiscriminator={props.fromDiscriminator}
-            // onClick={props.toggleCollapse}
-          />
+          {props.fromDiscriminator ? null : (
+            <ArrayFieldTitle
+              key={`array-field-title-${props.idSchema.$id}`}
+              TitleField={props.TitleField}
+              idSchema={props.idSchema}
+              title={title}
+              required={props.required}
+              nullify={props.nullify}
+              onNullifyChange={props.onNullifyChange}
+              disabled={props.disabled}
+              fromDiscriminator={props.fromDiscriminator}
+              // onClick={props.toggleCollapse}
+            />
+          )}
         </div>
         <IconBtn
           tabIndex="-1"
           onClick={props.toggleCollapse}
-          className={pfx(`btn toggle-button ${title ? "" : "anyof"}`)}>
+          className={pfx(`btn toggle-button`)}>
           {props.collapse ? (
             <ChevronIcon width={14} rotate={-90} />
           ) : (

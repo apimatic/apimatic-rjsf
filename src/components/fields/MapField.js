@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { prefixClass as pfx } from "../../utils";
+import { classNames, prefixClass as pfx } from "../../utils";
 
 import {
   getDefaultFormState,
@@ -129,12 +129,17 @@ function DefaultMapItem(props) {
 }
 
 function DefaultNormalMapFieldTemplate(props) {
+  const { fromDiscriminator } = props;
+  const headerClasses = classNames({
+    [pfx("object-header")]: true,
+    "position-unset": fromDiscriminator,
+  });
   const dataType = props.schema.dataTypeDisplayText;
   const markdown = props.schema.dataTypeMarkdown;
 
   return (
     <fieldset className={pfx(props.className)}>
-      <div className={pfx("object-header")}>
+      <div className={headerClasses}>
         <div
           className={pfx("header-left hand")}
           onClick={props.toggleGroupCollapse}>
@@ -154,7 +159,7 @@ function DefaultNormalMapFieldTemplate(props) {
         <IconBtn
           tabIndex="-1"
           onClick={props.toggleGroupCollapse}
-          className={pfx(`btn toggle-button ${props.title ? "" : "anyof"}`)}>
+          className={pfx(`btn toggle-button`)}>
           {props.collapse ? (
             <ChevronIcon width={14} rotate={-90} />
           ) : (
