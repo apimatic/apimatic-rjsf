@@ -15,7 +15,7 @@ import {
   retrieveSchema,
   getDefaultRegistry,
   getDefaultFormState,
-  deepEquals
+  deepEquals,
 } from "../../utils";
 import { ChevronIcon, JsonIcon } from "../Icons";
 
@@ -26,12 +26,12 @@ const cmOptions = {
   mode: {
     name: "javascript",
     json: true,
-    statementIndent: 2
+    statementIndent: 2,
   },
   lineNumbers: true,
   lineWrapping: true,
   indentWithTabs: false,
-  tabSize: 2
+  tabSize: 2,
 };
 
 const READONLY_INFO_MESSAGE =
@@ -68,8 +68,7 @@ function IconBtn(props) {
     <button
       type="button"
       className={pfx(`btn btn-${type}`) + " " + className}
-      {...otherProps}
-    >
+      {...otherProps}>
       <span className={pfx("tooltip")} />
       {props.children}
     </button>
@@ -88,8 +87,7 @@ function renderViewJsonButton(props) {
   ) : (
     <IconBtn
       onClick={toggleEditView}
-      className={pfx(`btn json-button ${showEditView ? "form-view" : ""}`)}
-    >
+      className={pfx(`btn json-button ${showEditView ? "form-view" : ""}`)}>
       <JsonIcon />
     </IconBtn>
   );
@@ -129,7 +127,7 @@ function DefaultObjectFieldTemplate(props) {
     onNullifyChange,
     disabled,
     collapse,
-    toggleCollapse
+    toggleCollapse,
   } = props;
 
   let canEditJson =
@@ -150,8 +148,7 @@ function DefaultObjectFieldTemplate(props) {
   return (
     <fieldset
       className={pfx((props.isEven ? "even" : "odd") + ` depth_${props.depth}`)}
-      id={`${props.idSchema.$id}__object`}
-    >
+      id={`${props.idSchema.$id}__object`}>
       <div className={pfx("object-header")}>
         <div className={pfx("header-left hand")} onClick={toggleCollapse}>
           {title && (
@@ -181,8 +178,7 @@ function DefaultObjectFieldTemplate(props) {
           <IconBtn
             tabIndex="-1"
             onClick={toggleCollapse}
-            className={pfx(`btn toggle-button`)}
-          >
+            className={pfx(`btn toggle-button`)}>
             {collapse ? (
               <ChevronIcon width={14} rotate={-90} />
             ) : (
@@ -217,8 +213,7 @@ function DefaultObjectFieldTemplate(props) {
         <div
           className={pfx(
             `element-properties ${props.showEditView ? "json-edit-view" : ""}`
-          )}
-        >
+          )}>
           {props.showEditView && canEditJson ? (
             <div>
               <CodeMirror
@@ -253,7 +248,7 @@ class ObjectField extends Component {
     idSchema: {},
     required: false,
     disabled: false,
-    readonly: false
+    readonly: false,
   };
 
   constructor(props) {
@@ -281,7 +276,7 @@ class ObjectField extends Component {
       ...this.getStateFromProps(nextProps),
       collapse,
       expandAllLevel: this.state.expandAllLevel,
-      expandAll: nextProps.expandAll
+      expandAll: nextProps.expandAll,
     });
   }
 
@@ -307,7 +302,7 @@ class ObjectField extends Component {
         this.isJsonString(this.state.formJson) &&
         deepEquals(nextProps.formData, this.state.formJson)
           ? this.state.formJson
-          : JSON.stringify(nextProps.formData, null, 2)
+          : JSON.stringify(nextProps.formData, null, 2),
     };
   }
 
@@ -323,7 +318,7 @@ class ObjectField extends Component {
       let newFormData = {};
       newFormData = {
         ...this.props.formData,
-        [name]: value
+        [name]: value,
       };
       this.props.onChange(newFormData, options, schemaIndex);
     };
@@ -332,7 +327,7 @@ class ObjectField extends Component {
   onNullifyChange = () => {
     this.setState({
       formJsonError: false,
-      showEditView: false
+      showEditView: false,
     });
 
     if (this.shouldDisable()) {
@@ -367,7 +362,7 @@ class ObjectField extends Component {
   toggleEditView() {
     this.setState(state => ({
       showEditView: !state.showEditView,
-      collapse: false
+      collapse: false,
     }));
   }
 
@@ -391,7 +386,7 @@ class ObjectField extends Component {
       expandAll,
       fromDiscriminator,
       typeCombinatorTypes,
-      discriminatorObj = {}
+      discriminatorObj = {},
     } = this.props;
 
     const { fields, formContext, dxInterface } = registry;
@@ -431,7 +426,7 @@ class ObjectField extends Component {
       expandAll,
       fromDiscriminator,
       typeCombinatorTypes,
-      discriminatorObj
+      discriminatorObj,
     };
 
     if (schema.properties && Object.keys(schema.properties).length > 0) {
@@ -455,7 +450,7 @@ class ObjectField extends Component {
       !err && props.onChange(parsed);
       return {
         formJson: code,
-        formJsonError: err
+        formJsonError: err,
       };
     });
   };
@@ -464,7 +459,7 @@ class ObjectField extends Component {
     this.setState((prevState, props) => {
       return {
         ...prevState,
-        collapse: !prevState.collapse
+        collapse: !prevState.collapse,
       };
     });
   }
@@ -534,7 +529,7 @@ class ObjectField extends Component {
               display:
                 templateProps.disabled || this.shouldDisable()
                   ? "block"
-                  : "none"
+                  : "none",
             }}
           />
         </div>
@@ -589,7 +584,7 @@ class ObjectField extends Component {
       SchemaField,
       typeCombinatorTypes,
       discriminatorObj,
-      schema
+      schema,
     } = templateProps;
     let orderedProperties;
 
@@ -632,9 +627,9 @@ class ObjectField extends Component {
             {
               content: renderCallOutFallback({
                 info: "info",
-                message: READONLY_INFO_MESSAGE
-              })
-            }
+                message: READONLY_INFO_MESSAGE,
+              }),
+            },
           ]
         : orderedProperties.map(name => {
             if (
@@ -680,9 +675,9 @@ class ObjectField extends Component {
               name,
               readonly: templateProps.readonly,
               disabled: templateProps.disabled || this.shouldDisable(),
-              required: templateProps.required
+              required: templateProps.required,
             };
-          })
+          }),
     };
 
     return <Template {...newProps} />;
@@ -713,9 +708,9 @@ if (process.env.NODE_ENV !== "production") {
         ).isRequired,
         fields: PropTypes.objectOf(PropTypes.func).isRequired,
         definitions: PropTypes.object.isRequired,
-        formContext: PropTypes.object.isRequired
-      })
-    })
+        formContext: PropTypes.object.isRequired,
+      }),
+    }),
   };
 }
 

@@ -14,7 +14,7 @@ import {
   prefixClass as pfx,
   isOneOfSchema,
   prefixClass,
-  isDiscriminator as isDiscriminatorCheck
+  isDiscriminator as isDiscriminatorCheck,
 } from "../../utils";
 import UnsupportedField from "./UnsupportedField";
 import { validateField } from "../../validationUtils";
@@ -27,7 +27,7 @@ const COMPONENT_TYPES = {
   number: "NumberField",
   object: "ObjectField",
   string: "StringField",
-  discriminator: "DiscriminatorField"
+  discriminator: "DiscriminatorField",
 };
 
 const MERGE_ALLOF_OPTIONS = {
@@ -47,8 +47,8 @@ const MERGE_ALLOF_OPTIONS = {
     },
     dataTypeDisplayText: function(values) {
       return values.length ? values[0] : "";
-    }
-  }
+    },
+  },
 };
 
 function getFieldComponent(schema, uiSchema, idSchema, fields) {
@@ -162,7 +162,7 @@ export function DefaultTemplate(props) {
     disabled,
     fromDiscriminator,
     formData,
-    schema
+    schema,
   } = props;
   if (hidden) {
     return children;
@@ -249,7 +249,7 @@ if (process.env.NODE_ENV !== "production") {
     readonly: PropTypes.bool,
     displayLabel: PropTypes.bool,
     fields: PropTypes.object,
-    formContext: PropTypes.object
+    formContext: PropTypes.object,
   };
 }
 
@@ -257,7 +257,7 @@ DefaultTemplate.defaultProps = {
   hidden: false,
   readonly: false,
   required: false,
-  displayLabel: true
+  displayLabel: true,
 };
 
 function SchemaFieldRender(props) {
@@ -274,13 +274,13 @@ function SchemaFieldRender(props) {
     typeCombinatorTypes,
     discriminatorObj = {},
     // flag for direct circular reference in the objects
-    directCircularRef
+    directCircularRef,
   } = props;
   const {
     dxInterface,
     fields,
     formContext,
-    FieldTemplate = DefaultTemplate
+    FieldTemplate = DefaultTemplate,
   } = registry;
 
   const { name: discriminatorProperty } = discriminatorObj;
@@ -356,7 +356,7 @@ function SchemaFieldRender(props) {
     `field-${type}`,
     errors && errors.length > 0 ? "field-error has-error has-danger" : "",
     schema.oneOf || schema.anyOf ? "discriminator-container" : "",
-    uiSchema.classNames
+    uiSchema.classNames,
   ]
     .join(" ")
     .trim();
@@ -389,7 +389,7 @@ function SchemaFieldRender(props) {
     uiSchema,
     anyOfTitle,
     discriminatorObj,
-    formData
+    formData,
   };
 
   // See #439: uiSchema: Don't pass consumed class names to child components
@@ -440,7 +440,7 @@ SchemaField.defaultProps = {
   idSchema: {},
   disabled: false,
   readonly: false,
-  autofocus: false
+  autofocus: false,
 };
 
 /* istanbul ignore else */
@@ -459,9 +459,9 @@ if (process.env.NODE_ENV !== "production") {
         ).isRequired,
         fields: PropTypes.objectOf(PropTypes.func).isRequired,
         definitions: PropTypes.object.isRequired,
-        formContext: PropTypes.object.isRequired
-      })
-    })
+        formContext: PropTypes.object.isRequired,
+      }),
+    }),
   };
 }
 
