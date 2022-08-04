@@ -4,8 +4,21 @@ import { prefixClass as pfx } from "../../utils";
 import { ContextConsumer } from "../context";
 
 function DescriptionField(props) {
-  const { id, description } = props;
-  if (!description) {
+  const READONLY_TEXT =
+    "This field is disabled and gets auto-filled based on the selected discriminator value.";
+
+  const { id, isDiscriminatorField, description } = props;
+
+  let DESCRIPTION_TEXT = description;
+
+  // Check if the field is Discriminator Field, then append the discriminator info
+  if (isDiscriminatorField) {
+    DESCRIPTION_TEXT = `${
+      DESCRIPTION_TEXT ? DESCRIPTION_TEXT : ""
+    } ${READONLY_TEXT}`;
+  }
+
+  if (!DESCRIPTION_TEXT) {
     // See #312: Ensure compatibility with old versions of React.
     return <div />;
   }
@@ -13,9 +26,7 @@ function DescriptionField(props) {
   return (
     <div id={id} className={pfx("field-description")}>
       <ContextConsumer>
-        {({ markdownRenderer }) =>
-          markdownRenderer(description.replace(/<br>/gi, "\n"))
-        }
+        {({ markdownRenderer }) => markdownRenderer(DESCRIPTION_TEXT)}
       </ContextConsumer>
     </div>
   );

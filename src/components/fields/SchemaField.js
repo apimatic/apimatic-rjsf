@@ -14,6 +14,7 @@ import {
   prefixClass as pfx,
   isOneOfSchema,
   prefixClass,
+  isDiscriminator as isDiscriminatorCheck,
 } from "../../utils";
 import UnsupportedField from "./UnsupportedField";
 import { validateField } from "../../validationUtils";
@@ -166,14 +167,18 @@ export function DefaultTemplate(props) {
   if (hidden) {
     return children;
   }
-
   const dataType = props.schema.dataTypeDisplayText
     ? props.schema.dataTypeDisplayText
     : props.schema.type;
+
   const markdown = props.schema.dataTypeMarkdown;
   const errors = (
     <ErrorList errors={validateField(schema, formData, required, disabled)} />
   );
+
+  if (schema.readOnly) {
+    return null;
+  }
 
   return (
     <div className={pfx(classNames)}>
@@ -196,7 +201,6 @@ export function DefaultTemplate(props) {
           ) : (
             <Label label={label} required={required} id={id} />
           )}
-
           {!fromDiscriminator && required && (
             <div className={pfx("element-required")}>
               <span>Required</span>
@@ -283,6 +287,8 @@ function SchemaFieldRender(props) {
   const isDiscriminator =
     discriminatorProperty && discriminatorProperty === name;
 
+  const isDiscriminatorField = isDiscriminatorCheck(name, discriminatorObj);
+
   // If direct circular reference, we will not fetch further schema through references
   let schema = directCircularRef
     ? props.schema
@@ -361,6 +367,7 @@ function SchemaFieldRender(props) {
         id={id + "__description"}
         description={description}
         formContext={formContext}
+        isDiscriminatorField={isDiscriminatorField}
       />
     ),
     rawDescription: description,

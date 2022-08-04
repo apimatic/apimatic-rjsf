@@ -564,14 +564,26 @@ function getStructure(modelName, structures) {
   return structure;
 }
 
+const TABLE_HEADER = "| Type | Value |";
+
+function splitDesription(description) {
+  switch (description) {
+    case "-":
+      return;
+    default: {
+      const descriptionHas = Boolean(description.includes(TABLE_HEADER));
+      const [originalDescription] = description.split(TABLE_HEADER);
+
+      return descriptionHas ? originalDescription : description;
+    }
+  }
+}
+
 export function getDescription(type) {
   const { Description = "" } = type;
   const description = typeof Description === "string" ? Description.trim() : "";
-  const isDescription = Boolean(
-    description !== "-" && !description.includes("| Type | Value |")
-  );
 
-  return isDescription ? description : undefined;
+  return splitDesription(description);
 }
 
 function getDataTypeDisplayText(type) {
@@ -593,6 +605,8 @@ function generateAdditionalProperties(type, linkMapper) {
     typeCombinatorTypes: type.TypeCombinatorTypes,
     discriminator: type.Discriminator,
     discriminatorValue: type.DiscriminatorValue,
+    readOnly: type.ReadOnly,
+    writeOnly: type.WriteOnly,
   };
 }
 
