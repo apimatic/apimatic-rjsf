@@ -412,7 +412,9 @@ function SchemaFieldRender(props) {
   );
 
   return isOneOfSchema(schema) ||
-    (!isOneOfSchema(schema) && schema.typeCombinatorTypes) ? (
+    (!isOneOfSchema(schema) &&
+      schema.typeCombinatorTypes &&
+      schema.type !== "array") ? (
     field
   ) : (
     <FieldTemplate {...fieldProps}>{field}</FieldTemplate>

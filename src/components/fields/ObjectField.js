@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import MapField from "./MapField";
-import { prefixClass as pfx } from "../../utils";
+import { classNames, prefixClass as pfx } from "../../utils";
 import { toErrorList } from "../../validate";
 import CodeMirror from "react-codemirror2";
 import DataType from "../fields/DataType";
@@ -129,8 +129,13 @@ function DefaultObjectFieldTemplate(props) {
     onNullifyChange,
     disabled,
     collapse,
-    toggleCollapse
+    toggleCollapse,
+    fromDiscriminator,
   } = props;
+  const headerClasses = classNames({
+    [pfx("object-header")]: true,
+    "position-unset": fromDiscriminator,
+  });
 
   let canEditJson =
     nullify &&
@@ -150,9 +155,8 @@ function DefaultObjectFieldTemplate(props) {
   return (
     <fieldset
       className={pfx((props.isEven ? "even" : "odd") + ` depth_${props.depth}`)}
-      id={`${props.idSchema.$id}__object`}
-    >
-      <div className={pfx("object-header")}>
+      id={`${props.idSchema.$id}__object`}>
+      <div className={headerClasses}>
         <div className={pfx("header-left hand")} onClick={toggleCollapse}>
           {title && (
             <TitleField
