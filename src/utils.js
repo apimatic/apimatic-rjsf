@@ -137,13 +137,7 @@ export function getWidget(schema, widget, registeredWidgets = {}) {
   throw new Error(`No widget "${widget}" for type "${type}"`);
 }
 
-function computeDefaults(
-  schema,
-  parentDefaults,
-  schemaIndex = 0,
-  dxInterface,
-  parentRef
-) {
+function computeDefaults(schema, parentDefaults, schemaIndex = 0, dxInterface) {
   const { definitions = {} } = dxInterface;
   // Compute the defaults recursively: give highest priority to deepest nodes.
   let defaults = parentDefaults;
@@ -157,20 +151,7 @@ function computeDefaults(
   } else if ("$ref" in schema) {
     // Use referenced schema defaults for this node.
     const refSchema = findSchemaDefinition(schema.$ref, definitions);
-
-    if (parentRef && parentRef === schema.$ref) {
-      return defaults;
-    }
-
-    const nextRef = refSchema.type === "object" ? schema.$ref : undefined;
-
-    return computeDefaults(
-      refSchema,
-      defaults,
-      undefined,
-      dxInterface,
-      nextRef
-    );
+    return computeDefaults(refSchema, defaults, undefined, dxInterface);
   } else if (isFixedItems(schema)) {
     defaults = schema.items.map(itemSchema =>
       computeDefaults(itemSchema, undefined, undefined, dxInterface)
@@ -211,8 +192,7 @@ function computeDefaults(
           schema.properties[key],
           (defaults || {})[key],
           undefined,
-          dxInterface,
-          parentRef
+          dxInterface
         );
         return acc;
       }, {});
