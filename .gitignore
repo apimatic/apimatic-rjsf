@@ -6,3 +6,4 @@ yarn.lock
 coverage
 .vscode/chrome
 .vscode/launch.json
+.vscode/snipsnap.code-snippets
