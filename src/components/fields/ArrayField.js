@@ -488,6 +488,20 @@ class ArrayField extends Component {
     }
   };
 
+  additionalFieldSchema = (itemSchema, index) => {
+    const { schema } = this.props;
+
+    return {
+      ...itemSchema,
+      description: undefined,
+      title: `[${index}]`,
+      discriminator: schema.discriminator,
+      discriminatorValue: schema.discriminatorValue,
+      readOnly: schema.readOnly,
+      writeOnly: schema.writeOnly,
+    };
+  };
+
   render() {
     const {
       schema,
@@ -573,11 +587,7 @@ class ArrayField extends Component {
           isEven: this.props.isEven,
           canMoveUp: index > 0,
           canMoveDown: index < formData.length - 1,
-          itemSchema: {
-            ...itemSchema,
-            description: undefined,
-            title: `[${index}]`,
-          },
+          itemSchema: this.additionalFieldSchema(itemSchema, index),
           itemIdSchema,
           itemErrorSchema,
           itemData: item,
@@ -770,10 +780,7 @@ class ArrayField extends Component {
           canRemove: additional,
           canMoveUp: index >= itemSchemas.length + 1,
           canMoveDown: additional && index < items.length - 1,
-          itemSchema: {
-            ...itemSchema,
-            title: `[${index}]`,
-          },
+          itemSchema: this.additionalFieldSchema(itemSchema, index),
           itemData: item,
           itemUiSchema,
           itemIdSchema,
