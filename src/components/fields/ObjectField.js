@@ -637,13 +637,14 @@ class ObjectField extends Component {
             },
           ]
         : orderedProperties.map(name => {
+            let disObj = { ...discriminatorObj };
             if (
               schema.discriminator &&
               name === schema.discriminator &&
               schema.discriminatorValue
             ) {
-              discriminatorObj.name = name;
-              discriminatorObj.value = schema.discriminatorValue;
+              disObj.name = name;
+              disObj.value = schema.discriminatorValue;
             }
 
             return {
@@ -669,7 +670,7 @@ class ObjectField extends Component {
                   readonly={templateProps.readonly}
                   disableFormJsonEdit={templateProps.disableFormJsonEdit}
                   typeCombinatorTypes={typeCombinatorTypes}
-                  discriminatorObj={discriminatorObj}
+                  discriminatorObj={disObj}
                 />
               ),
               name,

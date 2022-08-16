@@ -169,7 +169,7 @@ class DiscriminatorField extends React.Component {
       onFocus,
       registry,
       uiSchema,
-      typeCombinatorTypes,
+      typeCombinatorTypes: typeCombinatorTypesFromProps,
       parentPath,
       formData,
       schema,
@@ -177,6 +177,7 @@ class DiscriminatorField extends React.Component {
     const _SchemaField = registry.fields.SchemaField;
     const { selectedSchema } = this.state;
     const { selectOptions } = this.getSelectOptions();
+    const { typeCombinatorTypes = typeCombinatorTypesFromProps } = schema;
 
     const childIsMap =
       selectedSchema.schema &&
@@ -350,8 +351,14 @@ class DiscriminatorField extends React.Component {
   };
 
   getSelectOptions = () => {
-    const { schema, typeCombinatorTypes, formData, registry } = this.props;
+    const {
+      schema,
+      typeCombinatorTypesFromProps,
+      formData,
+      registry,
+    } = this.props;
     const { dxInterface } = registry;
+    const { typeCombinatorTypes = typeCombinatorTypesFromProps } = schema;
 
     const multipleSchema = schema.oneOf || schema.anyOf;
 
