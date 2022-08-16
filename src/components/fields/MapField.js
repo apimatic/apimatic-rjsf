@@ -444,6 +444,20 @@ class MapField extends Component {
     }
   };
 
+  additionalFieldSchema = itemSchema => {
+    const { schema } = this.props;
+
+    return {
+      ...itemSchema,
+      description: undefined,
+      discriminator: schema.discriminator,
+      discriminatorValue: schema.discriminatorValue,
+      readOnly: schema.readOnly,
+      writeOnly: schema.writeOnly,
+      typeCombinatorTypes: schema.typeCombinatorTypes,
+    };
+  };
+
   render() {
     const {
       schema,
@@ -473,7 +487,7 @@ class MapField extends Component {
       formData,
       dxInterface
     );
-    const itemSchema = { ...addPropsSchema, description: undefined };
+    const itemSchema = this.additionalFieldSchema(addPropsSchema);
     const duplicationCounts = this.getDuplicateCounts(this.state.hash);
     const mapProps = {
       canAdd: this.canAddItem(formData),
