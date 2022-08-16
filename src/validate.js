@@ -59,7 +59,7 @@ export function toErrorList(errorSchema, fieldName = "root") {
     errorList = errorList.concat(
       errorSchema.__errors.map(stack => {
         return {
-          stack: `${fieldName}: ${stack}`,
+          stack: `${fieldName}: ${stack}`
         };
       })
     );
@@ -80,7 +80,7 @@ function createErrorHandler(formData) {
     __errors: [],
     addError(message) {
       this.__errors.push(message);
-    },
+    }
   };
   if (isObject(formData)) {
     return Object.keys(formData).reduce((acc, key) => {
@@ -125,7 +125,7 @@ function transformAjvErrors(errors) {
       property,
       message,
       params, // specific to ajv
-      stack: `${property} ${message}`.trim(),
+      stack: `${property} ${message}`.trim()
     };
   });
 }
@@ -143,8 +143,13 @@ export default function validateFormData(
   originalFormData,
   definitions
 ) {
-  const ajv = AJV.getInstance();
+  let ajv = AJV.getInstance();
   // validateSchema(schema, formData, originalFormData, ajv, definitions);
+  if (!ajv) {
+    AJV.setInstance(definitions);
+    ajv = AJV.getInstance();
+  }
+  // const ajvErrors = ajv ? ajv.errors : undefined;
 
   let errors = transformAjvErrors(ajv.errors);
 
