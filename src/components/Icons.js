@@ -8,7 +8,8 @@ export const PlusIcon = ({ width, color }) => (
     width={width}
     height={(width * 448) / 352}
     className={prefixClass("icon icon-plus")}
-    viewBox="0 0 352 448">
+    viewBox="0 0 352 448"
+  >
     <title />
     <g id="icomoon-ignore" />
     <path
@@ -23,7 +24,8 @@ export const CloseIcon = ({ width, color }) => (
     width={width}
     height={(width * 448) / 352}
     className={prefixClass("icon icon-remove")}
-    viewBox="0 0 352 448">
+    viewBox="0 0 352 448"
+  >
     <title />
     <g id="icomoon-ignore" />
     <path
@@ -39,7 +41,8 @@ export const DeleteIcon = ({ width, color }) => (
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
-    stroke={color || DEFAULT_GRAY}>
+    stroke={color || DEFAULT_GRAY}
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -58,9 +61,10 @@ export const ArrowUpIcon = ({ width, color, rotate }) => (
     fill="none"
     viewBox="0 0 24 24"
     width={width || "12.166"}
-    transform={`rotate(${rotate ? rotate : 0})`}
+    className={rotate ? "arrow-icon-down" : "arrow-icon-up"}
     height={((width || 13.023) * 12.166) / 13.023}
-    stroke={color || DEFAULT_GRAY}>
+    stroke={color || DEFAULT_GRAY}
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -75,10 +79,11 @@ export const ChevronIcon = ({ width, color, rotate }) => (
     width={width}
     height={(width * 14.828) / 8.414}
     xmlns="http://www.w3.org/2000/svg"
-    transform={`rotate(${rotate ? rotate : 0})`}
+    className={rotate ? "chevron-icon-rotate-90" : "chevron-icon-rotate-0 "}
     fill="none"
     viewBox="0 0 24 24"
-    stroke={color || DEFAULT_GRAY}>
+    stroke={color || DEFAULT_GRAY}
+  >
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -94,7 +99,8 @@ export const RequiredInfoIcon = ({ width, color }) => {
       xmlns="http://www.w3.org/2000/svg"
       width={width || "11.591"}
       height={((width | 10.149) * 11.591) / 10.149}
-      viewBox="0 0 11.591 10.149">
+      viewBox="0 0 11.591 10.149"
+    >
       <g transform="translate(-1.038 -2.397)">
         <path
           d="M5.968,3.384,1.687,10.53a1.011,1.011,0,0,0,.864,1.516h8.562a1.011,1.011,0,0,0,.864-1.516L7.7,3.384a1.011,1.011,0,0,0-1.728,0Z"
@@ -133,7 +139,8 @@ export const JsonIcon = ({ width, color }) => {
       xmlns="http://www.w3.org/2000/svg"
       width={width || "16.57"}
       height={((width | 13) * 16.57) / 13}
-      viewBox="0 0 16.57 13">
+      viewBox="0 0 16.57 13"
+    >
       <g transform="translate(-374 -272.36)">
         <path
           d="M17.59,16.55v-2.6a.635.635,0,0,1,.618-.65.651.651,0,0,0,0-1.3,1.906,1.906,0,0,0-1.854,1.95v2.6a1.27,1.27,0,0,1-1.236,1.3.651.651,0,0,0,0,1.3,1.27,1.27,0,0,1,1.236,1.3v2.6A1.906,1.906,0,0,0,18.208,25a.651.651,0,0,0,0-1.3.635.635,0,0,1-.618-.65v-2.6a2.641,2.641,0,0,0-.854-1.95A2.641,2.641,0,0,0,17.59,16.55Z"
