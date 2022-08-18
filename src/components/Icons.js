@@ -1,5 +1,5 @@
 import React from "react";
-import { prefixClass } from "../utils";
+import { classNames, prefixClass } from "../utils";
 
 const DEFAULT_GRAY = "#3E445D";
 
@@ -55,43 +55,57 @@ export const DeleteIcon = ({ width, color }) => (
 export const ArrowDownIcon = ({ width, color }) =>
   ArrowUpIcon({ width, color, rotate: 180 });
 
-export const ArrowUpIcon = ({ width, color, rotate }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    width={width || "12.166"}
-    className={rotate ? "arrow-icon-down" : "arrow-icon-up"}
-    height={((width || 13.023) * 12.166) / 13.023}
-    stroke={color || DEFAULT_GRAY}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      d="M5 10l7-7m0 0l7 7m-7-7v18"
-    />
-  </svg>
-);
+export const ArrowUpIcon = ({ width, color, rotate }) => {
+  const svgClass = classNames({
+    "arrow-icon-down": rotate,
+    "arrow-icon-up ": !rotate
+  });
 
-export const ChevronIcon = ({ width, color, rotate }) => (
-  <svg
-    width={width}
-    height={(width * 14.828) / 8.414}
-    xmlns="http://www.w3.org/2000/svg"
-    className={rotate ? "chevron-icon-rotate-90" : "chevron-icon-rotate-0 "}
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke={color || DEFAULT_GRAY}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      d="M19 9l-7 7-7-7"
-    />
-  </svg>
-);
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      width={width || "12.166"}
+      className={svgClass}
+      height={((width || 13.023) * 12.166) / 13.023}
+      stroke={color || DEFAULT_GRAY}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M5 10l7-7m0 0l7 7m-7-7v18"
+      />
+    </svg>
+  );
+};
+
+export const ChevronIcon = ({ width, color, rotate }) => {
+  const svgClass = classNames({
+    "chevron-icon-rotate-90": rotate,
+    "chevron-icon-rotate-0 ": !rotate
+  });
+
+  return (
+    <svg
+      width={width}
+      height={(width * 14.828) / 8.414}
+      xmlns="http://www.w3.org/2000/svg"
+      className={svgClass}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke={color || DEFAULT_GRAY}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M19 9l-7 7-7-7"
+      />
+    </svg>
+  );
+};
 
 export const RequiredInfoIcon = ({ width, color }) => {
   return (
