@@ -116,7 +116,7 @@ function renderViewJsonButton(props) {
 }
 
 function DefaultOnlyProperties(props) {
-  return props.properties.map(prop => prop.content);
+  return props.properties.map(prop => prop.content());
 }
 
 function DefaultObjectFieldTemplate(props) {
@@ -237,7 +237,7 @@ function DefaultObjectFieldTemplate(props) {
               </div>
             </div>
           ) : (
-            props.properties.map(prop => prop.content)
+            props.properties.map(prop => prop.content())
           )}
         </div>
       )}
@@ -263,7 +263,7 @@ class ObjectField extends Component {
     this.state.formJson = JSON.stringify(props.formData, null, 2);
     this.state.formJsonError = false;
     this.state.showEditView = false;
-    this.state.collapse = false;
+    this.state.collapse = true;
     this.state.isEven = props.isEven || props.levelReversal ? true : false;
     this.state.expandAllLevel = props.expandAllLevel;
     this.state.depth = props.depth ? props.depth : 1;
@@ -369,6 +369,12 @@ class ObjectField extends Component {
       showEditView: !state.showEditView,
       collapse: false,
     }));
+  }
+
+  componentDidMount() {
+    this.setState({
+      collapse: this.props.depth > 4,
+    });
   }
 
   render() {
@@ -630,10 +636,11 @@ class ObjectField extends Component {
       properties: checkAllReadOnly(schema)
         ? [
             {
-              content: renderCallOutFallback({
-                info: "info",
-                message: READONLY_INFO_MESSAGE,
-              }),
+              content: () =>
+                renderCallOutFallback({
+                  info: "info",
+                  message: READONLY_INFO_MESSAGE,
+                }),
             },
           ]
         : orderedProperties.map(name => {
@@ -648,7 +655,7 @@ class ObjectField extends Component {
             }
 
             return {
-              content: (
+              content: () => (
                 <SchemaField
                   key={name}
                   name={name}

@@ -188,12 +188,19 @@ function computeDefaults(schema, parentDefaults, schemaIndex = 0, dxInterface) {
     // We need to recur for object schema inner default values.
     case "object": {
       defaults = Object.keys(schema.properties || {}).reduce((acc, key) => {
-        acc[key] = computeDefaults(
-          schema.properties[key],
-          (defaults || {})[key],
-          undefined,
-          dxInterface
-        );
+        const property = schema.properties[key];
+
+        if (property.hasOwnProperty("$ref")) {
+          acc[key] = (defaults || {})[key];
+        } else {
+          acc[key] = computeDefaults(
+            property,
+            (defaults || {})[key],
+            undefined,
+            dxInterface
+          );
+        }
+
         return acc;
       }, {});
       break;
