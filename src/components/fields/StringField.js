@@ -7,7 +7,7 @@ import {
   isSelect,
   optionsList,
   getDefaultRegistry,
-  isDiscriminator,
+  isDiscriminator
 } from "../../utils";
 
 class StringField extends React.Component {
@@ -45,7 +45,6 @@ class StringField extends React.Component {
       schema,
       name,
       uiSchema,
-      idSchema,
       formData,
       required,
       disabled,
@@ -53,7 +52,7 @@ class StringField extends React.Component {
       autofocus,
       onBlur,
       onFocus,
-      registry = getDefaultRegistry(),
+      registry = getDefaultRegistry()
     } = this.props;
     const { title, format } = schema;
     const { widgets, formContext, dxInterface } = registry;
@@ -70,7 +69,6 @@ class StringField extends React.Component {
       <Widget
         options={{ ...options, enumOptions }}
         schema={schema}
-        id={idSchema && idSchema.$id}
         label={title === undefined ? name : title}
         value={formData}
         onChange={this._onChange}
@@ -93,7 +91,6 @@ if (process.env.NODE_ENV !== "production") {
   StringField.propTypes = {
     schema: PropTypes.object.isRequired,
     uiSchema: PropTypes.object.isRequired,
-    idSchema: PropTypes.object,
     onChange: PropTypes.func.isRequired,
     onBlur: PropTypes.func,
     onFocus: PropTypes.func,
@@ -105,14 +102,14 @@ if (process.env.NODE_ENV !== "production") {
         ).isRequired,
         fields: PropTypes.objectOf(PropTypes.func).isRequired,
         definitions: PropTypes.object.isRequired,
-        formContext: PropTypes.object.isRequired,
-      }),
+        formContext: PropTypes.object.isRequired
+      })
     }),
     formContext: PropTypes.object.isRequired,
     required: PropTypes.bool,
     disabled: PropTypes.bool,
     readonly: PropTypes.bool,
-    autofocus: PropTypes.bool,
+    autofocus: PropTypes.bool
   };
 }
 
@@ -120,7 +117,7 @@ StringField.defaultProps = {
   uiSchema: {},
   disabled: false,
   readonly: false,
-  autofocus: false,
+  autofocus: false
 };
 
 export default StringField;

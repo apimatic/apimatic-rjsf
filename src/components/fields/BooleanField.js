@@ -5,7 +5,7 @@ import {
   getWidget,
   getUiOptions,
   optionsList,
-  getDefaultRegistry,
+  getDefaultRegistry
 } from "../../utils";
 
 function BooleanField(props) {
@@ -13,7 +13,6 @@ function BooleanField(props) {
     schema,
     name,
     uiSchema,
-    idSchema,
     formData,
     registry = getDefaultRegistry(),
     required,
@@ -21,7 +20,7 @@ function BooleanField(props) {
     readonly,
     autofocus,
     onChange,
-    anyOfTitle,
+    anyOfTitle
   } = props;
   const { title } = schema;
   const { widgets, formContext } = registry;
@@ -29,13 +28,12 @@ function BooleanField(props) {
   const Widget = getWidget(schema, widget, widgets);
   const enumOptions = optionsList({
     enum: [true, false],
-    enumNames: schema.enumNames || ["yes", "no"],
+    enumNames: schema.enumNames || ["yes", "no"]
   });
   return (
     <Widget
       options={{ ...options, enumOptions }}
       schema={schema}
-      id={idSchema && idSchema.$id}
       onChange={onChange}
       label={title === undefined ? name : title}
       value={formData}
@@ -55,7 +53,6 @@ if (process.env.NODE_ENV !== "production") {
   BooleanField.propTypes = {
     schema: PropTypes.object.isRequired,
     uiSchema: PropTypes.object,
-    idSchema: PropTypes.object,
     onChange: PropTypes.func.isRequired,
     formData: PropTypes.bool,
     required: PropTypes.bool,
@@ -69,9 +66,9 @@ if (process.env.NODE_ENV !== "production") {
         ).isRequired,
         fields: PropTypes.objectOf(PropTypes.func).isRequired,
         definitions: PropTypes.object.isRequired,
-        formContext: PropTypes.object.isRequired,
-      }),
-    }),
+        formContext: PropTypes.object.isRequired
+      })
+    })
   };
 }
 
@@ -79,7 +76,7 @@ BooleanField.defaultProps = {
   uiSchema: {},
   disabled: false,
   readonly: false,
-  autofocus: false,
+  autofocus: false
 };
 
 export default BooleanField;
