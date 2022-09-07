@@ -370,12 +370,9 @@ class ArrayField extends Component {
 
   onAddClick = event => {
     event.preventDefault();
-    const { schema, formData, registry = getDefaultRegistry() } = this.props;
+    const { formData, registry = getDefaultRegistry() } = this.props;
     const { dxInterface } = registry;
-    let itemSchema = schema.items;
-    if (isFixedItems(schema) && allowAdditionalItems(schema)) {
-      itemSchema = schema.additionalItems;
-    }
+    const itemSchema = this.getItemSchema();
 
     this.props.onChange(
       [
@@ -459,22 +456,46 @@ class ArrayField extends Component {
     );
   };
 
-  onNullifyChange = () => {
-    if (this.shouldDisable()) {
-      if (this.state.originalFormData) {
-        this.props.onChange(this.state.originalFormData);
-      } else {
-        this.props.onChange(
-          getDefaultFormState(
-            this.props.schema,
-            undefined,
-            undefined,
-            this.props.registry.dxInterface
-          )
-        );
-      }
+  getItemSchema = () => {
+    const { schema } = this.props;
+
+    if (isFixedItems(schema) && allowAdditionalItems(schema)) {
+      return schema.additionalItems;
     } else {
-      this.props.onChange(undefined);
+      return schema.items;
+    }
+  };
+
+  getFormData = () => {
+    const {
+      schema,
+      registry: { dxInterface }
+    } = this.props;
+    const { originalFormData } = this.state;
+    const defaultState = getDefaultFormState(
+      schema,
+      undefined,
+      undefined,
+      dxInterface
+    );
+    const itemSchema = this.getItemSchema();
+    const formData = originalFormData || defaultState;
+
+    if (formData) {
+      return formData;
+    }
+
+    return [getDefaultFormState(itemSchema, undefined, undefined, dxInterface)];
+  };
+
+  onNullifyChange = () => {
+    const { onChange } = this.props;
+    const formData = this.getFormData();
+
+    if (this.shouldDisable()) {
+      onChange(formData);
+    } else {
+      onChange(undefined);
     }
   };
 
