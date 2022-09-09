@@ -1,41 +1,85 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { prefixClass as pfx } from "../../utils";
 
-function BaseInput(props) {
-  // Note: since React 15.2.0 we can't forward unknown element attributes, so we
-  // exclude the "options" and "schema" ones here.
-  const {
-    value,
-    readonly,
-    disabled,
-    autofocus,
-    onBlur,
-    onFocus,
-    options,
-    schema,
-    formContext,
-    registry,
-    ...inputProps
-  } = props;
-
-  inputProps.type = options.inputType || inputProps.type || "text";
-  const _onChange = ({ target: { value } }) => {
-    return props.onChange(value === "" ? options.emptyValue : value);
+class BaseInput extends Component {
+  state = {
+    isSingleLine: true
   };
-  return (
-    <input
-      className={pfx("form-control")}
-      readOnly={readonly}
-      disabled={disabled}
-      autoFocus={autofocus}
-      value={value == null ? "" : value}
-      {...inputProps}
-      onChange={_onChange}
-      onBlur={onBlur && (event => onBlur(inputProps.id, event.target.value))}
-      onFocus={onFocus && (event => onFocus(inputProps.id, event.target.value))}
-    />
-  );
+
+  onKeyDown = ({ key }) => {
+    const { isSingleLine } = this.state;
+    const { value, onChange, schema } = this.props;
+    const needToConvert =
+      key === "Enter" && isSingleLine && schema.type === "string";
+
+    if (needToConvert) {
+      this.setState({
+        isSingleLine: false
+      });
+
+      onChange(`${value}\n`);
+    }
+  };
+
+  getValue = value => {
+    const { options } = this.props;
+
+    return value === "" ? options.emptyValue : value;
+  };
+
+  onChange = ({ target: { value: val } }) => {
+    const { onChange: _onChange } = this.props;
+    const value = this.getValue(val) || "";
+
+    if (!value.includes("\n")) {
+      this.setState({
+        isSingleLine: true
+      });
+    }
+
+    return _onChange(value.trimStart());
+  };
+
+  render() {
+    // Note: since React 15.2.0 we can't forward unknown element attributes, so we
+    // exclude the "options" and "schema" ones here.
+    const {
+      value,
+      readonly,
+      disabled,
+      autofocus,
+      onBlur,
+      onFocus,
+      options,
+      schema,
+      formContext,
+      registry,
+      onChange,
+      ...inputProps
+    } = this.props;
+    const { isSingleLine } = this.state;
+
+    inputProps.type = options.inputType || inputProps.type || "text";
+    const InputField = isSingleLine ? "input" : "textarea";
+
+    return (
+      <InputField
+        className={pfx("form-control")}
+        readOnly={readonly}
+        disabled={disabled}
+        autoFocus={true}
+        value={value == null ? "" : value}
+        {...inputProps}
+        onChange={this.onChange}
+        onBlur={onBlur && (event => onBlur(inputProps.id, event.target.value))}
+        onFocus={
+          onFocus && (event => onFocus(inputProps.id, event.target.value))
+        }
+        onKeyDownCapture={this.onKeyDown}
+      />
+    );
+  }
 }
 
 BaseInput.defaultProps = {
@@ -43,7 +87,7 @@ BaseInput.defaultProps = {
   required: false,
   disabled: false,
   readonly: false,
-  autofocus: false,
+  autofocus: false
 };
 
 /* istanbul ignore else */
@@ -58,7 +102,7 @@ if (process.env.NODE_ENV !== "production") {
     autofocus: PropTypes.bool,
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
-    onFocus: PropTypes.func,
+    onFocus: PropTypes.func
   };
 }
 
