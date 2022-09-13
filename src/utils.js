@@ -519,9 +519,7 @@ export function optionsList(schema) {
   }
 }
 
-function findSchemaDefinition(ref, definitions = {}) {
-  const $ref = decodeURIComponent(ref);
-
+function findSchemaDefinition($ref, definitions = {}) {
   // Extract and use the referenced definition if we have it.
   const match = /^ModelSchemas#\/(.*)$/.exec($ref);
   if (match && match[1]) {
