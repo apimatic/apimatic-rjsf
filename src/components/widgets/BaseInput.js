@@ -16,7 +16,7 @@ class BaseInput extends Component {
     const { isSingleLine } = this.state;
     const { value = "", onChange, schema } = this.props;
     const needToConvert =
-      key === "Enter" && isSingleLine && schema.type === "string";
+      key === "Enter" && isSingleLine && schema.type === "string" && value;
 
     if (needToConvert) {
       this.setState({
