@@ -4,23 +4,36 @@ import { prefixClass as pfx } from "../../utils";
 
 class BaseInput extends Component {
   state = {
-    isSingleLine: true
+    isSingleLine: true,
   };
+
+  constructor(props) {
+    super(props);
+    this.inputRef = React.createRef();
+  }
 
   onKeyDown = ({ key }) => {
     const { isSingleLine } = this.state;
-    const { value, onChange, schema } = this.props;
+    const { value = "", onChange, schema } = this.props;
     const needToConvert =
       key === "Enter" && isSingleLine && schema.type === "string";
 
     if (needToConvert) {
       this.setState({
-        isSingleLine: false
+        isSingleLine: false,
       });
 
       onChange(`${value}\n`);
     }
   };
+
+  componentDidUpdate(prevProps, prevState) {
+    const { isSingleLine } = this.state;
+
+    if (isSingleLine !== prevState.isSingleLine) {
+      this.inputRef.current.focus();
+    }
+  }
 
   getValue = value => {
     const { options } = this.props;
@@ -34,7 +47,7 @@ class BaseInput extends Component {
 
     if (!value.includes("\n")) {
       this.setState({
-        isSingleLine: true
+        isSingleLine: true,
       });
     }
 
@@ -65,10 +78,11 @@ class BaseInput extends Component {
 
     return (
       <InputField
+        ref={this.inputRef}
         className={pfx("form-control")}
         readOnly={readonly}
         disabled={disabled}
-        autoFocus={true}
+        autoFocus={autofocus}
         value={value == null ? "" : value}
         {...inputProps}
         onChange={this.onChange}
@@ -87,7 +101,7 @@ BaseInput.defaultProps = {
   required: false,
   disabled: false,
   readonly: false,
-  autofocus: false
+  autofocus: false,
 };
 
 /* istanbul ignore else */
@@ -102,7 +116,7 @@ if (process.env.NODE_ENV !== "production") {
     autofocus: PropTypes.bool,
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
-    onFocus: PropTypes.func
+    onFocus: PropTypes.func,
   };
 }
 
