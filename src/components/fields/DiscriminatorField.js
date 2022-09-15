@@ -159,7 +159,7 @@ class DiscriminatorField extends React.Component {
     };
   };
 
-  renderSchema = depth => {
+  renderSchemaField = depth => {
     const {
       disabled,
       errorSchema,
@@ -173,10 +173,92 @@ class DiscriminatorField extends React.Component {
       formData,
       schema
     } = this.props;
+
     const _SchemaField = registry.fields.SchemaField;
+
     const { selectedSchema } = this.state;
+
     const { selectOptions } = this.getSelectOptions();
+
     const { typeCombinatorTypes = typeCombinatorTypesFromProps } = schema;
+
+    const childIsMap =
+      selectedSchema.schema &&
+      selectedSchema.schema.type === "object" &&
+      selectedSchema.schema.hasOwnProperty("additionalProperties") &&
+      selectedSchema.schema.additionalProperties.type !== "object";
+
+    const childIsArray =
+      selectedSchema.schema &&
+      selectedSchema.schema.type === "array" &&
+      selectedSchema.schema.hasOwnProperty("items") &&
+      selectedSchema.schema.items.type !== "object";
+
+    const childIsNestedMultipleSchema = isMultipleSchema(selectedSchema.schema);
+
+    const isDiscriminatorChild = !(
+      childIsArray ||
+      childIsMap ||
+      childIsNestedMultipleSchema
+    );
+
+    const uiTitle = selectOptions[selectedSchema.index].label;
+
+    let discriminatorObj = undefined;
+
+    const childDepth = isDiscriminatorChild ? depth + 2 : depth + 1;
+
+    let typeCombinatorSubTypes;
+
+    if (typeCombinatorTypes) {
+      discriminatorObj = {
+        name: schema.discriminator,
+        value: typeCombinatorTypes[selectedSchema.index].DiscriminatorValue
+      };
+
+      const selectedSchemaTypeCombinator =
+        typeCombinatorTypes[selectedSchema.index];
+
+      typeCombinatorSubTypes = selectedSchemaTypeCombinator.ContainsSubTypes
+        ? selectedSchemaTypeCombinator.SubTypes
+        : null;
+    }
+
+    if (!this.state && !formData) {
+      return <p>schema or formdata not available</p>;
+    }
+
+    return (
+      <_SchemaField
+        schema={selectedSchema.schema}
+        uiSchema={{
+          ...uiSchema,
+          "ui:title": isOneOfSchema(selectedSchema.schema) ? undefined : uiTitle
+        }}
+        errorSchema={errorSchema}
+        idPrefix={idPrefix}
+        formData={formData.value}
+        onChange={this.onDiscriminatorChange()}
+        onBlur={onBlur}
+        onFocus={onFocus}
+        registry={registry}
+        disabled={disabled}
+        schemaIndex={selectedSchema.index}
+        depth={childDepth - 1}
+        isEven={(childDepth - 1) % 2 === 0}
+        // Flag for detecting discriminator in child level
+        fromDiscriminator={true}
+        // Title will set in boolean fields
+        anyOfTitle={this.props.schema.title || this.props.anyOfTitle}
+        typeCombinatorTypes={typeCombinatorSubTypes}
+        parentPath={getOneAnyOfPath(parentPath, formData)}
+        discriminatorObj={discriminatorObj}
+      />
+    );
+  };
+
+  renderSchema = depth => {
+    const { selectedSchema } = this.state;
 
     const childIsMap =
       selectedSchema.schema &&
@@ -194,31 +276,14 @@ class DiscriminatorField extends React.Component {
       childIsMap ||
       childIsNestedMultipleSchema
     );
-    const uiTitle = selectOptions[selectedSchema.index].label;
-    let discriminatorObj = undefined;
 
     const discriminatorChildFieldsetDepth = depth + 1;
-    const childDepth = isDiscriminatorChild ? depth + 2 : depth + 1;
 
     const discriminatorClassName = isDiscriminatorChild
       ? `discriminator-field-child ${getEvenOddClass(
           discriminatorChildFieldsetDepth
         )} depth_${discriminatorChildFieldsetDepth}`
       : "discriminator-field-child-empty";
-
-    let typeCombinatorSubTypes;
-
-    if (typeCombinatorTypes) {
-      discriminatorObj = {
-        name: schema.discriminator,
-        value: typeCombinatorTypes[selectedSchema.index].DiscriminatorValue
-      };
-      const selectedSchemaTypeCombinator =
-        typeCombinatorTypes[selectedSchema.index];
-      typeCombinatorSubTypes = selectedSchemaTypeCombinator.ContainsSubTypes
-        ? selectedSchemaTypeCombinator.SubTypes
-        : null;
-    }
 
     const { additionalProperties } = selectedSchema.schema;
 
@@ -227,74 +292,10 @@ class DiscriminatorField extends React.Component {
 
     return description ? (
       <fieldset className={prefixClass(`field  ${discriminatorClassName}`)}>
-        <React.Fragment>
-          {this.state && formData ? (
-            <_SchemaField
-              schema={selectedSchema.schema}
-              uiSchema={{
-                ...uiSchema,
-                "ui:title": isOneOfSchema(selectedSchema.schema)
-                  ? undefined
-                  : uiTitle
-              }}
-              errorSchema={errorSchema}
-              idPrefix={idPrefix}
-              formData={formData.value}
-              onChange={this.onDiscriminatorChange()}
-              onBlur={onBlur}
-              onFocus={onFocus}
-              registry={registry}
-              disabled={disabled}
-              schemaIndex={selectedSchema.index}
-              depth={childDepth}
-              isEven={childDepth % 2 === 0}
-              // Flag for detecting discriminator in child level
-              fromDiscriminator={true}
-              // Title will set in boolean fields
-              anyOfTitle={this.props.schema.title || this.props.anyOfTitle}
-              typeCombinatorTypes={typeCombinatorSubTypes}
-              parentPath={getOneAnyOfPath(parentPath, formData)}
-              discriminatorObj={discriminatorObj}
-            />
-          ) : (
-            <p>schema or formdata not available</p>
-          )}
-        </React.Fragment>
+        {this.renderSchemaField(depth)}
       </fieldset>
     ) : (
-      <React.Fragment>
-        {this.state && formData ? (
-          <_SchemaField
-            schema={selectedSchema.schema}
-            uiSchema={{
-              ...uiSchema,
-              "ui:title": isOneOfSchema(selectedSchema.schema)
-                ? undefined
-                : uiTitle
-            }}
-            errorSchema={errorSchema}
-            idPrefix={idPrefix}
-            formData={formData.value}
-            onChange={this.onDiscriminatorChange()}
-            onBlur={onBlur}
-            onFocus={onFocus}
-            registry={registry}
-            disabled={disabled}
-            schemaIndex={selectedSchema.index}
-            depth={childDepth}
-            isEven={childDepth % 2 === 0}
-            // Flag for detecting discriminator in child level
-            fromDiscriminator={true}
-            // Title will set in boolean fields
-            anyOfTitle={this.props.schema.title || this.props.anyOfTitle}
-            typeCombinatorTypes={typeCombinatorSubTypes}
-            parentPath={getOneAnyOfPath(parentPath, formData)}
-            discriminatorObj={discriminatorObj}
-          />
-        ) : (
-          <p>schema or formdata not available</p>
-        )}
-      </React.Fragment>
+      this.renderSchemaField(depth)
     );
   };
 
