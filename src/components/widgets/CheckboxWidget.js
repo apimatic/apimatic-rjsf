@@ -16,7 +16,7 @@ function CheckboxWidget(props) {
     label,
     autofocus,
     onChange,
-    anyOfTitle,
+    anyOfTitle
   } = props;
 
   const dataType = schema.dataTypeDisplayText
@@ -54,7 +54,8 @@ function CheckboxWidget(props) {
       )}
 
       <div
-        className={pfx(`checkbox ${disabled || readonly ? "disabled" : ""}`)}>
+        className={pfx(`checkbox ${disabled || readonly ? "disabled" : ""}`)}
+      >
         <div className={pfx(`checkbox-title`)}>
           <label>
             <input
@@ -77,7 +78,7 @@ function CheckboxWidget(props) {
 }
 
 CheckboxWidget.defaultProps = {
-  autofocus: false,
+  autofocus: false
 };
 
 /* istanbul ignore else */
@@ -90,7 +91,7 @@ if (process.env.NODE_ENV !== "production") {
     disabled: PropTypes.bool,
     readonly: PropTypes.bool,
     autofocus: PropTypes.bool,
-    onChange: PropTypes.func,
+    onChange: PropTypes.func
   };
 }
 

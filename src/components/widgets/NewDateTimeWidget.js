@@ -16,7 +16,7 @@ const timePickerProps = {
   showTimeSelect: true,
   timeFormat: "HH:mm",
   timeIntervals: 15,
-  dateFormat: "lll",
+  dateFormat: "lll"
 };
 
 function fromDateString(jsonDate) {
@@ -41,7 +41,7 @@ function DateTimeWidget(props) {
     readonly,
     autofocus,
     onBlur,
-    onFocus,
+    onFocus
   } = props;
   const time = !disableTime;
 
@@ -72,7 +72,7 @@ function DateTimeWidget(props) {
 /* istanbul ignore else */
 if (process.env.NODE_ENV !== "production") {
   DateTimeWidget.propTypes = {
-    value: PropTypes.string,
+    value: PropTypes.string
   };
 }
 

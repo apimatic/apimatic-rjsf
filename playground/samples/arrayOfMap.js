@@ -15,17 +15,17 @@ module.exports = {
             items: {
               example: [{ string1: "test1" }, { string2: "test2" }],
               type: "object",
-              additionalProperties: { type: "string" },
+              additionalProperties: { type: "string" }
             },
             dataTypeDisplayText: "array<map<String>>",
-            paramType: "Body",
-          },
+            paramType: "Body"
+          }
         },
-        required: ["ArrayOfMapParam"],
-      },
+        required: ["ArrayOfMapParam"]
+      }
     },
-    required: ["args"],
+    required: ["args"]
   },
   uiSchema: {},
-  formData: {},
+  formData: {}
 };

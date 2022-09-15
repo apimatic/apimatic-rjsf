@@ -12,7 +12,7 @@ export function unwrapFormData(formData) {
       for (const key in newFormData) {
         newFormData = {
           ...newFormData,
-          [key]: unwrapFormData(newFormData[key]),
+          [key]: unwrapFormData(newFormData[key])
         };
       }
     }
@@ -36,7 +36,7 @@ const widgetMap = {
     checkbox: "CheckboxWidget",
     radio: "RadioWidget",
     select: "SelectWidget",
-    hidden: "HiddenWidget",
+    hidden: "HiddenWidget"
   },
   string: {
     text: "TextWidget",
@@ -57,7 +57,7 @@ const widgetMap = {
     "alt-date": "AltDateWidget",
     "alt-datetime": "AltDateTimeWidget",
     color: "ColorWidget",
-    file: "FileWidget",
+    file: "FileWidget"
   },
   number: {
     text: "TextWidget",
@@ -65,7 +65,7 @@ const widgetMap = {
     updown: "UpDownWidget",
     range: "RangeWidget",
     radio: "RadioWidget",
-    hidden: "HiddenWidget",
+    hidden: "HiddenWidget"
   },
   integer: {
     text: "TextWidget",
@@ -73,13 +73,13 @@ const widgetMap = {
     updown: "UpDownWidget",
     range: "RangeWidget",
     radio: "RadioWidget",
-    hidden: "HiddenWidget",
+    hidden: "HiddenWidget"
   },
   array: {
     select: "SelectWidget",
     checkboxes: "CheckboxesWidget",
-    files: "FileWidget",
-  },
+    files: "FileWidget"
+  }
 };
 
 export function getDefaultRegistry() {
@@ -87,7 +87,7 @@ export function getDefaultRegistry() {
     fields: require("./components/fields").default,
     widgets: require("./components/widgets").default,
     definitions: {},
-    formContext: {},
+    formContext: {}
   };
 }
 
@@ -103,7 +103,7 @@ export function getWidget(schema, widget, registeredWidgets = {}) {
         <Widget
           options={{
             ...defaultOptions,
-            ...options,
+            ...options
           }}
           {...props}
         />
@@ -165,7 +165,7 @@ function computeDefaults(schema, parentDefaults, schemaIndex = 0, dxInterface) {
         undefined,
         schemaIndex,
         dxInterface
-      ),
+      )
     };
   } else if ("anyOf" in schema) {
     defaults = {
@@ -176,7 +176,7 @@ function computeDefaults(schema, parentDefaults, schemaIndex = 0, dxInterface) {
         undefined,
         schemaIndex,
         dxInterface
-      ),
+      )
     };
   }
   // Not defaults defined for this node, fallback to generic typed ones.
@@ -291,18 +291,18 @@ export function getUiOptions(uiSchema) {
         return {
           ...options,
           ...(value.options || {}),
-          widget: value.component,
+          widget: value.component
         };
       }
       if (key === "ui:options" && isObject(value)) {
         return {
           ...options,
-          ...value,
+          ...value
         };
       }
       return {
         ...options,
-        [key.substring(3)]: value,
+        [key.substring(3)]: value
       };
     }, {});
 }
@@ -503,7 +503,7 @@ export function optionsList(schema) {
       const label = (schema.enumNames && schema.enumNames[i]) || String(value);
       return {
         label,
-        value,
+        value
       };
     });
   } else {
@@ -513,7 +513,7 @@ export function optionsList(schema) {
       const label = schema.title || String(value);
       return {
         label,
-        value,
+        value
       };
     });
   }
@@ -590,7 +590,7 @@ function generateAdditionalProperties(type, linkMapper) {
     discriminator: type.Discriminator,
     discriminatorValue: type.DiscriminatorValue,
     readOnly: type.ReadOnly,
-    writeOnly: type.WriteOnly,
+    writeOnly: type.WriteOnly
   };
 }
 
@@ -610,12 +610,12 @@ function mergeStructure(schema, structure, linkMapper) {
             discriminator: field.Discriminator,
             dataTypeDisplayText: getArrayItem(field.DataType),
             dataTypeLink: additionalProperties.dataTypeLink,
-            dataTypeMarkdown: additionalProperties.dataTypeMarkdown,
+            dataTypeMarkdown: additionalProperties.dataTypeMarkdown
           };
         }
         schema.properties[field.GenericName] = {
           ...property,
-          ...additionalProperties,
+          ...additionalProperties
         };
       }
     });
@@ -663,7 +663,7 @@ export function retrieveSchema(schema, formData = {}, dxInterface) {
     return retrieveSchema(
       {
         ...$refSchema,
-        ...localSchema,
+        ...localSchema
       },
       formData,
       dxInterface
@@ -724,7 +724,7 @@ function withDependentProperties(schema, additionallyRequired) {
     : additionallyRequired;
   return {
     ...schema,
-    required: required,
+    required: required
   };
 }
 
@@ -774,8 +774,8 @@ function withExactlyOneSubschema(
       const conditionSchema = {
         type: "object",
         properties: {
-          [dependencyKey]: conditionPropertySchema,
-        },
+          [dependencyKey]: conditionPropertySchema
+        }
       };
       const { errors } = validateFormData(
         formData,
@@ -801,7 +801,7 @@ function withExactlyOneSubschema(
   } = subschema.properties;
   const dependentSchema = {
     ...subschema,
-    properties: dependentSubschema,
+    properties: dependentSubschema
   };
   return mergeSchemas(
     schema,
@@ -907,7 +907,7 @@ export function parseDateString(dateString, includeTime = true) {
       day: -1,
       hour: includeTime ? -1 : 0,
       minute: includeTime ? -1 : 0,
-      second: includeTime ? -1 : 0,
+      second: includeTime ? -1 : 0
     };
   }
   const date = new Date(dateString);
@@ -920,7 +920,7 @@ export function parseDateString(dateString, includeTime = true) {
     day: date.getUTCDate(),
     hour: includeTime ? date.getUTCHours() : 0,
     minute: includeTime ? date.getUTCMinutes() : 0,
-    second: includeTime ? date.getUTCSeconds() : 0,
+    second: includeTime ? date.getUTCSeconds() : 0
   };
 }
 
@@ -980,12 +980,12 @@ export function dataURItoBlob(dataURI) {
   }
   // Create the blob object
   const blob = new window.Blob([new Uint8Array(array)], {
-    type,
+    type
   });
 
   return {
     blob,
-    name,
+    name
   };
 }
 
@@ -1032,8 +1032,8 @@ export function getMatchingOption(formData, options, rootSchema) {
       // "properties" object
       const requiresAnyOf = {
         anyOf: Object.keys(option.properties).map(key => ({
-          required: [key],
-        })),
+          required: [key]
+        }))
       };
 
       let augmentedSchema;

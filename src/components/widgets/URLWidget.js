@@ -9,7 +9,7 @@ function URLWidget(props) {
 /* istanbul ignore else */
 if (process.env.NODE_ENV !== "production") {
   URLWidget.propTypes = {
-    value: PropTypes.string,
+    value: PropTypes.string
   };
 }
 

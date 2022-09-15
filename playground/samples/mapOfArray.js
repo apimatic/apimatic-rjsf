@@ -19,20 +19,20 @@ module.exports = {
                 additionalProperties: {
                   description: "",
                   type: "array",
-                  items: { type: "string" },
+                  items: { type: "string" }
                 },
                 dataTypeDisplayText: "map<array<String>>",
-                paramType: "Body",
-              },
+                paramType: "Body"
+              }
             },
-            required: ["MapOfArrayParam"],
-          },
+            required: ["MapOfArrayParam"]
+          }
         },
-        required: ["MapOfArrayParam"],
-      },
+        required: ["MapOfArrayParam"]
+      }
     },
-    required: ["args"],
+    required: ["args"]
   },
   uiSchema: {},
-  formData: {},
+  formData: {}
 };

@@ -21,5 +21,5 @@ export default {
   TitleField,
   UnsupportedField,
   DiscriminatorField,
-  DiscrimatorWrapper,
+  DiscrimatorWrapper
 };
