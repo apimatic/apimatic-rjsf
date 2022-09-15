@@ -4,7 +4,7 @@ import { prefixClass as pfx } from "../../utils";
 
 class BaseInput extends Component {
   state = {
-    isSingleLine: true,
+    isSingleLine: true
   };
 
   constructor(props) {
@@ -20,7 +20,7 @@ class BaseInput extends Component {
 
     if (needToConvert) {
       this.setState({
-        isSingleLine: false,
+        isSingleLine: false
       });
 
       onChange(`${value}\n`);
@@ -47,7 +47,7 @@ class BaseInput extends Component {
 
     if (!value.includes("\n")) {
       this.setState({
-        isSingleLine: true,
+        isSingleLine: true
       });
     }
 
@@ -74,6 +74,7 @@ class BaseInput extends Component {
     const { isSingleLine } = this.state;
 
     inputProps.type = options.inputType || inputProps.type || "text";
+
     const InputField = isSingleLine ? "input" : "textarea";
 
     return (
@@ -101,7 +102,7 @@ BaseInput.defaultProps = {
   required: false,
   disabled: false,
   readonly: false,
-  autofocus: false,
+  autofocus: false
 };
 
 /* istanbul ignore else */
@@ -116,7 +117,7 @@ if (process.env.NODE_ENV !== "production") {
     autofocus: PropTypes.bool,
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
-    onFocus: PropTypes.func,
+    onFocus: PropTypes.func
   };
 }
 
