@@ -199,6 +199,7 @@ class DiscriminatorField extends React.Component {
 
     const discriminatorChildFieldsetDepth = depth + 1;
     const childDepth = isDiscriminatorChild ? depth + 2 : depth + 1;
+
     const discriminatorClassName = isDiscriminatorChild
       ? `discriminator-field-child ${getEvenOddClass(
           discriminatorChildFieldsetDepth
@@ -219,7 +220,12 @@ class DiscriminatorField extends React.Component {
         : null;
     }
 
-    return (
+    const { additionalProperties } = selectedSchema.schema;
+
+    const description =
+      additionalProperties && additionalProperties.description;
+
+    return description ? (
       <fieldset className={prefixClass(`field  ${discriminatorClassName}`)}>
         <React.Fragment>
           {this.state && formData ? (
@@ -255,6 +261,40 @@ class DiscriminatorField extends React.Component {
           )}
         </React.Fragment>
       </fieldset>
+    ) : (
+      <React.Fragment>
+        {this.state && formData ? (
+          <_SchemaField
+            schema={selectedSchema.schema}
+            uiSchema={{
+              ...uiSchema,
+              "ui:title": isOneOfSchema(selectedSchema.schema)
+                ? undefined
+                : uiTitle
+            }}
+            errorSchema={errorSchema}
+            idPrefix={idPrefix}
+            formData={formData.value}
+            onChange={this.onDiscriminatorChange()}
+            onBlur={onBlur}
+            onFocus={onFocus}
+            registry={registry}
+            disabled={disabled}
+            schemaIndex={selectedSchema.index}
+            depth={childDepth}
+            isEven={childDepth % 2 === 0}
+            // Flag for detecting discriminator in child level
+            fromDiscriminator={true}
+            // Title will set in boolean fields
+            anyOfTitle={this.props.schema.title || this.props.anyOfTitle}
+            typeCombinatorTypes={typeCombinatorSubTypes}
+            parentPath={getOneAnyOfPath(parentPath, formData)}
+            discriminatorObj={discriminatorObj}
+          />
+        ) : (
+          <p>schema or formdata not available</p>
+        )}
+      </React.Fragment>
     );
   };
 
