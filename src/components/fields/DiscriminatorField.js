@@ -175,11 +175,8 @@ class DiscriminatorField extends React.Component {
     } = this.props;
 
     const _SchemaField = registry.fields.SchemaField;
-
     const { selectedSchema } = this.state;
-
     const { selectOptions } = this.getSelectOptions();
-
     const { typeCombinatorTypes = typeCombinatorTypesFromProps } = schema;
 
     const childIsMap =
@@ -203,10 +200,9 @@ class DiscriminatorField extends React.Component {
     );
 
     const uiTitle = selectOptions[selectedSchema.index].label;
+    const childDepth = isDiscriminatorChild ? depth + 2 : depth + 1;
 
     let discriminatorObj = undefined;
-
-    const childDepth = isDiscriminatorChild ? depth + 2 : depth + 1;
 
     let typeCombinatorSubTypes;
 
@@ -244,8 +240,8 @@ class DiscriminatorField extends React.Component {
         registry={registry}
         disabled={disabled}
         schemaIndex={selectedSchema.index}
-        depth={childDepth - 1}
-        isEven={(childDepth - 1) % 2 === 0}
+        depth={childDepth}
+        isEven={childDepth % 2 === 0}
         // Flag for detecting discriminator in child level
         fromDiscriminator={true}
         // Title will set in boolean fields
@@ -295,7 +291,7 @@ class DiscriminatorField extends React.Component {
         {this.renderSchemaField(depth)}
       </fieldset>
     ) : (
-      this.renderSchemaField(depth)
+      this.renderSchemaField(depth - 1)
     );
   };
 
