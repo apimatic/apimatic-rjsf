@@ -287,7 +287,7 @@ class DiscriminatorField extends React.Component {
       additionalProperties && additionalProperties.description;
 
     return description ? (
-      <fieldset className={prefixClass(`field  ${discriminatorClassName}`)}>
+      <fieldset className={prefixClass(`field  ${discriminatorClassName} --2`)}>
         {this.renderSchemaField(depth)}
       </fieldset>
     ) : (
@@ -439,7 +439,9 @@ class DiscriminatorField extends React.Component {
       fieldProps,
       fromDiscriminator,
       disabled,
-      tagsTitle
+      tagsTitle,
+      depth,
+      fromArray
     } = this.props;
     const { selectedSchema, checked, optional } = this.state;
     const { selectOptions, charCounts } = this.getSelectOptions();
@@ -451,7 +453,14 @@ class DiscriminatorField extends React.Component {
       selectedSchema.schema.type === "array" ||
       selectedSchema.schema.type === "object" ||
       isOneOfOrAnyOf;
-    const depth = fromMap ? this.props.depth + 1 : this.props.depth;
+
+    const isEvenDepth = depth % 2 === 1 && fromArray;
+
+    const patentDepth =
+      fromMap || isEvenDepth ? this.props.depth + 1 : this.props.depth;
+
+    const childDepth = isEvenDepth ? patentDepth + 1 : patentDepth;
+
     const tagSelectorClassName = classNames({
       "anyof-child": isObject && isOneOfOrAnyOf,
       "object-child": !isObject || (isObject && !isOneOfOrAnyOf),
@@ -470,8 +479,8 @@ class DiscriminatorField extends React.Component {
           <fieldset
             className={prefixClass(
               `field ${getEvenOddClass(
-                depth
-              )} depth_${depth} discriminator-field`
+                patentDepth
+              )} depth_${patentDepth} discriminator-field  --1`
             )}
           >
             <TagSelector
@@ -481,7 +490,7 @@ class DiscriminatorField extends React.Component {
               options={selectOptions}
               onChange={this.selectOnChange}
             />
-            {this.renderSchema(depth)}
+            {this.renderSchema(childDepth)}
           </fieldset>
         ) : null}
       </DefaultTemplate>

@@ -574,6 +574,7 @@ class ArrayField extends Component {
       canAdd: this.canAddItem(formData),
       items: formData.map((item, index) => {
         const itemSchema = retrieveSchema(schema.items, item, dxInterface);
+
         const itemErrorSchema = errorSchema ? errorSchema[index] : undefined;
 
         return this.renderArrayFieldItem({
@@ -844,6 +845,7 @@ class ArrayField extends Component {
           readonly={this.props.readonly}
           autofocus={autofocus}
           typeCombinatorTypes={typeCombinatorTypes}
+          fromArray={true}
         />
       ),
       className: "array-item",
