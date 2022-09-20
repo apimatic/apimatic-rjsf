@@ -519,16 +519,24 @@ export function optionsList(schema) {
   }
 }
 
-function findSchemaDefinition($ref, definitions = {}) {
+function findSchemaDefinition($ref, definitions = {}, fallback) {
   // Extract and use the referenced definition if we have it.
   const match = /^ModelSchemas#\/(.*)$/.exec($ref);
   if (match && match[1]) {
     const parts = match[1].split("/");
     let current = definitions;
     for (let part of parts) {
+      if (fallback) {
+        part = part.replace(/~1/g, "/").replace(/~0/g, "~");
+      }
       if (current.hasOwnProperty(part)) {
         current = current[part];
       } else {
+        // TODO: Hack for compatiblity. Need to remove after proper fix
+        if (!fallback) {
+          const decodedRef = decodeURIComponent($ref);
+          return findSchemaDefinition(decodedRef, definitions, true);
+        }
         // No matching definition found, that's an error (bogus schema?)
         throw new Error(`Could not find a definition for ${$ref}.`);
       }
