@@ -50,7 +50,7 @@ describe("ArrayFieldTemplate", () => {
         const { node } = createFormComponent({
           schema: { type: "array", items: { type: "string" } },
           formData,
-          ArrayFieldTemplate,
+          ArrayFieldTemplate
         });
 
         expect(node.querySelectorAll(".field-array div")).to.have.length.of(3);
@@ -62,11 +62,11 @@ describe("ArrayFieldTemplate", () => {
         type: "array",
         title: "my list",
         description: "my description",
-        items: { type: "string" },
+        items: { type: "string" }
       };
 
       const uiSchema = {
-        classNames: "custom-array",
+        classNames: "custom-array"
       };
 
       let node;
@@ -76,7 +76,7 @@ describe("ArrayFieldTemplate", () => {
           ArrayFieldTemplate,
           formData,
           schema,
-          uiSchema,
+          uiSchema
         }).node;
       });
 
@@ -118,11 +118,11 @@ describe("ArrayFieldTemplate", () => {
         type: "array",
         title: "my list",
         description: "my description",
-        items: [{ type: "string" }, { type: "string" }, { type: "string" }],
+        items: [{ type: "string" }, { type: "string" }, { type: "string" }]
       };
 
       const uiSchema = {
-        classNames: "custom-array",
+        classNames: "custom-array"
       };
 
       let node;
@@ -132,7 +132,7 @@ describe("ArrayFieldTemplate", () => {
           ArrayFieldTemplate,
           formData,
           schema,
-          uiSchema,
+          uiSchema
         }).node;
       });
 

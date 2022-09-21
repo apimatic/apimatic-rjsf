@@ -25,7 +25,8 @@ function DataType(props) {
     <div
       className={pfx(
         type !== "schema" ? type : link ? "object-type" : "base-type"
-      )}>
+      )}
+    >
       {link ? (
         <ContextConsumer>
           {({ onRouteChange }) => (
@@ -44,7 +45,7 @@ if (process.env.NODE_ENV !== "production") {
   DataType.propTypes = {
     title: PropTypes.string,
     link: PropTypes.string,
-    type: PropTypes.string,
+    type: PropTypes.string
   };
 }
 

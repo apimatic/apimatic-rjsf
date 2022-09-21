@@ -15,9 +15,9 @@ if (!global.hasOwnProperty("window")) {
         return {
           length: 0,
           left: 0,
-          right: 0,
+          right: 0
         };
-      },
+      }
     };
   };
   global.window = document.defaultView;

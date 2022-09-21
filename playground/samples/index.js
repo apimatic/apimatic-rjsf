@@ -46,5 +46,5 @@ export const samples = {
   "Schema dependencies": schemaDependencies,
   "Nested Object": nestedObject,
   Object: object,
-  "Add. Props.": additionalProperties,
+  "Add. Props.": additionalProperties
 };

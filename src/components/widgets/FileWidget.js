@@ -5,7 +5,7 @@ import {
   dataURItoBlob,
   shouldRender,
   setState,
-  prefixClass as pfx,
+  prefixClass as pfx
 } from "../../utils";
 
 function addNameToDataURL(dataURL, name) {
@@ -21,7 +21,7 @@ function processFile(file) {
         dataURL: addNameToDataURL(event.target.result, name),
         name,
         size,
-        type,
+        type
       });
     };
     reader.readAsDataURL(file);
@@ -62,7 +62,7 @@ function extractFileInfo(dataURLs) {
       return {
         name: name,
         size: blob.size,
-        type: blob.type,
+        type: blob.type
       };
     });
 }
@@ -70,7 +70,7 @@ function extractFileInfo(dataURLs) {
 class FileWidget extends Component {
   static defaultProps = {
     multiple: false,
-    autofocus: false,
+    autofocus: false
   };
 
   constructor(props) {
@@ -89,7 +89,7 @@ class FileWidget extends Component {
     processFiles(event.target.files).then(filesInfo => {
       const state = {
         values: filesInfo.map(fileInfo => fileInfo.dataURL),
-        filesInfo,
+        filesInfo
       };
       setState(this, state, () => {
         if (multiple) {
@@ -130,9 +130,9 @@ if (process.env.NODE_ENV !== "production") {
     multiple: PropTypes.bool,
     value: PropTypes.oneOfType([
       PropTypes.string,
-      PropTypes.arrayOf(PropTypes.string),
+      PropTypes.arrayOf(PropTypes.string)
     ]),
-    autofocus: PropTypes.bool,
+    autofocus: PropTypes.bool
   };
 }
 

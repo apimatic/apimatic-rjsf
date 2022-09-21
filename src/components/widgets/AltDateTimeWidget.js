@@ -13,7 +13,7 @@ if (process.env.NODE_ENV !== "production") {
     id: PropTypes.string.isRequired,
     value: PropTypes.string,
     required: PropTypes.bool,
-    onChange: PropTypes.func,
+    onChange: PropTypes.func
   };
 }
 

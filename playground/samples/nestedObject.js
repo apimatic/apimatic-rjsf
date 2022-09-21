@@ -6,7 +6,7 @@ module.exports = {
     properties: {
       title: {
         type: "string",
-        title: "Task list title",
+        title: "Task list title"
       },
       tasks: {
         type: "object",
@@ -15,17 +15,17 @@ module.exports = {
           title: {
             type: "string",
             title: "Title",
-            description: "A sample title",
+            description: "A sample title"
           },
           details: {
             type: "string",
             title: "Task details",
-            description: "Enter the task details",
+            description: "Enter the task details"
           },
           done: {
             type: "boolean",
             title: "Done?",
-            default: false,
+            default: false
           },
           tasks: {
             type: "object",
@@ -34,23 +34,23 @@ module.exports = {
               title: {
                 type: "string",
                 title: "Title",
-                description: "A sample title",
+                description: "A sample title"
               },
               details: {
                 type: "string",
                 title: "Task details",
-                description: "Enter the task details",
+                description: "Enter the task details"
               },
               done: {
                 type: "boolean",
                 title: "Done?",
-                default: false,
-              },
-            },
-          },
-        },
-      },
-    },
+                default: false
+              }
+            }
+          }
+        }
+      }
+    }
   },
   uiSchema: {},
   formData: {
@@ -59,7 +59,7 @@ module.exports = {
       title: "My second task",
       details:
         "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur",
-      done: false,
-    },
-  },
+      done: false
+    }
+  }
 };

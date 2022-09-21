@@ -56,13 +56,13 @@ function SelectWidget(props) {
     onChange,
     onBlur,
     onFocus,
-    placeholder,
+    placeholder
   } = props;
   const { enumOptions, enumDisabled } = options;
   let newOptions = enumOptions.map(o => {
     let a = {
       ...o,
-      disabled: !!(enumDisabled && enumDisabled.indexOf(o.value) !== -1),
+      disabled: !!(enumDisabled && enumDisabled.indexOf(o.value) !== -1)
     };
     return a;
   });
@@ -93,7 +93,7 @@ function SelectWidget(props) {
 }
 
 SelectWidget.defaultProps = {
-  autofocus: false,
+  autofocus: false
 };
 
 /* istanbul ignore else */
@@ -102,7 +102,7 @@ if (process.env.NODE_ENV !== "production") {
     schema: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,
     options: PropTypes.shape({
-      enumOptions: PropTypes.array,
+      enumOptions: PropTypes.array
     }).isRequired,
     value: PropTypes.any,
     required: PropTypes.bool,
@@ -112,7 +112,7 @@ if (process.env.NODE_ENV !== "production") {
     autofocus: PropTypes.bool,
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
-    onFocus: PropTypes.func,
+    onFocus: PropTypes.func
   };
 }
 

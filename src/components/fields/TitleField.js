@@ -13,7 +13,7 @@ function TitleField(props) {
     onNullifyChange,
     disabled,
     onClick,
-    fromDiscriminator = false,
+    fromDiscriminator = false
   } = props;
   const legend = required ? title + REQUIRED_FIELD_SYMBOL : title;
   const isRequired = required || !onNullifyChange || fromDiscriminator;
@@ -34,7 +34,8 @@ function TitleField(props) {
       )}
       <div
         className={isRequired ? undefined : prefixClass("checkbox-text")}
-        onClick={() => (onClick ? onClick() : null)}>
+        onClick={() => (onClick ? onClick() : null)}
+      >
         {title}
       </div>
     </legend>
@@ -49,7 +50,7 @@ if (process.env.NODE_ENV !== "production") {
     required: PropTypes.bool,
     disabled: PropTypes.bool,
     nullify: PropTypes.bool,
-    onNullifyChange: PropTypes.func,
+    onNullifyChange: PropTypes.func
   };
 }
 
