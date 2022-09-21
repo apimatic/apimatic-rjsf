@@ -454,12 +454,14 @@ class DiscriminatorField extends React.Component {
       selectedSchema.schema.type === "object" ||
       isOneOfOrAnyOf;
 
-    const isEvenDepth = depth % 2 === 1 && fromArray;
+    const isOddDepth = depth % 2 === 1;
 
-    const patentDepth =
-      fromMap || isEvenDepth ? this.props.depth + 1 : this.props.depth;
+    const hasArrayCheck = isOddDepth && fromArray;
 
-    const childDepth = isEvenDepth ? patentDepth + 1 : patentDepth;
+    const parentDepth =
+      fromMap || hasArrayCheck ? this.props.depth + 1 : this.props.depth;
+
+    const childDepth = hasArrayCheck ? parentDepth + 1 : parentDepth;
 
     const tagSelectorClassName = classNames({
       "anyof-child": isObject && isOneOfOrAnyOf,
@@ -479,8 +481,8 @@ class DiscriminatorField extends React.Component {
           <fieldset
             className={prefixClass(
               `field ${getEvenOddClass(
-                patentDepth
-              )} depth_${patentDepth} discriminator-field  --1`
+                parentDepth
+              )} depth_${parentDepth} discriminator-field`
             )}
           >
             <TagSelector
