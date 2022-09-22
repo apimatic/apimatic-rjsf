@@ -270,7 +270,8 @@ function SchemaFieldRender(props) {
     registry = getDefaultRegistry(),
     anyOfTitle,
     typeCombinatorTypes,
-    discriminatorObj = {}
+    discriminatorObj = {},
+    fromDiscriminator
   } = props;
   const {
     dxInterface,
@@ -349,7 +350,8 @@ function SchemaFieldRender(props) {
     `field-${type}`,
     errors && errors.length > 0 ? "field-error has-error has-danger" : "",
     schema.oneOf || schema.anyOf ? "discriminator-container" : "",
-    uiSchema.classNames
+    uiSchema.classNames,
+    fromDiscriminator ? "from-discriminator" : ""
   ]
     .join(" ")
     .trim();
