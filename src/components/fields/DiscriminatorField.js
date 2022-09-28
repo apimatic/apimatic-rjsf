@@ -287,7 +287,7 @@ class DiscriminatorField extends React.Component {
       additionalProperties && additionalProperties.description;
 
     return description ? (
-      <fieldset className={prefixClass(`field  ${discriminatorClassName} --2`)}>
+      <fieldset className={prefixClass(`field  ${discriminatorClassName} `)}>
         {this.renderSchemaField(depth)}
       </fieldset>
     ) : (
