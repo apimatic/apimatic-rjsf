@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import MapField from "./MapField";
-import { classNames, prefixClass as pfx } from "../../utils";
+import { classNames, getEvenOdd, prefixClass as pfx } from "../../utils";
 import { toErrorList } from "../../validate";
 import CodeMirror from "react-codemirror2";
 import DataType from "../fields/DataType";
@@ -130,7 +130,8 @@ function DefaultObjectFieldTemplate(props) {
     disabled,
     collapse,
     toggleCollapse,
-    fromDiscriminator
+    fromDiscriminator,
+    depth
   } = props;
   const headerClasses = classNames({
     [pfx("object-header")]: true,
@@ -151,6 +152,12 @@ function DefaultObjectFieldTemplate(props) {
   const dataType = props.schema.dataTypeDisplayText;
   const markdown = props.schema.dataTypeMarkdown;
   const title = props.uiSchema["ui:title"] || props.schema.title || props.title;
+  const elementPropsClassNames = classNames({
+    "element-properties": true,
+    "json-edit-view": props.showEditView,
+    "even-bg": getEvenOdd(depth),
+    "odd-bg": !getEvenOdd(depth)
+  });
 
   return (
     <fieldset
@@ -216,11 +223,7 @@ function DefaultObjectFieldTemplate(props) {
       )}
 
       {(!collapse || !canCollapse) && (
-        <div
-          className={pfx(
-            `element-properties ${props.showEditView ? "json-edit-view" : ""}`
-          )}
-        >
+        <div className={pfx(elementPropsClassNames)}>
           {props.showEditView && canEditJson ? (
             <div>
               <CodeMirror

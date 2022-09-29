@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { classNames, prefixClass as pfx } from "../../utils";
+import {
+  classNames,
+  getEvenOdd,
+  getEvenOddClass,
+  prefixClass as pfx
+} from "../../utils";
 
 import { getDefaultFormState, getUiOptions, retrieveSchema } from "../../utils";
 import { DeleteIcon, ChevronIcon } from "../Icons";
@@ -56,6 +61,7 @@ function IconBtn(props) {
 
 // Used in the two templates
 function DefaultMapItem(props) {
+  const { depth } = props;
   const btnStyle = {
     flex: 1,
     paddingLeft: 6,
@@ -107,7 +113,16 @@ function DefaultMapItem(props) {
         )}
       </div>
       {!props.collapse && (
-        <div className={pfx("map-field-value-container")}>
+        <div
+          className={pfx(
+            classNames({
+              "map-field-value-container": true,
+              [`depth_${depth}`]: true,
+              "even-bg": getEvenOdd(depth),
+              "odd-bg": !getEvenOdd(depth)
+            })
+          )}
+        >
           <div className={pfx("flex")} style={{ display: "flex" }}>
             <div
               className={pfx(
@@ -187,7 +202,15 @@ function DefaultNormalMapFieldTemplate(props) {
       />
 
       {!props.collapse && (
-        <div className={pfx("map-item-list-container")}>
+        <div
+          className={pfx(
+            classNames({
+              "map-item-list-container": true,
+              "even-bg": getEvenOdd(props.depth),
+              "odd-bg": !getEvenOdd(props.depth)
+            })
+          )}
+        >
           <div className={pfx("map-item-list")}>
             {props.items && props.items.map(p => DefaultMapItem(p))}
           </div>
@@ -465,7 +488,6 @@ class MapField extends Component {
       onBlur,
       onFocus,
       depth,
-      isEven,
       fromDiscriminator,
       typeCombinatorTypes
     } = this.props;
@@ -489,6 +511,8 @@ class MapField extends Component {
             ? { ...itemErrorSchema1, __errors: ["Key is duplicated."] }
             : itemErrorSchema1;
         const collapse = this.state.expandInfo[pair.k] ? false : true;
+        const childDepth = depth + 1;
+
         return this.renderMapFieldItem({
           index,
           key: pair.k,
@@ -499,15 +523,15 @@ class MapField extends Component {
           autofocus: autofocus && index === 0,
           onBlur,
           onFocus,
-          depth,
-          isEven,
+          depth: childDepth,
+          isEven: getEvenOdd(childDepth),
           collapse,
           typeCombinatorTypes
         });
       }),
-      className: `field field-array field-array-of-${addPropsSchema.type}  ${
-        isEven ? "even" : "odd"
-      } depth_${depth}`,
+      className: `field field-array field-array-of-${
+        addPropsSchema.type
+      }  ${getEvenOddClass(depth)} depth_${depth}`,
       DescriptionField,
       disabled,
       uiSchema,
@@ -522,8 +546,8 @@ class MapField extends Component {
       formData,
       onNullifyChange: this.onNullifyChange,
       nullify: formData && Object.keys(formData).length > 0,
-      depth: depth,
-      isEven: isEven,
+      depth,
+      isEven: getEvenOdd(depth),
       toggleGroupCollapse: this.toggleGroupCollapse,
       collapse: this.state.collapse,
       fromDiscriminator
@@ -545,7 +569,6 @@ class MapField extends Component {
       onBlur,
       onFocus,
       depth,
-      isEven,
       typeCombinatorTypes
     } = props;
     const { disabled, readonly, uiSchema, registry } = this.props;
@@ -561,6 +584,7 @@ class MapField extends Component {
     };
     has.toolbar = Object.keys(has).some(key => has[key]);
 
+    const childDepth = depth + 1;
     const schema = itemSchema.title
       ? itemSchema
       : {
@@ -584,8 +608,8 @@ class MapField extends Component {
           disabled={this.props.disabled}
           readonly={this.props.readonly}
           autofocus={autofocus}
-          depth={depth + 1}
-          isEven={isEven}
+          depth={childDepth}
+          isEven={getEvenOdd(childDepth)}
           typeCombinatorTypes={typeCombinatorTypes}
         />
       ),
@@ -598,7 +622,8 @@ class MapField extends Component {
       onKeyChange: this.onKeyChange({ k: key, v: itemData }, index),
       toggleCollapse: this.toggleCollapse,
       collapse: props.collapse,
-      readonly
+      readonly,
+      depth
     };
   }
 }

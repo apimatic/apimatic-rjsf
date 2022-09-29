@@ -1141,3 +1141,11 @@ export function getArrayItem(type) {
 
   return "";
 }
+
+export function getEvenOdd(depth) {
+  return depth % 2 === 0;
+}
+
+export function getEvenOddClass(depth) {
+  return getEvenOdd(depth) ? "even" : "odd";
+}
