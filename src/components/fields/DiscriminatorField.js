@@ -170,17 +170,27 @@ class DiscriminatorField extends React.Component {
       typeCombinatorTypes: typeCombinatorTypesFromProps,
       parentPath,
       formData,
-      schema,
-      definitions
+      schema
     } = this.props;
-    const _SchemaField = registry.fields.SchemaField;
+
+    const { fields, dxInterface } = registry;
+
+    const { definitions } = dxInterface;
+
+    const _SchemaField = fields.SchemaField;
+
     const { selectedSchema } = this.state;
+
     const { selectOptions } = this.getSelectOptions();
+
     const { typeCombinatorTypes = typeCombinatorTypesFromProps } = schema;
 
     const schemaDefination =
       selectedSchema.schema.hasOwnProperty("$ref") &&
       findSchemaDefinition(selectedSchema.schema.$ref, definitions);
+
+    const hasSchemaDefination =
+      schemaDefination && schemaDefination.type === "object";
 
     const childIsMap =
       selectedSchema.schema &&
@@ -198,7 +208,7 @@ class DiscriminatorField extends React.Component {
 
     const isDiscriminatorChild =
       !(childIsArray || childIsMap || childIsNestedMultipleSchema) &&
-      schemaDefination;
+      hasSchemaDefination;
 
     const uiTitle = selectOptions[selectedSchema.index].label;
 
