@@ -15,7 +15,9 @@ import {
   retrieveSchema,
   getDefaultRegistry,
   prefixClass as pfx,
-  classNames
+  classNames,
+  getEvenOdd,
+  getEvenOddClass
 } from "../../utils";
 import { ArrowUpIcon, DeleteIcon, ArrowDownIcon, ChevronIcon } from "../Icons";
 
@@ -202,7 +204,7 @@ function DefaultFixedArrayFieldTemplate(props) {
 }
 
 function DefaultNormalArrayFieldTemplate(props) {
-  const { fromDiscriminator } = props;
+  const { fromDiscriminator, depth } = props;
   const headerClasses = classNames({
     [pfx("object-header")]: true,
     "position-unset": fromDiscriminator
@@ -215,6 +217,11 @@ function DefaultNormalArrayFieldTemplate(props) {
 
   const dataType = props.schema.dataTypeDisplayText;
   const markdown = props.schema.dataTypeMarkdown;
+  const arrayContainerClasses = classNames({
+    "array-container": true,
+    "even-bg": getEvenOdd(depth),
+    "odd-bg": !getEvenOdd(depth)
+  });
 
   return (
     <fieldset className={pfx(props.className)}>
@@ -268,7 +275,7 @@ function DefaultNormalArrayFieldTemplate(props) {
         />
       )}
       {!props.collapse && (
-        <div className={pfx("array-container")}>
+        <div className={pfx(arrayContainerClasses)}>
           <div className={pfx("row array-item-list")}>
             {props.items &&
               props.items.map((item, index) => (
@@ -559,7 +566,8 @@ class ArrayField extends Component {
       onFocus,
       schemaIndex,
       fromDiscriminator,
-      typeCombinatorTypes
+      typeCombinatorTypes,
+      depth
     } = this.props;
     const { ArrayFieldTemplate, fields, dxInterface } = registry;
     const { TitleField, DescriptionField } = fields;
@@ -578,8 +586,8 @@ class ArrayField extends Component {
 
         return this.renderArrayFieldItem({
           index,
-          depth: this.props.depth,
-          isEven: this.props.isEven,
+          depth: depth,
+          isEven: getEvenOdd(depth),
           canMoveUp: index > 0,
           canMoveDown: index < formData.length - 1,
           itemSchema: this.additionalFieldSchema(itemSchema, index),
@@ -593,9 +601,9 @@ class ArrayField extends Component {
           typeCombinatorTypes
         });
       }),
-      className: `field field-array field-array-of-${itemsSchema.type} ${
-        this.props.isEven ? "even" : "odd"
-      } depth_${this.props.depth}`,
+      className: `field field-array field-array-of-${
+        itemsSchema.type
+      } ${getEvenOddClass(depth)} depth_${depth}`,
       collapse: this.state.collapse,
       toggleCollapse: this.toggleCollapse,
       DescriptionField,
@@ -612,7 +620,8 @@ class ArrayField extends Component {
       formData,
       onNullifyChange: this.onNullifyChange,
       nullify: formData && formData.length > 0,
-      fromDiscriminator
+      fromDiscriminator,
+      depth
     };
 
     // Check if a custom render function was passed in
@@ -823,14 +832,15 @@ class ArrayField extends Component {
       moveDown: orderable && canMoveDown,
       remove: removable && canRemove
     };
+    const childDepth = depth + 1;
     has.toolbar = Object.keys(has).some(key => has[key]);
 
     return {
       children: (
         <SchemaField
           schema={itemSchema}
-          depth={depth + 1}
-          isEven={!this.props.isEven}
+          depth={childDepth}
+          isEven={getEvenOdd(childDepth)}
           index={index}
           uiSchema={itemUiSchema}
           formData={itemData}

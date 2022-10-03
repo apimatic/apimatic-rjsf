@@ -8,7 +8,9 @@ import {
   isMultipleSchema,
   classNames,
   isOneOfSchema,
-  retrieveSchema
+  retrieveSchema,
+  getEvenOddClass,
+  getEvenOdd
 } from "../../utils";
 import TagSelector from "../widgets/TagSelector";
 import { getOneAnyOfPath } from "../../validationUtils";
@@ -68,10 +70,6 @@ function getMultipleLabel(schema) {
   if (schema.hasOwnProperty("oneOf")) {
     return "One Of";
   }
-}
-
-function getEvenOddClass(depth) {
-  return depth % 2 === 0 ? "even" : "odd";
 }
 
 class DiscriminatorField extends React.Component {
@@ -199,11 +197,15 @@ class DiscriminatorField extends React.Component {
 
     const discriminatorChildFieldsetDepth = depth + 1;
     const childDepth = isDiscriminatorChild ? depth + 2 : depth + 1;
-    const discriminatorClassName = isDiscriminatorChild
-      ? `discriminator-field-child ${getEvenOddClass(
-          discriminatorChildFieldsetDepth
-        )} depth_${discriminatorChildFieldsetDepth}`
-      : "discriminator-field-child-empty";
+    const discriminatorClassName = classNames({
+      field: true,
+      "discriminator-field-child": isDiscriminatorChild,
+      [getEvenOddClass(discriminatorChildFieldsetDepth)]: isDiscriminatorChild,
+      [`depth_${discriminatorChildFieldsetDepth}`]: isDiscriminatorChild,
+      ["discriminator-field-child-empty"]: !isDiscriminatorChild,
+      "even-bg": getEvenOdd(discriminatorChildFieldsetDepth),
+      "odd-bg": !getEvenOdd(discriminatorChildFieldsetDepth)
+    });
 
     let typeCombinatorSubTypes;
 
@@ -220,7 +222,7 @@ class DiscriminatorField extends React.Component {
     }
 
     return (
-      <fieldset className={prefixClass(`field  ${discriminatorClassName}`)}>
+      <fieldset className={prefixClass(discriminatorClassName)}>
         <React.Fragment>
           {this.state && formData ? (
             <_SchemaField
@@ -398,7 +400,7 @@ class DiscriminatorField extends React.Component {
   render() {
     const {
       schema,
-      fromMap,
+      depth,
       fieldProps,
       fromDiscriminator,
       disabled,
@@ -414,11 +416,18 @@ class DiscriminatorField extends React.Component {
       selectedSchema.schema.type === "array" ||
       selectedSchema.schema.type === "object" ||
       isOneOfOrAnyOf;
-    const depth = fromMap ? this.props.depth + 1 : this.props.depth;
     const tagSelectorClassName = classNames({
       "anyof-child": isObject && isOneOfOrAnyOf,
       "object-child": !isObject || (isObject && !isOneOfOrAnyOf),
       "select-container": charCounts > CHAR_THRESHOLD
+    });
+    const fieldSetClassNames = classNames({
+      field: true,
+      [getEvenOddClass(depth)]: true,
+      [`depth_${depth}`]: true,
+      "discriminator-field": true,
+      "even-bg": getEvenOdd(depth),
+      "odd-bg": !getEvenOdd(depth)
     });
 
     return (
@@ -430,13 +439,7 @@ class DiscriminatorField extends React.Component {
         fromDiscriminator={fromDiscriminator}
       >
         {!optional || (optional && checked && !disabled) ? (
-          <fieldset
-            className={prefixClass(
-              `field ${getEvenOddClass(
-                depth
-              )} depth_${depth} discriminator-field`
-            )}
-          >
+          <fieldset className={prefixClass(fieldSetClassNames)}>
             <TagSelector
               className={tagSelectorClassName}
               value={selectedSchema}
