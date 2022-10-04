@@ -43,7 +43,11 @@ class BaseInput extends Component {
 
   onChange = ({ target: { value: val } }) => {
     const { onChange: _onChange } = this.props;
-    const value = this.getValue(val) || "";
+    const value = this.getValue(val);
+
+    if (!value) {
+      return _onChange(value);
+    }
 
     if (!value.includes("\n")) {
       this.setState({
