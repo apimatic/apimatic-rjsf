@@ -10,7 +10,8 @@ import {
   isOneOfSchema,
   retrieveSchema,
   getEvenOddClass,
-  getEvenOdd
+  getEvenOdd,
+  findSchemaDefinition
 } from "../../utils";
 import TagSelector from "../widgets/TagSelector";
 import { getOneAnyOfPath } from "../../validationUtils";
@@ -171,32 +172,52 @@ class DiscriminatorField extends React.Component {
       formData,
       schema
     } = this.props;
-    const _SchemaField = registry.fields.SchemaField;
+
+    const { fields, dxInterface } = registry;
+
+    const { definitions } = dxInterface;
+
+    const _SchemaField = fields.SchemaField;
+
     const { selectedSchema } = this.state;
+
     const { selectOptions } = this.getSelectOptions();
+
     const { typeCombinatorTypes = typeCombinatorTypesFromProps } = schema;
+
+    const schemaDefination =
+      selectedSchema.schema.hasOwnProperty("$ref") &&
+      findSchemaDefinition(selectedSchema.schema.$ref, definitions);
+
+    const hasSchemaDefination =
+      schemaDefination && schemaDefination.type === "object";
 
     const childIsMap =
       selectedSchema.schema &&
       selectedSchema.schema.type === "object" &&
       selectedSchema.schema.hasOwnProperty("additionalProperties") &&
       selectedSchema.schema.additionalProperties.type !== "object";
+
     const childIsArray =
       selectedSchema.schema &&
       selectedSchema.schema.type === "array" &&
       selectedSchema.schema.hasOwnProperty("items") &&
       selectedSchema.schema.items.type !== "object";
+
     const childIsNestedMultipleSchema = isMultipleSchema(selectedSchema.schema);
-    const isDiscriminatorChild = !(
-      childIsArray ||
-      childIsMap ||
-      childIsNestedMultipleSchema
-    );
+
+    const isDiscriminatorChild =
+      !(childIsArray || childIsMap || childIsNestedMultipleSchema) &&
+      hasSchemaDefination;
+
     const uiTitle = selectOptions[selectedSchema.index].label;
+
     let discriminatorObj = undefined;
 
     const discriminatorChildFieldsetDepth = depth + 1;
+
     const childDepth = isDiscriminatorChild ? depth + 2 : depth + 1;
+
     const discriminatorClassName = classNames({
       field: true,
       "discriminator-field-child": isDiscriminatorChild,
