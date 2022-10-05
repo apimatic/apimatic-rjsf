@@ -8,7 +8,7 @@ import StringField from "./StringField";
 import TitleField from "./TitleField";
 import UnsupportedField from "./UnsupportedField";
 import DiscriminatorField from "./DiscriminatorField";
-import DiscrimatorWrapper from "./DiscriminatoWrapper";
+import DiscrimatorWrapper from "./DiscriminatorWrapper";
 
 export default {
   ArrayField,

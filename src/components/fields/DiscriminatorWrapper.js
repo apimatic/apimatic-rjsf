@@ -3,12 +3,12 @@ import deepClone from "lodash.clonedeep";
 
 import DiscriminatorField from "./DiscriminatorField";
 
-function converToOneOf(sch, definitions) {
+function converToOneOf(sch, { Root }) {
   const schema = deepClone(sch);
   const { typeCombinatorTypes } = schema;
 
   schema.oneOf = typeCombinatorTypes.map(
-    type => definitions["Root"][type.DataType]
+    type => Root[type.DataType] || Root[type.ModelSchemaRef]
   );
 
   return schema;
