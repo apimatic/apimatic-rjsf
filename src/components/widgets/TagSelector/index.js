@@ -33,8 +33,7 @@ class TagSelector extends React.Component {
         <span className="__title --tag">{title}</span>
         <div className="__tags-wrapper --variant-tag">
           {options.map((option, index) => {
-            const { value } = option;
-            const linkTo = value.linkTo;
+            const linkTo = option.value.linkTo;
             return (
               <div className="tag-wrapper-item">
                 <span
