@@ -54,7 +54,6 @@ class TagSelector extends React.Component {
                           value.index === index ? "--active" : ""
                         }`}
                         onClick={() => {
-                          console.log(linkTo);
                           onRouteChange(linkTo);
                         }}
                       >
