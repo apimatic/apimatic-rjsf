@@ -2,7 +2,7 @@ import propTypes from "prop-types";
 import React from "react";
 import Select from "react-select";
 
-import { prefixClass } from "../../../utils";
+import { prefixClass, classNames } from "../../../utils";
 import { ContextConsumer } from "../../context";
 import { TagLinkSvg } from "../../Icons";
 
@@ -34,13 +34,24 @@ class TagSelector extends React.Component {
         <div className="__tags-wrapper --variant-tag">
           {options.map((option, index) => {
             const linkTo = option.value.linkTo;
+
+            const classTagLabel = classNames({
+              "--tag": true,
+              " tag-label": true,
+              "--active": value.index === index
+            });
+
+            const classTagLink = classNames({
+              "--tag": true,
+              "tag-link": true,
+              "--active": value.index === index
+            });
+
             return (
               <div className="tag-wrapper-item">
                 <span
                   key={`option-item-${index}-${option.label}`}
-                  className={`--tag tag-label ${
-                    value.index === index ? "--active" : ""
-                  }`}
+                  className={classTagLabel}
                   onClick={onClick(option)}
                 >
                   {option.label}
@@ -50,9 +61,7 @@ class TagSelector extends React.Component {
                     {({ onRouteChange }) => (
                       <span
                         key={`option-item-${index}-${option.label}`}
-                        className={`--tag tag-link ${
-                          value.index === index ? "--active" : ""
-                        }`}
+                        className={classTagLink}
                         onClick={() => {
                           onRouteChange(linkTo);
                         }}
@@ -75,7 +84,7 @@ class TagSelector extends React.Component {
             onChange={({ value }) => onChange(value)}
           />
           <span className="tags-variant-select-link">
-            <TagLinkSvg width="10" color="#0062ff" />
+            <TagLinkSvg width="10" color="#00c7d4" />
             <ContextConsumer>
               {({ onRouteChange }) => (
                 <a onClick={() => onRouteChange(selectLinkTo)}>
