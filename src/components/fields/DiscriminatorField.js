@@ -379,6 +379,9 @@ class DiscriminatorField extends React.Component {
       registry
     } = this.props;
     const { dxInterface } = registry;
+
+    const { linkMapper } = dxInterface;
+
     const { typeCombinatorTypes = typeCombinatorTypesFromProps } = schema;
 
     const multipleSchema = schema.oneOf || schema.anyOf;
@@ -400,6 +403,9 @@ class DiscriminatorField extends React.Component {
         }
 
         const type = typeCombinatorTypes && typeCombinatorTypes[index].DataType;
+
+        const linkTo = typeCombinatorTypes && typeCombinatorTypes[index].LinkTo;
+
         const label = type
           ? type
           : getMultipleLabel(schema) || schema.type || "";
@@ -408,7 +414,8 @@ class DiscriminatorField extends React.Component {
           label,
           value: {
             index: index,
-            schema: schema
+            schema: schema,
+            linkTo: linkTo ? linkMapper(linkTo) : null
           }
         });
 
