@@ -6,6 +6,8 @@ import { prefixClass, classNames } from "../../../utils";
 import { ContextConsumer } from "../../context";
 import { TagLinkSvg } from "../../Icons";
 
+const VIEW_MODEL = "View Model";
+
 class TagSelector extends React.Component {
   render() {
     const {
@@ -24,7 +26,7 @@ class TagSelector extends React.Component {
 
     const selectValue = options && options[value.index];
 
-    const selectedLabel = selectValue && selectValue.label;
+    // const selectedLabel = selectValue && selectValue.label;
 
     const selectLinkTo = selectValue && selectValue.value.linkTo;
 
@@ -44,7 +46,8 @@ class TagSelector extends React.Component {
             const classTagLink = classNames({
               "--tag": true,
               "tag-link": true,
-              "--active": value.index === index
+              "--active": value.index === index,
+              "tag-selector-button-link": true
             });
 
             return (
@@ -66,7 +69,7 @@ class TagSelector extends React.Component {
                           onRouteChange(linkTo);
                         }}
                       >
-                        <TagLinkSvg width="10" color="#fff" />
+                        <TagLinkSvg width="10" />
                       </span>
                     )}
                   </ContextConsumer>
@@ -76,23 +79,27 @@ class TagSelector extends React.Component {
           })}
         </div>
         <div className="__tags-wrapper --variant-select">
-          <Select
-            className={`${prefixClass("form-control")}`}
-            classNamePrefix="react-select"
-            value={selectValue}
-            options={options}
-            onChange={({ value }) => onChange(value)}
-          />
-          <span className="tags-variant-select-link">
-            <TagLinkSvg width="10" color="#00c7d4" />
-            <ContextConsumer>
-              {({ onRouteChange }) => (
-                <a onClick={() => onRouteChange(selectLinkTo)}>
-                  {selectedLabel}
-                </a>
-              )}
-            </ContextConsumer>
-          </span>
+          <div>
+            <Select
+              className={`${prefixClass("form-control")}`}
+              classNamePrefix="react-select"
+              value={selectValue}
+              options={options}
+              onChange={({ value }) => onChange(value)}
+            />
+          </div>
+          <div>
+            <span className="tags-variant-select-link">
+              <TagLinkSvg width="10" />
+              <ContextConsumer>
+                {({ onRouteChange }) => (
+                  <a onClick={() => onRouteChange(selectLinkTo)}>
+                    {VIEW_MODEL}
+                  </a>
+                )}
+              </ContextConsumer>
+            </span>
+          </div>
         </div>
       </div>
     );

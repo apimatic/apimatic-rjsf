@@ -211,7 +211,7 @@ export const TagLinkSvg = ({ width, color }) => {
             d="M10,7.369a2.439,2.439,0,0,0,3.678.263l1.463-1.463a2.439,2.439,0,1,0-3.449-3.449l-.839.834"
             transform="translate(-4.1 0)"
             fill="none"
-            stroke={color || "#fff"}
+            stroke=""
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth="1.2"
@@ -222,7 +222,7 @@ export const TagLinkSvg = ({ width, color }) => {
             d="M7.851,9.973A2.439,2.439,0,0,0,4.173,9.71L2.71,11.173a2.439,2.439,0,1,0,3.449,3.449l.834-.834"
             transform="translate(0 -3.58)"
             fill="none"
-            stroke={color || "#fff"}
+            stroke=""
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth="1.2"
