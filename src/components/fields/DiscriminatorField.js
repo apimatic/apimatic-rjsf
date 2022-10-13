@@ -432,9 +432,14 @@ class DiscriminatorField extends React.Component {
       fieldProps,
       fromDiscriminator,
       disabled,
-      tagsTitle
+      tagsTitle,
+      registry
     } = this.props;
+    const { dxInterface } = registry;
+    const { renderToolTip } = dxInterface;
+
     const { selectedSchema, checked, optional } = this.state;
+
     const { selectOptions, charCounts } = this.getSelectOptions();
 
     const isOneOfOrAnyOf =
@@ -474,6 +479,7 @@ class DiscriminatorField extends React.Component {
               title={tagsTitle || getMultipleLabel(schema)}
               options={selectOptions}
               onChange={this.selectOnChange}
+              renderToolTip={renderToolTip}
             />
             {this.renderSchema(depth)}
           </fieldset>

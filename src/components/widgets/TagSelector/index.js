@@ -15,7 +15,8 @@ class TagSelector extends React.Component {
       options,
       onChange,
       value = options[0],
-      className = ""
+      className = "",
+      renderToolTip
     } = this.props;
 
     const onClick = option => {
@@ -26,7 +27,7 @@ class TagSelector extends React.Component {
 
     const selectValue = options && options[value.index];
 
-    // const selectedLabel = selectValue && selectValue.label;
+    const selectedLabel = selectValue && selectValue.label;
 
     const selectLinkTo = selectValue && selectValue.value.linkTo;
 
@@ -61,17 +62,20 @@ class TagSelector extends React.Component {
                 </span>
                 {linkTo && value.index === index && (
                   <ContextConsumer>
-                    {({ onRouteChange }) => (
-                      <span
-                        key={`option-item-${index}-${option.label}`}
-                        className={classTagLink}
-                        onClick={() => {
-                          onRouteChange(linkTo);
-                        }}
-                      >
-                        <TagLinkSvg width="10" />
-                      </span>
-                    )}
+                    {({ onRouteChange }) =>
+                      renderToolTip(
+                        <span
+                          key={`option-item-${index}-${option.label}`}
+                          className={classTagLink}
+                          onClick={() => {
+                            onRouteChange(linkTo);
+                          }}
+                        >
+                          <TagLinkSvg width="10" />
+                        </span>,
+                        VIEW_MODEL
+                      )
+                    }
                   </ContextConsumer>
                 )}
               </div>
@@ -90,13 +94,15 @@ class TagSelector extends React.Component {
           </div>
           <div>
             <span className="tags-variant-select-link">
-              <TagLinkSvg width="10" />
               <ContextConsumer>
-                {({ onRouteChange }) => (
-                  <a onClick={() => onRouteChange(selectLinkTo)}>
-                    {VIEW_MODEL}
-                  </a>
-                )}
+                {({ onRouteChange }) =>
+                  renderToolTip(
+                    <a onClick={() => onRouteChange(selectLinkTo)}>
+                      <TagLinkSvg width="10" /> {VIEW_MODEL}
+                    </a>,
+                    selectedLabel
+                  )
+                }
               </ContextConsumer>
             </span>
           </div>
