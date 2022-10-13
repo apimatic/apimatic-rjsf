@@ -379,6 +379,9 @@ class DiscriminatorField extends React.Component {
       registry
     } = this.props;
     const { dxInterface } = registry;
+
+    const { linkMapper } = dxInterface;
+
     const { typeCombinatorTypes = typeCombinatorTypesFromProps } = schema;
 
     const multipleSchema = schema.oneOf || schema.anyOf;
@@ -400,6 +403,9 @@ class DiscriminatorField extends React.Component {
         }
 
         const type = typeCombinatorTypes && typeCombinatorTypes[index].DataType;
+
+        const linkTo = typeCombinatorTypes && typeCombinatorTypes[index].LinkTo;
+
         const label = type
           ? type
           : getMultipleLabel(schema) || schema.type || "";
@@ -408,7 +414,8 @@ class DiscriminatorField extends React.Component {
           label,
           value: {
             index: index,
-            schema: schema
+            schema: schema,
+            linkTo: linkTo ? linkMapper(linkTo) : null
           }
         });
 
@@ -425,9 +432,14 @@ class DiscriminatorField extends React.Component {
       fieldProps,
       fromDiscriminator,
       disabled,
-      tagsTitle
+      tagsTitle,
+      registry
     } = this.props;
+    const { dxInterface } = registry;
+    const { renderToolTip } = dxInterface;
+
     const { selectedSchema, checked, optional } = this.state;
+
     const { selectOptions, charCounts } = this.getSelectOptions();
 
     const isOneOfOrAnyOf =
@@ -467,6 +479,7 @@ class DiscriminatorField extends React.Component {
               title={tagsTitle || getMultipleLabel(schema)}
               options={selectOptions}
               onChange={this.selectOnChange}
+              renderToolTip={renderToolTip}
             />
             {this.renderSchema(depth)}
           </fieldset>

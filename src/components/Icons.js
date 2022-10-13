@@ -186,3 +186,49 @@ export const JsonIcon = ({ width, color }) => {
     </svg>
   );
 };
+
+export const TagLinkSvg = ({ width, color }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={width || "10"}
+      height={width || "10"}
+      viewBox="0 0 10.961 10.951"
+    >
+      <g
+        id="Group_2268"
+        data-name="Group 2268"
+        transform="translate(-565.026 -707.524)"
+      >
+        <g
+          id="link_4_"
+          data-name="link (4)"
+          transform="translate(563.631 706.119)"
+        >
+          <path
+            id="Path_36573"
+            data-name="Path 36573"
+            d="M10,7.369a2.439,2.439,0,0,0,3.678.263l1.463-1.463a2.439,2.439,0,1,0-3.449-3.449l-.839.834"
+            transform="translate(-4.1 0)"
+            fill="none"
+            stroke=""
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="1.2"
+          />
+          <path
+            id="Path_36574"
+            data-name="Path 36574"
+            d="M7.851,9.973A2.439,2.439,0,0,0,4.173,9.71L2.71,11.173a2.439,2.439,0,1,0,3.449,3.449l.834-.834"
+            transform="translate(0 -3.58)"
+            fill="none"
+            stroke=""
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="1.2"
+          />
+        </g>
+      </g>
+    </svg>
+  );
+};
