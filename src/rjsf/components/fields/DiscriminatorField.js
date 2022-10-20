@@ -11,7 +11,7 @@ import {
   retrieveSchema,
   getEvenOddClass,
   getEvenOdd,
-  findSchemaDefinition
+  findSchemaDefinition,
 } from "../../utils";
 import TagSelector from "../widgets/TagSelector";
 import { getOneAnyOfPath } from "../../validationUtils";
@@ -30,13 +30,13 @@ export function generateFormDataForMultipleSchema(schema, index, caseOf) {
         _schema,
         0,
         getMultipleSchemaType(_schema)
-      )
+      ),
     };
   }
   return computeInitialValue(schema);
 }
 
-const getMultipleSchemaType = schema =>
+const getMultipleSchemaType = (schema) =>
   schema && schema.hasOwnProperty("oneOf") ? "oneOf" : "anyOf";
 
 function computeInitialValue(schema) {
@@ -59,7 +59,7 @@ function getInitialFormData(schema, index, caseOf) {
   let initialFormData = {
     $$__case: index,
     $$__case_of: caseOf,
-    value: computeInitialValue(schema)
+    value: computeInitialValue(schema),
   };
   return initialFormData;
 }
@@ -79,7 +79,7 @@ class DiscriminatorField extends React.Component {
     super(props);
     this.state = {
       collapse: false,
-      checked: false
+      checked: false,
     };
   }
 
@@ -105,15 +105,15 @@ class DiscriminatorField extends React.Component {
       formState: formData
         ? {
             ...state.formState,
-            [getOneAnyOfPath(parentPath, data)]: formData
+            [getOneAnyOfPath(parentPath, data)]: formData,
           }
         : {},
       selectedSchema: {
         index: initialSchemaIndex,
-        schema: initialSchema[initialSchemaIndex]
+        schema: initialSchema[initialSchemaIndex],
       },
       caseOf,
-      optional: fromDiscriminator ? false : !required
+      optional: fromDiscriminator ? false : !required,
     };
 
     return newState;
@@ -130,35 +130,35 @@ class DiscriminatorField extends React.Component {
         newFormData = {
           ...formData,
           $$__case: selectedSchema.index,
-          value
+          value,
         };
       } else {
         newFormData = {
           ...formData,
-          value
+          value,
         };
       }
 
-      this.setState(st => {
+      this.setState((st) => {
         return {
           ...st,
           formState: {
             ...st.formState,
-            [getOneAnyOfPath(parentPath, newFormData)]: newFormData
-          }
+            [getOneAnyOfPath(parentPath, newFormData)]: newFormData,
+          },
         };
       });
       onChange(
         newFormData,
         {
-          validate: false
+          validate: false,
         },
         this.state.selectedSchema.index
       );
     };
   };
 
-  renderSchema = depth => {
+  renderSchema = (depth) => {
     const {
       disabled,
       errorSchema,
@@ -170,7 +170,7 @@ class DiscriminatorField extends React.Component {
       typeCombinatorTypes: typeCombinatorTypesFromProps,
       parentPath,
       formData,
-      schema
+      schema,
     } = this.props;
 
     const { fields, dxInterface } = registry;
@@ -225,7 +225,7 @@ class DiscriminatorField extends React.Component {
       [`depth_${discriminatorChildFieldsetDepth}`]: isDiscriminatorChild,
       ["discriminator-field-child-empty"]: !isDiscriminatorChild,
       "even-bg": getEvenOdd(discriminatorChildFieldsetDepth),
-      "odd-bg": !getEvenOdd(discriminatorChildFieldsetDepth)
+      "odd-bg": !getEvenOdd(discriminatorChildFieldsetDepth),
     });
 
     let typeCombinatorSubTypes;
@@ -233,7 +233,7 @@ class DiscriminatorField extends React.Component {
     if (typeCombinatorTypes) {
       discriminatorObj = {
         name: schema.discriminator,
-        value: typeCombinatorTypes[selectedSchema.index].DiscriminatorValue
+        value: typeCombinatorTypes[selectedSchema.index].DiscriminatorValue,
       };
       const selectedSchemaTypeCombinator =
         typeCombinatorTypes[selectedSchema.index];
@@ -252,7 +252,7 @@ class DiscriminatorField extends React.Component {
                 ...uiSchema,
                 "ui:title": isOneOfSchema(selectedSchema.schema)
                   ? undefined
-                  : uiTitle
+                  : uiTitle,
               }}
               errorSchema={errorSchema}
               idPrefix={idPrefix}
@@ -292,7 +292,7 @@ class DiscriminatorField extends React.Component {
     }
 
     this.setState({
-      selectedSchema: value
+      selectedSchema: value,
     });
 
     let defaultFormState = getDefaultFormState(
@@ -304,19 +304,19 @@ class DiscriminatorField extends React.Component {
     const path = getOneAnyOfPath(parentPath, defaultFormState);
 
     if (!formState[path]) {
-      this.setState(st => ({
+      this.setState((st) => ({
         ...st,
         formState: {
           ...st.formState,
-          [path]: defaultFormState
-        }
+          [path]: defaultFormState,
+        },
       }));
     }
 
     onChange(
       formState[path] || defaultFormState,
       {
-        validate: true
+        validate: true,
       },
       value.index
     );
@@ -326,7 +326,7 @@ class DiscriminatorField extends React.Component {
     const { formData, schema, registry, onChange } = this.props;
     const { dxInterface } = registry;
 
-    this.setState(st => {
+    this.setState((st) => {
       const { checked } = st;
       const updatedChecked = !checked;
 
@@ -346,7 +346,7 @@ class DiscriminatorField extends React.Component {
       onChange(
         updatedChecked ? defaultFormState : null,
         {
-          validate: true
+          validate: true,
         },
         initialSchemaIndex
       );
@@ -372,12 +372,8 @@ class DiscriminatorField extends React.Component {
   };
 
   getSelectOptions = () => {
-    const {
-      schema,
-      typeCombinatorTypesFromProps,
-      formData,
-      registry
-    } = this.props;
+    const { schema, typeCombinatorTypesFromProps, formData, registry } =
+      this.props;
     const { dxInterface } = registry;
     const { typeCombinatorTypes = typeCombinatorTypesFromProps } = schema;
 
@@ -408,8 +404,8 @@ class DiscriminatorField extends React.Component {
           label,
           value: {
             index: index,
-            schema: schema
-          }
+            schema: schema,
+          },
         });
 
         return { selectOptions, charCounts: charCounts + label.length };
@@ -425,7 +421,7 @@ class DiscriminatorField extends React.Component {
       fieldProps,
       fromDiscriminator,
       disabled,
-      tagsTitle
+      tagsTitle,
     } = this.props;
     const { selectedSchema, checked, optional } = this.state;
     const { selectOptions, charCounts } = this.getSelectOptions();
@@ -440,7 +436,7 @@ class DiscriminatorField extends React.Component {
     const tagSelectorClassName = classNames({
       "anyof-child": isObject && isOneOfOrAnyOf,
       "object-child": !isObject || (isObject && !isOneOfOrAnyOf),
-      "select-container": charCounts > CHAR_THRESHOLD
+      "select-container": charCounts > CHAR_THRESHOLD,
     });
     const fieldSetClassNames = classNames({
       field: true,
@@ -448,7 +444,7 @@ class DiscriminatorField extends React.Component {
       [`depth_${depth}`]: true,
       "discriminator-field": true,
       "even-bg": getEvenOdd(depth),
-      "odd-bg": !getEvenOdd(depth)
+      "odd-bg": !getEvenOdd(depth),
     });
 
     return (
@@ -480,7 +476,7 @@ class DiscriminatorField extends React.Component {
 DiscriminatorField.defaultProps = {
   disabled: false,
   errorSchema: {},
-  uiSchema: {}
+  uiSchema: {},
 };
 
 if (process.env.NODE_ENV !== "production") {
@@ -497,9 +493,9 @@ if (process.env.NODE_ENV !== "production") {
         ).isRequired,
         fields: PropTypes.objectOf(PropTypes.func).isRequired,
         definitions: PropTypes.object.isRequired,
-        formContext: PropTypes.object.isRequired
-      })
-    })
+        formContext: PropTypes.object.isRequired,
+      }),
+    }),
   };
 }
 

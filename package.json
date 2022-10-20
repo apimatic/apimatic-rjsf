@@ -26,7 +26,7 @@
     "react-codemirror2": "^2.0.2",
     "react-datepicker": "^1.0.4",
     "react-dom": "^18.2.0",
-    "react-scripts": "^4.0.3",
+    "react-scripts": "^5.0.1",
     "react-select": "^2.4.4",
     "setimmediate": "^1.0.5",
     "url": "^0.11.0",
