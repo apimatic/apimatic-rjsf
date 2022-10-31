@@ -14,7 +14,7 @@ import {
   prefixClass as pfx,
   isOneOfSchema,
   prefixClass,
-  isDiscriminator as isDiscriminatorCheck
+  isDiscriminator as isDiscriminatorCheck,
 } from "../../utils";
 import UnsupportedField from "./UnsupportedField";
 import { validateField } from "../../validationUtils";
@@ -27,28 +27,28 @@ const COMPONENT_TYPES = {
   number: "NumberField",
   object: "ObjectField",
   string: "StringField",
-  discriminator: "DiscriminatorField"
+  discriminator: "DiscriminatorField",
 };
 
 const MERGE_ALLOF_OPTIONS = {
   ignoreAdditionalProperties: true,
   resolvers: {
-    defaultResolver: function(values) {
+    defaultResolver: function (values) {
       return values.length ? values[0] : "";
     },
-    id: function(values) {
+    id: function (values) {
       return values.length ? values[0] : "";
     },
-    description: function(values) {
+    description: function (values) {
       return values.length ? values[0] : "";
     },
-    dataTypeLink: function(values) {
+    dataTypeLink: function (values) {
       return values.length ? values[0] : "";
     },
-    dataTypeDisplayText: function(values) {
+    dataTypeDisplayText: function (values) {
       return values.length ? values[0] : "";
-    }
-  }
+    },
+  },
 };
 
 function getFieldComponent(schema, uiSchema, fields) {
@@ -161,7 +161,7 @@ export function DefaultTemplate(props) {
     disabled,
     fromDiscriminator,
     formData,
-    schema
+    schema,
   } = props;
   if (hidden) {
     return children;
@@ -185,7 +185,7 @@ export function DefaultTemplate(props) {
         <div className={pfx("field-header")}>
           {onNullifyChange && !required ? (
             <legend>
-              <label onClick={ev => ev.stopPropagation()}>
+              <label onClick={(ev) => ev.stopPropagation()}>
                 <input
                   type="checkbox"
                   checked={nullify}
@@ -248,7 +248,7 @@ if (process.env.NODE_ENV !== "production") {
     readonly: PropTypes.bool,
     displayLabel: PropTypes.bool,
     fields: PropTypes.object,
-    formContext: PropTypes.object
+    formContext: PropTypes.object,
   };
 }
 
@@ -256,7 +256,7 @@ DefaultTemplate.defaultProps = {
   hidden: false,
   readonly: false,
   required: false,
-  displayLabel: true
+  displayLabel: true,
 };
 
 function SchemaFieldRender(props) {
@@ -271,13 +271,13 @@ function SchemaFieldRender(props) {
     anyOfTitle,
     typeCombinatorTypes,
     discriminatorObj = {},
-    fromDiscriminator
+    fromDiscriminator,
   } = props;
   const {
     dxInterface,
     fields,
     formContext,
-    FieldTemplate = DefaultTemplate
+    FieldTemplate = DefaultTemplate,
   } = registry;
 
   const { name: discriminatorProperty } = discriminatorObj;
@@ -351,7 +351,7 @@ function SchemaFieldRender(props) {
     errors && errors.length > 0 ? "field-error has-error has-danger" : "",
     schema.oneOf || schema.anyOf ? "discriminator-container" : "",
     uiSchema.classNames,
-    fromDiscriminator ? "from-discriminator" : ""
+    fromDiscriminator ? "from-discriminator" : "",
   ]
     .join(" ")
     .trim();
@@ -382,7 +382,7 @@ function SchemaFieldRender(props) {
     uiSchema,
     anyOfTitle,
     discriminatorObj,
-    formData
+    formData,
   };
 
   // See #439: uiSchema: Don't pass consumed class names to child components
@@ -431,7 +431,7 @@ SchemaField.defaultProps = {
   errorSchema: {},
   disabled: false,
   readonly: false,
-  autofocus: false
+  autofocus: false,
 };
 
 /* istanbul ignore else */
@@ -449,9 +449,9 @@ if (process.env.NODE_ENV !== "production") {
         ).isRequired,
         fields: PropTypes.objectOf(PropTypes.func).isRequired,
         definitions: PropTypes.object.isRequired,
-        formContext: PropTypes.object.isRequired
-      })
-    })
+        formContext: PropTypes.object.isRequired,
+      }),
+    }),
   };
 }
 
