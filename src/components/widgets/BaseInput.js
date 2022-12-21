@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { prefixClass as pfx } from "../../utils";
+import { classNames, prefixClass as pfx } from "../../utils";
+import { EyeOffSvg, EyeOpenSvg } from "../Icons";
 
 class BaseInput extends Component {
   state = {
-    isSingleLine: true
+    isSingleLine: true,
+    isHidden: true
   };
 
   constructor(props) {
@@ -58,6 +60,13 @@ class BaseInput extends Component {
     return _onChange(value.trimStart());
   };
 
+  setPasswordVisibility = () => {
+    this.setState(st => ({
+      ...st,
+      isHidden: !st.isHidden
+    }));
+  };
+
   render() {
     // Note: since React 15.2.0 we can't forward unknown element attributes, so we
     // exclude the "options" and "schema" ones here.
@@ -75,28 +84,52 @@ class BaseInput extends Component {
       onChange,
       ...inputProps
     } = this.props;
-    const { isSingleLine } = this.state;
+    const { isSingleLine, isHidden } = this.state;
+
+    const { isFormatPassword } = schema;
 
     inputProps.type = options.inputType || inputProps.type || "text";
 
-    const InputField = isSingleLine ? "input" : "textarea";
+    inputProps.type =
+      isFormatPassword && isHidden ? "password" : inputProps.type;
+
+    const InputField = isSingleLine || isFormatPassword ? "input" : "textarea";
+
+    const isPassword = inputProps.type === "password";
 
     return (
-      <InputField
-        ref={this.inputRef}
-        className={pfx("form-control")}
-        readOnly={readonly}
-        disabled={disabled}
-        autoFocus={autofocus}
-        value={value == null ? "" : value}
-        {...inputProps}
-        onChange={this.onChange}
-        onBlur={onBlur && (event => onBlur(inputProps.id, event.target.value))}
-        onFocus={
-          onFocus && (event => onFocus(inputProps.id, event.target.value))
-        }
-        onKeyDownCapture={this.onKeyDown}
-      />
+      <React.Fragment>
+        <InputField
+          ref={this.inputRef}
+          className={pfx(
+            classNames({
+              "form-control": true,
+              "form-control-password": isFormatPassword
+            })
+          )}
+          readOnly={readonly}
+          disabled={disabled}
+          autoFocus={autofocus}
+          value={value == null ? "" : value}
+          {...inputProps}
+          onChange={this.onChange}
+          onBlur={
+            onBlur && (event => onBlur(inputProps.id, event.target.value))
+          }
+          onFocus={
+            onFocus && (event => onFocus(inputProps.id, event.target.value))
+          }
+          onKeyDownCapture={this.onKeyDown}
+        />
+        {(isPassword || !isHidden) && (
+          <div
+            className={pfx("form-control-svg")}
+            onClick={this.setPasswordVisibility}
+          >
+            {isPassword ? <EyeOpenSvg /> : <EyeOffSvg />}
+          </div>
+        )}
+      </React.Fragment>
     );
   }
 }
