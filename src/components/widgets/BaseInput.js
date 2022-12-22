@@ -82,20 +82,20 @@ class BaseInput extends Component {
       formContext,
       registry,
       onChange,
+      type,
       ...inputProps
     } = this.props;
     const { isSingleLine, isHidden } = this.state;
 
-    const { isFormatPassword } = schema;
+    const { isSecret } = schema;
 
-    inputProps.type = options.inputType || inputProps.type || "text";
+    const textType = options.inputType || type || "text";
 
-    inputProps.type =
-      isFormatPassword && isHidden ? "password" : inputProps.type;
+    const inputType = isSecret && isHidden ? "password" : textType;
 
-    const InputField = isSingleLine || isFormatPassword ? "input" : "textarea";
+    const InputField = isSingleLine || isSecret ? "input" : "textarea";
 
-    const isPassword = inputProps.type === "password";
+    const isPassword = inputType === "password";
 
     return (
       <React.Fragment>
@@ -104,7 +104,7 @@ class BaseInput extends Component {
           className={pfx(
             classNames({
               "form-control": true,
-              "form-control-password": isFormatPassword
+              "form-control-password": isSecret
             })
           )}
           readOnly={readonly}
@@ -112,6 +112,7 @@ class BaseInput extends Component {
           autoFocus={autofocus}
           value={value == null ? "" : value}
           {...inputProps}
+          type={inputType}
           onChange={this.onChange}
           onBlur={
             onBlur && (event => onBlur(inputProps.id, event.target.value))
