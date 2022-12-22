@@ -248,9 +248,9 @@ export const EyeOffSvg = () => (
           transform="translate(-0.969 -2.023)"
           fill="none"
           stroke="#6b7e8f"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.5"
         />
         <line
           x2="16"
@@ -258,9 +258,9 @@ export const EyeOffSvg = () => (
           transform="translate(0 0)"
           fill="none"
           stroke="#6b7e8f"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.5"
         />
       </g>
     </g>
@@ -281,9 +281,9 @@ export const EyeOpenSvg = () => (
           d="M1,10S4,4,9.25,4s8.25,6,8.25,6-3,6-8.25,6S1,10,1,10Z"
           fill="none"
           stroke="#6b7e8f"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.5"
         />
         <circle
           cx="3"
@@ -292,9 +292,9 @@ export const EyeOpenSvg = () => (
           transform="translate(6.25 7)"
           fill="none"
           stroke="#6b7e8f"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.5"
         />
       </g>
     </g>
