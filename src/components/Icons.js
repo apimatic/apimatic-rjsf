@@ -236,12 +236,12 @@ export const TagLinkSvg = ({ width, color }) => {
 export const EyeOffSvg = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="18.287"
-    height="18.121"
+    width="16.287"
+    height="16.121"
     viewBox="0 0 18.287 18.121"
   >
     <g transform="translate(-219.939 -6.939)">
-      <rect width="18" height="18" transform="translate(220 7)" fill="none" />
+      <rect width="16" height="16" transform="translate(220 7)" fill="none" />
       <g transform="translate(221 8)">
         <path
           d="M13.663,14.5a7.493,7.493,0,0,1-4.44,1.551C3.99,16.047,1,10.024,1,10.024A13.866,13.866,0,0,1,4.783,5.551m2.871-1.37A6.771,6.771,0,0,1,9.223,4c5.233,0,8.223,6.024,8.223,6.024a13.936,13.936,0,0,1-1.615,2.4m-5.023-.806a2.237,2.237,0,0,1-3.814-.981,2.27,2.27,0,0,1,.644-2.212"
@@ -270,12 +270,12 @@ export const EyeOffSvg = () => (
 export const EyeOpenSvg = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="18.25"
-    height="18"
+    width="16.25"
+    height="16"
     viewBox="0 0 18.25 18"
   >
     <g transform="translate(-220 -7)">
-      <rect width="18" height="18" transform="translate(220 7)" fill="none" />
+      <rect width="16" height="16" transform="translate(220 7)" fill="none" />
       <g transform="translate(220 6)">
         <path
           d="M1,10S4,4,9.25,4s8.25,6,8.25,6-3,6-8.25,6S1,10,1,10Z"
