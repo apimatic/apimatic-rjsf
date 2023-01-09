@@ -98,7 +98,7 @@ class BaseInput extends Component {
     const isPassword = inputType === "password";
 
     return (
-      <React.Fragment>
+      <div className="rjsf-form-control-parent">
         <InputField
           ref={this.inputRef}
           className={pfx(
@@ -130,7 +130,7 @@ class BaseInput extends Component {
             {isPassword ? <EyeOpenSvg /> : <EyeOffSvg />}
           </div>
         )}
-      </React.Fragment>
+      </div>
     );
   }
 }
