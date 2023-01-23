@@ -211,7 +211,8 @@ export default class Form extends Component {
       acceptcharset,
       noHtml5Validate,
       disableFormJsonEdit,
-      dxInterface
+      dxInterface,
+      disabled
     } = this.props;
     const { schema, uiSchema, formData, errorSchema, expandAll } = this.state;
     const registry = this.getRegistry();
@@ -241,6 +242,7 @@ export default class Form extends Component {
             </div>
           )}
           <_SchemaField
+            disabled={disabled}
             schema={schema}
             expandAllLevel={uiSchema.expandAllLevel}
             expandAll={expandAll}
