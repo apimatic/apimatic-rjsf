@@ -15,7 +15,7 @@ module.exports = {
   ],
   module: {
     loaders: [{
-        test: /\.jsx?$/,
+        test: /\.(js|jsx)?$/,
         loader: "babel",
         include: [
           path.join(__dirname, "src"),
@@ -27,7 +27,8 @@ module.exports = {
             "mode",
             "javascript"
           ),
-        ],
+          path.join(__dirname, "node_modules", "json-schema-merge-allof", "src")
+        ]
       },
       {
         test: /\.css$/,

@@ -270,6 +270,13 @@ function ThemeSelector({ theme, select }) {
       schema={themeSchema}
       formData={theme}
       onChange={({ formData }) => select(formData, themes[formData])}
+      dxInterface={{
+        definitions: {},
+        markdownRenderer: () => {},
+        linkMapper: () => {},
+        renderTypesPopover: () => {},
+        renderToolTip: () => {}
+      }}
     >
       <div />
     </Form>
@@ -412,8 +419,7 @@ class App extends Component {
       editor,
       ArrayFieldTemplate,
       ObjectFieldTemplate,
-      transformErrors,
-      definitions
+      transformErrors
     } = this.state;
 
     return (
@@ -429,6 +435,13 @@ class App extends Component {
                 schema={liveValidateSchema}
                 formData={liveValidate}
                 onChange={this.setLiveValidate}
+                dxInterface={{
+                  definitions: {},
+                  markdownRenderer: () => {},
+                  linkMapper: () => {},
+                  renderTypesPopover: () => {},
+                  renderToolTip: () => {}
+                }}
               >
                 <div />
               </Form>
@@ -488,7 +501,13 @@ class App extends Component {
               transformErrors={transformErrors}
               onError={log("errors")}
               expandAllLevel={true}
-              definitions={definitions}
+              dxInterface={{
+                definitions: {},
+                markdownRenderer: () => {},
+                linkMapper: () => {},
+                renderTypesPopover: () => {},
+                renderToolTip: () => {}
+              }}
             >
               <div className="row">
                 <div className="col-sm-3">
